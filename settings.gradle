@@ -13,4 +13,4 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "BusbyTasky"
-include ':app'
+include ':presentation'
