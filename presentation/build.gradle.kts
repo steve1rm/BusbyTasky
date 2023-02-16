@@ -52,17 +52,16 @@ android {
 }
 
 dependencies {
-    implementation("androidx.core:core-ktx:1.9.0")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.1")
-    implementation("androidx.activity:activity-compose:1.6.1")
-    implementation("androidx.compose.ui:ui:1.3.3")
-    implementation("androidx.compose.ui:ui-tooling-preview:1.3.3")
-    implementation("androidx.compose.material:material:1.3.1")
+    implementation(libs.core.ktx)
+    implementation(libs.lifecycle.runtime.ktx)
+    implementation(libs.bundles.compose)
 
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.3.3")
-    debugImplementation("androidx.compose.ui:ui-tooling:1.3.3")
-    debugImplementation("androidx.compose.ui:ui-test-manifest:1.3.3")
+    debugImplementation(tests.ui.tooling)
+    debugImplementation(tests.ui.test.manifest)
+
+    testImplementation(tests.junit)
+
+    androidTestImplementation(tests.ext.junit)
+    androidTestImplementation(tests.espresso.core)
+    androidTestImplementation(tests.ui.test.junit4)
 }
