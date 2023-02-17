@@ -33,8 +33,8 @@ fun MutableVersionCatalogContainer.createLibs() {
 
         library("core-ktx", "androidx.core", "core-ktx").version("core-ktx")
         library("lifecycle-runtime-ktx","androidx.lifecycle", "lifecycle-runtime-ktx").version("lifecycle-runtime-ktx")
-        library("activity-compose", "androidx.activity:activity-compose:1.6.1")
-        library("material", "androidx.compose.material", "material").version("material")
+        library("activity-compose", "androidx.activity", "activity-compose").version("activity-compose")
+        library("material", "androidx.compose.material", "material").versionRef("material")
         library("ui","androidx.compose.ui", "ui").version("compose")
         library("ui-tooling-preview","androidx.compose.ui", "ui-tooling-preview").version("compose")
 
@@ -49,12 +49,12 @@ fun MutableVersionCatalogContainer.createTests() {
         version("espresso-core", "3.5.1")
         version("compose", "1.3.3")
 
-        library("junit", "junit", "junit").version("junit")
-        library("ext-junit","androidx.test.ext", "junit").version("ext:junit")
+        library("junit", "junit", "junit").versionRef("junit")
+        library("ext-junit","androidx.test.ext", "junit").version("ext-junit")
         library("espresso-core","androidx.test.espresso", "espresso-core").version("espresso-core")
-        library("ui-test-junit4","androidx.compose.ui","ui-test-junit4").version("compose")
-        library("ui-tooling","androidx.compose.ui", "ui-tooling").version("compose")
-        library("ui-test-manifest","androidx.compose.ui", "ui-test-manifest").version("compose")
+        library("ui-test-junit4","androidx.compose.ui","ui-test-junit4").versionRef("compose")
+        library("ui-tooling","androidx.compose.ui", "ui-tooling").versionRef("compose")
+        library("ui-test-manifest","androidx.compose.ui", "ui-test-manifest").versionRef("compose")
 
         bundle("compose", listOf("ui-test-junit4", "ui-tooling", "ui-test-manifest"))
     }

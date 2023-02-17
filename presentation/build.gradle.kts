@@ -55,7 +55,7 @@ dependencies {
     implementation(libs.core.ktx)
     implementation(libs.lifecycle.runtime.ktx)
     implementation(libs.bundles.compose)
-
+    implementation(libs.ui)
     debugImplementation(tests.ui.tooling)
     debugImplementation(tests.ui.test.manifest)
 
