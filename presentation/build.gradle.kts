@@ -1,6 +1,7 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("com.google.dagger.hilt.android")
     kotlin("kapt")
 }
 
@@ -55,6 +56,13 @@ android {
 /* configure kapt to correct error types */
 kapt {
     correctErrorTypes = true
+}
+
+/*
+ * This allows the Hilt annotation processors to be isolating so they are only invoked when necessary.
+ * This reduces incremental compilation times by reducing how often an incremental change causes a rebuild of the Dagger components. */
+hilt {
+    enableAggregatingTask = true
 }
 
 dependencies {
