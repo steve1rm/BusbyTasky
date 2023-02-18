@@ -62,15 +62,19 @@ dependencies {
     implementation(libs.lifecycle.runtime.ktx)
     implementation(libs.bundles.compose)
     implementation(libs.ui)
-    implementation("com.google.dagger:hilt-android:2.45")
-    kapt("com.google.dagger:hilt-compiler:2.45")
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.compiler)
 
     debugImplementation(tests.ui.tooling)
     debugImplementation(tests.ui.test.manifest)
 
     testImplementation(tests.junit)
+    testImplementation(tests.hilt.android.testing)
+    kaptTest(tests.hilt.compiler)
 
     androidTestImplementation(tests.ext.junit)
     androidTestImplementation(tests.espresso.core)
     androidTestImplementation(tests.ui.test.junit4)
+    androidTestImplementation(tests.hilt.android.testing)
+    kaptAndroidTest(tests.hilt.compiler)
 }
