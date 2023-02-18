@@ -1,6 +1,7 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    kotlin("kapt")
 }
 
 android {
@@ -51,11 +52,19 @@ android {
     }
 }
 
+/* configure kapt to correct error types */
+kapt {
+    correctErrorTypes = true
+}
+
 dependencies {
     implementation(libs.core.ktx)
     implementation(libs.lifecycle.runtime.ktx)
     implementation(libs.bundles.compose)
     implementation(libs.ui)
+    implementation("com.google.dagger:hilt-android:2.45")
+    kapt("com.google.dagger:hilt-compiler:2.45")
+
     debugImplementation(tests.ui.tooling)
     debugImplementation(tests.ui.test.manifest)
 
