@@ -8,7 +8,7 @@ data class EventUpdateRequestModel(
     val to: Long,
     val remindAt: Long,
     val listOfAttendee: List<String>, /* attendee id */
-    val listOfPhotoKey: List<String>,
+    val listOfDeletedPhotoKey: List<String>,
     val isGoing: Boolean
 )
 
