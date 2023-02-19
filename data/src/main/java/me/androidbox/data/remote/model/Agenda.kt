@@ -1,6 +1,6 @@
-package me.androidbox.data.model
+package me.androidbox.data.remote.model
 
-import me.androidbox.data.model.request.EventRequestModel
+import me.androidbox.data.remote.model.request.EventRequestModel
 
 data class Agenda(
     val listOfEvent: List<EventRequestModel>,

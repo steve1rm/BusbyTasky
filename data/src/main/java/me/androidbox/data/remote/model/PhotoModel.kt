@@ -1,4 +1,4 @@
-package me.androidbox.data.model
+package me.androidbox.data.remote.model
 
 data class PhotoModel(
     val key: String,

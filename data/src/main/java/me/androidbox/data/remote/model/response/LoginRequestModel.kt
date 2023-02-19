@@ -1,4 +1,4 @@
-package me.androidbox.data.model.response
+package me.androidbox.data.remote.model.response
 
 data class LoginRequestModel(
     val email: String,
