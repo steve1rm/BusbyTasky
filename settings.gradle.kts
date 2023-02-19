@@ -36,6 +36,7 @@ fun MutableVersionCatalogContainer.createLibs() {
         version("version.androidx.compose.ui", "_")
         version("version.androidx.appcompat", "_")
         version("version.google.dagger", "_")
+        version("version.androidx.room", "_")
 
         library("core-ktx", "androidx.core", "core-ktx").versionRef("version.androidx.core")
         library("lifecycle-runtime-ktx","androidx.lifecycle", "lifecycle-runtime-ktx").version("version.androidx.lifecycle")
@@ -47,6 +48,10 @@ fun MutableVersionCatalogContainer.createLibs() {
 
         library("hilt-android","com.google.dagger", "hilt-android").versionRef("version.google.dagger")
         library("hilt-compiler", "com.google.dagger", "hilt-compiler").versionRef("version.google.dagger")
+
+        library("room-runtime", "androidx.room", "room-runtime").versionRef("version.androidx.room")
+        library("room-compiler", "androidx.room", "room-compiler").versionRef("version.androidx.room")
+        library("room-ktx", "androidx.room", "room-ktx").versionRef("version.androidx.room")
 
         bundle("compose", listOf("activity-compose", "material", "ui", "ui-tooling-preview"))
     }
