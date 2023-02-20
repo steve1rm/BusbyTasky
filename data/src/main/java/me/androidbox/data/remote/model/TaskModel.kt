@@ -1,15 +1,16 @@
-package me.androidbox.data.model
+package me.androidbox.data.remote.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import me.androidbox.data.local.DatabaseConstant
 
-@Entity(tableName = DatabaseConstant.EVENT_TABLE)
-data class EventModel(
+@Entity(tableName = DatabaseConstant.TASK_TABLE)
+data class TaskModel(
     @PrimaryKey(autoGenerate = false)
     val id: String,
     val title: String,
     val description: String,
-    val from: Long,
-    val to: Long
+    val time: Long,
+    val remindAt: Long,
+    val isDone: Boolean
 )

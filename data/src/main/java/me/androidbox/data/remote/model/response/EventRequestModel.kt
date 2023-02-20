@@ -1,7 +1,7 @@
-package me.androidbox.data.model.response
+package me.androidbox.data.remote.model.response
 
-import me.androidbox.data.model.AttendeeModel
-import me.androidbox.data.model.PhotoModel
+import me.androidbox.data.remote.model.AttendeeModel
+import me.androidbox.data.remote.model.PhotoModel
 
 data class EventRequestModel(
     val id: String,

@@ -1,4 +1,4 @@
-package me.androidbox.data.model.request
+package me.androidbox.data.remote.model.request
 
 data class RegistrationRequestModel(
     val fullName: String,

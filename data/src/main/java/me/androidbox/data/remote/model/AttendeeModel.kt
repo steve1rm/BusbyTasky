@@ -1,4 +1,4 @@
-package me.androidbox.data.model
+package me.androidbox.data.remote.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
