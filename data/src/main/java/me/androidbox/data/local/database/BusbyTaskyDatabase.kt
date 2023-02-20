@@ -23,4 +23,6 @@ interface BusbyTaskyDatabase {
     fun reminderDao(): ReminderDao
 
     fun photoDao(): PhotoDao
+
+    fun attendeeDao(): AttendeeDao
 }
