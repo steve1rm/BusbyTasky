@@ -2,6 +2,7 @@ package me.androidbox.data.local.database
 
 import androidx.room.Database
 import me.androidbox.data.local.dao.AgendaDao
+import me.androidbox.data.local.dao.EventDao
 import me.androidbox.data.local.dao.TaskDao
 import me.androidbox.data.model.*
 
@@ -18,4 +19,6 @@ interface BusbyTaskyDatabase {
     fun agendaDao(): AgendaDao
 
     fun taskDao(): TaskDao
+
+    fun eventDao(): EventDao
 }
