@@ -1,10 +1,7 @@
 package me.androidbox.data.local.database
 
 import androidx.room.Database
-import me.androidbox.data.local.dao.AgendaDao
-import me.androidbox.data.local.dao.EventDao
-import me.androidbox.data.local.dao.ReminderDao
-import me.androidbox.data.local.dao.TaskDao
+import me.androidbox.data.local.dao.*
 import me.androidbox.data.model.*
 
 @Database(entities = [
@@ -24,4 +21,6 @@ interface BusbyTaskyDatabase {
     fun eventDao(): EventDao
 
     fun reminderDao(): ReminderDao
+
+    fun photoDao(): PhotoDao
 }
