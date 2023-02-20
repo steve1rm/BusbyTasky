@@ -50,6 +50,9 @@ dependencies {
     implementation(libs.core.ktx)
     implementation(libs.appcompat)
 
+    // Coroutines
+    implementation(libs.coroutines)
+
     // Dagger
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
