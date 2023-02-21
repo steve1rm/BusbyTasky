@@ -1,6 +1,11 @@
-
 rootProject.name = "BusbyTasky"
-include(":presentation", ":domain", ":data")
+
+include(
+    ":presentation",
+    ":domain",
+    ":data",
+    ":component"
+)
 
 pluginManagement {
     repositories {
