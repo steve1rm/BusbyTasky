@@ -3,8 +3,9 @@ package me.androidbox.data.local.dao
 import androidx.room.*
 import kotlinx.coroutines.flow.Flow
 import me.androidbox.data.local.DatabaseConstant
-import me.androidbox.data.model.PhotoModel
+import me.androidbox.data.remote.model.PhotoModel
 
+@Dao
 interface PhotoDao {
     @Query("SELECT * FROM ${DatabaseConstant.PHOTO_TABLE}")
     fun getPhoto(): Flow<List<PhotoModel>>
