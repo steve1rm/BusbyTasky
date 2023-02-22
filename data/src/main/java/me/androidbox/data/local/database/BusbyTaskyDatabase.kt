@@ -1,11 +1,12 @@
 package me.androidbox.data.local.database
 
 import androidx.room.Database
+import androidx.room.RoomDatabase
 import me.androidbox.data.local.dao.*
-import me.androidbox.data.model.*
+import me.androidbox.data.remote.model.*
 
 @Database(entities = [
-    Agenda::class,
+    AgendaModel::class,
     AttendeeModel::class,
     EventModel::class,
     PhotoModel::class,
@@ -13,16 +14,16 @@ import me.androidbox.data.model.*
     TaskModel::class],
     version = 1
 )
-interface BusbyTaskyDatabase {
-    fun agendaDao(): AgendaDao
+abstract class BusbyTaskyDatabase : RoomDatabase() {
+    abstract fun agendaDao(): AgendaDao
 
-    fun taskDao(): TaskDao
+    abstract fun taskDao(): TaskDao
 
-    fun eventDao(): EventDao
+    abstract fun eventDao(): EventDao
 
-    fun reminderDao(): ReminderDao
+    abstract fun reminderDao(): ReminderDao
 
-    fun photoDao(): PhotoDao
+    abstract fun photoDao(): PhotoDao
 
-    fun attendeeDao(): AttendeeDao
+    abstract fun attendeeDao(): AttendeeDao
 }
