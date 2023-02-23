@@ -13,6 +13,8 @@ val LightGray = Color(0xFFA1A4B2)
 val ExtraLightGray = Color(0xFFF2F3F7)
 val LightBlue = Color(0xFFB7C6DE)
 val Red = Color(0xFFFF7272)
+val Black = Color(0xFF16161C)
+val LightWhite = Color(0xFFEEF6FF)
 
 val ColorScheme.placeholderEntry: Color
     @Composable
@@ -36,4 +38,16 @@ val ColorScheme.errorEmailEntry: Color
     @Composable
     get() {
         return Red
+    }
+
+val ColorScheme.buttonColor: Color
+    @Composable
+    get() {
+        return Black
+    }
+
+val ColorScheme.LoginTextColor: Color
+    @Composable
+    get() {
+        return LightWhite
     }

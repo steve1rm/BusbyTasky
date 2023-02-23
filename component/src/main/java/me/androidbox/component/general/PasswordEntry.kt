@@ -9,6 +9,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -53,7 +54,10 @@ fun PasswordEntry(
         },
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
         shape = RoundedCornerShape(10.dp),
-        visualTransformations = if (visibilityTapped()) {
+        colors = TextFieldDefaults.outlinedTextFieldColors(
+            focusedBorderColor = MaterialTheme.colorScheme.focusedInputEntryBorder,
+            unfocusedBorderColor = Color.Transparent),
+        visualTransformation = if (visibilityTapped()) {
             PasswordVisualTransformation()
         } else {
             VisualTransformation.None
@@ -66,7 +70,7 @@ fun PasswordEntry(
 fun PreviewPasswordEntryVisible() {
     BusbyTaskyTheme {
         PasswordEntry(
-            visibilityTapped = { true },
+            visibilityTapped = { false },
             passwordValue = "1234567890",
             placeholderText = "Password",
             onPasswordChange = { email ->
