@@ -26,10 +26,12 @@ fun UserInputEntry(
 ) {
 
     OutlinedTextField(
-        modifier = modifier.fillMaxWidth().background(
-            shape = RoundedCornerShape(10.dp),
-            color = MaterialTheme.colorScheme.backgroundInputEntry
-        ),
+        modifier = modifier
+            .fillMaxWidth()
+            .background(
+                shape = RoundedCornerShape(10.dp),
+                color = MaterialTheme.colorScheme.backgroundInputEntry
+            ),
         singleLine = true,
         value = inputValue,
         onValueChange = { newInput ->
@@ -53,7 +55,8 @@ fun UserInputEntry(
             else {
                 MaterialTheme.colorScheme.errorEmailEntry
             },
-            unfocusedBorderColor = Color.Transparent),
+            unfocusedBorderColor = Color.Transparent,
+            textColor = MaterialTheme.colorScheme.InputTextColor),
         shape = RoundedCornerShape(10.dp)
     )
 }
@@ -92,13 +95,13 @@ fun PreviewEmailEntryFocused() {
 @Preview(showBackground = true, name = "Shows email entry with an valid email")
 fun PreviewEmailEntryValidEmail() {
     BusbyTaskyTheme {
+        val (text, setText) = remember { mutableStateOf("") }
+
         UserInputEntry(
             isInputValid = true,
-            inputValue = "steve@gmail.com",
+            inputValue = text,
             placeholderText = "name",
-            onInputChange = { email ->
-                Log.d("EMAIL_ENTRY", email)
-            }
+            onInputChange = setText
         )
     }
 }
@@ -107,13 +110,13 @@ fun PreviewEmailEntryValidEmail() {
 @Preview(showBackground = true, name = "Shows email entry with an invalid email")
 fun PreviewEmailEntryInvalidEmail() {
     BusbyTaskyTheme {
+        val (text, setText) = remember { mutableStateOf("") }
+
         UserInputEntry(
-            isInputValid = false,
-            inputValue = "steve@gmail.com",
+            isInputValid = true,
+            inputValue = text,
             placeholderText = "name",
-            onInputChange = { email ->
-                Log.d("EMAIL_ENTRY", email)
-            }
+            onInputChange = setText
         )
     }
 }

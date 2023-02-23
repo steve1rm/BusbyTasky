@@ -56,10 +56,12 @@ fun PasswordEntry(
         shape = RoundedCornerShape(10.dp),
         colors = TextFieldDefaults.outlinedTextFieldColors(
             focusedBorderColor = MaterialTheme.colorScheme.focusedInputEntryBorder,
-            unfocusedBorderColor = Color.Transparent),
+            unfocusedBorderColor = Color.Transparent,
+            textColor = MaterialTheme.colorScheme.InputTextColor),
         visualTransformation = if (visibilityTapped()) {
             PasswordVisualTransformation()
-        } else {
+        }
+        else {
             VisualTransformation.None
         }
     )
