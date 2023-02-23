@@ -11,6 +11,8 @@ val Purple700 = Color(0xFF3700B3)
 val Teal200 = Color(0xFF03DAC5)
 val LightGray = Color(0xFFA1A4B2)
 val ExtraLightGray = Color(0xFFF2F3F7)
+val LightBlue = Color(0xFFB7C6DE)
+val Red = Color(0xFFFF7272)
 
 val ColorScheme.placeholderEntry: Color
     @Composable
@@ -22,4 +24,16 @@ val ColorScheme.backgroundInputEntry: Color
     @Composable
     get() {
         return ExtraLightGray
+    }
+
+val ColorScheme.focusedInputEntryBorder: Color
+    @Composable
+    get() {
+        return LightBlue
+    }
+
+val ColorScheme.errorEmailEntry: Color
+    @Composable
+    get() {
+        return Red
     }
