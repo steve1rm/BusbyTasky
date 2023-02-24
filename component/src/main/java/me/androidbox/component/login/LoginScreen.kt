@@ -1,20 +1,23 @@
-package me.androidbox.component
+package me.androidbox.component.login
 
 import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.*
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import me.androidbox.component.R
 import me.androidbox.component.general.PasswordEntry
 import me.androidbox.component.general.TaskButton
 import me.androidbox.component.general.UserInputEntry
@@ -84,7 +87,7 @@ fun LoginScreen(
                 TaskButton(
                     buttonText = stringResource(R.string.login).uppercase(),
                     onButtonClick = {
-                        /* TODO send to room database username and password check if correct/incorrect */
+                        /** TODO send to room database username and password check if correct/incorrect */
                         Log.d("LOGIN", "username [$username] [$password]")
                     }
                 )
@@ -92,15 +95,38 @@ fun LoginScreen(
             
             Column(modifier = modifier.fillMaxWidth().align(Alignment.BottomCenter)) {
                 // TODO Use annotated string
-                Text(
+                ClickableText(
+                    style = TextStyle(textAlign = TextAlign.Center),
                     modifier = modifier.fillMaxWidth(),
-                    text = "Don't have a an account? SIGN UP".uppercase(), color = Color.Black,
-                    textAlign = TextAlign.Center)
+                  //  text = "Don't have a an account? SIGN UP".uppercase(), color = Color.Black,
+                    text = buildLoginAnnotatedString(),
+                    onClick = { position ->
+                        Log.d("LOGIN", "$position")
+                    }
+                )
 
                 Spacer(modifier = Modifier.height(40.dp))
             }
         }
     }
+}
+
+private fun buildLoginAnnotatedString(): AnnotatedString {
+    return buildAnnotatedString {
+        withStyle(
+            SpanStyle(color = Color.Black)
+        ) {
+            append("Don't have a an account?")
+        }
+        
+        append(" ")
+
+        withStyle(
+            SpanStyle(color = Color.Blue)
+        ) {
+            append("sign up")
+        }
+    }.toUpperCase()
 }
 
 @Composable

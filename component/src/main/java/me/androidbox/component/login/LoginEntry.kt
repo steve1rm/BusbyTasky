@@ -8,6 +8,7 @@ import androidx.compose.ui.unit.dp
 import me.androidbox.component.general.UserInputEntry
 import me.androidbox.component.ui.theme.BusbyTaskyTheme
 
+/** TODO Was thinking of using this as part of the login screen */
 @Composable
 fun LoginEntry(
     modifier: Modifier = Modifier
