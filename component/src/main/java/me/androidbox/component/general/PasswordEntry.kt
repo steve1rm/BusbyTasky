@@ -1,13 +1,12 @@
 package me.androidbox.component.general
 
-import android.util.Log
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -25,14 +24,16 @@ fun PasswordEntry(
     modifier: Modifier = Modifier,
     passwordValue: String,
     placeholderText: String,
-    visibilityTapped: () -> Boolean,
+    isPasswordVisible: MutableState<Boolean> = mutableStateOf(false),
     onPasswordChange: (String) -> Unit,
 ) {
     OutlinedTextField(
-        modifier = modifier.fillMaxWidth().background(
-            shape = RoundedCornerShape(10.dp),
-            color = MaterialTheme.colorScheme.backgroundInputEntry
-        ),
+        modifier = modifier
+            .fillMaxWidth()
+            .background(
+                shape = RoundedCornerShape(10.dp),
+                color = MaterialTheme.colorScheme.backgroundInputEntry
+            ),
         singleLine = true,
         value = passwordValue,
         onValueChange = { newInput: String ->
@@ -42,12 +43,15 @@ fun PasswordEntry(
             Text(text = placeholderText, color = MaterialTheme.colorScheme.placeholderEntry)
         },
         trailingIcon = {
-            val visibilityIconId = if(visibilityTapped()) {
-                R.drawable.hidden
-            } else {
+            val visibilityIconId = if(isPasswordVisible.value) {
                 R.drawable.visible
+            } else {
+                R.drawable.hidden
             }
-            Image(
+            Icon(
+                modifier = modifier.clickable {
+                    isPasswordVisible.value = !isPasswordVisible.value
+                },
                 painter = painterResource(id = visibilityIconId),
                 contentDescription = "eye open close"
             )
@@ -58,11 +62,11 @@ fun PasswordEntry(
             focusedBorderColor = MaterialTheme.colorScheme.focusedInputEntryBorder,
             unfocusedBorderColor = Color.Transparent,
             textColor = MaterialTheme.colorScheme.InputTextColor),
-        visualTransformation = if (visibilityTapped()) {
-            PasswordVisualTransformation()
+        visualTransformation = if (isPasswordVisible.value) {
+            VisualTransformation.None
         }
         else {
-            VisualTransformation.None
+            PasswordVisualTransformation()
         }
     )
 }
@@ -71,13 +75,16 @@ fun PasswordEntry(
 @Preview(showBackground = true, name = "Shows password entry with viewable password")
 fun PreviewPasswordEntryVisible() {
     BusbyTaskyTheme {
+
+        val (text, setText) = remember {
+            mutableStateOf("")
+        }
+
         PasswordEntry(
-            visibilityTapped = { false },
-            passwordValue = "1234567890",
+            passwordValue = text,
             placeholderText = "Password",
-            onPasswordChange = { email ->
-                Log.d("PASSWORD_ENTRY", email)
-            }
+            isPasswordVisible = remember { mutableStateOf(true) },
+            onPasswordChange = setText
         )
     }
 }
@@ -86,13 +93,20 @@ fun PreviewPasswordEntryVisible() {
 @Preview(showBackground = true, name = "Shows password entry with viewable password")
 fun PreviewPasswordEntryHidden() {
     BusbyTaskyTheme {
+
+        val (text, setText) = remember {
+            mutableStateOf("")
+        }
+
+        val isVisible by remember {
+            mutableStateOf(false)
+        }
+
         PasswordEntry(
-            visibilityTapped = { true },
-            passwordValue = "1234567890",
+            passwordValue = text,
             placeholderText = "Password",
-            onPasswordChange = { email ->
-                Log.d("PASSWORD_ENTRY", email)
-            }
+            isPasswordVisible = remember { mutableStateOf(true) },
+            onPasswordChange = setText
         )
     }
 }

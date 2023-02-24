@@ -66,6 +66,8 @@ hilt {
 }
 
 dependencies {
+    implementation(project(":component"))
+
     implementation(libs.core.ktx)
     implementation(libs.lifecycle.runtime.ktx)
     implementation(libs.bundles.compose)
