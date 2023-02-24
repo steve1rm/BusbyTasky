@@ -1,4 +1,4 @@
-package me.androidbox.component
+package me.androidbox.component.login
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
