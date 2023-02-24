@@ -98,7 +98,6 @@ fun LoginScreen(
                 ClickableText(
                     style = TextStyle(textAlign = TextAlign.Center),
                     modifier = modifier.fillMaxWidth(),
-                  //  text = "Don't have a an account? SIGN UP".uppercase(), color = Color.Black,
                     text = buildLoginAnnotatedString(),
                     onClick = { position ->
                         Log.d("LOGIN", "$position")
