@@ -9,8 +9,12 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import me.androidbox.component.general.PasswordEntry
 import me.androidbox.component.general.TaskButton
 import me.androidbox.component.general.UserInputEntry
@@ -20,7 +24,6 @@ import me.androidbox.component.ui.theme.BusbyTaskyTheme
 fun LoginScreen(
     modifier: Modifier = Modifier
 ) {
-
     var username by remember {
         mutableStateOf("")
     }
@@ -37,13 +40,16 @@ fun LoginScreen(
         .fillMaxSize()
         .background(Color.Black)) {
 
+        Spacer(modifier = modifier.height(48.dp))
+
         Text(
             modifier = modifier.fillMaxWidth(),
-            text = "Welcome Back!", color = Color.White)
+            text = "Welcome Back!", color = Color.White, fontSize = 28.sp, fontWeight = FontWeight.Bold,
+            textAlign = TextAlign.Center)
 
-        Spacer(modifier = modifier.height(62.dp))
+        Spacer(modifier = modifier.height(42.dp))
+
         Box {
-
             Column(
                 modifier = modifier
                     .fillMaxSize()
@@ -51,13 +57,13 @@ fun LoginScreen(
                         color = Color.White,
                         shape = RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp)
                     )
+                    .padding(horizontal = 16.dp)
             ) {
-
-                Spacer(modifier = modifier.height(32.dp))
+                Spacer(modifier = modifier.height(50.dp))
                 UserInputEntry(
                     inputValue = username,
                     isInputValid = false,
-                    placeholderText = "name",
+                    placeholderText = stringResource(R.string.name),
                     onInputChange = { newText ->
                         username = newText
                     }
@@ -66,28 +72,33 @@ fun LoginScreen(
 
                 PasswordEntry(
                     passwordValue = password,
-                    placeholderText = "Password", // FIXME stringResource(R.string.password),
+                    placeholderText = stringResource(R.string.password),
                     isPasswordVisible = isPasswordVisible,
                     onPasswordChange = { newText ->
                         password = newText
                     }
                 )
 
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(26.dp))
 
                 TaskButton(
-                    buttonText = "Login", // FIXME stringResource(R.string.login),
+                    buttonText = stringResource(R.string.login).uppercase(),
                     onButtonClick = {
                         /* TODO send to room database username and password check if correct/incorrect */
                         Log.d("LOGIN", "username [$username] [$password]")
                     }
                 )
             }
+            
+            Column(modifier = modifier.fillMaxWidth().align(Alignment.BottomCenter)) {
+                // TODO Use annotated string
+                Text(
+                    modifier = modifier.fillMaxWidth(),
+                    text = "Don't have a an account? SIGN UP".uppercase(), color = Color.Black,
+                    textAlign = TextAlign.Center)
 
-            Text(
-                modifier = modifier.align(Alignment.BottomCenter),
-                text = "Don't have a an account? SIGN UP", color = Color.Black
-            ) // TODO Use annotated string
+                Spacer(modifier = Modifier.height(40.dp))
+            }
         }
     }
 }
