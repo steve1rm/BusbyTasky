@@ -98,10 +98,6 @@ fun PreviewPasswordEntryHidden() {
             mutableStateOf("")
         }
 
-        val isVisible by remember {
-            mutableStateOf(false)
-        }
-
         PasswordEntry(
             passwordValue = text,
             placeholderText = "Password",
