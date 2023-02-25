@@ -56,7 +56,7 @@ fun UserInputEntry(
                 MaterialTheme.colorScheme.errorEmailEntry
             },
             unfocusedBorderColor = Color.Transparent,
-            textColor = MaterialTheme.colorScheme.InputTextColor),
+            textColor = MaterialTheme.colorScheme.inputTextColor),
         shape = RoundedCornerShape(10.dp)
     )
 }

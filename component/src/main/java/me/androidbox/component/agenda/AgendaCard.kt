@@ -26,8 +26,8 @@ import me.androidbox.component.ui.theme.*
 fun AgendaCard(
     modifier: Modifier = Modifier,
     titleTextColor: Color = Color.Black,
-    subTitleTextColor: Color = MaterialTheme.colorScheme.AgendaBodyTextColor,
-    backgroundColor: Color = MaterialTheme.colorScheme.AgendaItemBackgroundLightGreen,
+    subTitleTextColor: Color = MaterialTheme.colorScheme.agendaBodyTextColor,
+    backgroundColor: Color = MaterialTheme.colorScheme.agendaItemBackgroundLightGreen,
     dotColor: Color = Color.White,
     isAgendaCompleted: Boolean = false,
     onMenuOptionClicked: () -> Unit
@@ -76,7 +76,7 @@ fun PreviewAgendaCardIsCompleted() {
     BusbyTaskyTheme {
         AgendaCard(
             titleTextColor = Color.White,
-            backgroundColor = MaterialTheme.colorScheme.AgendaItemBackgroundGreen,
+            backgroundColor = MaterialTheme.colorScheme.agendaItemBackgroundGreen,
             subTitleTextColor = Color.White,
             isAgendaCompleted = true)  {
             Log.d("AGENDA_ITEM", "Agenda Item has been tapped")
@@ -90,7 +90,7 @@ fun PreviewAgendaCardNotCompleted() {
     BusbyTaskyTheme {
         AgendaCard(
             dotColor = Color.White,
-            backgroundColor = MaterialTheme.colorScheme.AgendaItemBackgroundGreen,
+            backgroundColor = MaterialTheme.colorScheme.agendaItemBackgroundGreen,
             titleTextColor = Color.White,
             subTitleTextColor = Color.White,
             isAgendaCompleted = false)  {
@@ -105,10 +105,10 @@ fun PreviewAgendaCardNotCompleted() {
 fun PreviewAgendaCardCompletedGreen() {
     BusbyTaskyTheme {
         AgendaCard(
-            dotColor = MaterialTheme.colorScheme.DarkOptionButton,
-            backgroundColor = MaterialTheme.colorScheme.AgendaItemBackgroundLightGreen,
+            dotColor = MaterialTheme.colorScheme.darkOptionButton,
+            backgroundColor = MaterialTheme.colorScheme.agendaItemBackgroundLightGreen,
             titleTextColor = Color.Black,
-            subTitleTextColor = MaterialTheme.colorScheme.AgendaBodyTextColor,
+            subTitleTextColor = MaterialTheme.colorScheme.agendaBodyTextColor,
             isAgendaCompleted = true) {
             Log.d("AGENDA_ITEM", "Agenda Item has been tapped")
         }

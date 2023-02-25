@@ -51,38 +51,56 @@ val ColorScheme.buttonColor: Color
         return Black
     }
 
-val ColorScheme.LoginTextColor: Color
+val ColorScheme.loginTextColor: Color
     @Composable
     get() {
         return LightWhite
     }
 
-val ColorScheme.InputTextColor: Color
+val ColorScheme.inputTextColor: Color
     @Composable
     get() {
         return DarkGray
     }
 
-val ColorScheme.DarkOptionButton: Color
+val ColorScheme.darkOptionButton: Color
     @Composable
     get() {
         return Brown
     }
 
-val ColorScheme.AgendaBodyTextColor: Color
+val ColorScheme.agendaBodyTextColor: Color
     @Composable
     get() {
         return DarkGray
     }
 
-val ColorScheme.AgendaItemBackgroundGreen: Color
+val ColorScheme.agendaItemBackgroundGreen: Color
     @Composable
     get() {
         return Green
     }
 
-val ColorScheme.AgendaItemBackgroundLightGreen: Color
+val ColorScheme.agendaItemBackgroundLightGreen: Color
     @Composable
     get() {
         return LightGreen
+    }
+
+val ColorScheme.divider: Color
+    @Composable
+    get() {
+        return LightWhite
+    }
+
+val ColorScheme.agendaTitleHeaderColor: Color
+    @Composable
+    get() {
+        return DarkGray
+    }
+
+val ColorScheme.agendaSubTitleHeaderColor: Color
+    @Composable
+    get() {
+        return Black
     }

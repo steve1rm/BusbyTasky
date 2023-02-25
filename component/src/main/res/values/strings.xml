@@ -5,4 +5,7 @@
     <string name="name">name</string>
     <string name="email_address">Email address</string>
     <string name="get_started">Get Started</string>
+    <string name="event">Event</string>
+    <string name="task">Task</string>
+    <string name="reminder">Reminder</string>
 </resources>
