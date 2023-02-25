@@ -118,3 +118,29 @@ val ColorScheme.agendaBodyTextColor: Color
     get() {
         return Black
     }
+
+val ColorScheme.visitorBackgroundColor: Color
+    @Composable
+    get() {
+        return ExtraLightGray
+    }
+
+val ColorScheme.visitorInitialsFontColor: Color
+    @Composable
+    get() {
+        return White
+    }
+
+
+val ColorScheme.visitorTextFontColor: Color
+    @Composable
+    get() {
+        return DarkGray
+    }
+
+val ColorScheme.creatorTextFontColor: Color
+    @Composable
+    get() {
+        return LightBlue
+    }
+

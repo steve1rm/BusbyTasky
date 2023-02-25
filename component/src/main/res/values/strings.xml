@@ -20,4 +20,6 @@
     <string name="all">All</string>
     <string name="going">Going</string>
     <string name="not_going">Not going</string>
+    <string name="vistors">Visitors</string>
+    <string name="creator">Creator</string>
 </resources>
