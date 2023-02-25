@@ -32,11 +32,16 @@ fun AgendaHeader(
         verticalAlignment = Alignment.CenterVertically) {
             Image(
                 painter = painterResource(id = agendaHeaderItem.drawableRes),
-                contentDescription = "Agenda image"
-                            )
+                contentDescription = "Agenda image")
+
             Spacer(modifier = Modifier.width(10.dp))
 
-            Text(text = stringResource(agendaHeaderItem.titleRes), fontWeight = FontWeight.Bold, fontSize = 16.sp, color = MaterialTheme.colorScheme.agendaTitleHeaderColor)
+            Text(
+                text = stringResource(agendaHeaderItem.titleRes),
+                fontWeight = FontWeight.Bold,
+                fontSize = 16.sp,
+                color = MaterialTheme.colorScheme.agendaTitleHeaderColor
+            )
         }
 
         Spacer(modifier = Modifier.height(30.dp))
@@ -51,7 +56,12 @@ fun AgendaHeader(
                 /* TODO I had to just the padding as its aligned to the image and not the edge of the boarder */
                 Spacer(modifier = Modifier.width(14.dp))
 
-                Text(text = subTitle, fontWeight = FontWeight.SemiBold, fontSize = 26.sp, color = MaterialTheme.colorScheme.agendaSubTitleHeaderColor)
+                Text(
+                    text = subTitle,
+                    fontWeight = FontWeight.SemiBold,
+                    fontSize = 26.sp,
+                    color = MaterialTheme.colorScheme.agendaSubTitleHeaderColor
+                )
             }
             
             Row(modifier = Modifier.weight(1F),
@@ -64,11 +74,10 @@ fun AgendaHeader(
         Spacer(modifier = Modifier.height(22.dp))
 
         Divider(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp)
-                .background(color = MaterialTheme.colorScheme.divider)
-        )
+            modifier.fillMaxWidth().padding(horizontal = 16.dp),
+            color = MaterialTheme.colorScheme.divider,
+            thickness = 1.dp)
+
     }
 }
 

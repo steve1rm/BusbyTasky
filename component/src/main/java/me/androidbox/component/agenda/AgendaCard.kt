@@ -26,7 +26,7 @@ import me.androidbox.component.ui.theme.*
 fun AgendaCard(
     modifier: Modifier = Modifier,
     titleTextColor: Color = Color.Black,
-    subTitleTextColor: Color = MaterialTheme.colorScheme.agendaBodyTextColor,
+    subTitleTextColor: Color = MaterialTheme.colorScheme.agendaCardItemBodyTextColor,
     backgroundColor: Color = MaterialTheme.colorScheme.agendaItemBackgroundLightGreen,
     dotColor: Color = Color.White,
     isAgendaCompleted: Boolean = false,
@@ -108,7 +108,7 @@ fun PreviewAgendaCardCompletedGreen() {
             dotColor = MaterialTheme.colorScheme.darkOptionButton,
             backgroundColor = MaterialTheme.colorScheme.agendaItemBackgroundLightGreen,
             titleTextColor = Color.Black,
-            subTitleTextColor = MaterialTheme.colorScheme.agendaBodyTextColor,
+            subTitleTextColor = MaterialTheme.colorScheme.agendaCardItemBodyTextColor,
             isAgendaCompleted = true) {
             Log.d("AGENDA_ITEM", "Agenda Item has been tapped")
         }

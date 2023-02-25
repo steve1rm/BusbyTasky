@@ -69,7 +69,7 @@ val ColorScheme.darkOptionButton: Color
         return Brown
     }
 
-val ColorScheme.agendaBodyTextColor: Color
+val ColorScheme.agendaCardItemBodyTextColor: Color
     @Composable
     get() {
         return DarkGray
@@ -100,6 +100,13 @@ val ColorScheme.agendaTitleHeaderColor: Color
     }
 
 val ColorScheme.agendaSubTitleHeaderColor: Color
+    @Composable
+    get() {
+        return Black
+    }
+
+
+val ColorScheme.agendaBodyTextColor: Color
     @Composable
     get() {
         return Black
