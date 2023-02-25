@@ -87,6 +87,13 @@ val ColorScheme.agendaItemBackgroundLightGreen: Color
         return LightGreen
     }
 
+
+val ColorScheme.agendaItemBackgroundLightGray: Color
+    @Composable
+    get() {
+        return LightGray
+    }
+
 val ColorScheme.divider: Color
     @Composable
     get() {

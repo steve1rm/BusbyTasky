@@ -90,7 +90,7 @@ fun PreviewAgendaCardNotCompleted() {
     BusbyTaskyTheme {
         AgendaCard(
             dotColor = Color.White,
-            backgroundColor = MaterialTheme.colorScheme.agendaItemBackgroundGreen,
+            backgroundColor = MaterialTheme.colorScheme.agendaItemBackgroundLightGray,
             titleTextColor = Color.White,
             subTitleTextColor = Color.White,
             isAgendaCompleted = false)  {
@@ -98,7 +98,6 @@ fun PreviewAgendaCardNotCompleted() {
         }
     }
 }
-
 
 @Composable
 @Preview(showBackground = true, name = "Agenda card that is marked completed")
