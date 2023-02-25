@@ -49,10 +49,21 @@ fun AgendaCard(
                     Spacer(modifier = Modifier.width(16.dp))
 
                     if(isAgendaCompleted) {
-                        Text(text = "Meeting", fontWeight = FontWeight.SemiBold, fontSize = 20.sp, color = titleTextColor ,textDecoration = TextDecoration.LineThrough)
+                        Text(
+                            text = "Meeting",
+                            fontWeight = FontWeight.SemiBold,
+                            fontSize = 20.sp,
+                            color = titleTextColor,
+                            textDecoration = TextDecoration.LineThrough
+                        )
                     }
                     else {
-                        Text(text = "Meeting", fontWeight = FontWeight.SemiBold, fontSize = 20.sp, color = titleTextColor)
+                        Text(
+                            text = "Meeting",
+                            fontWeight = FontWeight.SemiBold,
+                            fontSize = 20.sp,
+                            color = titleTextColor
+                        )
                     }
                 }
                 OptionButton(
@@ -62,11 +73,23 @@ fun AgendaCard(
                     dotColor = dotColor)
             }
             Spacer(modifier = Modifier.height(14.dp))
-            Text(modifier = Modifier.padding(start = 48.dp),
-                text = "This is the project tasky that needs", fontWeight = FontWeight.Normal, fontSize = 14.sp, color = subTitleTextColor)
+            Text(
+                modifier = Modifier.padding(start = 48.dp),
+                text = "This is the project tasky that needs",
+                fontWeight = FontWeight.Normal,
+                fontSize = 14.sp,
+                color = subTitleTextColor
+            )
         }
-        Text(modifier = Modifier.padding(bottom = 12.dp, end = 16.dp).align(alignment = Alignment.BottomEnd) ,
-            text = "Mar 5, 10:30 - Mar 5, 11:00", fontWeight = FontWeight.Normal, fontSize = 14.sp, color = subTitleTextColor)
+        Text(
+            modifier = Modifier
+                .padding(bottom = 12.dp, end = 16.dp)
+                .align(alignment = Alignment.BottomEnd),
+            text = "Mar 5, 10:30 - Mar 5, 11:00",
+            fontWeight = FontWeight.Normal,
+            fontSize = 14.sp,
+            color = subTitleTextColor
+        )
     }
 }
 
