@@ -43,7 +43,7 @@ fun TaskButton(
             onButtonClick()
         }) {
         Text(
-            text = buttonText.uppercase(),
+            text = buttonText,
             color = buttonTextColor,
             fontSize = textSize,
             fontWeight = FontWeight.Bold
