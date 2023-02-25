@@ -49,10 +49,10 @@ fun AgendaCard(
                     Spacer(modifier = Modifier.width(16.dp))
 
                     if(isAgendaCompleted) {
-                        Text(text = "Meeting", fontWeight = FontWeight.Bold, fontSize = 20.sp, color = titleTextColor ,textDecoration = TextDecoration.LineThrough)
+                        Text(text = "Meeting", fontWeight = FontWeight.SemiBold, fontSize = 20.sp, color = titleTextColor ,textDecoration = TextDecoration.LineThrough)
                     }
                     else {
-                        Text(text = "Meeting", fontWeight = FontWeight.Bold, fontSize = 20.sp, color = titleTextColor)
+                        Text(text = "Meeting", fontWeight = FontWeight.SemiBold, fontSize = 20.sp, color = titleTextColor)
                     }
                 }
                 OptionButton(
