@@ -1,5 +1,7 @@
 package me.androidbox.component.agenda
 
+import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -10,7 +12,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -23,26 +24,26 @@ import me.androidbox.component.ui.theme.*
 @Composable
 fun AgendaHeader(
     modifier: Modifier = Modifier,
-    title: String = "",
-    subTitle: String = ""
+    agendaHeaderItem: AgendaHeaderItem,
+    subTitle: String
     ) {
     Column(modifier = modifier.fillMaxWidth()) {
         Row(modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically) {
             Image(
-                painter = painterResource(id = R.drawable.event),
+                painter = painterResource(id = agendaHeaderItem.drawableRes),
                 contentDescription = "Agenda image"
                             )
             Spacer(modifier = Modifier.width(10.dp))
 
-            Text(text = stringResource(R.string.event), fontWeight = FontWeight.Bold, fontSize = 16.sp, color = MaterialTheme.colorScheme.agendaTitleHeaderColor)
+            Text(text = stringResource(agendaHeaderItem.titleRes), fontWeight = FontWeight.Bold, fontSize = 16.sp, color = MaterialTheme.colorScheme.agendaTitleHeaderColor)
         }
 
         Spacer(modifier = Modifier.height(30.dp))
 
         Row(modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically) {
-            Row(modifier = Modifier.weight(1F),
+            Row(modifier = Modifier.weight(4F),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Start) {
                 Icon(painter = painterResource(id = R.drawable.incomplete), contentDescription = "subtitle icon")
@@ -50,7 +51,7 @@ fun AgendaHeader(
                 /* TODO I had to just the padding as its aligned to the image and not the edge of the boarder */
                 Spacer(modifier = Modifier.width(14.dp))
 
-                Text(text = "Meeting", fontWeight = FontWeight.SemiBold, fontSize = 26.sp, color = MaterialTheme.colorScheme.agendaSubTitleHeaderColor)
+                Text(text = subTitle, fontWeight = FontWeight.SemiBold, fontSize = 26.sp, color = MaterialTheme.colorScheme.agendaSubTitleHeaderColor)
             }
             
             Row(modifier = Modifier.weight(1F),
@@ -63,15 +64,49 @@ fun AgendaHeader(
         Spacer(modifier = Modifier.height(22.dp))
 
         Divider(
-            modifier = Modifier.fillMaxWidth().background(color = MaterialTheme.colorScheme.divider)
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp)
+                .background(color = MaterialTheme.colorScheme.divider)
         )
     }
 }
 
 @Composable
 @Preview(showBackground = true, name = "Task agenda header")
-fun PreviewAgendaHeader() {
+fun PreviewAgendaHeaderEvent() {
     BusbyTaskyTheme {
-        AgendaHeader()
+        AgendaHeader(
+            agendaHeaderItem = AgendaHeaderItem.TASK,
+            subTitle = "Sample task"
+        )
     }
+}
+
+@Composable
+@Preview(showBackground = true, name = "Event agenda header")
+fun PreviewAgendaHeaderTask() {
+    BusbyTaskyTheme {
+        AgendaHeader(
+            agendaHeaderItem = AgendaHeaderItem.EVENT,
+            subTitle = "Sample event"
+        )
+    }
+}
+
+@Composable
+@Preview(showBackground = true, name = "Reminder agenda header")
+fun PreviewAgendaHeaderReminder() {
+    BusbyTaskyTheme {
+        AgendaHeader(
+            agendaHeaderItem = AgendaHeaderItem.REMINDER,
+            subTitle = "Sample reminder"
+        )
+    }
+}
+
+enum class AgendaHeaderItem(@StringRes val titleRes: Int, @DrawableRes val drawableRes: Int) {
+    EVENT(titleRes = R.string.event, drawableRes = R.drawable.event),
+    TASK(titleRes = R.string.task, drawableRes = R.drawable.task),
+    REMINDER(titleRes = R.string.reminder, drawableRes = R.drawable.reminder)
 }
