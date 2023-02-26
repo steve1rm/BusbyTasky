@@ -23,7 +23,7 @@ fun VisitorFilter(
     onNotGoingClicked: () -> Unit) {
     Column(modifier = modifier.fillMaxWidth()) {
         Text(
-            text = stringResource(R.string.vistors),
+            text = stringResource(R.string.visitors),
             fontWeight = FontWeight.Bold,
             fontSize = 20.sp,
             color = MaterialTheme.colorScheme.agendaBodyTextColor)

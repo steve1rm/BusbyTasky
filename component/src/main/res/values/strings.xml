@@ -20,8 +20,9 @@
     <string name="all">All</string>
     <string name="going">Going</string>
     <string name="not_going">Not going</string>
-    <string name="vistors">Visitors</string>
+    <string name="visitors">Visitors</string>
     <string name="creator">Creator</string>
     <string name="edit_description">Edit Description</string>
+    <string name="edit_title">Edit Title</string>
     <string name="save">Save</string>
 </resources>
