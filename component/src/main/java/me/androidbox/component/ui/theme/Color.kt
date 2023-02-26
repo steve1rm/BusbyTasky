@@ -144,3 +144,10 @@ val ColorScheme.creatorTextFontColor: Color
         return LightBlue
     }
 
+
+val ColorScheme.topbarText: Color
+    @Composable
+    get() {
+        return Green
+    }
+
