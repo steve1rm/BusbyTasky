@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -23,34 +24,45 @@ import me.androidbox.component.ui.theme.topbarText
 @Composable
 fun AgendaTopAppBar(
     modifier: Modifier = Modifier,
-    title: String) {
+    title: String,
+    onTopIconClicked: () -> Unit,
+    onSaveClicked: () -> Unit
+) {
     TopAppBar(
         modifier = modifier,
         title = {
             Row(modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Center) {
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically) {
                 Text(
                     style = TextStyle(textAlign = TextAlign.Center),
                     modifier = Modifier.weight(1F),
-                    text = title,
+                    text = title.uppercase(),
                     fontSize = 18.sp,
                     fontWeight = FontWeight.SemiBold,
                     color = MaterialTheme.colorScheme.agendaBodyTextColor
                 )
 
-                Text(
-                    text = "Save",
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.SemiBold,
-                    color = MaterialTheme.colorScheme.topbarText
+                TextButton(
+                    onClick = {
+                        onSaveClicked()
+                    },
+                    content = {
+                        Text(
+                            text = stringResource(R.string.save),
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.SemiBold,
+                            color = MaterialTheme.colorScheme.topbarText,
+                            )
+                    }
                 )
             }
         },
         navigationIcon = {
             IconButton(onClick = {
-                
+                onTopIconClicked()
             }) {
-                Icon(painter = painterResource(id = R.drawable.back_arrow), contentDescription = "Top app bar")
+                Icon(painter = painterResource(id = R.drawable.back_arrow_black), contentDescription = "Top app bar")
             }
         },
         colors = TopAppBarDefaults.smallTopAppBarColors(
@@ -63,6 +75,9 @@ fun AgendaTopAppBar(
 @Preview(showBackground = true)
 fun PreviewAgendaTopAppBar() {
     BusbyTaskyTheme {
-        AgendaTopAppBar(title = stringResource(id = R.string.edit_description))
+        AgendaTopAppBar(
+            title = stringResource(id = R.string.edit_description),
+            onTopIconClicked = {},
+            onSaveClicked = {})
     }
 }
