@@ -17,10 +17,10 @@ val Red = Color(0xFFFF7272)
 val Black = Color(0xFF16161C)
 val White = Color(0xFFFFFFFF)
 val LightWhite = Color(0xFFEEF6FF)
+val ExtraLightWhite = Color(0xFFf5f5f5)
 val Brown = Color(0xff40492D)
 val Green = Color(0xFF279F70)
 val LightGreen = Color(0xFFCAEF45)
-
 val ColorScheme.placeholderEntry: Color
     @Composable
     get() {
@@ -151,3 +151,8 @@ val ColorScheme.topbarText: Color
         return Green
     }
 
+val ColorScheme.editScreenBackground: Color
+    @Composable
+    get() {
+        return ExtraLightWhite
+    }

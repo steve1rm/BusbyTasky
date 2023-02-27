@@ -3,7 +3,6 @@ package me.androidbox.component.agenda
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
@@ -19,7 +18,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import me.androidbox.component.R
-import me.androidbox.component.ui.theme.*
+import me.androidbox.component.ui.theme.BusbyTaskyTheme
+import me.androidbox.component.ui.theme.agendaSubTitleHeaderColor
+import me.androidbox.component.ui.theme.agendaTitleHeaderColor
+import me.androidbox.component.ui.theme.divider
 
 @Composable
 fun AgendaHeader(
