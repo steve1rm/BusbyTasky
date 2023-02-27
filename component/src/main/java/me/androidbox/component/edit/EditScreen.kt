@@ -18,14 +18,14 @@ import me.androidbox.component.ui.theme.BusbyTaskyTheme
 @Composable
 fun EditScreen(
     modifier: Modifier = Modifier,
-    editableContent: MutableState<String>,
-    editContentType: EditContentType
+    content: MutableState<String>,
+    titleType: TitleType
 ) {
     Scaffold(modifier = modifier.fillMaxSize(),
         topBar = {
-            val contentType = when(editContentType) {
-                EditContentType.TITLE -> stringResource(id = EditContentType.TITLE.contentTypeRes)
-                EditContentType.DESCRIPTION -> stringResource(id = EditContentType.DESCRIPTION.contentTypeRes)
+            val contentType = when(titleType) {
+                TitleType.TITLE -> stringResource(id = TitleType.TITLE.contentTypeRes)
+                TitleType.DESCRIPTION -> stringResource(id = TitleType.DESCRIPTION.contentTypeRes)
             }
 
             AgendaTopAppBar(
@@ -41,7 +41,7 @@ fun EditScreen(
             singleLine = false,
             value = "Edit your project",
             onValueChange = { newContent ->
-                editableContent.value = newContent
+                content.value = newContent
             })
     }
 }
@@ -55,8 +55,8 @@ fun PreviewEditScreenTitle() {
         }
 
         EditScreen(
-            editableContent = editableContent,
-            editContentType = EditContentType.TITLE)
+            content = editableContent,
+            titleType = TitleType.TITLE)
     }
 }
 
@@ -69,13 +69,13 @@ fun PreviewEditScreenDescription() {
         }
 
         EditScreen(
-            editableContent = editableContent,
-            editContentType = EditContentType.DESCRIPTION
+            content = editableContent,
+            titleType = TitleType.DESCRIPTION
         )
     }
 }
 
-enum class EditContentType(@StringRes val contentTypeRes: Int) {
+enum class TitleType(@StringRes val contentTypeRes: Int) {
     TITLE(R.string.edit_title),
     DESCRIPTION(R.string.edit_description)
 }
