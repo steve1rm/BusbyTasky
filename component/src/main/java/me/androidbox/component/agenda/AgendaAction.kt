@@ -2,6 +2,7 @@ package me.androidbox.component.agenda
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Divider
@@ -26,7 +27,8 @@ import java.util.*
 fun AgendaAction(
     modifier: Modifier = Modifier,
     showTopDivider: Boolean = false,
-    @StringRes headingResId: Int
+    @StringRes headingResId: Int,
+    onActionClicked: () -> Unit,
 ) {
     Column(modifier = modifier,
     horizontalAlignment = Alignment.CenterHorizontally) {
@@ -47,6 +49,9 @@ fun AgendaAction(
         Spacer(modifier = Modifier.height(16.dp))
 
         Text(
+            modifier = Modifier.clickable {
+                onActionClicked()
+            },
             text = stringResource(id = headingResId).uppercase(Locale.getDefault()),
             fontSize = 16.sp,
             color = MaterialTheme.colorScheme.visitorTextFontColor,
@@ -72,7 +77,8 @@ fun PreviewAgendaActionShowDivider() {
     BusbyTaskyTheme {
         AgendaAction(
             headingResId = R.string.delete_reminder,
-            showTopDivider = true
+            showTopDivider = true,
+            onActionClicked = {}
         )
     }
 }
@@ -84,7 +90,8 @@ fun PreviewAgendaActionHideDivider() {
     BusbyTaskyTheme {
         AgendaAction(
             headingResId = R.string.leave_event,
-            showTopDivider = false
+            showTopDivider = false,
+            onActionClicked = {}
         )
     }
 }
