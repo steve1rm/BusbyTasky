@@ -14,6 +14,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import me.androidbox.component.agenda.*
 import me.androidbox.component.ui.theme.BusbyTaskyTheme
+import me.androidbox.component.R
 
 @Composable
 fun EventScreen(
@@ -59,7 +60,16 @@ fun EventScreen(
 
             }
 
-            Visitor(visitorInitials = "SM", visitorName = "Steve Mason") {
+            Spacer(modifier = modifier.height(26.dp))
+            VisitorSection(titleResId = R.string.going) {
+                Visitor(visitorInitials = "SM", visitorName = "Steve Mason") {
+                }
+            }
+
+            Spacer(modifier = modifier.height(26.dp))
+            VisitorSection(titleResId = R.string.not_going) {
+                Visitor(visitorInitials = "PR", visitorName = "Peter Rabbit", isCreator = false) {
+                }
             }
         }
     }
