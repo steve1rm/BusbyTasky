@@ -45,7 +45,6 @@ fun EventScreen(
             )
             .padding(horizontal = 16.dp)
         ) {
-
             Spacer(modifier = modifier.height(30.dp))
             AgendaHeader(agendaHeaderItem = AgendaHeaderItem.EVENT, subTitle = "Meeting")
 
@@ -71,10 +70,13 @@ fun EventScreen(
                 Visitor(visitorInitials = "PR", visitorName = "Peter Rabbit", isCreator = false) {
                 }
             }
+
+            Spacer(modifier = modifier.height(10.dp))
+            AgendaAction(headingResId = R.string.delete_reminder, showTopDivider = true) {
+            }
         }
     }
 }
-
 
 @Composable
 @Preview(showBackground = true)

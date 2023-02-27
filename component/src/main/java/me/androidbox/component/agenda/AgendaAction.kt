@@ -83,7 +83,6 @@ fun PreviewAgendaActionShowDivider() {
     }
 }
 
-
 @Composable
 @Preview(showBackground = true)
 fun PreviewAgendaActionHideDivider() {
