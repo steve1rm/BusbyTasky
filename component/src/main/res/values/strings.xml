@@ -25,4 +25,9 @@
     <string name="edit_description">Edit Description</string>
     <string name="edit_title">Edit Title</string>
     <string name="save">Save</string>
+    <string name="delete_event">delete event</string>
+    <string name="leave_event">leave event</string>
+    <string name="join_event">join event</string>
+    <string name="delete_reminder">delete reminder</string>
+    <string name="delete_task">delete task</string>
 </resources>

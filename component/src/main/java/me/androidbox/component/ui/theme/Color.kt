@@ -21,6 +21,7 @@ val ExtraLightWhite = Color(0xFFf5f5f5)
 val Brown = Color(0xff40492D)
 val Green = Color(0xFF279F70)
 val LightGreen = Color(0xFFCAEF45)
+
 val ColorScheme.placeholderEntry: Color
     @Composable
     get() {
@@ -98,6 +99,12 @@ val ColorScheme.divider: Color
     @Composable
     get() {
         return LightWhite
+    }
+
+val ColorScheme.dividerBlack: Color
+    @Composable
+    get() {
+        return Black
     }
 
 val ColorScheme.agendaTitleHeaderColor: Color
