@@ -11,6 +11,7 @@ val Purple700 = Color(0xFF3700B3)
 val Teal200 = Color(0xFF03DAC5)
 val LightGray = Color(0xFFA1A4B2)
 val DarkGray = Color(0xFF5C5D5A)
+val Gray = Color(0xFFA9B4BE)
 val ExtraLightGray = Color(0xFFF2F3F7)
 val LightBlue = Color(0xFFB7C6DE)
 val Red = Color(0xFFFF7272)
@@ -175,3 +176,18 @@ val ColorScheme.dropDownMenuBackgroundColor: Color
     get() {
         return ExtraLightWhite
     }
+
+
+val ColorScheme.photoTextColor: Color
+    @Composable
+    get() {
+        return Gray
+    }
+
+val ColorScheme.photoBackgroundColor: Color
+    @Composable
+    get() {
+        return ExtraLightGray
+    }
+
+

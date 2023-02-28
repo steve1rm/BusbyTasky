@@ -33,4 +33,5 @@
     <string name="open">Open</string>
     <string name="edit">Edit</string>
     <string name="delete">Delete</string>
+    <string name="add_photos">Add photos</string>
 </resources>
