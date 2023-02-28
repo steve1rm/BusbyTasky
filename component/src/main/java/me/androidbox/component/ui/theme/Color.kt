@@ -163,3 +163,15 @@ val ColorScheme.editScreenBackground: Color
     get() {
         return ExtraLightWhite
     }
+
+val ColorScheme.dropDownMenuColor: Color
+    @Composable
+    get() {
+        return Black
+    }
+
+val ColorScheme.dropDownMenuBackgroundColor: Color
+    @Composable
+    get() {
+        return ExtraLightWhite
+    }

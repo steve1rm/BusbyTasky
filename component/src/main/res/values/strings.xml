@@ -30,4 +30,7 @@
     <string name="join_event">join event</string>
     <string name="delete_reminder">delete reminder</string>
     <string name="delete_task">delete task</string>
+    <string name="open">Open</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
 </resources>
