@@ -55,9 +55,10 @@ fun EventScreen(
             AlarmReminder()
 
             Spacer(modifier = modifier.height(26.dp))
-            VisitorFilter(onAllClicked = { /*TODO*/ }, onGoingClicked = { /*TODO*/ }) {
-
-            }
+            VisitorFilter(
+                onAllClicked = {  },
+                onGoingClicked = {  },
+                onNotGoingClicked = { })
 
             Spacer(modifier = modifier.height(26.dp))
             VisitorSection(titleResId = R.string.going) {
@@ -71,7 +72,7 @@ fun EventScreen(
                 }
             }
 
-            Spacer(modifier = modifier.height(10.dp))
+            Spacer(modifier = modifier.height(16.dp))
             AgendaAction(headingResId = R.string.delete_reminder, showTopDivider = true) {
             }
         }

@@ -4,6 +4,9 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -33,21 +36,27 @@ fun VisitorFilter(
         Row(modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween) {
             TaskButton(
-                modifier = Modifier.height(36.dp).width(120.dp),
+                modifier = Modifier
+                    .height(36.dp)
+                    .width(120.dp),
                 textSize = 14.sp,
                 buttonText = stringResource(R.string.all), onButtonClick = {
                     onAllClicked()
                 })
 
             TaskButton(
-                modifier = Modifier.height(36.dp).width(120.dp),
+                modifier = Modifier
+                    .height(36.dp)
+                    .width(120.dp),
                 textSize = 14.sp,
                 buttonText = stringResource(R.string.going), onButtonClick = {
                     onGoingClicked()
                 })
 
             TaskButton(
-                modifier = Modifier.height(36.dp).width(120.dp),
+                modifier = Modifier
+                    .height(36.dp)
+                    .width(120.dp),
                 textSize = 14.sp,
                 buttonText = stringResource(R.string.not_going), onButtonClick = {
                     onNotGoingClicked()
