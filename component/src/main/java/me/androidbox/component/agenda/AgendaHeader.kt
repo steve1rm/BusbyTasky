@@ -79,7 +79,6 @@ fun AgendaHeader(
             modifier.fillMaxWidth().padding(horizontal = 16.dp),
             color = MaterialTheme.colorScheme.divider,
             thickness = 1.dp)
-
     }
 }
 
