@@ -1,14 +1,13 @@
 package me.androidbox.data.remote.model.request
 
 /**
- * /Register
+ * /Login
  * POST
- * Registers a new user
+ * Logs in a existing user
  *
- * No Response body
+ * Response body: LoginDto
  * */
-data class RegistrationRequestDto(
-    val fullName: String,
+data class LoginRequestDto(
     val email: String,
     val password: String
 )

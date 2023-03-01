@@ -1,4 +1,4 @@
-package me.androidbox.data.remote.model
+package me.androidbox.data.remote.model.response
 
 data class AttendeeDto(
     val email: String,

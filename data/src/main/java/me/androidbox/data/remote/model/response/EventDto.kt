@@ -1,9 +1,14 @@
 package me.androidbox.data.remote.model.response
 
-import me.androidbox.data.remote.model.AttendeeDto
-import me.androidbox.data.remote.model.PhotoDto
-
-data class EventRequestDto(
+/**
+ * /event
+ * GET
+ * Returns an existing event
+ * Query parameters `eventId` The ID of the event
+ *
+ * Response body `EventDto`
+ * */
+data class EventDto(
     val id: String,
     val title: String,
     val description: String,
@@ -12,6 +17,6 @@ data class EventRequestDto(
     val remindAt: Long,
     val host: String, /* event creator ID */
     val isUserEventCreator: Boolean,
-    val listOfAttendee: List<AttendeeDto>,
-    val listOfPhoto: List<PhotoDto>
+    val attendees: List<AttendeeDto>,
+    val photos: List<PhotoDto>
 )
