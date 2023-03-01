@@ -16,4 +16,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "BusbyTasky"
 
-include(":presentation")
+include(":presentation", ":data")
