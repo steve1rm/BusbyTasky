@@ -10,6 +10,10 @@ pluginManagement {
     }
 }
 
+plugins {
+    id("de.fayard.refreshVersions") version "0.51.0"
+}
+
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
@@ -25,20 +29,20 @@ dependencyResolutionManagement {
 
 fun MutableVersionCatalogContainer.createLibs() {
     this.create("libs") {
-        version("core-ktx", "1.9.0")
-        version("lifecycle-runtime-ktx", "2.5.1")
-        version("activity-compose", "1.6.1")
-        version("material", "1.3.1")
-        version("compose", "1.3.3")
-        version("appcompat", "1.6.1")
+        version("version.androidx.core", "_")
+        version("version.androidx.lifecycle", "_")
+        version("version.androidx.activity", "_")
+        version("version.androidx.compose.material", "_")
+        version("version.androidx.compose.ui", "_")
+        version("version.androidx.appcompat", "_")
 
-        library("core-ktx", "androidx.core", "core-ktx").versionRef("core-ktx")
-        library("lifecycle-runtime-ktx","androidx.lifecycle", "lifecycle-runtime-ktx").version("lifecycle-runtime-ktx")
-        library("activity-compose", "androidx.activity", "activity-compose").version("activity-compose")
-        library("material", "androidx.compose.material", "material").versionRef("material")
-        library("ui","androidx.compose.ui", "ui").version("compose")
-        library("ui-tooling-preview","androidx.compose.ui", "ui-tooling-preview").version("compose")
-        library("appcompat","androidx.appcompat", "appcompat").versionRef("appcompat")
+        library("core-ktx", "androidx.core", "core-ktx").versionRef("version.androidx.core")
+        library("lifecycle-runtime-ktx","androidx.lifecycle", "lifecycle-runtime-ktx").version("version.androidx.lifecycle")
+        library("activity-compose", "androidx.activity", "activity-compose").version("version.androidx.activity")
+        library("material", "androidx.compose.material", "material").versionRef("version.androidx.compose.material")
+        library("ui","androidx.compose.ui", "ui").version("version.androidx.compose.ui")
+        library("ui-tooling-preview","androidx.compose.ui", "ui-tooling-preview").version("version.androidx.compose.ui")
+        library("appcompat","androidx.appcompat", "appcompat").versionRef("version.androidx.appcompat")
 
         bundle("compose", listOf("activity-compose", "material", "ui", "ui-tooling-preview"))
     }
@@ -46,17 +50,17 @@ fun MutableVersionCatalogContainer.createLibs() {
 
 fun MutableVersionCatalogContainer.createTests() {
     this.create("tests") {
-        version("junit", "4.13.2")
-        version("ext-junit", "1.1.5")
-        version("espresso-core", "3.5.1")
-        version("compose", "1.3.3")
+        version("version.junit.junit", "_")
+        version("version.androidx.test.ext.junit", "_")
+        version("version.androidx.test.espresso", "_")
+        version("version.androidx.compose.ui", "_")
 
-        library("junit", "junit", "junit").versionRef("junit")
-        library("ext-junit","androidx.test.ext", "junit").versionRef("ext-junit")
-        library("espresso-core","androidx.test.espresso", "espresso-core").version("espresso-core")
-        library("ui-test-junit4","androidx.compose.ui","ui-test-junit4").versionRef("compose")
-        library("ui-tooling","androidx.compose.ui", "ui-tooling").versionRef("compose")
-        library("ui-test-manifest","androidx.compose.ui", "ui-test-manifest").versionRef("compose")
+        library("junit", "junit", "junit").versionRef("version.junit.junit")
+        library("ext-junit","androidx.test.ext", "junit").versionRef("version.androidx.test.ext.junit")
+        library("espresso-core","androidx.test.espresso", "espresso-core").version("version.androidx.test.espresso")
+        library("ui-test-junit4","androidx.compose.ui","ui-test-junit4").versionRef("version.androidx.compose.ui")
+        library("ui-tooling","androidx.compose.ui", "ui-tooling").versionRef("version.androidx.compose.ui")
+        library("ui-test-manifest","androidx.compose.ui", "ui-test-manifest").versionRef("version.androidx.compose.ui")
 
         bundle("compose", listOf("ui-test-junit4", "ui-tooling", "ui-test-manifest"))
     }
