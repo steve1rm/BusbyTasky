@@ -6,7 +6,7 @@ package me.androidbox.data.remote.model.response
  * Gets an existing reminder by ID
  * Query parameters `reminderId` The ID of the reminder
  *
- * Response body `EventDto`
+ * Response body `ReminderDto`
  * */
 data class ReminderDto(
     val id: String,
