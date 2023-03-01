@@ -1,6 +1,6 @@
 package me.androidbox.data.remote.model
 
-data class TaskModel(
+data class TaskDto(
     val id: String,
     val title: String,
     val description: String,

@@ -1,6 +1,6 @@
 package me.androidbox.data.remote.model
 
-data class EventModel(
+data class EventDto(
     val id: String,
     val title: String,
     val description: String,

@@ -1,6 +1,6 @@
 package me.androidbox.data.remote.model.request
 
-data class EventUpdateRequestModel(
+data class EventUpdateRequestDto(
     val id: String,
     val title: String,
     val description: String,

@@ -1,6 +1,6 @@
 package me.androidbox.data.remote.model
 
-data class AttendeeModel(
+data class AttendeeDto(
     val email: String,
     val fullName: String,
     val userId: String,

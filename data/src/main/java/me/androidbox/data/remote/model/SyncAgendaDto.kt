@@ -1,6 +1,6 @@
 package me.androidbox.data.remote.model
 
-data class SyncAgendaModel(
+data class SyncAgendaDto(
     val deletedEventId: List<String>,
     val deletedTaskId: List<String>,
     val deletedReminderId: List<String>
