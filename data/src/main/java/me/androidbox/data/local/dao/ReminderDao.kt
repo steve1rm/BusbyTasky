@@ -10,7 +10,7 @@ interface ReminderDao {
     @Query("SELECT * FROM ${DatabaseConstant.REMINDER_TABLE}")
     fun getReminder(): Flow<List<ReminderEntity>>
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertReminder(reminderEntity: ReminderEntity)
 
     @Update

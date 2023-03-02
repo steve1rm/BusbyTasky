@@ -10,7 +10,7 @@ interface EventDao {
     @Query("SELECT * FROM ${DatabaseConstant.EVENT_TABLE}")
     fun getEvent(): Flow<List<EventEntity>>
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertEvent(eventEntity: EventEntity)
 
     @Update

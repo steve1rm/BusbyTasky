@@ -1,13 +1,6 @@
-package me.androidbox.data.remote.model
+package me.androidbox.data.remote.model.response
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
-import me.androidbox.data.local.DatabaseConstant
-
-@Entity(tableName = DatabaseConstant.ATTENDEE_TABLE)
-data class AttendeeModel(
-    /* TODO Can we use the key as a primary key as the email will be unique */
-    @PrimaryKey(autoGenerate = false)
+data class AttendeeDto(
     val email: String,
     val fullName: String,
     val userId: String,

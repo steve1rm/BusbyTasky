@@ -4,11 +4,11 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import me.androidbox.data.local.dao.*
 import me.androidbox.data.local.entity.*
-import me.androidbox.data.remote.model.*
+import me.androidbox.data.remote.model.response.AttendeeDto
 
 @Database(entities = [
     AgendaEntity::class,
-    AttendeeModel::class,
+    AttendeeDto::class,
     EventEntity::class,
     PhotoEntity::class,
     ReminderEntity::class,

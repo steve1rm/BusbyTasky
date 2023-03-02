@@ -10,7 +10,7 @@ interface PhotoDao {
     @Query("SELECT * FROM ${DatabaseConstant.PHOTO_TABLE}")
     fun getPhoto(): Flow<List<PhotoEntity>>
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertPhoto(photoEntity: PhotoEntity)
 
     @Update

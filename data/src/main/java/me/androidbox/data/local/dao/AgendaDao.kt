@@ -10,7 +10,7 @@ interface AgendaDao {
     @Query("SELECT * FROM ${DatabaseConstant.AGENDA_TABLE}")
     fun getAgenda(): Flow<List<AgendaEntity>>
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAgenda(agenda: AgendaEntity)
 
     @Update

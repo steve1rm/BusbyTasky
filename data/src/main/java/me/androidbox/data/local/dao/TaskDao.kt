@@ -10,7 +10,7 @@ interface TaskDao {
     @Query("SELECT * FROM ${DatabaseConstant.TASK_TABLE}")
     fun getTask(): Flow<List<TaskEntity>>
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertTask(taskEntity: TaskEntity)
 
     @Update
