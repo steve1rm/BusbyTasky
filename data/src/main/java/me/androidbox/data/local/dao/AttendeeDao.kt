@@ -13,9 +13,6 @@ interface AttendeeDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAttendee(attendeeModel: AttendeeDto)
 
-    @Update
-    fun updateAttendee(attendeeModel: AttendeeDto)
-
     @Delete
     fun deleteAttendee(attendeeModel: AttendeeDto)
 }

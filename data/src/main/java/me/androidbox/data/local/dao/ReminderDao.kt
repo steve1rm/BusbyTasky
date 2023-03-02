@@ -13,9 +13,6 @@ interface ReminderDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertReminder(reminderEntity: ReminderEntity)
 
-    @Update
-    fun updateReminder(reminderEntity: ReminderEntity)
-
     @Delete
     fun deleteReminder(reminderEntity: ReminderEntity)
 }

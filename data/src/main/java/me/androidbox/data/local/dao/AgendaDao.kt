@@ -13,9 +13,6 @@ interface AgendaDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAgenda(agenda: AgendaEntity)
 
-    @Update
-    fun updateAgenda(agenda: AgendaEntity)
-
     @Delete
     fun deleteAgenda(agenda: AgendaEntity)
 }

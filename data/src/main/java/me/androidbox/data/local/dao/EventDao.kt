@@ -13,9 +13,6 @@ interface EventDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertEvent(eventEntity: EventEntity)
 
-    @Update
-    fun updateEvent(eventEntity: EventEntity)
-
     @Delete
     fun deleteEvent(eventEntity: EventEntity)
 }
