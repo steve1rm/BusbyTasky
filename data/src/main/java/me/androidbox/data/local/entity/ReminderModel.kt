@@ -1,15 +1,15 @@
-package me.androidbox.data.remote.model
+package me.androidbox.data.local.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import me.androidbox.data.local.DatabaseConstant
 
-@Entity(tableName = DatabaseConstant.EVENT_TABLE)
-data class EventModel(
+@Entity(tableName = DatabaseConstant.REMINDER_TABLE)
+data class ReminderModel(
     @PrimaryKey(autoGenerate = false)
     val id: String,
     val title: String,
     val description: String,
-    val from: Long,
-    val to: Long
+    val time: Long,
+    val remindAt: Long
 )

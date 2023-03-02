@@ -3,7 +3,7 @@ package me.androidbox.data.local.dao
 import androidx.room.*
 import kotlinx.coroutines.flow.Flow
 import me.androidbox.data.local.DatabaseConstant
-import me.androidbox.data.remote.model.EventModel
+import me.androidbox.data.local.entity.EventModel
 
 @Dao
 interface EventDao {

@@ -3,6 +3,7 @@ package me.androidbox.data.local.database
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import me.androidbox.data.local.dao.*
+import me.androidbox.data.local.entity.*
 import me.androidbox.data.remote.model.*
 
 @Database(entities = [
