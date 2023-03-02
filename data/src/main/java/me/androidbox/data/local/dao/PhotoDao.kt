@@ -3,19 +3,19 @@ package me.androidbox.data.local.dao
 import androidx.room.*
 import kotlinx.coroutines.flow.Flow
 import me.androidbox.data.local.DatabaseConstant
-import me.androidbox.data.local.entity.PhotoModel
+import me.androidbox.data.local.entity.PhotoEntity
 
 @Dao
 interface PhotoDao {
     @Query("SELECT * FROM ${DatabaseConstant.PHOTO_TABLE}")
-    fun getPhoto(): Flow<List<PhotoModel>>
+    fun getPhoto(): Flow<List<PhotoEntity>>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun insertPhoto(photoModel: PhotoModel)
+    fun insertPhoto(photoEntity: PhotoEntity)
 
     @Update
-    fun updatePhoto(photoModel: PhotoModel)
+    fun updatePhoto(photoEntity: PhotoEntity)
 
     @Delete
-    fun deletePhoto(photoModel: PhotoModel)
+    fun deletePhoto(photoEntity: PhotoEntity)
 }

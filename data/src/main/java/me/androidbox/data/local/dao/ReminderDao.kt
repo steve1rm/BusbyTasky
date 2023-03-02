@@ -3,19 +3,19 @@ package me.androidbox.data.local.dao
 import androidx.room.*
 import kotlinx.coroutines.flow.Flow
 import me.androidbox.data.local.DatabaseConstant
-import me.androidbox.data.local.entity.ReminderModel
+import me.androidbox.data.local.entity.ReminderEntity
 
 @Dao
 interface ReminderDao {
     @Query("SELECT * FROM ${DatabaseConstant.REMINDER_TABLE}")
-    fun getReminder(): Flow<List<ReminderModel>>
+    fun getReminder(): Flow<List<ReminderEntity>>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun insertReminder(reminderModel: ReminderModel)
+    fun insertReminder(reminderEntity: ReminderEntity)
 
     @Update
-    fun updateReminder(reminderModel: ReminderModel)
+    fun updateReminder(reminderEntity: ReminderEntity)
 
     @Delete
-    fun deleteReminder(reminderModel: ReminderModel)
+    fun deleteReminder(reminderEntity: ReminderEntity)
 }

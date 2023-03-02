@@ -5,7 +5,7 @@ import androidx.room.PrimaryKey
 import me.androidbox.data.local.DatabaseConstant
 
 @Entity(tableName = DatabaseConstant.AGENDA_TABLE)
-data class AgendaModel(
+data class AgendaEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Int,
 /*

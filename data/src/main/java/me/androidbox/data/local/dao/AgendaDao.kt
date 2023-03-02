@@ -3,19 +3,19 @@ package me.androidbox.data.local.dao
 import androidx.room.*
 import kotlinx.coroutines.flow.Flow
 import me.androidbox.data.local.DatabaseConstant
-import me.androidbox.data.local.entity.AgendaModel
+import me.androidbox.data.local.entity.AgendaEntity
 
 @Dao
 interface AgendaDao {
     @Query("SELECT * FROM ${DatabaseConstant.AGENDA_TABLE}")
-    fun getAgenda(): Flow<List<AgendaModel>>
+    fun getAgenda(): Flow<List<AgendaEntity>>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun insertAgenda(agenda: AgendaModel)
+    fun insertAgenda(agenda: AgendaEntity)
 
     @Update
-    fun updateAgenda(agenda: AgendaModel)
+    fun updateAgenda(agenda: AgendaEntity)
 
     @Delete
-    fun deleteAgenda(agenda: AgendaModel)
+    fun deleteAgenda(agenda: AgendaEntity)
 }

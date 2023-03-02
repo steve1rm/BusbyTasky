@@ -7,12 +7,12 @@ import me.androidbox.data.local.entity.*
 import me.androidbox.data.remote.model.*
 
 @Database(entities = [
-    AgendaModel::class,
+    AgendaEntity::class,
     AttendeeModel::class,
-    EventModel::class,
-    PhotoModel::class,
-    ReminderModel::class,
-    TaskModel::class],
+    EventEntity::class,
+    PhotoEntity::class,
+    ReminderEntity::class,
+    TaskEntity::class],
     version = 1
 )
 abstract class BusbyTaskyDatabase : RoomDatabase() {

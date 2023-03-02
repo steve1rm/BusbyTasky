@@ -3,19 +3,19 @@ package me.androidbox.data.local.dao
 import androidx.room.*
 import kotlinx.coroutines.flow.Flow
 import me.androidbox.data.local.DatabaseConstant
-import me.androidbox.data.local.entity.EventModel
+import me.androidbox.data.local.entity.EventEntity
 
 @Dao
 interface EventDao {
     @Query("SELECT * FROM ${DatabaseConstant.EVENT_TABLE}")
-    fun getEvent(): Flow<List<EventModel>>
+    fun getEvent(): Flow<List<EventEntity>>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun insertEvent(eventModel: EventModel)
+    fun insertEvent(eventEntity: EventEntity)
 
     @Update
-    fun updateEvent(eventModel: EventModel)
+    fun updateEvent(eventEntity: EventEntity)
 
     @Delete
-    fun deleteEvent(eventModel: EventModel)
+    fun deleteEvent(eventEntity: EventEntity)
 }
