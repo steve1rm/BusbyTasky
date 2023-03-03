@@ -15,4 +15,7 @@ interface ReminderDao {
 
     @Delete
     fun deleteReminder(reminderEntity: ReminderEntity)
+
+    @Query("DELETE FROM ${DatabaseConstant.REMINDER_TABLE}")
+    fun deleteAllReminder()
 }

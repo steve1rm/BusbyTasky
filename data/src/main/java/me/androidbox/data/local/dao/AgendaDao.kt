@@ -8,7 +8,7 @@ import me.androidbox.data.local.entity.AgendaEntity
 @Dao
 interface AgendaDao {
     @Query("SELECT * FROM ${DatabaseConstant.AGENDA_TABLE}")
-    fun getAgenda(): Flow<List<AgendaEntity>>
+    fun getAgenda(): Flow<AgendaEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAgenda(agenda: AgendaEntity)

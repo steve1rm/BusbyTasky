@@ -2,6 +2,7 @@ package me.androidbox.data.local
 
 object DatabaseConstant {
     const val AGENDA_TABLE = "agenda_table"
+    const val FULL_AGENDA = "full_agenda"
     const val ATTENDEE_TABLE = "attendee_table"
     const val EVENT_TABLE = "event_table"
     const val PHOTO_TABLE = "photo_table"

@@ -8,9 +8,7 @@ import me.androidbox.data.local.DatabaseConstant
 data class AgendaEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Int,
-/*
-    val listOfEvent: List<EventRequestModel>,
-    val listOfTask: List<TaskModel>,
-    val listOfReminder: List<ReminderModel>
-*/
+    val eventId: String,   /* Foreign key */
+    val taskId: String,    /* Foreign key */
+    val reminderId: String /* Foreign key */
 )
