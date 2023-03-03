@@ -6,7 +6,7 @@ import me.androidbox.data.local.DatabaseConstant
 
 @Entity(tableName = DatabaseConstant.EVENT_TABLE)
 data class EventEntity(
-    @PrimaryKey(autoGenerate = false)
+    @PrimaryKey(autoGenerate = true)
     val id: String,
     val title: String,
     val description: String,

@@ -6,7 +6,7 @@ import me.androidbox.data.local.DatabaseConstant
 
 @Entity(tableName = DatabaseConstant.ATTENDEE_TABLE)
 data class AttendeeEntity(
-    @PrimaryKey(autoGenerate = false)
+    @PrimaryKey(autoGenerate = true)
     val id: Int,
     val email: String,
     val fullName: String,
