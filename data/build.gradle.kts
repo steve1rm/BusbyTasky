@@ -49,6 +49,7 @@ hilt {
 dependencies {
     implementation(libs.core.ktx)
     implementation(libs.appcompat)
+    implementation(libs.moshi.kotlin)
 
     // Coroutines
     implementation(libs.coroutines)
