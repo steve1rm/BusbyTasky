@@ -25,14 +25,10 @@ import me.androidbox.component.ui.theme.BusbyTaskyTheme
 
 @Composable
 fun LoginScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     var username by remember {
         mutableStateOf("")
-    }
-
-    val isPasswordVisible = remember {
-        mutableStateOf(false)
     }
 
     var password by remember {
@@ -76,7 +72,6 @@ fun LoginScreen(
                 PasswordEntry(
                     passwordValue = password,
                     placeholderText = stringResource(R.string.password),
-                    isPasswordVisible = isPasswordVisible,
                     onPasswordChange = { newText ->
                         password = newText
                     }

@@ -24,9 +24,13 @@ fun PasswordEntry(
     modifier: Modifier = Modifier,
     passwordValue: String,
     placeholderText: String,
-    isPasswordVisible: MutableState<Boolean> = mutableStateOf(false),
     onPasswordChange: (String) -> Unit,
 ) {
+
+    val isPasswordVisible = remember {
+        mutableStateOf(false)
+    }
+
     OutlinedTextField(
         modifier = modifier
             .fillMaxWidth()
@@ -49,7 +53,7 @@ fun PasswordEntry(
                 R.drawable.hidden
             }
             Icon(
-                modifier = modifier.clickable {
+                modifier = Modifier.clickable {
                     isPasswordVisible.value = !isPasswordVisible.value
                 },
                 painter = painterResource(id = visibilityIconId),
@@ -75,7 +79,6 @@ fun PasswordEntry(
 @Preview(showBackground = true, name = "Shows password entry with viewable password")
 fun PreviewPasswordEntryVisible() {
     BusbyTaskyTheme {
-
         val (text, setText) = remember {
             mutableStateOf("")
         }
@@ -83,7 +86,6 @@ fun PreviewPasswordEntryVisible() {
         PasswordEntry(
             passwordValue = text,
             placeholderText = "Password",
-            isPasswordVisible = remember { mutableStateOf(true) },
             onPasswordChange = setText
         )
     }
@@ -98,14 +100,9 @@ fun PreviewPasswordEntryHidden() {
             mutableStateOf("")
         }
 
-        val isVisible by remember {
-            mutableStateOf(false)
-        }
-
         PasswordEntry(
             passwordValue = text,
             placeholderText = "Password",
-            isPasswordVisible = remember { mutableStateOf(true) },
             onPasswordChange = setText
         )
     }
