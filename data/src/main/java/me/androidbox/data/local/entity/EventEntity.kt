@@ -15,6 +15,7 @@ data class EventEntity(
     val remindAt: Long,
     val host: String, /* event creator ID */
     val isUserEventCreator: Boolean,
-  //  val attendees: ArrayList<Int>,
-   // val photos: List<Int>
+
+    val attendees: List<AttendeeEntity>,
+    val photos: List<PhotoEntity>
 )
