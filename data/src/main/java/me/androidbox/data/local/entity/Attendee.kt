@@ -1,6 +1,6 @@
 package me.androidbox.data.local.entity
 
-data class AttendeeEntity(
+data class Attendee(
     val id: Int,
     val email: String,
     val fullName: String,

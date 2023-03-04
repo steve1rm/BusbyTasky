@@ -9,9 +9,7 @@ import me.androidbox.data.local.dao.*
 import me.androidbox.data.local.entity.*
 
 @Database(entities = [
-  //  AttendeeEntity::class,
     EventEntity::class,
-    PhotoEntity::class,
     ReminderEntity::class,
     TaskEntity::class],
     version = 1
@@ -24,6 +22,4 @@ abstract class BusbyTaskyDatabase : RoomDatabase() {
     abstract fun eventDao(): EventDao
 
     abstract fun reminderDao(): ReminderDao
-
-    abstract fun photoDao(): PhotoDao
 }
