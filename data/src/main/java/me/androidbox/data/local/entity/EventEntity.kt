@@ -6,10 +6,15 @@ import me.androidbox.data.local.DatabaseConstant
 
 @Entity(tableName = DatabaseConstant.EVENT_TABLE)
 data class EventEntity(
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey(autoGenerate = false)
     val id: String,
     val title: String,
     val description: String,
     val from: Long,
-    val to: Long
+    val to: Long,
+    val remindAt: Long,
+    val host: String, /* event creator ID */
+    val isUserEventCreator: Boolean,
+  //  val attendees: ArrayList<Int>,
+   // val photos: List<Int>
 )

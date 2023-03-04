@@ -6,7 +6,7 @@ import me.androidbox.data.local.DatabaseConstant
 
 @Entity(tableName = DatabaseConstant.REMINDER_TABLE)
 data class ReminderEntity(
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey(autoGenerate = false)
     val id: String,
     val title: String,
     val description: String,

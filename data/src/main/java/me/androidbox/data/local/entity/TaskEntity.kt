@@ -6,7 +6,7 @@ import me.androidbox.data.local.DatabaseConstant
 
 @Entity(tableName = DatabaseConstant.TASK_TABLE)
 data class TaskEntity(
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey(autoGenerate = false)
     val id: String,
     val title: String,
     val description: String,
