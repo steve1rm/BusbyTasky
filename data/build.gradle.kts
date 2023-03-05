@@ -49,10 +49,22 @@ hilt {
 dependencies {
     implementation(libs.core.ktx)
     implementation(libs.appcompat)
+    implementation(libs.moshi.kotlin)
+
+    // Coroutines
+    implementation(libs.coroutines)
+
+    // Dagger
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
+
+    // Room components
+    implementation(libs.room.runtime)
+    kapt(libs.room.compiler)
+    implementation(libs.room.ktx)
 
     testImplementation(tests.hilt.android.testing)
     kaptTest(tests.hilt.compiler)
     testImplementation(tests.junit)
+    testImplementation(tests.truth)
 }
