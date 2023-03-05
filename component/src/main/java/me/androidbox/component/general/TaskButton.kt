@@ -1,7 +1,5 @@
 package me.androidbox.component.general
 
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -28,17 +26,14 @@ fun TaskButton(
     buttonTextColor: Color = MaterialTheme.colorScheme.LoginTextColor,
     backgroundColor: Color = MaterialTheme.colorScheme.buttonColor,
     onButtonClick: () -> Unit,
-    radius: Dp= 38.dp,
-    height: Dp = 50.dp
+    borderRadius: Dp= 38.dp,
 ) {
     Button(
-        modifier = modifier
-            .height(height)
-            .fillMaxWidth(),
+        modifier = modifier,
         colors = ButtonDefaults.buttonColors(
             containerColor = backgroundColor
         ),
-        shape = RoundedCornerShape(radius),
+        shape = RoundedCornerShape(borderRadius),
         onClick = {
             onButtonClick()
         }) {
