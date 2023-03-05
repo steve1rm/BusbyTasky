@@ -16,8 +16,8 @@ interface EventDao {
     /** TODO
      * Delete only a single event and all the attendees and photos that have been added to that event
      * */
-    @Delete
-    fun deleteEvent(eventEntity: EventEntity)
+    @Query("DELETE FROM ${DatabaseConstant.EVENT_TABLE} WHERE id = :id")
+    fun deleteEventById(id: String)
 
     /* TODO Maybe there is a use case when the user want to clear all events */
     @Query("DELETE FROM ${DatabaseConstant.EVENT_TABLE}")

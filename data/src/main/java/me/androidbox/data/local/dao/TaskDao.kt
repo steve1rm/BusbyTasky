@@ -16,8 +16,8 @@ interface TaskDao {
     /** TODO
      * Delete only a single task
      * */
-    @Delete
-    fun deleteTask(taskEntity: TaskEntity)
+    @Query("DELETE FROM ${DatabaseConstant.TASK_TABLE} WHERE id = :id")
+    fun deleteTaskById(id: String)
 
     /* TODO Maybe there is a use case when the user want to clear all tasks */
     @Query("DELETE FROM ${DatabaseConstant.TASK_TABLE}")

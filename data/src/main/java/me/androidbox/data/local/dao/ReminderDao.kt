@@ -16,8 +16,8 @@ interface ReminderDao {
     /**
      * TODO Delete only a single reminder
      * */
-    @Delete
-    fun deleteReminder(reminderEntity: ReminderEntity)
+    @Query("DELETE FROM ${DatabaseConstant.REMINDER_TABLE} WHERE id = :id")
+    fun deleteReminderById(id: String)
 
     /* TODO Maybe there is a use case when the user want to clear all reminders */
     @Query("DELETE FROM ${DatabaseConstant.REMINDER_TABLE}")
