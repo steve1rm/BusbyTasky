@@ -67,6 +67,7 @@ fun MutableVersionCatalogContainer.createTests() {
         version("version.androidx.test.espresso", "_")
         version("version.androidx.compose.ui", "_")
         version("version.google.dagger", "_")
+        version("version.com.google.truth", "_")
 
         library("junit", "junit", "junit").versionRef("version.junit.junit")
         library("ext-junit","androidx.test.ext", "junit").versionRef("version.androidx.test.ext.junit")
@@ -76,6 +77,7 @@ fun MutableVersionCatalogContainer.createTests() {
         library("ui-test-manifest","androidx.compose.ui", "ui-test-manifest").versionRef("version.androidx.compose.ui")
         library("hilt-android-testing", "com.google.dagger","hilt-android-testing").versionRef("version.google.dagger")
         library("hilt-compiler", "com.google.dagger", "hilt-compiler").versionRef("version.google.dagger")
+        library("truth", "com.google.truth", "truth").versionRef("version.com.google.truth")
 
         bundle("compose", listOf("ui-test-junit4", "ui-tooling", "ui-test-manifest"))
     }

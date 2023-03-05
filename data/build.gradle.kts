@@ -66,4 +66,5 @@ dependencies {
     testImplementation(tests.hilt.android.testing)
     kaptTest(tests.hilt.compiler)
     testImplementation(tests.junit)
+    testImplementation(tests.truth)
 }
