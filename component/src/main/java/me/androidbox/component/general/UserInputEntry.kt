@@ -26,12 +26,7 @@ fun UserInputEntry(
 ) {
 
     OutlinedTextField(
-        modifier = modifier
-            .fillMaxWidth()
-            .background(
-                shape = RoundedCornerShape(10.dp),
-                color = MaterialTheme.colorScheme.backgroundInputEntry
-            ),
+        modifier = modifier,
         singleLine = true,
         value = inputValue,
         onValueChange = { newInput ->

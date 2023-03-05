@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -23,6 +24,7 @@ import me.androidbox.component.general.PasswordEntry
 import me.androidbox.component.general.TaskButton
 import me.androidbox.component.general.UserInputEntry
 import me.androidbox.component.ui.theme.BusbyTaskyTheme
+import me.androidbox.component.ui.theme.backgroundInputEntry
 import me.androidbox.presentation.login.viewmodel.LoginViewModel
 
 @Composable
@@ -56,6 +58,12 @@ fun LoginScreen(
             ) {
                 Spacer(modifier = modifier.height(50.dp))
                 UserInputEntry(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(
+                            shape = RoundedCornerShape(10.dp),
+                            color = MaterialTheme.colorScheme.backgroundInputEntry
+                        ),
                     inputValue = loginViewModel.username,
                     isInputValid = false,
                     placeholderText = stringResource(R.string.name),
