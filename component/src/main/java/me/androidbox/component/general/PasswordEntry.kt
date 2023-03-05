@@ -30,11 +30,7 @@ fun PasswordEntry(
 ) {
 
     OutlinedTextField(
-        modifier = modifier
-            .background(
-                shape = RoundedCornerShape(10.dp),
-                color = MaterialTheme.colorScheme.backgroundInputEntry
-            ),
+        modifier = modifier,
         singleLine = true,
         value = passwordValue,
         onValueChange = { newInput: String ->

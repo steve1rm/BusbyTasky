@@ -74,6 +74,12 @@ fun LoginScreen(
                 Spacer(modifier = Modifier.height(16.dp))
 
                 PasswordEntry(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(
+                            shape = RoundedCornerShape(10.dp),
+                            color = MaterialTheme.colorScheme.backgroundInputEntry
+                        ),
                     passwordValue = loginViewModel.password,
                     placeholderText = stringResource(R.string.password),
                     onPasswordChange = { newPassword ->
@@ -88,7 +94,9 @@ fun LoginScreen(
                 Spacer(modifier = Modifier.height(26.dp))
 
                 TaskButton(
-                    modifier = Modifier.height(50.dp).fillMaxWidth(),
+                    modifier = Modifier
+                        .height(50.dp)
+                        .fillMaxWidth(),
                     buttonText = stringResource(R.string.login).uppercase(),
                     onButtonClick = {
                         /** TODO send to room database username and password check if correct/incorrect */
