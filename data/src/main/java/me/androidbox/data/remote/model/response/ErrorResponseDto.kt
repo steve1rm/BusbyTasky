@@ -1,5 +1,6 @@
 package me.androidbox.data.remote.model.response
 
-data class ErrorResponseModel(
+
+data class ErrorResponseDto(
     val message: String
 )

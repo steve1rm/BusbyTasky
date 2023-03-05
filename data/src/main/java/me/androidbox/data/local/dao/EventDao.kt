@@ -3,19 +3,23 @@ package me.androidbox.data.local.dao
 import androidx.room.*
 import kotlinx.coroutines.flow.Flow
 import me.androidbox.data.local.DatabaseConstant
-import me.androidbox.data.remote.model.EventModel
+import me.androidbox.data.local.entity.EventEntity
 
 @Dao
 interface EventDao {
-    @Query("SELECT * FROM ${DatabaseConstant.EVENT_TABLE}")
-    fun getEvent(): Flow<List<EventModel>>
+    @Query("SELECT * FROM ${DatabaseConstant.EVENT_TABLE} WHERE `from` >= :startTimeStamp AND `from` <= :endTimeStamp")
+    fun getEventsFromTimeStamp(startTimeStamp: Long, endTimeStamp: Long): Flow<List<EventEntity>>
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun insertEvent(eventModel: EventModel)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertEvent(eventEntity: EventEntity)
 
-    @Update
-    fun updateEvent(eventModel: EventModel)
+    /** TODO
+     * Delete only a single event and all the attendees and photos that have been added to that event
+     * */
+    @Query("DELETE FROM ${DatabaseConstant.EVENT_TABLE} WHERE id = :id")
+    fun deleteEventById(id: String)
 
-    @Delete
-    fun deleteEvent(eventModel: EventModel)
+    /* TODO Maybe there is a use case when the user want to clear all events */
+    @Query("DELETE FROM ${DatabaseConstant.EVENT_TABLE}")
+    fun deleteAllEvent()
 }
