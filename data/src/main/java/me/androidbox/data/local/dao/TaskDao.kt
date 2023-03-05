@@ -7,8 +7,8 @@ import me.androidbox.data.local.entity.TaskEntity
 
 @Dao
 interface TaskDao {
-    @Query("SELECT * FROM ${DatabaseConstant.TASK_TABLE}")
-    fun getTask(): Flow<List<TaskEntity>>
+    @Query("SELECT * FROM ${DatabaseConstant.TASK_TABLE} WHERE time >= :startTimeStamp AND time <= :endTimeStamp")
+    fun getTaskFromTimeStamp(startTimeStamp: Long, endTimeStamp: Long): Flow<List<TaskEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertTask(taskEntity: TaskEntity)

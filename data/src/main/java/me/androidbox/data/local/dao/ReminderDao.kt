@@ -7,8 +7,8 @@ import me.androidbox.data.local.entity.ReminderEntity
 
 @Dao
 interface ReminderDao {
-    @Query("SELECT * FROM ${DatabaseConstant.REMINDER_TABLE}")
-    fun getReminder(): Flow<List<ReminderEntity>>
+    @Query("SELECT * FROM ${DatabaseConstant.REMINDER_TABLE} WHERE time >= :startTimeStamp AND time <= :endTimeStamp")
+    fun getReminderFromTimeStamp(startTimeStamp: Long, endTimeStamp: Long): Flow<List<ReminderEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertReminder(reminderEntity: ReminderEntity)
