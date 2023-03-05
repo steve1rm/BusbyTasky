@@ -25,11 +25,15 @@ fun PasswordEntry(
     passwordValue: String,
     placeholderText: String,
     onPasswordChange: (String) -> Unit,
+    onPasswordVisibilityClicked: () -> Unit,
+    isPasswordVisible: Boolean
 ) {
 
+/*
     val isPasswordVisible = remember {
         mutableStateOf(false)
     }
+*/
 
     OutlinedTextField(
         modifier = modifier
@@ -47,14 +51,14 @@ fun PasswordEntry(
             Text(text = placeholderText, color = MaterialTheme.colorScheme.placeholderEntry)
         },
         trailingIcon = {
-            val visibilityIconId = if(isPasswordVisible.value) {
+            val visibilityIconId = if(isPasswordVisible) {
                 R.drawable.visible
             } else {
                 R.drawable.hidden
             }
             Icon(
                 modifier = Modifier.clickable {
-                    isPasswordVisible.value = !isPasswordVisible.value
+                    onPasswordVisibilityClicked()
                 },
                 painter = painterResource(id = visibilityIconId),
                 contentDescription = "eye open close"
@@ -66,7 +70,7 @@ fun PasswordEntry(
             focusedBorderColor = MaterialTheme.colorScheme.focusedInputEntryBorder,
             unfocusedBorderColor = Color.Transparent,
             textColor = MaterialTheme.colorScheme.InputTextColor),
-        visualTransformation = if (isPasswordVisible.value) {
+        visualTransformation = if (isPasswordVisible) {
             VisualTransformation.None
         }
         else {
@@ -86,7 +90,9 @@ fun PreviewPasswordEntryVisible() {
         PasswordEntry(
             passwordValue = text,
             placeholderText = "Password",
-            onPasswordChange = setText
+            onPasswordChange = setText,
+            onPasswordVisibilityClicked = {},
+            isPasswordVisible = true
         )
     }
 }
@@ -103,7 +109,10 @@ fun PreviewPasswordEntryHidden() {
         PasswordEntry(
             passwordValue = text,
             placeholderText = "Password",
-            onPasswordChange = setText
+            onPasswordChange = setText,
+            onPasswordVisibilityClicked = {},
+            isPasswordVisible = false
+
         )
     }
 }

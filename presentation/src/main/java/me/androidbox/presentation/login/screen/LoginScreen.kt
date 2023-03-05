@@ -6,7 +6,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material3.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -17,6 +17,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import me.androidbox.component.R
 import me.androidbox.component.general.PasswordEntry
 import me.androidbox.component.general.TaskButton
@@ -27,7 +28,7 @@ import me.androidbox.presentation.login.viewmodel.LoginViewModel
 @Composable
 fun LoginScreen(
     modifier: Modifier = Modifier,
-    // viewModel: LoginViewModel = hiltViewModel()
+    loginViewModel: LoginViewModel = hiltViewModel()
 ) {
 
     Column(modifier = modifier
@@ -55,21 +56,25 @@ fun LoginScreen(
             ) {
                 Spacer(modifier = modifier.height(50.dp))
                 UserInputEntry(
-                    inputValue = username,
+                    inputValue = loginViewModel.username,
                     isInputValid = false,
                     placeholderText = stringResource(R.string.name),
-                    onInputChange = { newText ->
-                        username = newText
+                    onInputChange = { newUsername ->
+                        loginViewModel.onUsernameChanged(newUsername)
                     }
                 )
                 Spacer(modifier = Modifier.height(16.dp))
 
                 PasswordEntry(
-                    passwordValue = password,
+                    passwordValue = loginViewModel.password,
                     placeholderText = stringResource(R.string.password),
-                    onPasswordChange = { newText ->
-                        password = newText
-                    }
+                    onPasswordChange = { newPassword ->
+                        loginViewModel.onPasswordChanged(newPassword)
+                    },
+                    onPasswordVisibilityClicked = {
+                        loginViewModel.onPasswordVisibilityChanged()
+                    },
+                    isPasswordVisible = loginViewModel.isPasswordVisible
                 )
 
                 Spacer(modifier = Modifier.height(26.dp))
@@ -79,7 +84,7 @@ fun LoginScreen(
                     buttonText = stringResource(R.string.login).uppercase(),
                     onButtonClick = {
                         /** TODO send to room database username and password check if correct/incorrect */
-                        Log.d("LOGIN", "username [$username] [$password]")
+                        Log.d("LOGIN", "username [${loginViewModel.username}] [${loginViewModel.password}]")
                     }
                 )
             }

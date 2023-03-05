@@ -44,6 +44,7 @@ fun MutableVersionCatalogContainer.createLibs() {
         version("version.androidx.room", "_")
         version("version.kotlinx.coroutines", "_")
         version("version.moshi", "_")
+        version("version.androidx.hilt-navigation-compose", "_")
 
         library("core-ktx", "androidx.core", "core-ktx").versionRef("version.androidx.core")
         library("lifecycle-runtime-ktx","androidx.lifecycle", "lifecycle-runtime-ktx").version("version.androidx.lifecycle")
@@ -55,7 +56,7 @@ fun MutableVersionCatalogContainer.createLibs() {
         library("coroutines", "org.jetbrains.kotlinx", "kotlinx-coroutines-core").versionRef("version.kotlinx.coroutines")
         library("hilt-android","com.google.dagger", "hilt-android").versionRef("version.google.dagger")
         library("hilt-compiler", "com.google.dagger", "hilt-compiler").versionRef("version.google.dagger")
-
+        library("hilt-navigation-compose","androidx.hilt", "hilt-navigation-compose").versionRef("version.androidx.hilt-navigation-compose")
         library("room-runtime", "androidx.room", "room-runtime").versionRef("version.androidx.room")
         library("room-compiler", "androidx.room", "room-compiler").versionRef("version.androidx.room")
         library("room-ktx", "androidx.room", "room-ktx").versionRef("version.androidx.room")
