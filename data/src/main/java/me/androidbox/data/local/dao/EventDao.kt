@@ -8,7 +8,7 @@ import me.androidbox.data.local.entity.EventEntity
 @Dao
 interface EventDao {
     @Query("SELECT * FROM ${DatabaseConstant.EVENT_TABLE} WHERE `from` >= :startTimeStamp AND `from` <= :endTimeStamp")
-    fun getEventFromTimeStamp(startTimeStamp: Long, endTimeStamp: Long): Flow<List<EventEntity>>
+    fun getEventsFromTimeStamp(startTimeStamp: Long, endTimeStamp: Long): Flow<List<EventEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertEvent(eventEntity: EventEntity)
