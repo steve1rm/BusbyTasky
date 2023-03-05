@@ -29,15 +29,8 @@ fun PasswordEntry(
     isPasswordVisible: Boolean
 ) {
 
-/*
-    val isPasswordVisible = remember {
-        mutableStateOf(false)
-    }
-*/
-
     OutlinedTextField(
         modifier = modifier
-            .fillMaxWidth()
             .background(
                 shape = RoundedCornerShape(10.dp),
                 color = MaterialTheme.colorScheme.backgroundInputEntry
