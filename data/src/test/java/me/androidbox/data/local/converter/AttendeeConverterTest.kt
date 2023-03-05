@@ -50,7 +50,6 @@ class AttendeeConverterTest {
         assertThat(actual).hasSize(3)
     }
 
-
     @Test
     fun `should find the correct attendee from the list of attendee`() {
         // Arrange

@@ -13,9 +13,13 @@ interface ReminderDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertReminder(reminderEntity: ReminderEntity)
 
+    /**
+     * TODO Delete only a single reminder
+     * */
     @Delete
     fun deleteReminder(reminderEntity: ReminderEntity)
 
+    /* TODO Maybe there is a use case when the user want to clear all reminders */
     @Query("DELETE FROM ${DatabaseConstant.REMINDER_TABLE}")
     fun deleteAllReminder()
 }

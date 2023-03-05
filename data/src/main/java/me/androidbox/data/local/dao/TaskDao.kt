@@ -13,6 +13,13 @@ interface TaskDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertTask(taskEntity: TaskEntity)
 
+    /** TODO
+     * Delete only a single task
+     * */
     @Delete
     fun deleteTask(taskEntity: TaskEntity)
+
+    /* TODO Maybe there is a use case when the user want to clear all tasks */
+    @Query("DELETE FROM ${DatabaseConstant.TASK_TABLE}")
+    fun deleteAllTask()
 }
