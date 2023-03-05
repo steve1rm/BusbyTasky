@@ -17,5 +17,7 @@ data class EventEntity(
     val isUserEventCreator: Boolean,
 
     val attendees: String,
-    val photos: String
+    val photos: String,
+
+    val dateCreated: Long
 )

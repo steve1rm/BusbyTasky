@@ -7,8 +7,8 @@ import me.androidbox.data.local.entity.EventEntity
 
 @Dao
 interface EventDao {
-    @Query("SELECT * FROM ${DatabaseConstant.EVENT_TABLE}")
-    fun getEvent(): Flow<List<EventEntity>>
+    @Query("SELECT * FROM ${DatabaseConstant.EVENT_TABLE} where dateCreated = :selectedDate ORDER BY dateCreated ASC")
+    fun getEvent(selectedDate: Long): Flow<List<EventEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertEvent(eventEntity: EventEntity)
