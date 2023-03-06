@@ -43,7 +43,7 @@ object NetworkModule {
     @Provides
     fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
-            .baseUrl("https://tasky.pl-coding.com")
+            .baseUrl(BuildConfig.BUSBY_TASKY_API)
             .client(okHttpClient)
             .addConverterFactory(MoshiConverterFactory.create())
             .build()
