@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import me.androidbox.component.R
-import me.androidbox.component.general.PasswordEntry
+import me.androidbox.component.general.PasswordTextField
 import me.androidbox.component.general.TaskButton
 import me.androidbox.component.general.UserInputEntry
 import me.androidbox.component.ui.theme.BusbyTaskyTheme
@@ -73,7 +73,7 @@ fun LoginScreen(
                 )
                 Spacer(modifier = Modifier.height(16.dp))
 
-                PasswordEntry(
+                PasswordTextField(
                     modifier = Modifier
                         .fillMaxWidth()
                         .background(

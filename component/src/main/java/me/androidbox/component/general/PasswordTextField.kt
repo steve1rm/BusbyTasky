@@ -1,8 +1,6 @@
 package me.androidbox.component.general
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
@@ -20,7 +18,7 @@ import me.androidbox.component.ui.theme.*
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PasswordEntry(
+fun PasswordTextField(
     modifier: Modifier = Modifier,
     passwordValue: String,
     placeholderText: String,
@@ -45,13 +43,17 @@ fun PasswordEntry(
             } else {
                 R.drawable.hidden
             }
-            Icon(
-                modifier = Modifier.clickable {
-                    onPasswordVisibilityClicked()
-                },
-                painter = painterResource(id = visibilityIconId),
-                contentDescription = "eye open close"
-            )
+            IconButton(onClick = {
+                onPasswordVisibilityClicked()
+            }) {
+                Icon(
+                    modifier = Modifier.clickable {
+                        onPasswordVisibilityClicked()
+                    },
+                    painter = painterResource(id = visibilityIconId),
+                    contentDescription = "show hide the password"
+                )
+            }
         },
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
         shape = RoundedCornerShape(10.dp),
@@ -76,7 +78,7 @@ fun PreviewPasswordEntryVisible() {
             mutableStateOf("")
         }
 
-        PasswordEntry(
+        PasswordTextField(
             passwordValue = text,
             placeholderText = "Password",
             onPasswordChange = setText,
@@ -95,13 +97,12 @@ fun PreviewPasswordEntryHidden() {
             mutableStateOf("")
         }
 
-        PasswordEntry(
+        PasswordTextField(
             passwordValue = text,
             placeholderText = "Password",
             onPasswordChange = setText,
             onPasswordVisibilityClicked = {},
             isPasswordVisible = false
-
         )
     }
 }
