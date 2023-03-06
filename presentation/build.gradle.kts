@@ -66,12 +66,16 @@ hilt {
 }
 
 dependencies {
+    implementation(project(":component"))
+
     implementation(libs.core.ktx)
     implementation(libs.lifecycle.runtime.ktx)
     implementation(libs.bundles.compose)
     implementation(libs.ui)
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
+
+    implementation(libs.hilt.navigation.compose)
 
     debugImplementation(tests.ui.tooling)
     debugImplementation(tests.ui.test.manifest)

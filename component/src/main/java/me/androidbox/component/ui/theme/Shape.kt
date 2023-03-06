@@ -1,4 +1,4 @@
-package me.androidbox.presentation.ui.theme
+package me.androidbox.component.ui.theme
 
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Shapes

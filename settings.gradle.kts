@@ -1,6 +1,11 @@
-
 rootProject.name = "BusbyTasky"
-include(":presentation", ":domain", ":data")
+
+include(
+    ":presentation",
+    ":domain",
+    ":data",
+    ":component"
+)
 
 pluginManagement {
     repositories {
@@ -32,25 +37,26 @@ fun MutableVersionCatalogContainer.createLibs() {
         version("version.androidx.core", "_")
         version("version.androidx.lifecycle", "_")
         version("version.androidx.activity", "_")
-        version("version.androidx.compose.material", "_")
+        version("version.androidx.compose.material3", "_")
         version("version.androidx.compose.ui", "_")
         version("version.androidx.appcompat", "_")
         version("version.google.dagger", "_")
         version("version.androidx.room", "_")
         version("version.kotlinx.coroutines", "_")
         version("version.moshi", "_")
+        version("version.androidx.hilt-navigation-compose", "_")
 
         library("core-ktx", "androidx.core", "core-ktx").versionRef("version.androidx.core")
         library("lifecycle-runtime-ktx","androidx.lifecycle", "lifecycle-runtime-ktx").version("version.androidx.lifecycle")
         library("activity-compose", "androidx.activity", "activity-compose").version("version.androidx.activity")
-        library("material", "androidx.compose.material", "material").versionRef("version.androidx.compose.material")
+        library("material", "androidx.compose.material3", "material3").versionRef("version.androidx.compose.material3")
         library("ui","androidx.compose.ui", "ui").version("version.androidx.compose.ui")
         library("ui-tooling-preview","androidx.compose.ui", "ui-tooling-preview").version("version.androidx.compose.ui")
         library("appcompat","androidx.appcompat", "appcompat").versionRef("version.androidx.appcompat")
         library("coroutines", "org.jetbrains.kotlinx", "kotlinx-coroutines-core").versionRef("version.kotlinx.coroutines")
         library("hilt-android","com.google.dagger", "hilt-android").versionRef("version.google.dagger")
         library("hilt-compiler", "com.google.dagger", "hilt-compiler").versionRef("version.google.dagger")
-
+        library("hilt-navigation-compose","androidx.hilt", "hilt-navigation-compose").versionRef("version.androidx.hilt-navigation-compose")
         library("room-runtime", "androidx.room", "room-runtime").versionRef("version.androidx.room")
         library("room-compiler", "androidx.room", "room-compiler").versionRef("version.androidx.room")
         library("room-ktx", "androidx.room", "room-ktx").versionRef("version.androidx.room")
