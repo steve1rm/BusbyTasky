@@ -63,10 +63,7 @@ dependencies {
     implementation(libs.room.ktx)
 
     // Retrofit
-    implementation(libs.retrofit)
-    implementation(libs.logging.interceptor)
-    implementation(libs.moshi.kotlin)
-    implementation(libs.converter.moshi)
+    implementation(libs.bundles.retrofit)
 
     testImplementation(tests.hilt.android.testing)
     kaptTest(tests.hilt.compiler)

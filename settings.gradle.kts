@@ -76,7 +76,7 @@ fun MutableVersionCatalogContainer.createLibs() {
         library("converter-moshi", "com.squareup.retrofit2", "converter-moshi").versionRef("version.retrofit2")
         library("logging-interceptor","com.squareup.okhttp3", "logging-interceptor").versionRef("version.okhttp3")
 
-        //  bundle("retrofit", listOf("moshi-kotlin", "retrofit", "logging-interceptor", "converter-model"))
+        bundle("retrofit", listOf("moshi-kotlin", "retrofit", "converter-moshi", "logging-interceptor"))
         bundle("compose", listOf("activity-compose", "material", "ui", "ui-tooling-preview"))
     }
 }
