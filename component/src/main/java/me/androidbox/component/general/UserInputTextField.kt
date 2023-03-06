@@ -2,8 +2,6 @@ package me.androidbox.component.general
 
 import android.util.Log
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -17,7 +15,7 @@ import me.androidbox.component.ui.theme.*
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun UserInputEntry(
+fun UserInputTextField(
     modifier: Modifier = Modifier,
     isInputValid: Boolean,
     inputValue: String,
@@ -60,7 +58,7 @@ fun UserInputEntry(
 @Preview(showBackground = true)
 fun PreviewEmailEntryNotFocused() {
     BusbyTaskyTheme {
-        UserInputEntry(
+        UserInputTextField(
             isInputValid = false,
             inputValue = "steve@gmail.com",
             placeholderText = "name",
@@ -75,7 +73,7 @@ fun PreviewEmailEntryNotFocused() {
 @Preview(showBackground = true)
 fun PreviewEmailEntryFocused() {
     BusbyTaskyTheme {
-        UserInputEntry(
+        UserInputTextField(
             isInputValid = false,
             inputValue = "steve@gmail.com",
             placeholderText = "name",
@@ -92,7 +90,7 @@ fun PreviewEmailEntryValidEmail() {
     BusbyTaskyTheme {
         val (text, setText) = remember { mutableStateOf("") }
 
-        UserInputEntry(
+        UserInputTextField(
             isInputValid = true,
             inputValue = text,
             placeholderText = "name",
@@ -107,7 +105,7 @@ fun PreviewEmailEntryInvalidEmail() {
     BusbyTaskyTheme {
         val (text, setText) = remember { mutableStateOf("") }
 
-        UserInputEntry(
+        UserInputTextField(
             isInputValid = true,
             inputValue = text,
             placeholderText = "name",
