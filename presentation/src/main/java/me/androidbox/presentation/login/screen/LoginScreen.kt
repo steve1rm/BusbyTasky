@@ -37,18 +37,18 @@ fun LoginScreen(
         .fillMaxSize()
         .background(Color.Black)) {
 
-        Spacer(modifier = modifier.height(48.dp))
+        Spacer(modifier = Modifier.height(48.dp))
 
         Text(
-            modifier = modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth(),
             text = "Welcome Back!", color = Color.White, fontSize = 28.sp, fontWeight = FontWeight.Bold,
             textAlign = TextAlign.Center)
 
-        Spacer(modifier = modifier.height(42.dp))
+        Spacer(modifier = Modifier.height(42.dp))
 
         Box {
             Column(
-                modifier = modifier
+                modifier = Modifier
                     .fillMaxSize()
                     .background(
                         color = Color.White,
@@ -56,7 +56,7 @@ fun LoginScreen(
                     )
                     .padding(horizontal = 16.dp)
             ) {
-                Spacer(modifier = modifier.height(50.dp))
+                Spacer(modifier = Modifier.height(50.dp))
                 UserInputTextField(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -105,7 +105,7 @@ fun LoginScreen(
                 )
             }
             
-            Column(modifier = modifier.fillMaxWidth().align(Alignment.BottomCenter)) {
+            Column(modifier = Modifier.fillMaxWidth().align(Alignment.BottomCenter)) {
                 ClickableText(
                     style = TextStyle(textAlign = TextAlign.Center),
                     modifier = modifier.fillMaxWidth(),
