@@ -1,6 +1,6 @@
 package me.androidbox.data.remote.network
 
-object EndPoint {
+object EndPointConstant {
     const val REGISTER = "register"
     const val LOGIN = "login"
     const val LOGOUT = "logout"

@@ -6,7 +6,7 @@ import dagger.Reusable
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import me.androidbox.data.BuildConfig
-import me.androidbox.data.remote.network.BusbyTaskyService
+import me.androidbox.data.remote.network.authentication.AuthenticationService
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -48,10 +48,10 @@ object NetworkModule {
             .addConverterFactory(MoshiConverterFactory.create())
             .build()
     }
-    
+
     @Reusable
     @Provides
-    fun provideBusbyTaskyService(retrofit: Retrofit): BusbyTaskyService {
-        return retrofit.create(BusbyTaskyService::class.java)
+    fun provideAuthenticationService(retrofit: Retrofit): AuthenticationService {
+        return retrofit.create(AuthenticationService::class.java)
     }
 }
