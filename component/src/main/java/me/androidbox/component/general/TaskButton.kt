@@ -20,13 +20,13 @@ import me.androidbox.component.ui.theme.buttonColor
 
 @Composable
 fun TaskButton(
-    modifier: Modifier = Modifier,
     buttonText: String,
+    modifier: Modifier = Modifier,
     textSize: TextUnit = 16.sp,
     buttonTextColor: Color = MaterialTheme.colorScheme.LoginTextColor,
     backgroundColor: Color = MaterialTheme.colorScheme.buttonColor,
     onButtonClick: () -> Unit,
-    borderRadius: Dp= 38.dp,
+    borderRadius: Dp = 38.dp,
 ) {
     Button(
         modifier = modifier,
