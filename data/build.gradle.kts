@@ -49,7 +49,6 @@ hilt {
 dependencies {
     implementation(libs.core.ktx)
     implementation(libs.appcompat)
-    implementation(libs.moshi.kotlin)
 
     // Coroutines
     implementation(libs.coroutines)
@@ -62,6 +61,12 @@ dependencies {
     implementation(libs.room.runtime)
     kapt(libs.room.compiler)
     implementation(libs.room.ktx)
+
+    // Retrofit
+    implementation(libs.retrofit)
+    implementation(libs.logging.interceptor)
+    implementation(libs.moshi.kotlin)
+    implementation(libs.converter.moshi)
 
     testImplementation(tests.hilt.android.testing)
     kaptTest(tests.hilt.compiler)
