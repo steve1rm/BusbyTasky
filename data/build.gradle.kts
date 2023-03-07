@@ -80,8 +80,7 @@ dependencies {
 
     // Retrofit
     implementation(libs.bundles.retrofit)
-    implementation(libs.retrofit2.kotlin.coroutines.adapter)
-    kapt("com.squareup.moshi:moshi-kotlin-codegen:1.14.0")
+
     testImplementation(tests.hilt.android.testing)
     kaptTest(tests.hilt.compiler)
     testImplementation(tests.junit)
