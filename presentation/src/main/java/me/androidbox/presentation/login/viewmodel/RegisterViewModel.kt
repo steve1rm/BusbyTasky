@@ -1,13 +1,20 @@
 package me.androidbox.presentation.login.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.launch
+import me.androidbox.domain.authentication.usecase.RegisterUseCase
+import retrofit2.HttpException
 import javax.inject.Inject
 
 @HiltViewModel
 class RegisterViewModel @Inject constructor(
-    private val savedStateHandle: SavedStateHandle
+    private val savedStateHandle: SavedStateHandle,
+    private val registerUseCase: RegisterUseCase
 ): ViewModel() {
 
     private companion object {
@@ -36,5 +43,26 @@ class RegisterViewModel @Inject constructor(
 
     fun onPasswordVisibilityChanged() {
         savedStateHandle[IS_PASSWORD_VISIBLE] = !isPasswordVisible.value
+    }
+
+    fun registerUser(fullName: String, email: String, password: String) {
+        viewModelScope.launch {
+            try {
+                registerUseCase.execute(
+                    fullName = fullName,
+                    email = email,
+                    password = password
+                )
+            }
+            catch(httpException: HttpException) {
+                Log.d("REGISTRATION", httpException.stackTraceToString())
+            }
+            catch (exception: Exception) {
+                if(exception is CancellationException) {
+                    throw Exception()
+                }
+                Log.d("REGISTRATION", exception.stackTraceToString())
+            }
+        }
     }
 }

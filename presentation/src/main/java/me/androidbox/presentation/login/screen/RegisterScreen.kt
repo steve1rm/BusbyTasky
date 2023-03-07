@@ -131,7 +131,11 @@ fun RegisterScreen(
                     buttonText = stringResource(R.string.get_started).uppercase(),
                     onButtonClick = {
                         /** TODO send to room database username and password check if correct/incorrect */
-                        Log.d("LOGIN", "username [$registerViewModel.username] [$registerViewModel.password]")
+                        registerViewModel.registerUser(
+                            fullName = registerViewModel.username.value,
+                            email = registerViewModel.emailAddress.value,
+                            password = registerViewModel.password.value
+                        )
                     }
                 )
             }
