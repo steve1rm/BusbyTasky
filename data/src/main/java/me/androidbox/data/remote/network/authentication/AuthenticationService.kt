@@ -20,8 +20,8 @@ interface AuthenticationService {
     ) : LoginDto
 
     @GET(EndPointConstant.LOGOUT)
-    suspend fun logout(): ErrorResponseDto
+    suspend fun logout()
 
     @GET(EndPointConstant.AUTHENTICATE)
-    suspend fun authenticate(): ErrorResponseDto
+    suspend fun authenticate()
 }
