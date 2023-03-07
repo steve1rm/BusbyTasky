@@ -12,12 +12,13 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
+import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
 
-    @Reusable
+    @Singleton
     @Provides
     fun provideHttpLoggingInteceptor(): HttpLoggingInterceptor {
         val loggingInterceptor = HttpLoggingInterceptor()
@@ -31,13 +32,13 @@ object NetworkModule {
         return loggingInterceptor
     }
 
-    @Reusable
+    @Singleton
     @Provides
     fun provideApiKeyInterceptor(): ApiKeyInterceptor {
         return ApiKeyInterceptor()
     }
 
-    @Reusable
+    @Singleton
     @Provides
     fun provideOkHttpClient(
         loggingInterceptor: HttpLoggingInterceptor,
@@ -50,7 +51,7 @@ object NetworkModule {
             .build()
     }
 
-    @Reusable
+    @Singleton
     @Provides
     fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
@@ -60,7 +61,7 @@ object NetworkModule {
             .build()
     }
 
-    @Reusable
+    @Singleton
     @Provides
     fun provideAuthenticationService(retrofit: Retrofit): AuthenticationService {
         return retrofit.create(AuthenticationService::class.java)
