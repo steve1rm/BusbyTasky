@@ -79,7 +79,7 @@ fun AgendaHeader(
         Divider(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(color = MaterialTheme.colorScheme.divider)
+                .background(color = MaterialTheme.colorScheme.headerDividerColor)
         )
     }
 }
