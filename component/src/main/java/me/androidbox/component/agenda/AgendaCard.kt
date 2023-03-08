@@ -27,7 +27,7 @@ fun AgendaCard(
     modifier: Modifier = Modifier,
     titleTextColor: Color = Color.Black,
     subTitleTextColor: Color = MaterialTheme.colorScheme.AgendaBodyTextColor,
-    backgroundColor: Color = MaterialTheme.colorScheme.AgendaItemBackgroundLightGreen,
+    backgroundColor: Color = MaterialTheme.colorScheme.EventCardBackgroundColor,
     dotColor: Color = Color.White,
     isAgendaCompleted: Boolean = false,
     onMenuOptionClicked: () -> Unit
@@ -76,7 +76,7 @@ fun PreviewAgendaCardIsCompleted() {
     BusbyTaskyTheme {
         AgendaCard(
             titleTextColor = Color.White,
-            backgroundColor = MaterialTheme.colorScheme.AgendaItemBackgroundGreen,
+            backgroundColor = MaterialTheme.colorScheme.TaskCardBackgroundColor,
             subTitleTextColor = Color.White,
             isAgendaCompleted = true)  {
             Log.d("AGENDA_ITEM", "Agenda Item has been tapped")
@@ -90,7 +90,7 @@ fun PreviewAgendaCardNotCompleted() {
     BusbyTaskyTheme {
         AgendaCard(
             dotColor = Color.White,
-            backgroundColor = MaterialTheme.colorScheme.AgendaItemBackgroundGreen,
+            backgroundColor = MaterialTheme.colorScheme.EventCardBackgroundColor,
             titleTextColor = Color.White,
             subTitleTextColor = Color.White,
             isAgendaCompleted = false)  {
@@ -106,7 +106,7 @@ fun PreviewAgendaCardCompletedGreen() {
     BusbyTaskyTheme {
         AgendaCard(
             dotColor = MaterialTheme.colorScheme.DarkOptionButton,
-            backgroundColor = MaterialTheme.colorScheme.AgendaItemBackgroundLightGreen,
+            backgroundColor = MaterialTheme.colorScheme.EventCardBackgroundColor,
             titleTextColor = Color.Black,
             subTitleTextColor = MaterialTheme.colorScheme.AgendaBodyTextColor,
             isAgendaCompleted = true) {
