@@ -27,6 +27,9 @@ fun AgendaCard(
     modifier: Modifier = Modifier,
     agendaCardType: AgendaCardType,
     isAgendaCompleted: Boolean = false,
+    title: String,
+    subtitle: String,
+    dateTimeInfo: String,
     onMenuOptionClicked: () -> Unit
 ) {
     Box(modifier = modifier) {
@@ -44,10 +47,10 @@ fun AgendaCard(
                     Spacer(modifier = Modifier.width(16.dp))
 
                     if(isAgendaCompleted) {
-                        Text(text = "Meeting", fontWeight = FontWeight.Bold, fontSize = 20.sp, color = agendaCardType.titleTextColor, textDecoration = TextDecoration.LineThrough)
+                        Text(text = title, fontWeight = FontWeight.Bold, fontSize = 20.sp, color = agendaCardType.titleTextColor, textDecoration = TextDecoration.LineThrough)
                     }
                     else {
-                        Text(text = "Meeting", fontWeight = FontWeight.Bold, fontSize = 20.sp, color = agendaCardType.titleTextColor)
+                        Text(text = title, fontWeight = FontWeight.Bold, fontSize = 20.sp, color = agendaCardType.titleTextColor)
                     }
                 }
                 OptionButton(
@@ -58,10 +61,10 @@ fun AgendaCard(
             }
             Spacer(modifier = Modifier.height(14.dp))
             Text(modifier = Modifier.padding(start = 48.dp),
-                text = "This is the project tasky that needs", fontWeight = FontWeight.Normal, fontSize = 14.sp, color = agendaCardType.subTitleTextColor)
+                text = subtitle, fontWeight = FontWeight.Normal, fontSize = 14.sp, color = agendaCardType.subTitleTextColor)
         }
         Text(modifier = Modifier.padding(bottom = 12.dp, end = 16.dp).align(alignment = Alignment.BottomEnd) ,
-            text = "Mar 5, 10:30 - Mar 5, 11:00", fontWeight = FontWeight.Normal, fontSize = 14.sp, color = agendaCardType.subTitleTextColor)
+            text = dateTimeInfo, fontWeight = FontWeight.Normal, fontSize = 14.sp, color = agendaCardType.subTitleTextColor)
     }
 }
 
@@ -74,6 +77,9 @@ fun PreviewTaskCardIsCompleted() {
                 .fillMaxWidth()
                 .height(120.dp).background(color = AgendaCardType.TASK.backgroundColor(), shape = RoundedCornerShape(22.dp)),
             agendaCardType = AgendaCardType.TASK,
+            title = "Develop UI",
+            subtitle = "Implement all agenda cards",
+            dateTimeInfo = "Mar 5, 10:00",
             isAgendaCompleted = true)  {
             Log.d("AGENDA_ITEM", "Agenda Item has been tapped")
         }
@@ -89,6 +95,9 @@ fun PreviewEventCardNotCompleted() {
                 .fillMaxWidth()
                 .height(120.dp).background(color = AgendaCardType.EVENT.backgroundColor(), shape = RoundedCornerShape(22.dp)),
             agendaCardType = AgendaCardType.EVENT,
+            title = "Meeting",
+            subtitle = "Adjust timeline and goals of project",
+            dateTimeInfo = "Mar 5, 10:30 - Mar 5, 11:00",
             isAgendaCompleted = false)  {
             Log.d("AGENDA_ITEM", "Agenda Item has been tapped")
         }
@@ -104,6 +113,9 @@ fun PreviewReminderCardCompleted() {
                 .fillMaxWidth()
                 .height(120.dp).background(color = AgendaCardType.REMINDER.backgroundColor(), shape = RoundedCornerShape(22.dp)),
             agendaCardType = AgendaCardType.REMINDER,
+            title = "Lunch break",
+            subtitle = "Continue to work during your lunch period",
+            dateTimeInfo = "Mar 5, 13:00",
             isAgendaCompleted = true) {
             Log.d("AGENDA_ITEM", "Agenda Item has been tapped")
         }
@@ -126,9 +138,9 @@ enum class AgendaCardType(
     ),
 
     EVENT(
-        titleTextColor = Color.White,
-        subTitleTextColor = Color.White,
-        dotColor = Color.White,
+        titleTextColor = Color.Black,
+        subTitleTextColor = Color.Black,
+        dotColor = Color.Black,
         backgroundColor = {
             MaterialTheme.colorScheme.EventCardBackgroundColor
         },
