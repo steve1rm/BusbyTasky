@@ -81,6 +81,40 @@ fun AgendaCard(
     }
 }
 
+enum class AgendaCardType(
+    val titleTextColor: Color,
+    val subTitleTextColor: Color,
+    val dotColor: Color,
+    val backgroundColor: @Composable () -> Color,
+) {
+    TASK(
+        titleTextColor = Color.White,
+        subTitleTextColor = Color.White,
+        dotColor = Color.White,
+        backgroundColor = {
+            MaterialTheme.colorScheme.TaskCardBackgroundColor
+        }
+    ),
+
+    EVENT(
+        titleTextColor = Color.Black,
+        subTitleTextColor = Color.Black,
+        dotColor = Color.Black,
+        backgroundColor = {
+            MaterialTheme.colorScheme.EventCardBackgroundColor
+        },
+    ),
+
+    REMINDER(
+        titleTextColor = Color.Black,
+        subTitleTextColor = Color.Black,
+        dotColor = Color.Black,
+        backgroundColor = {
+            MaterialTheme.colorScheme.ReminderCardBackgroundColor
+        }
+    )
+}
+
 @Composable
 @Preview(showBackground = true, name = "Agenda card that is marked completed")
 fun PreviewTaskCardIsCompleted() {
@@ -133,38 +167,4 @@ fun PreviewReminderCardCompleted() {
             Log.d("AGENDA_ITEM", "Agenda Item has been tapped")
         }
     }
-}
-
-enum class AgendaCardType(
-    val titleTextColor: Color,
-    val subTitleTextColor: Color,
-    val dotColor: Color,
-    val backgroundColor: @Composable () -> Color,
-) {
-    TASK(
-        titleTextColor = Color.White,
-        subTitleTextColor = Color.White,
-        dotColor = Color.White,
-        backgroundColor = {
-            MaterialTheme.colorScheme.TaskCardBackgroundColor
-        }
-    ),
-
-    EVENT(
-        titleTextColor = Color.Black,
-        subTitleTextColor = Color.Black,
-        dotColor = Color.Black,
-        backgroundColor = {
-            MaterialTheme.colorScheme.EventCardBackgroundColor
-        },
-    ),
-
-    REMINDER(
-        titleTextColor = Color.Black,
-        subTitleTextColor = Color.Black,
-        dotColor = Color.Black,
-        backgroundColor = {
-            MaterialTheme.colorScheme.ReminderCardBackgroundColor
-        }
-    )
 }
