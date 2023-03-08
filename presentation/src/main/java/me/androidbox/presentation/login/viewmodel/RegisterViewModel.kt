@@ -1,6 +1,5 @@
 package me.androidbox.presentation.login.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -62,14 +61,12 @@ class RegisterViewModel @Inject constructor(
                 registerMutableState.value = NetworkResponseState.Success(Unit)
             }
             catch(httpException: HttpException) {
-                Log.d("REGISTRATION", httpException.stackTraceToString())
                 registerMutableState.value = NetworkResponseState.Failure(httpException)
             }
             catch (exception: Exception) {
                 if(exception is CancellationException) {
                     throw Exception()
                 }
-                Log.d("REGISTRATION", exception.stackTraceToString())
             }
         }
     }
