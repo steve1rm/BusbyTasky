@@ -1,6 +1,5 @@
-package me.androidbox.component.login
+package me.androidbox.presentation.login.screen
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -8,7 +7,9 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -31,7 +32,8 @@ import me.androidbox.presentation.login.viewmodel.RegisterViewModel
 @Composable
 fun RegisterScreen(
     modifier: Modifier = Modifier,
-    registerViewModel: RegisterViewModel = hiltViewModel()
+    registerViewModel: RegisterViewModel = hiltViewModel(),
+    onBackArrowClicked: () -> Unit
 ) {
     val username by registerViewModel.username.collectAsState()
     val emailAddress by registerViewModel.emailAddress.collectAsState()
@@ -130,7 +132,6 @@ fun RegisterScreen(
                         .fillMaxWidth(),
                     buttonText = stringResource(R.string.get_started).uppercase(),
                     onButtonClick = {
-                        /** TODO send to room database username and password check if correct/incorrect */
                         registerViewModel.registerUser(
                             fullName = registerViewModel.username.value,
                             email = registerViewModel.emailAddress.value,
@@ -153,7 +154,7 @@ fun RegisterScreen(
                             shape = RoundedCornerShape(size = 16.dp)
                         ),
                     onClick = {
-                        /** TODO navigate back could pop back stack */
+                        onBackArrowClicked()
                     }) {
                     Icon(
                         painter = painterResource(id = R.drawable.back_arrow),
@@ -172,6 +173,8 @@ fun RegisterScreen(
 @Preview(showBackground = true)
 fun PreviewRegisterScreen() {
     BusbyTaskyTheme {
-        RegisterScreen()
+        RegisterScreen(
+            onBackArrowClicked = {}
+        )
     }
 }

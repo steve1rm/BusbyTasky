@@ -6,8 +6,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import me.androidbox.domain.authentication.usecase.RegisterUseCase
+import me.androidbox.presentation.NetworkResponseState
 import retrofit2.HttpException
 import javax.inject.Inject
 
@@ -16,6 +19,9 @@ class RegisterViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
     private val registerUseCase: RegisterUseCase
 ): ViewModel() {
+
+    private val registerMutableState = MutableStateFlow<NetworkResponseState<Unit>>(NetworkResponseState.Idle)
+    val registrationState = registerMutableState.asStateFlow()
 
     private companion object {
         const val USERNAME = "username"
@@ -53,10 +59,11 @@ class RegisterViewModel @Inject constructor(
                     email = email,
                     password = password
                 )
-                println("Registered")
+                registerMutableState.value = NetworkResponseState.Success(Unit)
             }
             catch(httpException: HttpException) {
                 Log.d("REGISTRATION", httpException.stackTraceToString())
+                registerMutableState.value = NetworkResponseState.Failure(httpException)
             }
             catch (exception: Exception) {
                 if(exception is CancellationException) {

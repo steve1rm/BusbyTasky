@@ -7,5 +7,5 @@ sealed interface NetworkResponseState<out T> {
 
     data class Success<T>(val data: T) : NetworkResponseState<T>
 
-    data class Failure<T: Exception>(val error: T) : NetworkResponseState<T>
+    data class Failure(val error: Exception) : NetworkResponseState<Nothing>
 }
