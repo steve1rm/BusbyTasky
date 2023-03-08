@@ -46,12 +46,13 @@ fun AgendaCard(
                     Icon(painter = agendaStatusIcon, contentDescription = "Agenda status")
                     Spacer(modifier = Modifier.width(16.dp))
 
-                    if(isAgendaCompleted) {
-                        Text(text = title, fontWeight = FontWeight.Bold, fontSize = 20.sp, color = agendaCardType.titleTextColor, textDecoration = TextDecoration.LineThrough)
-                    }
-                    else {
-                        Text(text = title, fontWeight = FontWeight.Bold, fontSize = 20.sp, color = agendaCardType.titleTextColor)
-                    }
+                    Text(
+                        text = title,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 20.sp,
+                        color = agendaCardType.titleTextColor,
+                        textDecoration = if(isAgendaCompleted) TextDecoration.LineThrough else TextDecoration.None
+                    )
                 }
                 OptionButton(
                     modifier = Modifier.padding(top = 16.dp, end = 16.dp).align(Alignment.CenterEnd).clickable {
@@ -60,11 +61,23 @@ fun AgendaCard(
                     dotColor = agendaCardType.dotColor)
             }
             Spacer(modifier = Modifier.height(14.dp))
-            Text(modifier = Modifier.padding(start = 48.dp),
-                text = subtitle, fontWeight = FontWeight.Normal, fontSize = 14.sp, color = agendaCardType.subTitleTextColor)
+            Text(
+                modifier = Modifier.padding(start = 48.dp),
+                text = subtitle,
+                fontWeight = FontWeight.Normal,
+                fontSize = 14.sp,
+                color = agendaCardType.subTitleTextColor
+            )
         }
-        Text(modifier = Modifier.padding(bottom = 12.dp, end = 16.dp).align(alignment = Alignment.BottomEnd) ,
-            text = dateTimeInfo, fontWeight = FontWeight.Normal, fontSize = 14.sp, color = agendaCardType.subTitleTextColor)
+        Text(
+            modifier = Modifier
+                .padding(bottom = 12.dp, end = 16.dp)
+                .align(alignment = Alignment.BottomEnd),
+            text = dateTimeInfo,
+            fontWeight = FontWeight.Normal,
+            fontSize = 14.sp,
+            color = agendaCardType.subTitleTextColor
+        )
     }
 }
 
