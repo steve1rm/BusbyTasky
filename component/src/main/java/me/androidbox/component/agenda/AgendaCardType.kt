@@ -20,16 +20,19 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import me.androidbox.component.R
 import me.androidbox.component.general.OptionButton
-import me.androidbox.component.ui.theme.*
+import me.androidbox.component.ui.theme.BusbyTaskyTheme
+import me.androidbox.component.ui.theme.EventCardBackgroundColor
+import me.androidbox.component.ui.theme.ReminderCardBackgroundColor
+import me.androidbox.component.ui.theme.TaskCardBackgroundColor
 
 @Composable
 fun AgendaCard(
-    modifier: Modifier = Modifier,
-    agendaCardType: AgendaCardType,
-    isAgendaCompleted: Boolean = false,
     title: String,
     subtitle: String,
     dateTimeInfo: String,
+    agendaCardType: AgendaCardType,
+    modifier: Modifier = Modifier,
+    isAgendaCompleted: Boolean = false,
     onMenuOptionClicked: () -> Unit
 ) {
     Box(modifier = modifier) {
