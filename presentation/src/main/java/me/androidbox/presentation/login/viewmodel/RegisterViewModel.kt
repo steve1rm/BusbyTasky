@@ -54,7 +54,7 @@ class RegisterViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 registerMutableState.value = NetworkResponseState.Loading
-                
+
                 registerUseCase.execute(
                     fullName = fullName,
                     email = email,

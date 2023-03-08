@@ -12,7 +12,6 @@ class AuthenticationImp @Inject constructor(
 ) : Authentication {
 
     override suspend fun registerUser(fullName: String, email: String, password: String) {
-        /* MOCK DATA */
         val registrationRequestDto = RegistrationRequestDto(
             fullName = fullName,
             email = email,
