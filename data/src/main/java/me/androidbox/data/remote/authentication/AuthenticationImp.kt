@@ -1,9 +1,5 @@
 package me.androidbox.data.remote.authentication
 
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import me.androidbox.data.remote.model.request.RegistrationRequestDto
 import me.androidbox.data.remote.network.authentication.AuthenticationService
 import me.androidbox.domain.authentication.remote.Authentication
@@ -14,18 +10,15 @@ class AuthenticationImp @Inject constructor(
 ) : Authentication {
 
     override suspend fun registerUser(fullName: String, email: String, password: String) {
-        /* TODO Pass in the dispatcher in the constructor */
-        withContext(Dispatchers.IO) {
-            /* MOCK DATA */
-            val registrationRequestDto = RegistrationRequestDto(
-                fullName = "JoeBlogs",
-                email = "joe@gmail.com",
-                password = "Password1"
-            )
+        /* MOCK DATA */
+        val registrationRequestDto = RegistrationRequestDto(
+            fullName = "JoeBlogs",
+            email = "joe1@gmail.com",
+            password = "Password1"
+        )
 
-            authenticationService.register(
-                registrationRequestDto
-            )
-        }
+        authenticationService.register(
+            registrationRequestDto
+        )
     }
 }
