@@ -72,7 +72,7 @@ fun AgendaCard(
 
 @Composable
 @Preview(showBackground = true, name = "Agenda card that is marked completed")
-fun PreviewAgendaCardIsCompleted() {
+fun PreviewTaskCardIsCompleted() {
     BusbyTaskyTheme {
         AgendaCard(
             titleTextColor = Color.White,
@@ -86,7 +86,7 @@ fun PreviewAgendaCardIsCompleted() {
 
 @Composable
 @Preview(showBackground = true, name = "Agenda card that is marked not completed")
-fun PreviewAgendaCardNotCompleted() {
+fun PreviewEventCardNotCompleted() {
     BusbyTaskyTheme {
         AgendaCard(
             dotColor = Color.White,
@@ -99,10 +99,9 @@ fun PreviewAgendaCardNotCompleted() {
     }
 }
 
-
 @Composable
 @Preview(showBackground = true, name = "Agenda card that is marked completed")
-fun PreviewAgendaCardCompletedGreen() {
+fun PreviewReminderCardCompleted() {
     BusbyTaskyTheme {
         AgendaCard(
             dotColor = MaterialTheme.colorScheme.DarkOptionButton,
@@ -113,4 +112,38 @@ fun PreviewAgendaCardCompletedGreen() {
             Log.d("AGENDA_ITEM", "Agenda Item has been tapped")
         }
     }
+}
+
+enum class AgendaCard(
+    val titleTextColor: Color,
+    val subTitleTextColor: Color,
+    val dotColor: Color,
+    val backgroundColor: @Composable () -> Color,
+) {
+    TASK(
+        titleTextColor = Color.White,
+        subTitleTextColor = Color.White,
+        dotColor = Color.White,
+        backgroundColor = {
+            MaterialTheme.colorScheme.TaskCardBackgroundColor
+        }
+    ),
+
+    EVENT(
+        titleTextColor = Color.White,
+        subTitleTextColor = Color.White,
+        dotColor = Color.White,
+        backgroundColor = {
+            MaterialTheme.colorScheme.EventCardBackgroundColor
+        },
+    ),
+
+    REMINDER(
+        titleTextColor = Color.Black,
+        subTitleTextColor = Color.Black,
+        dotColor = Color.Black,
+        backgroundColor = {
+            MaterialTheme.colorScheme.ReminderCardBackgroundColor
+        }
+    )
 }
