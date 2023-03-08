@@ -25,18 +25,13 @@ import me.androidbox.component.ui.theme.*
 @Composable
 fun AgendaCard(
     modifier: Modifier = Modifier,
-    titleTextColor: Color = Color.Black,
-    subTitleTextColor: Color = MaterialTheme.colorScheme.AgendaBodyTextColor,
-    backgroundColor: Color = MaterialTheme.colorScheme.EventCardBackgroundColor,
-    dotColor: Color = Color.White,
+    agendaCardType: AgendaCardType,
     isAgendaCompleted: Boolean = false,
     onMenuOptionClicked: () -> Unit
 ) {
-    Box(modifier = Modifier
-        .fillMaxWidth()
-        .height(120.dp).background(color = backgroundColor, shape = RoundedCornerShape(22.dp))) {
+    Box(modifier = modifier) {
         Column {
-            Box(modifier = modifier
+            Box(modifier = Modifier
                 .fillMaxWidth()) {
                 Row(modifier = Modifier.padding(start = 16.dp, top = 16.dp).align(Alignment.TopStart),
                     verticalAlignment = Alignment.CenterVertically) {
@@ -49,24 +44,24 @@ fun AgendaCard(
                     Spacer(modifier = Modifier.width(16.dp))
 
                     if(isAgendaCompleted) {
-                        Text(text = "Meeting", fontWeight = FontWeight.Bold, fontSize = 20.sp, color = titleTextColor ,textDecoration = TextDecoration.LineThrough)
+                        Text(text = "Meeting", fontWeight = FontWeight.Bold, fontSize = 20.sp, color = agendaCardType.titleTextColor, textDecoration = TextDecoration.LineThrough)
                     }
                     else {
-                        Text(text = "Meeting", fontWeight = FontWeight.Bold, fontSize = 20.sp, color = titleTextColor)
+                        Text(text = "Meeting", fontWeight = FontWeight.Bold, fontSize = 20.sp, color = agendaCardType.titleTextColor)
                     }
                 }
                 OptionButton(
                     modifier = Modifier.padding(top = 16.dp, end = 16.dp).align(Alignment.CenterEnd).clickable {
                         onMenuOptionClicked()
                     },
-                    dotColor = dotColor)
+                    dotColor = agendaCardType.dotColor)
             }
             Spacer(modifier = Modifier.height(14.dp))
             Text(modifier = Modifier.padding(start = 48.dp),
-                text = "This is the project tasky that needs", fontWeight = FontWeight.Normal, fontSize = 14.sp, color = subTitleTextColor)
+                text = "This is the project tasky that needs", fontWeight = FontWeight.Normal, fontSize = 14.sp, color = agendaCardType.subTitleTextColor)
         }
         Text(modifier = Modifier.padding(bottom = 12.dp, end = 16.dp).align(alignment = Alignment.BottomEnd) ,
-            text = "Mar 5, 10:30 - Mar 5, 11:00", fontWeight = FontWeight.Normal, fontSize = 14.sp, color = subTitleTextColor)
+            text = "Mar 5, 10:30 - Mar 5, 11:00", fontWeight = FontWeight.Normal, fontSize = 14.sp, color = agendaCardType.subTitleTextColor)
     }
 }
 
@@ -75,9 +70,10 @@ fun AgendaCard(
 fun PreviewTaskCardIsCompleted() {
     BusbyTaskyTheme {
         AgendaCard(
-            titleTextColor = Color.White,
-            backgroundColor = MaterialTheme.colorScheme.TaskCardBackgroundColor,
-            subTitleTextColor = Color.White,
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(120.dp).background(color = AgendaCardType.TASK.backgroundColor(), shape = RoundedCornerShape(22.dp)),
+            agendaCardType = AgendaCardType.TASK,
             isAgendaCompleted = true)  {
             Log.d("AGENDA_ITEM", "Agenda Item has been tapped")
         }
@@ -89,10 +85,10 @@ fun PreviewTaskCardIsCompleted() {
 fun PreviewEventCardNotCompleted() {
     BusbyTaskyTheme {
         AgendaCard(
-            dotColor = Color.White,
-            backgroundColor = MaterialTheme.colorScheme.EventCardBackgroundColor,
-            titleTextColor = Color.White,
-            subTitleTextColor = Color.White,
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(120.dp).background(color = AgendaCardType.EVENT.backgroundColor(), shape = RoundedCornerShape(22.dp)),
+            agendaCardType = AgendaCardType.EVENT,
             isAgendaCompleted = false)  {
             Log.d("AGENDA_ITEM", "Agenda Item has been tapped")
         }
@@ -104,17 +100,17 @@ fun PreviewEventCardNotCompleted() {
 fun PreviewReminderCardCompleted() {
     BusbyTaskyTheme {
         AgendaCard(
-            dotColor = MaterialTheme.colorScheme.DarkOptionButton,
-            backgroundColor = MaterialTheme.colorScheme.EventCardBackgroundColor,
-            titleTextColor = Color.Black,
-            subTitleTextColor = MaterialTheme.colorScheme.AgendaBodyTextColor,
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(120.dp).background(color = AgendaCardType.REMINDER.backgroundColor(), shape = RoundedCornerShape(22.dp)),
+            agendaCardType = AgendaCardType.REMINDER,
             isAgendaCompleted = true) {
             Log.d("AGENDA_ITEM", "Agenda Item has been tapped")
         }
     }
 }
 
-enum class AgendaCard(
+enum class AgendaCardType(
     val titleTextColor: Color,
     val subTitleTextColor: Color,
     val dotColor: Color,
