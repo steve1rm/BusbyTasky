@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import dagger.hilt.android.AndroidEntryPoint
-import me.androidbox.presentation.login.screen.RegisterScreen
+import me.androidbox.presentation.login.screen.LoginScreen
 import me.androidbox.presentation.ui.theme.BusbyTaskyTheme
 
 @AndroidEntryPoint
@@ -13,7 +13,7 @@ class HomeActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             BusbyTaskyTheme {
-                RegisterScreen() {
+                LoginScreen {
 
                 }
             }

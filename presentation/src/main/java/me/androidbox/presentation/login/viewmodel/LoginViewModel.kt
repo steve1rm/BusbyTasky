@@ -50,6 +50,8 @@ class LoginViewModel @Inject constructor(
     fun loginUser(email: String, password: String) {
         viewModelScope.launch {
             try {
+                loginMutableState.value = NetworkResponseState.Loading
+
                 val loginModel = loginUseCase.execute(email, password)
                 loginMutableState.value = NetworkResponseState.Success(loginModel)
             }
