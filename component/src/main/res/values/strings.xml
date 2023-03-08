@@ -5,4 +5,5 @@
     <string name="name">name</string>
     <string name="email_address">Email address</string>
     <string name="get_started">Get Started</string>
+    <string name="agenda_status">Agenda status</string>
 </resources>
