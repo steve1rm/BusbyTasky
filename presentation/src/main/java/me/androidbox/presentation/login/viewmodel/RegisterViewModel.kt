@@ -53,6 +53,7 @@ class RegisterViewModel @Inject constructor(
                     email = email,
                     password = password
                 )
+                println("Registered")
             }
             catch(httpException: HttpException) {
                 Log.d("REGISTRATION", httpException.stackTraceToString())
