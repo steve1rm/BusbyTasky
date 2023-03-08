@@ -27,16 +27,21 @@ fun AgendaHeader(
     agendaHeaderItem: AgendaHeaderItem,
     subTitle: String
     ) {
-    Column(modifier = modifier.fillMaxWidth()) {
+    Column(modifier = modifier) {
         Row(modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically) {
             Image(
                 painter = painterResource(id = agendaHeaderItem.drawableRes),
-                contentDescription = "Agenda image"
+                contentDescription = stringResource(R.string.agenda_image)
                             )
             Spacer(modifier = Modifier.width(10.dp))
 
-            Text(text = stringResource(agendaHeaderItem.titleRes), fontWeight = FontWeight.Bold, fontSize = 16.sp, color = MaterialTheme.colorScheme.agendaTitleHeaderColor)
+            Text(
+                text = stringResource(agendaHeaderItem.titleRes),
+                fontWeight = FontWeight.Bold,
+                fontSize = 16.sp,
+                color = MaterialTheme.colorScheme.agendaTitleHeaderColor
+            )
         }
 
         Spacer(modifier = Modifier.height(30.dp))
@@ -46,18 +51,26 @@ fun AgendaHeader(
             Row(modifier = Modifier.weight(4F),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Start) {
-                Icon(painter = painterResource(id = R.drawable.incomplete), contentDescription = "subtitle icon")
+                Icon(painter = painterResource(id = R.drawable.incomplete), contentDescription = stringResource(R.string.subtitle_icon))
 
                 /* TODO I had to just the padding as its aligned to the image and not the edge of the boarder */
                 Spacer(modifier = Modifier.width(14.dp))
 
-                Text(text = subTitle, fontWeight = FontWeight.SemiBold, fontSize = 26.sp, color = MaterialTheme.colorScheme.agendaSubTitleHeaderColor)
+                Text(
+                    text = subTitle,
+                    fontWeight = FontWeight.SemiBold,
+                    fontSize = 26.sp,
+                    color = MaterialTheme.colorScheme.agendaSubTitleHeaderColor
+                )
             }
             
             Row(modifier = Modifier.weight(1F),
                 horizontalArrangement = Arrangement.End
             ) {
-                Icon(painter = painterResource(id = R.drawable.forward_arrow), contentDescription = "forward arrow")
+                Icon(
+                    painter = painterResource(id = R.drawable.forward_arrow),
+                    contentDescription = stringResource(R.string.forward_arrow)
+                )
             }
         }
 
@@ -66,7 +79,6 @@ fun AgendaHeader(
         Divider(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 16.dp)
                 .background(color = MaterialTheme.colorScheme.divider)
         )
     }
@@ -77,6 +89,7 @@ fun AgendaHeader(
 fun PreviewAgendaHeaderEvent() {
     BusbyTaskyTheme {
         AgendaHeader(
+            modifier = Modifier.fillMaxWidth(),
             agendaHeaderItem = AgendaHeaderItem.TASK,
             subTitle = "Sample task"
         )
@@ -88,6 +101,7 @@ fun PreviewAgendaHeaderEvent() {
 fun PreviewAgendaHeaderTask() {
     BusbyTaskyTheme {
         AgendaHeader(
+            modifier = Modifier.fillMaxWidth(),
             agendaHeaderItem = AgendaHeaderItem.EVENT,
             subTitle = "Sample event"
         )
@@ -99,6 +113,7 @@ fun PreviewAgendaHeaderTask() {
 fun PreviewAgendaHeaderReminder() {
     BusbyTaskyTheme {
         AgendaHeader(
+            modifier = Modifier.fillMaxWidth(),
             agendaHeaderItem = AgendaHeaderItem.REMINDER,
             subTitle = "Sample reminder"
         )

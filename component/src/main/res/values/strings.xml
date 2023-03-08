@@ -8,4 +8,7 @@
     <string name="event">Event</string>
     <string name="task">Task</string>
     <string name="reminder">Reminder</string>
+    <string name="subtitle_icon">subtitle icon</string>
+    <string name="forward_arrow">forward arrow</string>
+    <string name="agenda_image">Agenda image</string>
 </resources>
