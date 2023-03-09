@@ -1,5 +1,7 @@
 package me.androidbox.presentation.login.screen
 
+import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -8,11 +10,13 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -27,18 +31,45 @@ import me.androidbox.component.general.TaskButton
 import me.androidbox.component.general.UserInputTextField
 import me.androidbox.component.ui.theme.BusbyTaskyTheme
 import me.androidbox.component.ui.theme.backgroundInputEntry
+import me.androidbox.presentation.NetworkResponseState
 import me.androidbox.presentation.login.viewmodel.RegisterViewModel
 
 @Composable
 fun RegisterScreen(
     modifier: Modifier = Modifier,
     registerViewModel: RegisterViewModel = hiltViewModel(),
-    onBackArrowClicked: () -> Unit
+    onBackArrowClicked: () -> Unit,
+    onRegistrationSuccess: () -> Unit
 ) {
     val username by registerViewModel.username.collectAsState()
     val emailAddress by registerViewModel.emailAddress.collectAsState()
     val password by registerViewModel.password.collectAsState()
     val isPasswordVisible by registerViewModel.isPasswordVisible.collectAsState()
+
+    val registration = registerViewModel.registrationState.collectAsState()
+    val context = LocalContext.current
+
+    LaunchedEffect(key1 = registration.value) {
+        when(val status = registration.value) {
+            NetworkResponseState.Loading -> {
+                /* TODO Show a loading progress spinner */
+            }
+
+            is NetworkResponseState.Success -> {
+                /* Navigate back to login screen */
+                onRegistrationSuccess()
+            }
+
+            is NetworkResponseState.Failure -> {
+           //     Toast.makeText(context, "Failed to register ${status.error}", Toast.LENGTH_LONG).show()
+                /* Is there a way to pass in a context to the launched effect? */
+                Log.d("REGISTRATION", "Failed to register ${status.error}")
+            }
+            NetworkResponseState.Idle -> {
+                /* no-op */
+            }
+       }
+    }
 
     Column(
         modifier = modifier
@@ -76,7 +107,7 @@ fun RegisterScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .background(
-                          shape = RoundedCornerShape(10.dp),
+                            shape = RoundedCornerShape(10.dp),
                             color = MaterialTheme.colorScheme.backgroundInputEntry
                         ),
                     inputValue = username,
@@ -169,12 +200,15 @@ fun RegisterScreen(
     }
 }
 
+
+
 @Composable
 @Preview(showBackground = true)
 fun PreviewRegisterScreen() {
     BusbyTaskyTheme {
         RegisterScreen(
-            onBackArrowClicked = {}
+            onBackArrowClicked = {},
+            onRegistrationSuccess = {}
         )
     }
 }

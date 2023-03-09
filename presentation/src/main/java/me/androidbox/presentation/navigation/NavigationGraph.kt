@@ -30,10 +30,15 @@ fun NavigationGraph(
         composable(
             route = RegisterScreen.route
         ) {
-            RegisterScreen {
+            RegisterScreen(
+                onBackArrowClicked = {
                 /* Back arrow clicked, pop RegisterScreen of the backstack to get back to login screen */
                 navHostController.popBackStack()
-            }
+            },
+            onRegistrationSuccess = {
+                /* Registration Success */
+                navHostController.popBackStack()
+            })
         }
     }
 }

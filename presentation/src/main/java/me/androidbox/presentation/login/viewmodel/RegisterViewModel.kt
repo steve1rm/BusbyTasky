@@ -69,6 +69,7 @@ class RegisterViewModel @Inject constructor(
                 if(exception is CancellationException) {
                     throw Exception()
                 }
+                registerMutableState.value = NetworkResponseState.Failure(exception)
             }
         }
     }
