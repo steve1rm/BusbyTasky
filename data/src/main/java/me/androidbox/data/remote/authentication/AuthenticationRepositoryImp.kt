@@ -4,12 +4,12 @@ import me.androidbox.data.remote.model.request.LoginRequestDto
 import me.androidbox.data.remote.model.request.RegistrationRequestDto
 import me.androidbox.data.remote.network.authentication.AuthenticationService
 import me.androidbox.domain.authentication.model.LoginModel
-import me.androidbox.domain.authentication.remote.Authentication
+import me.androidbox.domain.authentication.remote.AuthenticationRepository
 import javax.inject.Inject
 
-class AuthenticationImp @Inject constructor(
+class AuthenticationRepositoryImp @Inject constructor(
     private val authenticationService: AuthenticationService,
-) : Authentication {
+) : AuthenticationRepository {
 
     override suspend fun registerUser(fullName: String, email: String, password: String) {
         val registrationRequestDto = RegistrationRequestDto(
