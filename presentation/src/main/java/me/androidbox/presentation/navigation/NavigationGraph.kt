@@ -31,8 +31,8 @@ fun NavigationGraph(
             route = RegisterScreen.route
         ) {
             RegisterScreen {
-                /* Back arrow clicked, navigate to login screen */
-                navHostController.navigate(LoginScreen.route)
+                /* Back arrow clicked, pop RegisterScreen of the backstack to get back to login screen */
+                navHostController.popBackStack()
             }
         }
     }
