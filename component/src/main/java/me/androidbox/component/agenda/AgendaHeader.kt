@@ -89,7 +89,7 @@ fun AgendaHeader(
 fun PreviewAgendaHeaderEvent() {
     BusbyTaskyTheme {
         AgendaHeader(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
             agendaHeaderItem = AgendaHeaderItem.TASK,
             subTitle = "Sample task"
         )
@@ -101,7 +101,7 @@ fun PreviewAgendaHeaderEvent() {
 fun PreviewAgendaHeaderTask() {
     BusbyTaskyTheme {
         AgendaHeader(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
             agendaHeaderItem = AgendaHeaderItem.EVENT,
             subTitle = "Sample event"
         )
@@ -113,7 +113,7 @@ fun PreviewAgendaHeaderTask() {
 fun PreviewAgendaHeaderReminder() {
     BusbyTaskyTheme {
         AgendaHeader(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
             agendaHeaderItem = AgendaHeaderItem.REMINDER,
             subTitle = "Sample reminder"
         )
