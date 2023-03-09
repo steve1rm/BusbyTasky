@@ -47,6 +47,7 @@ fun MutableVersionCatalogContainer.createLibs() {
         version("version.androidx.hilt-navigation-compose", "_")
         version("version.retrofit2", "_")
         version("version.okhttp3", "_")
+        version("version.androidx.navigation", "_")
 
         /* UI */
         library("core-ktx", "androidx.core", "core-ktx").versionRef("version.androidx.core")
@@ -65,6 +66,7 @@ fun MutableVersionCatalogContainer.createLibs() {
         library("hilt-android","com.google.dagger", "hilt-android").versionRef("version.google.dagger")
         library("hilt-compiler", "com.google.dagger", "hilt-compiler").versionRef("version.google.dagger")
         library("hilt-navigation-compose","androidx.hilt", "hilt-navigation-compose").versionRef("version.androidx.hilt-navigation-compose")
+        library("navigation-compose","androidx.navigation", "navigation-compose").versionRef("version.androidx.navigation")
 
         /* Room */
         library("room-runtime", "androidx.room", "room-runtime").versionRef("version.androidx.room")
