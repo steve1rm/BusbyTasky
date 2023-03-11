@@ -31,7 +31,7 @@ import me.androidbox.component.general.TaskButton
 import me.androidbox.component.general.UserInputTextField
 import me.androidbox.component.ui.theme.BusbyTaskyTheme
 import me.androidbox.component.ui.theme.backgroundInputEntry
-import me.androidbox.presentation.NetworkResponseState
+import me.androidbox.domain.authentication.NetworkResponseState
 import me.androidbox.presentation.login.viewmodel.RegisterViewModel
 
 @Composable
@@ -65,10 +65,8 @@ fun RegisterScreen(
                 /* Is there a way to pass in a context to the launched effect? */
                 Log.d("REGISTRATION", "Failed to register ${status.error}")
             }
-            NetworkResponseState.Idle -> {
-                /* no-op */
-            }
-       }
+            else -> {}
+        }
     }
 
     Column(

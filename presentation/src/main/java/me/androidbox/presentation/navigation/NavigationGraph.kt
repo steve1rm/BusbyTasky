@@ -1,6 +1,7 @@
 package me.androidbox.presentation.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.navigation.NavDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -9,11 +10,12 @@ import me.androidbox.presentation.login.screen.RegisterScreen
 
 @Composable
 fun NavigationGraph(
-    navHostController: NavHostController
+    navHostController: NavHostController,
+    startDestination: String
 ) {
     NavHost(
         navController = navHostController,
-        startDestination = LoginScreen.route
+        startDestination = startDestination
     ) {
 
         /* LoginScreen */

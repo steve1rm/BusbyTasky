@@ -51,7 +51,7 @@ class AuthenticationRepositoryImp @Inject constructor(
                 fullName = loginDto.fullName
             )
 
-            return NetworkResponseState.Success(loginModel)
+            NetworkResponseState.Success(loginModel)
         }
         catch(httpException: HttpException) {
             NetworkResponseState.Failure(httpException)
@@ -64,7 +64,19 @@ class AuthenticationRepositoryImp @Inject constructor(
         }
     }
 
-    override suspend fun authenticateUser() {
-        
+    override suspend fun authenticateUser(): NetworkResponseState<Unit> {
+        return try {
+            authenticationService.authenticate()
+            NetworkResponseState.Success(Unit)
+        }
+        catch(httpException: HttpException) {
+            NetworkResponseState.Failure(httpException)
+        }
+        catch (exception: Exception) {
+            if(exception is CancellationException) {
+                throw Exception()
+            }
+            NetworkResponseState.Failure(exception)
+        }
     }
 }
