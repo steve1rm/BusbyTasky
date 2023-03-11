@@ -1,4 +1,4 @@
-package me.androidbox.presentation
+package me.androidbox.domain.authentication
 
 sealed interface NetworkResponseState<out T> {
     object Idle : NetworkResponseState<Nothing>
