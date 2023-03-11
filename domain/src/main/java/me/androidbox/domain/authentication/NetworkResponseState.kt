@@ -1,8 +1,6 @@
-package me.androidbox.presentation
+package me.androidbox.domain.authentication
 
 sealed interface NetworkResponseState<out T> {
-    object Idle : NetworkResponseState<Nothing>
-
     object Loading : NetworkResponseState<Nothing>
 
     data class Success<T>(val data: T) : NetworkResponseState<T>
