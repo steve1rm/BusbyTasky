@@ -48,6 +48,7 @@ fun MutableVersionCatalogContainer.createLibs() {
         version("version.retrofit2", "_")
         version("version.okhttp3", "_")
         version("version.androidx.navigation", "_")
+        version("version.androidx.core-splashscreen", "_")
 
         /* UI */
         library("core-ktx", "androidx.core", "core-ktx").versionRef("version.androidx.core")
@@ -78,6 +79,9 @@ fun MutableVersionCatalogContainer.createLibs() {
         library("retrofit", "com.squareup.retrofit2", "retrofit").versionRef("version.retrofit2")
         library("converter-moshi", "com.squareup.retrofit2", "converter-moshi").versionRef("version.retrofit2")
         library("logging-interceptor","com.squareup.okhttp3", "logging-interceptor").versionRef("version.okhttp3")
+
+        /* splash screen */
+        library("core-splashscreen", "androidx.core", "core-splashscreen").versionRef("version.androidx.core-splashscreen")
 
         bundle("retrofit", listOf("moshi-kotlin", "retrofit", "converter-moshi", "logging-interceptor"))
         bundle("compose", listOf("activity-compose", "material", "ui", "ui-tooling-preview"))

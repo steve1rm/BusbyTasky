@@ -34,4 +34,8 @@ class AuthenticationRepositoryImp @Inject constructor(
             fullName = loginDto.fullName
         )
     }
+
+    override suspend fun authenticateUser() {
+        
+    }
 }
