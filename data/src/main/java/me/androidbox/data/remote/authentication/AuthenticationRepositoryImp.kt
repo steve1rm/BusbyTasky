@@ -4,7 +4,7 @@ import kotlinx.coroutines.CancellationException
 import me.androidbox.data.remote.model.request.LoginRequestDto
 import me.androidbox.data.remote.model.request.RegistrationRequestDto
 import me.androidbox.data.remote.network.authentication.AuthenticationService
-import me.androidbox.domain.authentication.NetworkResponseState
+import me.androidbox.domain.authentication.ResponseState
 import me.androidbox.domain.authentication.model.Login
 import me.androidbox.domain.authentication.remote.AuthenticationRepository
 import retrofit2.HttpException
@@ -14,7 +14,7 @@ class AuthenticationRepositoryImp @Inject constructor(
     private val authenticationService: AuthenticationService,
 ) : AuthenticationRepository {
 
-    override suspend fun registerUser(fullName: String, email: String, password: String): NetworkResponseState<Unit> {
+    override suspend fun registerUser(fullName: String, email: String, password: String): ResponseState<Unit> {
         val registrationRequestDto = RegistrationRequestDto(
             fullName = fullName,
             email = email,
@@ -23,20 +23,20 @@ class AuthenticationRepositoryImp @Inject constructor(
 
         return try {
             authenticationService.register(registrationRequestDto)
-            NetworkResponseState.Success(Unit)
+            ResponseState.Success(Unit)
         }
         catch(httpException: HttpException) {
-             NetworkResponseState.Failure(httpException)
+             ResponseState.Failure(httpException)
         }
         catch (exception: Exception) {
             if(exception is CancellationException) {
                 throw Exception()
             }
-            NetworkResponseState.Failure(exception)
+            ResponseState.Failure(exception)
         }
     }
 
-    override suspend fun loginUser(email: String, password: String): NetworkResponseState<Login> {
+    override suspend fun loginUser(email: String, password: String): ResponseState<Login> {
         val loginRequestDto = LoginRequestDto(
             email = email,
             password = password
@@ -51,16 +51,16 @@ class AuthenticationRepositoryImp @Inject constructor(
                 fullName = loginDto.fullName
             )
 
-            return NetworkResponseState.Success(login)
+            return ResponseState.Success(login)
         }
         catch(httpException: HttpException) {
-            NetworkResponseState.Failure(httpException)
+            ResponseState.Failure(httpException)
         }
         catch (exception: Exception) {
             if(exception is CancellationException) {
                 throw Exception()
             }
-            NetworkResponseState.Failure(exception)
+            ResponseState.Failure(exception)
         }
     }
 }
