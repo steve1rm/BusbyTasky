@@ -12,5 +12,5 @@ import me.androidbox.domain.authentication.remote.AuthenticationRepository
 interface AuthenticationModule {
 
     @Binds
-    fun bindsAuthenticationImp(authenticationImp: AuthenticationRepositoryImp): AuthenticationRepository
+    fun bindsAuthenticationRepositoryImp(authenticationRepositoryImp: AuthenticationRepositoryImp): AuthenticationRepository
 }
