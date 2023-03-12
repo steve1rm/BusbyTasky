@@ -3,6 +3,7 @@ package me.androidbox.data.remote.authentication
 import kotlinx.coroutines.CancellationException
 import me.androidbox.data.remote.model.request.LoginRequestDto
 import me.androidbox.data.remote.model.request.RegistrationRequestDto
+import me.androidbox.data.remote.model.response.LoginDto
 import me.androidbox.data.remote.network.authentication.AuthenticationService
 import me.androidbox.domain.authentication.ResponseState
 import me.androidbox.domain.authentication.model.Login
@@ -14,6 +15,22 @@ class AuthenticationRepositoryImp @Inject constructor(
     private val authenticationService: AuthenticationService,
 ) : AuthenticationRepository {
 
+    /* TODO Move this to a utils file to be used in other classes */
+    suspend fun <T> checkResult(block: suspend () -> T): Result<T> {
+        return try {
+            return Result.success(block())
+        }
+        catch (httpException: HttpException) {
+            Result.failure(httpException)
+        }
+        catch (exception: Exception) {
+            if (exception is CancellationException) {
+                throw exception
+            }
+            Result.failure(exception)
+        }
+    }
+
     override suspend fun registerUser(fullName: String, email: String, password: String): ResponseState<Unit> {
         val registrationRequestDto = RegistrationRequestDto(
             fullName = fullName,
@@ -21,18 +38,16 @@ class AuthenticationRepositoryImp @Inject constructor(
             password = password
         )
 
-        return try {
+        val result = checkResult<Unit> {
             authenticationService.register(registrationRequestDto)
-            ResponseState.Success(Unit)
         }
-        catch(httpException: HttpException) {
-             ResponseState.Failure(httpException)
-        }
-        catch (exception: Exception) {
-            if(exception is CancellationException) {
-                throw exception
-            }
-            ResponseState.Failure(exception)
+
+        /* TODO Is this the best way to extract the value from the Result<T> */
+        val unit = result.getOrNull()
+        return if(unit!= null) {
+            ResponseState.Success(unit)
+        } else {
+            ResponseState.Failure((result.exceptionOrNull() ?: Exception()) as Exception)
         }
     }
 
@@ -42,25 +57,21 @@ class AuthenticationRepositoryImp @Inject constructor(
             password = password
         )
 
-        return try {
-            val loginDto = authenticationService.login(loginRequestDto)
+        val result = checkResult<LoginDto> {
+            authenticationService.login(loginRequestDto)
+        }
 
+        /* TODO Is this the best way to extract the value from the Result<T> */
+        val loginDto = result.getOrNull()
+        return if(loginDto != null) {
             val login = Login(
                 token = loginDto.token,
                 userId = loginDto.userId,
                 fullName = loginDto.fullName
             )
-
-            return ResponseState.Success(login)
-        }
-        catch(httpException: HttpException) {
-            ResponseState.Failure(httpException)
-        }
-        catch (exception: Exception) {
-            if(exception is CancellationException) {
-                throw exception
-            }
-            ResponseState.Failure(exception)
+            ResponseState.Success(login)
+        } else {
+            ResponseState.Failure((result.exceptionOrNull() ?: Exception()) as Exception)
         }
     }
 }
