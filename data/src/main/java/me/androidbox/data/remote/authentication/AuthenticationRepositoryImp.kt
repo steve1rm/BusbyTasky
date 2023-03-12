@@ -30,7 +30,7 @@ class AuthenticationRepositoryImp @Inject constructor(
         }
         catch (exception: Exception) {
             if(exception is CancellationException) {
-                throw Exception()
+                throw exception
             }
             ResponseState.Failure(exception)
         }
@@ -58,7 +58,7 @@ class AuthenticationRepositoryImp @Inject constructor(
         }
         catch (exception: Exception) {
             if(exception is CancellationException) {
-                throw Exception()
+                throw exception
             }
             ResponseState.Failure(exception)
         }
