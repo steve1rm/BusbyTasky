@@ -8,4 +8,6 @@ interface PreferenceRepository {
     suspend fun saveFullName(fullName: String)
 
     suspend fun retrieveCurrentUserOrNull(): LoginUser?
+
+    suspend fun deleteUser()
 }
