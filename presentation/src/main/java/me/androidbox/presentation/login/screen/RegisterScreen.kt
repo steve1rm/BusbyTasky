@@ -1,7 +1,6 @@
 package me.androidbox.presentation.login.screen
 
 import android.util.Log
-import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -16,7 +15,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -31,7 +29,7 @@ import me.androidbox.component.general.TaskButton
 import me.androidbox.component.general.UserInputTextField
 import me.androidbox.component.ui.theme.BusbyTaskyTheme
 import me.androidbox.component.ui.theme.backgroundInputEntry
-import me.androidbox.presentation.NetworkResponseState
+import me.androidbox.domain.authentication.ResponseState
 import me.androidbox.presentation.login.viewmodel.RegisterViewModel
 
 @Composable
@@ -47,28 +45,25 @@ fun RegisterScreen(
     val isPasswordVisible by registerViewModel.isPasswordVisible.collectAsState()
 
     val registration = registerViewModel.registrationState.collectAsState()
-    val context = LocalContext.current
 
     LaunchedEffect(key1 = registration.value) {
         when(val status = registration.value) {
-            NetworkResponseState.Loading -> {
+            ResponseState.Loading -> {
                 /* TODO Show a loading progress spinner */
             }
 
-            is NetworkResponseState.Success -> {
+            is ResponseState.Success -> {
                 /* Navigate back to login screen */
                 onRegistrationSuccess()
             }
 
-            is NetworkResponseState.Failure -> {
-           //     Toast.makeText(context, "Failed to register ${status.error}", Toast.LENGTH_LONG).show()
-                /* Is there a way to pass in a context to the launched effect? */
+            is ResponseState.Failure -> {
                 Log.d("REGISTRATION", "Failed to register ${status.error}")
             }
-            NetworkResponseState.Idle -> {
+            else -> {
                 /* no-op */
             }
-       }
+        }
     }
 
     Column(

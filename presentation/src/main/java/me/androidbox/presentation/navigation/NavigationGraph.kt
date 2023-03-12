@@ -20,10 +20,14 @@ fun NavigationGraph(
         composable(
             route = LoginScreen.route
         ) {
-            LoginScreen {
-                /* Signup clicked, navigate to register screen */
-                navHostController.navigate(route = RegisterScreen.route)
-            }
+            LoginScreen(
+                onSignUpClicked = {
+                    /* Signup clicked, navigate to register screen */
+                    navHostController.navigate(route = RegisterScreen.route)
+                },
+                onLoginSuccess = {
+                    /* TODO Navigate to the agenda screen (not implemented yet) */
+                })
         }
 
         /* Register Screen */
