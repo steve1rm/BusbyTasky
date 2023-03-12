@@ -22,7 +22,7 @@ class LoginViewModel @Inject constructor(
     private val loginMutableState: MutableStateFlow<NetworkResponseState<LoginModel>?> = MutableStateFlow(null)
     val loginState = loginMutableState.asStateFlow()
 
-    var username by mutableStateOf("")
+    var email by mutableStateOf("")
         private set
 
     var password by mutableStateOf("")
@@ -32,7 +32,7 @@ class LoginViewModel @Inject constructor(
         private set
 
     fun onUsernameChanged(newUsername: String) {
-        username = newUsername
+        email = newUsername
     }
 
     fun onPasswordChanged(newPassword: String) {
