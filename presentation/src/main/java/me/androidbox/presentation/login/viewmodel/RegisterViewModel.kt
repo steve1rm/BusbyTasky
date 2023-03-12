@@ -2,13 +2,23 @@ package me.androidbox.presentation.login.viewmodel
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
+import me.androidbox.domain.authentication.ResponseState
+import me.androidbox.domain.authentication.usecase.RegisterUseCase
 import javax.inject.Inject
 
 @HiltViewModel
 class RegisterViewModel @Inject constructor(
-    private val savedStateHandle: SavedStateHandle
+    private val savedStateHandle: SavedStateHandle,
+    private val registerUseCase: RegisterUseCase
 ): ViewModel() {
+
+    private val registerMutableState: MutableStateFlow<ResponseState<Unit>?> = MutableStateFlow(null)
+    val registrationState = registerMutableState.asStateFlow()
 
     private companion object {
         const val USERNAME = "username"
@@ -36,5 +46,17 @@ class RegisterViewModel @Inject constructor(
 
     fun onPasswordVisibilityChanged() {
         savedStateHandle[IS_PASSWORD_VISIBLE] = !isPasswordVisible.value
+    }
+
+    fun registerUser(fullName: String, email: String, password: String) {
+        viewModelScope.launch {
+            registerMutableState.value = ResponseState.Loading
+
+            registerMutableState.value = registerUseCase.execute(
+                fullName = fullName,
+                email = email,
+                password = password
+            )
+        }
     }
 }

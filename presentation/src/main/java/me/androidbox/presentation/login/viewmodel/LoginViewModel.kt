@@ -4,13 +4,25 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
+import me.androidbox.domain.authentication.ResponseState
+import me.androidbox.domain.authentication.model.Login
+import me.androidbox.domain.authentication.usecase.LoginUseCase
 import javax.inject.Inject
 
 @HiltViewModel
-class LoginViewModel @Inject constructor() : ViewModel() {
+class LoginViewModel @Inject constructor(
+    private val loginUseCase: LoginUseCase
+) : ViewModel() {
 
-    var username by mutableStateOf("")
+    private val loginMutableState: MutableStateFlow<ResponseState<Login>?> = MutableStateFlow(null)
+    val loginState = loginMutableState.asStateFlow()
+
+    var email by mutableStateOf("")
         private set
 
     var password by mutableStateOf("")
@@ -20,7 +32,7 @@ class LoginViewModel @Inject constructor() : ViewModel() {
         private set
 
     fun onUsernameChanged(newUsername: String) {
-        username = newUsername
+        email = newUsername
     }
 
     fun onPasswordChanged(newPassword: String) {
@@ -29,5 +41,11 @@ class LoginViewModel @Inject constructor() : ViewModel() {
 
     fun onPasswordVisibilityChanged() {
         isPasswordVisible = !isPasswordVisible
+    }
+
+    fun loginUser(email: String, password: String) {
+        viewModelScope.launch {
+            loginMutableState.value = loginUseCase.execute(email, password)
+        }
     }
 }

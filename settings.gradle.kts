@@ -61,6 +61,7 @@ fun MutableVersionCatalogContainer.createLibs() {
         library("coroutines", "org.jetbrains.kotlinx", "kotlinx-coroutines-core").versionRef("version.kotlinx.coroutines")
 
         /* Dagger */
+        library("dagger", "com.google.dagger", "dagger").versionRef("version.google.dagger")
         library("hilt-android","com.google.dagger", "hilt-android").versionRef("version.google.dagger")
         library("hilt-compiler", "com.google.dagger", "hilt-compiler").versionRef("version.google.dagger")
         library("hilt-navigation-compose","androidx.hilt", "hilt-navigation-compose").versionRef("version.androidx.hilt-navigation-compose")
