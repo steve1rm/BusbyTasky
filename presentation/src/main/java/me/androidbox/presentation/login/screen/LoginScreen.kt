@@ -64,7 +64,7 @@ fun LoginScreen(
                             shape = RoundedCornerShape(10.dp),
                             color = MaterialTheme.colorScheme.backgroundInputEntry
                         ),
-                    inputValue = loginViewModel.username,
+                    inputValue = loginViewModel.email,
                     isInputValid = false,
                     placeholderText = stringResource(R.string.email_address),
                     onInputChange = { newUsername ->
@@ -99,7 +99,7 @@ fun LoginScreen(
                         .fillMaxWidth(),
                     buttonText = stringResource(R.string.login).uppercase(),
                     onButtonClick = {
-                        loginViewModel.loginUser(loginViewModel.username, loginViewModel.password)
+                        loginViewModel.loginUser(loginViewModel.email, loginViewModel.password)
                     }
                 )
             }

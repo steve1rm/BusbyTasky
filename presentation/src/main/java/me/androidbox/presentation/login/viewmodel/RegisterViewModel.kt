@@ -4,13 +4,11 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import me.androidbox.domain.authentication.ResponseState
 import me.androidbox.domain.authentication.usecase.RegisterUseCase
-import me.androidbox.presentation.NetworkResponseState
-import retrofit2.HttpException
 import javax.inject.Inject
 
 @HiltViewModel
@@ -19,7 +17,7 @@ class RegisterViewModel @Inject constructor(
     private val registerUseCase: RegisterUseCase
 ): ViewModel() {
 
-    private val registerMutableState = MutableStateFlow<NetworkResponseState<Unit>>(NetworkResponseState.Idle)
+    private val registerMutableState: MutableStateFlow<ResponseState<Unit>?> = MutableStateFlow(null)
     val registrationState = registerMutableState.asStateFlow()
 
     private companion object {
@@ -52,25 +50,13 @@ class RegisterViewModel @Inject constructor(
 
     fun registerUser(fullName: String, email: String, password: String) {
         viewModelScope.launch {
-            try {
-                registerMutableState.value = NetworkResponseState.Loading
+            registerMutableState.value = ResponseState.Loading
 
-                registerUseCase.execute(
-                    fullName = fullName,
-                    email = email,
-                    password = password
-                )
-                registerMutableState.value = NetworkResponseState.Success(Unit)
-            }
-            catch(httpException: HttpException) {
-                registerMutableState.value = NetworkResponseState.Failure(httpException)
-            }
-            catch (exception: Exception) {
-                if(exception is CancellationException) {
-                    throw Exception()
-                }
-                registerMutableState.value = NetworkResponseState.Failure(exception)
-            }
+            registerMutableState.value = registerUseCase.execute(
+                fullName = fullName,
+                email = email,
+                password = password
+            )
         }
     }
 }
