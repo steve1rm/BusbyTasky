@@ -1,35 +1,18 @@
 package me.androidbox.data.remote.authentication
 
-import kotlinx.coroutines.CancellationException
 import me.androidbox.data.remote.model.request.LoginRequestDto
 import me.androidbox.data.remote.model.request.RegistrationRequestDto
 import me.androidbox.data.remote.model.response.LoginDto
 import me.androidbox.data.remote.network.authentication.AuthenticationService
+import me.androidbox.data.remote.util.CheckResult.checkResult
 import me.androidbox.domain.authentication.ResponseState
 import me.androidbox.domain.authentication.model.Login
 import me.androidbox.domain.authentication.remote.AuthenticationRepository
-import retrofit2.HttpException
 import javax.inject.Inject
 
 class AuthenticationRepositoryImp @Inject constructor(
     private val authenticationService: AuthenticationService,
 ) : AuthenticationRepository {
-
-    /* TODO Move this to a utils file to be used in other classes */
-    suspend fun <T> checkResult(block: suspend () -> T): Result<T> {
-        return try {
-            return Result.success(block())
-        }
-        catch (httpException: HttpException) {
-            Result.failure(httpException)
-        }
-        catch (exception: Exception) {
-            if (exception is CancellationException) {
-                throw exception
-            }
-            Result.failure(exception)
-        }
-    }
 
     override suspend fun registerUser(fullName: String, email: String, password: String): ResponseState<Unit> {
         val registrationRequestDto = RegistrationRequestDto(
