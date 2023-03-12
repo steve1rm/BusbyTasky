@@ -9,5 +9,5 @@ interface PreferenceRepository {
 
     suspend fun retrieveCurrentUserOrNull(): LoginUser?
 
-    suspend fun deleteUser()
+    suspend fun deleteCurrentUser()
 }

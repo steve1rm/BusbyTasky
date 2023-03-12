@@ -71,7 +71,7 @@ class PreferenceRepositoryImp @Inject constructor(
         }
     }
 
-    override suspend fun deleteUser() {
+    override suspend fun deleteCurrentUser() {
         sharedPreferences
             .edit()
             .remove(TOKEN_KEY)

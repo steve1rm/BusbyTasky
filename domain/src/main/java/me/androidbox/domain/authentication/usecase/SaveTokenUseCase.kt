@@ -1,5 +1,5 @@
 package me.androidbox.domain.authentication.usecase
 
-interface SaveTokenUseCase {
-    suspend fun execute(key: String, token: String)
+fun interface SaveTokenUseCase {
+    suspend fun execute(token: String)
 }
