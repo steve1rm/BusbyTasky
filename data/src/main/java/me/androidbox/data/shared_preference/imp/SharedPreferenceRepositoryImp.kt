@@ -29,7 +29,8 @@ class SharedPreferenceRepositoryImp @Inject constructor(
     override suspend fun saveUserToken(key: String, token: String) {
         sharedPreferences
             .edit()
-            .putString(key, token).apply()
+            .putString(key, token)
+            .apply()
     }
 
     override suspend fun retrieveUserToken(key: String): String? {
