@@ -5,6 +5,7 @@ import android.content.Context
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
 import dagger.hilt.android.qualifiers.ApplicationContext
+import me.androidbox.domain.authentication.model.LoginUser
 import me.androidbox.domain.authentication.preference.PreferenceRepository
 import javax.inject.Inject
 
@@ -53,7 +54,20 @@ class PreferenceRepositoryImp @Inject constructor(
             .apply()
     }
 
-    override suspend fun retrieveCurrentUser() {
+    override suspend fun retrieveCurrentUserOrNull(): LoginUser? {
+        val token = sharedPreferences.getString(TOKEN_KEY, "")
+        val userId = sharedPreferences.getString(USER_ID_KEY, "")
+        val fullName = sharedPreferences.getString(FULL_NAME_KEY, "")
 
+        return if(token != null && userId != null && fullName != null) {
+            LoginUser(
+                token = token,
+                userId = userId,
+                fullName = fullName
+            )
+        }
+        else {
+            null
+        }
     }
 }

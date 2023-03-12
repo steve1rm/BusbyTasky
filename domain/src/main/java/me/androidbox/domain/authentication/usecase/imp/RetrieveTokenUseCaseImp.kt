@@ -8,6 +8,6 @@ class RetrieveTokenUseCaseImp @Inject constructor(
     private val preferenceRepository: PreferenceRepository
 ): RetrieveTokenUseCase {
     override suspend fun execute(key: String): String? {
-        return preferenceRepository.retrieveUserToken(key)
+        return preferenceRepository.saveToken()
     }
 }

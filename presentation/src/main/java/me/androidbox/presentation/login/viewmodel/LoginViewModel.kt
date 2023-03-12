@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import me.androidbox.domain.authentication.ResponseState
-import me.androidbox.domain.authentication.model.Login
+import me.androidbox.domain.authentication.model.LoginUser
 import me.androidbox.domain.authentication.usecase.LoginUseCase
 import javax.inject.Inject
 
@@ -19,7 +19,7 @@ class LoginViewModel @Inject constructor(
     private val loginUseCase: LoginUseCase
 ) : ViewModel() {
 
-    private val loginMutableState: MutableStateFlow<ResponseState<Login>?> = MutableStateFlow(null)
+    private val loginMutableState: MutableStateFlow<ResponseState<LoginUser>?> = MutableStateFlow(null)
     val loginState = loginMutableState.asStateFlow()
 
     var email by mutableStateOf("")

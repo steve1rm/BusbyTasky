@@ -6,7 +6,7 @@ import me.androidbox.data.remote.model.request.RegistrationRequestDto
 import me.androidbox.data.remote.model.response.LoginDto
 import me.androidbox.data.remote.network.authentication.AuthenticationService
 import me.androidbox.domain.authentication.ResponseState
-import me.androidbox.domain.authentication.model.Login
+import me.androidbox.domain.authentication.model.LoginUser
 import me.androidbox.domain.authentication.remote.AuthenticationRepository
 import retrofit2.HttpException
 import javax.inject.Inject
@@ -51,7 +51,7 @@ class AuthenticationRepositoryImp @Inject constructor(
         }
     }
 
-    override suspend fun loginUser(email: String, password: String): ResponseState<Login> {
+    override suspend fun loginUser(email: String, password: String): ResponseState<LoginUser> {
         val loginRequestDto = LoginRequestDto(
             email = email,
             password = password
@@ -64,7 +64,7 @@ class AuthenticationRepositoryImp @Inject constructor(
         /* TODO Is this the best way to extract the value from the Result<T> */
         val loginDto = result.getOrNull()
         return if(loginDto != null) {
-            val login = Login(
+            val login = LoginUser(
                 token = loginDto.token,
                 userId = loginDto.userId,
                 fullName = loginDto.fullName
