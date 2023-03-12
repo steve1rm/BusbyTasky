@@ -1,4 +1,4 @@
-package me.androidbox.domain.authentication.token_repository
+package me.androidbox.domain.authentication.preference
 
 interface PreferenceRepository {
     suspend fun saveToken(token: String)

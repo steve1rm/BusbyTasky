@@ -1,14 +1,14 @@
-package me.androidbox.data.shared_preference.imp
+package me.androidbox.data.remote.preference
 
 
 import android.content.Context
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
 import dagger.hilt.android.qualifiers.ApplicationContext
-import me.androidbox.domain.authentication.token_repository.PreferenceRepository
+import me.androidbox.domain.authentication.preference.PreferenceRepository
 import javax.inject.Inject
 
-class SharedPreferenceRepositoryImp @Inject constructor(
+class PreferenceRepositoryImp @Inject constructor(
     @ApplicationContext private val context: Context
 ) : PreferenceRepository {
 
