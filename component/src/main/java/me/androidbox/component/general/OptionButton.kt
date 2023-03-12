@@ -14,12 +14,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import me.androidbox.component.R
 import me.androidbox.component.ui.theme.BusbyTaskyTheme
-import me.androidbox.component.ui.theme.DarkOptionButton
+import me.androidbox.component.ui.theme.darkOptionButton
 
 @Composable
 fun OptionButton(
     modifier: Modifier = Modifier,
-    dotColor: Color = MaterialTheme.colorScheme.DarkOptionButton) {
+    dotColor: Color = MaterialTheme.colorScheme.darkOptionButton) {
     Row(modifier.wrapContentWidth()) {
         Icon(
             painter = painterResource(id = R.drawable.white_dot),

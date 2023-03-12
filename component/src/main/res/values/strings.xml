@@ -6,4 +6,10 @@
     <string name="email_address">Email address</string>
     <string name="get_started">Get Started</string>
     <string name="agenda_status">Agenda status</string>
+    <string name="event">Event</string>
+    <string name="task">Task</string>
+    <string name="reminder">Reminder</string>
+    <string name="subtitle_icon">subtitle icon</string>
+    <string name="forward_arrow">forward arrow</string>
+    <string name="agenda_image">Agenda image</string>
 </resources>
