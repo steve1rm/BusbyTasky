@@ -5,7 +5,7 @@ import me.androidbox.data.remote.model.request.LoginRequestDto
 import me.androidbox.data.remote.model.request.RegistrationRequestDto
 import me.androidbox.data.remote.network.authentication.AuthenticationService
 import me.androidbox.domain.authentication.NetworkResponseState
-import me.androidbox.domain.authentication.model.LoginModel
+import me.androidbox.domain.authentication.model.Login
 import me.androidbox.domain.authentication.remote.AuthenticationRepository
 import retrofit2.HttpException
 import javax.inject.Inject
@@ -36,7 +36,7 @@ class AuthenticationRepositoryImp @Inject constructor(
         }
     }
 
-    override suspend fun loginUser(email: String, password: String): NetworkResponseState<LoginModel> {
+    override suspend fun loginUser(email: String, password: String): NetworkResponseState<Login> {
         val loginRequestDto = LoginRequestDto(
             email = email,
             password = password
@@ -45,13 +45,13 @@ class AuthenticationRepositoryImp @Inject constructor(
         return try {
             val loginDto = authenticationService.login(loginRequestDto)
 
-            val loginModel = LoginModel(
+            val login = Login(
                 token = loginDto.token,
                 userId = loginDto.userId,
                 fullName = loginDto.fullName
             )
 
-            return NetworkResponseState.Success(loginModel)
+            return NetworkResponseState.Success(login)
         }
         catch(httpException: HttpException) {
             NetworkResponseState.Failure(httpException)
