@@ -1,7 +1,7 @@
 package me.androidbox.domain.authentication.usecase
 
-import me.androidbox.domain.authentication.NetworkResponseState
+import me.androidbox.domain.authentication.ResponseState
 
 fun interface AuthenticateUserUseCase {
-    suspend fun execute(): NetworkResponseState<Unit>
+    suspend fun execute(): ResponseState<Unit>
 }

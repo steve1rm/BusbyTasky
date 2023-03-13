@@ -8,11 +8,10 @@ import androidx.compose.runtime.collectAsState
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
-import me.androidbox.domain.authentication.NetworkResponseState
+import me.androidbox.domain.authentication.ResponseState
 import me.androidbox.presentation.login.viewmodel.SplashScreenViewModel
 import me.androidbox.presentation.navigation.LoginScreen
 import me.androidbox.presentation.navigation.NavigationGraph
-import me.androidbox.presentation.navigation.RegisterScreen
 import me.androidbox.presentation.ui.theme.BusbyTaskyTheme
 
 @AndroidEntryPoint
@@ -33,7 +32,7 @@ class HomeActivity : ComponentActivity() {
         setContent {
             val authenticatedState = splashScreenViewModel.authenticationState.collectAsState()
             val destination = when(authenticatedState.value) {
-                is NetworkResponseState.Success -> {
+                is ResponseState.Success -> {
                     /* TODO Go to the Agenda Screen when implemented */
                     LoginScreen.route
                 }

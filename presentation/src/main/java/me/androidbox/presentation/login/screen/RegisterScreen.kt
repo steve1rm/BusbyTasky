@@ -31,7 +31,7 @@ import me.androidbox.component.general.TaskButton
 import me.androidbox.component.general.UserInputTextField
 import me.androidbox.component.ui.theme.BusbyTaskyTheme
 import me.androidbox.component.ui.theme.backgroundInputEntry
-import me.androidbox.domain.authentication.NetworkResponseState
+import me.androidbox.domain.authentication.ResponseState
 import me.androidbox.presentation.login.viewmodel.RegisterViewModel
 
 @Composable
@@ -51,16 +51,16 @@ fun RegisterScreen(
 
     LaunchedEffect(key1 = registration.value) {
         when(val status = registration.value) {
-            NetworkResponseState.Loading -> {
+            ResponseState.Loading -> {
                 /* TODO Show a loading progress spinner */
             }
 
-            is NetworkResponseState.Success -> {
+            is ResponseState.Success -> {
                 /* Navigate back to login screen */
                 onRegistrationSuccess()
             }
 
-            is NetworkResponseState.Failure -> {
+            is ResponseState.Failure -> {
            //     Toast.makeText(context, "Failed to register ${status.error}", Toast.LENGTH_LONG).show()
                 /* Is there a way to pass in a context to the launched effect? */
                 Log.d("REGISTRATION", "Failed to register ${status.error}")
