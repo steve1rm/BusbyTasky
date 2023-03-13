@@ -7,7 +7,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import me.androidbox.domain.authentication.NetworkResponseState
+import me.androidbox.domain.authentication.ResponseState
 import me.androidbox.domain.authentication.usecase.RegisterUseCase
 import javax.inject.Inject
 
@@ -17,7 +17,7 @@ class RegisterViewModel @Inject constructor(
     private val registerUseCase: RegisterUseCase
 ): ViewModel() {
 
-    private val registerMutableState: MutableStateFlow<NetworkResponseState<Unit>?> = MutableStateFlow(null)
+    private val registerMutableState: MutableStateFlow<ResponseState<Unit>?> = MutableStateFlow(null)
     val registrationState = registerMutableState.asStateFlow()
 
     private companion object {
@@ -50,7 +50,7 @@ class RegisterViewModel @Inject constructor(
 
     fun registerUser(fullName: String, email: String, password: String) {
         viewModelScope.launch {
-            registerMutableState.value = NetworkResponseState.Loading
+            registerMutableState.value = ResponseState.Loading
 
             registerMutableState.value = registerUseCase.execute(
                 fullName = fullName,

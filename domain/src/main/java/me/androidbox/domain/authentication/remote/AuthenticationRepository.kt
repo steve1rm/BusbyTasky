@@ -1,10 +1,11 @@
 package me.androidbox.domain.authentication.remote
 
-import me.androidbox.domain.authentication.NetworkResponseState
-import me.androidbox.domain.authentication.model.LoginModel
+
+import me.androidbox.domain.authentication.ResponseState
+import me.androidbox.domain.authentication.model.Login
 
 interface AuthenticationRepository {
-    suspend fun registerUser(fullName: String, email: String, password: String): NetworkResponseState<Unit>
-    suspend fun loginUser(email: String, password: String): NetworkResponseState<LoginModel>
-    suspend fun authenticateUser(): NetworkResponseState<Unit>
+    suspend fun registerUser(fullName: String, email: String, password: String): ResponseState<Unit>
+    suspend fun loginUser(email: String, password: String): ResponseState<Login>
+    suspend fun authenticateUser(): ResponseState<Unit>
 }
