@@ -1,5 +1,6 @@
 package me.androidbox.presentation.login.screen
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -7,6 +8,8 @@ import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -24,14 +27,37 @@ import me.androidbox.component.general.TaskButton
 import me.androidbox.component.general.UserInputTextField
 import me.androidbox.component.ui.theme.BusbyTaskyTheme
 import me.androidbox.component.ui.theme.backgroundInputEntry
+import me.androidbox.domain.authentication.ResponseState
 import me.androidbox.presentation.login.viewmodel.LoginViewModel
 
 @Composable
 fun LoginScreen(
     modifier: Modifier = Modifier,
     loginViewModel: LoginViewModel = hiltViewModel(),
-    onSignUpClicked: () -> Unit
+    onSignUpClicked: () -> Unit,
+    onLoginSuccess: () -> Unit
 ) {
+
+    val loginState = loginViewModel.loginState.collectAsState()
+
+    LaunchedEffect(key1 = loginState.value) {
+        when(val status = loginState.value) {
+            is ResponseState.Loading -> {
+                /* TODO Showing loading spinner */
+            }
+            is ResponseState.Success -> {
+                loginViewModel.saveCurrentUserDetails(status.data)
+                onLoginSuccess()
+            }
+            is ResponseState.Failure -> {
+                /* Failure */
+                Log.d("LOGIN","${status.error}")
+            }
+            else -> {
+                /* no-op */
+            }
+        }
+    }
 
     Column(modifier = modifier
         .fillMaxSize()
@@ -104,7 +130,9 @@ fun LoginScreen(
                 )
             }
             
-            Column(modifier = Modifier.fillMaxWidth().align(Alignment.BottomCenter)) {
+            Column(modifier = Modifier
+                .fillMaxWidth()
+                .align(Alignment.BottomCenter)) {
                 ClickableText(
                     style = TextStyle(textAlign = TextAlign.Center),
                     modifier = modifier.fillMaxWidth(),
@@ -143,7 +171,8 @@ private fun buildLoginAnnotatedString(): AnnotatedString {
 fun PreviewLoginScreen() {
     BusbyTaskyTheme {
        LoginScreen(
-           onSignUpClicked = {}
+           onSignUpClicked = {},
+           onLoginSuccess = {}
        )
     }
 }

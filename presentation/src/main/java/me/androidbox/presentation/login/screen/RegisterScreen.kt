@@ -1,5 +1,6 @@
 package me.androidbox.presentation.login.screen
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -8,6 +9,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -27,18 +29,42 @@ import me.androidbox.component.general.TaskButton
 import me.androidbox.component.general.UserInputTextField
 import me.androidbox.component.ui.theme.BusbyTaskyTheme
 import me.androidbox.component.ui.theme.backgroundInputEntry
+import me.androidbox.domain.authentication.ResponseState
 import me.androidbox.presentation.login.viewmodel.RegisterViewModel
 
 @Composable
 fun RegisterScreen(
     modifier: Modifier = Modifier,
     registerViewModel: RegisterViewModel = hiltViewModel(),
-    onBackArrowClicked: () -> Unit
+    onBackArrowClicked: () -> Unit,
+    onRegistrationSuccess: () -> Unit
 ) {
     val username by registerViewModel.username.collectAsState()
     val emailAddress by registerViewModel.emailAddress.collectAsState()
     val password by registerViewModel.password.collectAsState()
     val isPasswordVisible by registerViewModel.isPasswordVisible.collectAsState()
+
+    val registration = registerViewModel.registrationState.collectAsState()
+
+    LaunchedEffect(key1 = registration.value) {
+        when(val status = registration.value) {
+            ResponseState.Loading -> {
+                /* TODO Show a loading progress spinner */
+            }
+
+            is ResponseState.Success -> {
+                /* Navigate back to login screen */
+                onRegistrationSuccess()
+            }
+
+            is ResponseState.Failure -> {
+                Log.d("REGISTRATION", "Failed to register ${status.error}")
+            }
+            else -> {
+                /* no-op */
+            }
+        }
+    }
 
     Column(
         modifier = modifier
@@ -76,7 +102,7 @@ fun RegisterScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .background(
-                          shape = RoundedCornerShape(10.dp),
+                            shape = RoundedCornerShape(10.dp),
                             color = MaterialTheme.colorScheme.backgroundInputEntry
                         ),
                     inputValue = username,
@@ -169,12 +195,15 @@ fun RegisterScreen(
     }
 }
 
+
+
 @Composable
 @Preview(showBackground = true)
 fun PreviewRegisterScreen() {
     BusbyTaskyTheme {
         RegisterScreen(
-            onBackArrowClicked = {}
+            onBackArrowClicked = {},
+            onRegistrationSuccess = {}
         )
     }
 }

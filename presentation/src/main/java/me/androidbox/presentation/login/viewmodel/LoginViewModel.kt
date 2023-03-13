@@ -48,4 +48,8 @@ class LoginViewModel @Inject constructor(
             loginMutableState.value = loginUseCase.execute(email, password)
         }
     }
+
+    fun saveCurrentUserDetails(login: Login) {
+        /* Will call use-case to save user login details */
+    }
 }
