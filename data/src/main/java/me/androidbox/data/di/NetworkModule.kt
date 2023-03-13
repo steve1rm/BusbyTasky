@@ -2,11 +2,11 @@ package me.androidbox.data.di
 
 import dagger.Module
 import dagger.Provides
-import dagger.Reusable
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import me.androidbox.data.BuildConfig
 import me.androidbox.data.remote.interceptor.ApiKeyInterceptor
+import me.androidbox.data.remote.interceptor.TokenInterceptor
 import me.androidbox.data.remote.network.authentication.AuthenticationService
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -40,14 +40,22 @@ object NetworkModule {
 
     @Singleton
     @Provides
+    fun provideTokenInterceptor(): TokenInterceptor {
+        return TokenInterceptor()
+    }
+
+    @Singleton
+    @Provides
     fun provideOkHttpClient(
         loggingInterceptor: HttpLoggingInterceptor,
-        apiKeyInterceptor: ApiKeyInterceptor
+        apiKeyInterceptor: ApiKeyInterceptor,
+        tokenInterceptor: TokenInterceptor
     ): OkHttpClient {
         return OkHttpClient
             .Builder()
             .addInterceptor(loggingInterceptor)
             .addInterceptor(apiKeyInterceptor)
+            .addInterceptor(tokenInterceptor)
             .build()
     }
 
