@@ -2,7 +2,6 @@ package me.androidbox.component.agenda
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -17,11 +16,11 @@ import androidx.compose.ui.unit.sp
 import me.androidbox.component.R
 import me.androidbox.component.ui.theme.BusbyTaskyTheme
 import me.androidbox.component.ui.theme.agendaBodyTextColor
-import me.androidbox.component.ui.theme.divider
+import me.androidbox.component.ui.theme.backgroundColor
 
 @Composable
 fun AlarmReminder(modifier: Modifier = Modifier) {
-    Column(modifier = modifier.fillMaxWidth().background(color = MaterialTheme.colorScheme.background)) {
+    Column(modifier = modifier) {
         Row(modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically) {
             Row(modifier = Modifier.weight(4F)) {
@@ -41,13 +40,6 @@ fun AlarmReminder(modifier: Modifier = Modifier) {
                 Icon(painter = painterResource(id = R.drawable.forward_arrow), contentDescription = "forward arrow")
             }
         }
-
-        Spacer(modifier = Modifier.height(26.dp))
-
-        Divider(
-            modifier.fillMaxWidth().padding(horizontal = 16.dp),
-            color = MaterialTheme.colorScheme.divider,
-            thickness = 1.dp)
     }
 }
 
@@ -55,7 +47,11 @@ fun AlarmReminder(modifier: Modifier = Modifier) {
 @Preview(showBackground = true, name = "Alarm reminder")
 fun PreviewAlarmReminder() {
     BusbyTaskyTheme {
-        AlarmReminder()
+        AlarmReminder(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(color = MaterialTheme.colorScheme.backgroundColor)
+        )
     }
 }
 
