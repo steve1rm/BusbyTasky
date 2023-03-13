@@ -13,17 +13,17 @@ fun NavigationGraph(
 ) {
     NavHost(
         navController = navHostController,
-        startDestination = LoginScreen.route
+        startDestination = Screen.LoginScreen.route
     ) {
 
         /* LoginScreen */
         composable(
-            route = LoginScreen.route
+            route = Screen.LoginScreen.route
         ) {
             LoginScreen(
                 onSignUpClicked = {
                     /* Signup clicked, navigate to register screen */
-                    navHostController.navigate(route = RegisterScreen.route)
+                    navHostController.navigate(route = Screen.RegisterScreen.route)
                 },
                 onLoginSuccess = {
                     /* TODO Navigate to the agenda screen (not implemented yet) */
@@ -32,7 +32,7 @@ fun NavigationGraph(
 
         /* Register Screen */
         composable(
-            route = RegisterScreen.route
+            route = Screen.RegisterScreen.route
         ) {
             RegisterScreen(
                 onBackArrowClicked = {
