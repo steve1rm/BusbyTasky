@@ -3,6 +3,7 @@ package me.androidbox.presentation.login.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -18,13 +19,14 @@ class SplashScreenViewModel @Inject constructor(
     private val authenticationMutableState: MutableStateFlow<ResponseState<Unit>?> = MutableStateFlow(null)
     val authenticationState = authenticationMutableState.asStateFlow()
 
-    private val isCompletedMutableState: MutableStateFlow<Boolean> = MutableStateFlow(false)
+    private val isCompletedMutableState: MutableStateFlow<Boolean> = MutableStateFlow(true)
     val isCompletedState = isCompletedMutableState.asStateFlow()
 
     fun authenticateUser() {
         viewModelScope.launch {
+            delay(5000)
             authenticationMutableState.value = authenticateUserUseCase.execute()
-            isCompletedMutableState.value = true
+            isCompletedMutableState.value = false
         }
     }
 }
