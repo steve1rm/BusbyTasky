@@ -15,7 +15,7 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import me.androidbox.component.ui.theme.BusbyTaskyTheme
-import me.androidbox.component.ui.theme.LoginTextColor
+import me.androidbox.component.ui.theme.loginTextColor
 import me.androidbox.component.ui.theme.buttonColor
 
 @Composable
@@ -23,7 +23,7 @@ fun TaskButton(
     buttonText: String,
     modifier: Modifier = Modifier,
     textSize: TextUnit = 16.sp,
-    buttonTextColor: Color = MaterialTheme.colorScheme.LoginTextColor,
+    buttonTextColor: Color = MaterialTheme.colorScheme.loginTextColor,
     backgroundColor: Color = MaterialTheme.colorScheme.buttonColor,
     onButtonClick: () -> Unit,
     borderRadius: Dp = 38.dp,

@@ -10,6 +10,7 @@ val Purple500 = Color(0xFF6200EE)
 val Purple700 = Color(0xFF3700B3)
 val Teal200 = Color(0xFF03DAC5)
 val LightGray = Color(0xFFA1A4B2)
+val Light = Color(0xFFEEF6FF)
 val Light2 = Color(0xFFF2F3F7)
 val DarkGray = Color(0xFF5C5D5A)
 val ExtraLightGray = Color(0xFFF2F3F7)
@@ -52,25 +53,25 @@ val ColorScheme.buttonColor: Color
         return Black
     }
 
-val ColorScheme.LoginTextColor: Color
+val ColorScheme.loginTextColor: Color
     @Composable
     get() {
         return LightWhite
     }
 
-val ColorScheme.InputTextColor: Color
+val ColorScheme.inputTextColor: Color
     @Composable
     get() {
         return DarkGray
     }
 
-val ColorScheme.DarkOptionButton: Color
+val ColorScheme.darkOptionButton: Color
     @Composable
     get() {
         return Brown
     }
 
-val ColorScheme.AgendaBodyTextColor: Color
+val ColorScheme.agendaBodyTextColor: Color
     @Composable
     get() {
         return DarkGray
@@ -92,4 +93,28 @@ val ColorScheme.ReminderCardBackgroundColor: Color
     @Composable
     get() {
         return Light2
+    }
+
+val ColorScheme.divider: Color
+    @Composable
+    get() {
+        return LightWhite
+    }
+
+val ColorScheme.headerDividerColor: Color
+    @Composable
+    get() {
+        return Light
+    }
+
+val ColorScheme.agendaTitleHeaderColor: Color
+    @Composable
+    get() {
+        return DarkGray
+    }
+
+val ColorScheme.agendaSubTitleHeaderColor: Color
+    @Composable
+    get() {
+        return Black
     }

@@ -61,6 +61,8 @@ hilt {
 }
 
 dependencies {
+    implementation(project(":domain"))
+
     implementation(libs.core.ktx)
     implementation(libs.appcompat)
 
@@ -78,6 +80,10 @@ dependencies {
 
     // Retrofit
     implementation(libs.bundles.retrofit)
+
+    // Encrypted shared preferences
+    // implementation(libs.security.crypto.ktx)
+    implementation("androidx.security:security-crypto-ktx:1.1.0-alpha05")
 
     testImplementation(tests.hilt.android.testing)
     kaptTest(tests.hilt.compiler)

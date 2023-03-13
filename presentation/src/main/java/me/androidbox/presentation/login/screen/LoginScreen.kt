@@ -1,6 +1,5 @@
 package me.androidbox.presentation.login.screen
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -30,7 +29,8 @@ import me.androidbox.presentation.login.viewmodel.LoginViewModel
 @Composable
 fun LoginScreen(
     modifier: Modifier = Modifier,
-    loginViewModel: LoginViewModel = hiltViewModel()
+    loginViewModel: LoginViewModel = hiltViewModel(),
+    onSignUpClicked: () -> Unit
 ) {
 
     Column(modifier = modifier
@@ -41,7 +41,7 @@ fun LoginScreen(
 
         Text(
             modifier = Modifier.fillMaxWidth(),
-            text = "Welcome Back!", color = Color.White, fontSize = 28.sp, fontWeight = FontWeight.Bold,
+            text = stringResource(me.androidbox.presentation.R.string.welcome_back), color = Color.White, fontSize = 28.sp, fontWeight = FontWeight.Bold,
             textAlign = TextAlign.Center)
 
         Spacer(modifier = Modifier.height(42.dp))
@@ -64,9 +64,9 @@ fun LoginScreen(
                             shape = RoundedCornerShape(10.dp),
                             color = MaterialTheme.colorScheme.backgroundInputEntry
                         ),
-                    inputValue = loginViewModel.username,
+                    inputValue = loginViewModel.email,
                     isInputValid = false,
-                    placeholderText = stringResource(R.string.name),
+                    placeholderText = stringResource(R.string.email_address),
                     onInputChange = { newUsername ->
                         loginViewModel.onUsernameChanged(newUsername)
                     }
@@ -99,8 +99,7 @@ fun LoginScreen(
                         .fillMaxWidth(),
                     buttonText = stringResource(R.string.login).uppercase(),
                     onButtonClick = {
-                        /** TODO send to room database username and password check if correct/incorrect */
-                        Log.d("LOGIN", "username [${loginViewModel.username}] [${loginViewModel.password}]")
+                        loginViewModel.loginUser(loginViewModel.email, loginViewModel.password)
                     }
                 )
             }
@@ -110,8 +109,8 @@ fun LoginScreen(
                     style = TextStyle(textAlign = TextAlign.Center),
                     modifier = modifier.fillMaxWidth(),
                     text = buildLoginAnnotatedString(),
-                    onClick = { position ->
-                        Log.d("LOGIN", "$position")
+                    onClick = { _ ->
+                        onSignUpClicked()
                     }
                 )
 
@@ -143,6 +142,8 @@ private fun buildLoginAnnotatedString(): AnnotatedString {
 @Preview(showBackground = true)
 fun PreviewLoginScreen() {
     BusbyTaskyTheme {
-       LoginScreen()
+       LoginScreen(
+           onSignUpClicked = {}
+       )
     }
 }
