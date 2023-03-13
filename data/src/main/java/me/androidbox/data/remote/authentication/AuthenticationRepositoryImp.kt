@@ -57,4 +57,17 @@ class AuthenticationRepositoryImp @Inject constructor(
             ResponseState.Failure((result.exceptionOrNull() ?: Exception()) as Exception)
         }
     }
+
+    override suspend fun authenticateUser(): ResponseState<Unit> {
+        val result = checkResult<Unit> {
+            authenticationService.authenticate()
+        }
+
+        return if(result.isSuccess) {
+            ResponseState.Success(Unit)
+        }
+        else {
+            ResponseState.Failure(result.exceptionOrNull() as? Exception ?: Exception())
+        }
+    }
 }
