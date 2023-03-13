@@ -47,6 +47,7 @@ fun MutableVersionCatalogContainer.createLibs() {
         version("version.androidx.hilt-navigation-compose", "_")
         version("version.retrofit2", "_")
         version("version.okhttp3", "_")
+        version("version.androidx.security-crypto", "1.0.0")
 
         /* UI */
         library("core-ktx", "androidx.core", "core-ktx").versionRef("version.androidx.core")
@@ -76,6 +77,9 @@ fun MutableVersionCatalogContainer.createLibs() {
         library("retrofit", "com.squareup.retrofit2", "retrofit").versionRef("version.retrofit2")
         library("converter-moshi", "com.squareup.retrofit2", "converter-moshi").versionRef("version.retrofit2")
         library("logging-interceptor","com.squareup.okhttp3", "logging-interceptor").versionRef("version.okhttp3")
+
+        /* Encrypted shared preferences */
+        library("security-crypto-ktx", "androidx.security", "security-crypto-ktx").versionRef("version.androidx.security-crypto")
 
         bundle("retrofit", listOf("moshi-kotlin", "retrofit", "converter-moshi", "logging-interceptor"))
         bundle("compose", listOf("activity-compose", "material", "ui", "ui-tooling-preview"))
