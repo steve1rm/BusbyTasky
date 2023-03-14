@@ -61,9 +61,7 @@ fun RegisterScreen(
             is ResponseState.Failure -> {
                 Log.d("REGISTRATION", "Failed to register ${status.error}")
             }
-            else -> {
-                /* no-op */
-            }
+            else -> Unit
         }
     }
 
