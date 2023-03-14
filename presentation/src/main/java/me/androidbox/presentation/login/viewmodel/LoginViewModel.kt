@@ -31,8 +31,8 @@ class LoginViewModel @Inject constructor(
     var isPasswordVisible by mutableStateOf(false)
         private set
 
-    fun onUsernameChanged(newUsername: String) {
-        email = newUsername
+    fun onEmailChanged(newEmail: String) {
+        email = newEmail
     }
 
     fun onPasswordChanged(newPassword: String) {

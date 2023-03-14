@@ -9,7 +9,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.State
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -20,7 +20,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
 import me.androidbox.component.R
 import me.androidbox.component.general.PasswordTextField
 import me.androidbox.component.general.TaskButton
@@ -28,17 +27,22 @@ import me.androidbox.component.general.UserInputTextField
 import me.androidbox.component.ui.theme.BusbyTaskyTheme
 import me.androidbox.component.ui.theme.backgroundInputEntry
 import me.androidbox.domain.authentication.ResponseState
-import me.androidbox.presentation.login.viewmodel.LoginViewModel
+import me.androidbox.domain.authentication.model.Login
 
 @Composable
 fun LoginScreen(
     modifier: Modifier = Modifier,
-    loginViewModel: LoginViewModel = hiltViewModel(),
+    loginState: State<ResponseState<Login>?>,
+    onLoginSuccess: (login: Login) -> Unit,
     onSignUpClicked: () -> Unit,
-    onLoginSuccess: () -> Unit
+    email: String,
+    onEmailChanged: (email: String) -> Unit,
+    password: String,
+    onPasswordChanged: (newPassword: String) -> Unit,
+    onPasswordVisibilityChanged: () -> Unit,
+    isPasswordVisible: Boolean,
+    onLoginUser: (email: String, password: String) -> Unit
 ) {
-
-    val loginState = loginViewModel.loginState.collectAsState()
 
     LaunchedEffect(key1 = loginState.value) {
         when(val status = loginState.value) {
@@ -46,16 +50,13 @@ fun LoginScreen(
                 /* TODO Showing loading spinner */
             }
             is ResponseState.Success -> {
-                loginViewModel.saveCurrentUserDetails(status.data)
-                onLoginSuccess()
+                onLoginSuccess(status.data)
             }
             is ResponseState.Failure -> {
                 /* Failure */
                 Log.d("LOGIN","${status.error}")
             }
-            else -> {
-                /* no-op */
-            }
+            else -> Unit
         }
     }
 
@@ -67,8 +68,12 @@ fun LoginScreen(
 
         Text(
             modifier = Modifier.fillMaxWidth(),
-            text = stringResource(me.androidbox.presentation.R.string.welcome_back), color = Color.White, fontSize = 28.sp, fontWeight = FontWeight.Bold,
-            textAlign = TextAlign.Center)
+            text = stringResource(me.androidbox.presentation.R.string.welcome_back),
+            color = Color.White,
+            fontSize = 28.sp,
+            fontWeight = FontWeight.Bold,
+            textAlign = TextAlign.Center
+        )
 
         Spacer(modifier = Modifier.height(42.dp))
 
@@ -90,11 +95,11 @@ fun LoginScreen(
                             shape = RoundedCornerShape(10.dp),
                             color = MaterialTheme.colorScheme.backgroundInputEntry
                         ),
-                    inputValue = loginViewModel.email,
+                    inputValue = email,
                     isInputValid = false,
                     placeholderText = stringResource(R.string.email_address),
                     onInputChange = { newUsername ->
-                        loginViewModel.onUsernameChanged(newUsername)
+                        onEmailChanged(newUsername)
                     }
                 )
                 Spacer(modifier = Modifier.height(16.dp))
@@ -106,15 +111,15 @@ fun LoginScreen(
                             shape = RoundedCornerShape(10.dp),
                             color = MaterialTheme.colorScheme.backgroundInputEntry
                         ),
-                    passwordValue = loginViewModel.password,
+                    passwordValue = password,
                     placeholderText = stringResource(R.string.password),
                     onPasswordChange = { newPassword ->
-                        loginViewModel.onPasswordChanged(newPassword)
+                        onPasswordChanged(newPassword)
                     },
                     onPasswordVisibilityClicked = {
-                        loginViewModel.onPasswordVisibilityChanged()
+                        onPasswordVisibilityChanged()
                     },
-                    isPasswordVisible = loginViewModel.isPasswordVisible
+                    isPasswordVisible = isPasswordVisible
                 )
 
                 Spacer(modifier = Modifier.height(26.dp))
@@ -125,7 +130,7 @@ fun LoginScreen(
                         .fillMaxWidth(),
                     buttonText = stringResource(R.string.login).uppercase(),
                     onButtonClick = {
-                        loginViewModel.loginUser(loginViewModel.email, loginViewModel.password)
+                        onLoginUser(email, password)
                     }
                 )
             }
@@ -170,9 +175,10 @@ private fun buildLoginAnnotatedString(): AnnotatedString {
 @Preview(showBackground = true)
 fun PreviewLoginScreen() {
     BusbyTaskyTheme {
-       LoginScreen(
+        /* TODO Fix these */
+   /*    LoginScreen(
            onSignUpClicked = {},
            onLoginSuccess = {}
-       )
+       )*/
     }
 }
