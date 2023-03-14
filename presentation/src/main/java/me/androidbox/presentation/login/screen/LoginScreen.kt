@@ -32,20 +32,15 @@ import me.androidbox.domain.authentication.model.Login
 @Composable
 fun LoginScreen(
     modifier: Modifier = Modifier,
-    loginState: State<ResponseState<Login>?>,
+    loginScreenEvent: (LoginScreenEvent) -> Unit,
+    loginResponseState: State<ResponseState<Login>?>,
     onLoginSuccess: (login: Login) -> Unit,
     onSignUpClicked: () -> Unit,
-    email: String,
-    onEmailChanged: (email: String) -> Unit,
-    password: String,
-    onPasswordChanged: (newPassword: String) -> Unit,
-    onPasswordVisibilityChanged: () -> Unit,
-    isPasswordVisible: Boolean,
-    onLoginUser: (email: String, password: String) -> Unit
+    loginScreenState: LoginScreenState
 ) {
 
-    LaunchedEffect(key1 = loginState.value) {
-        when(val status = loginState.value) {
+    LaunchedEffect(key1 = loginResponseState.value) {
+        when(val status = loginResponseState.value) {
             is ResponseState.Loading -> {
                 /* TODO Showing loading spinner */
             }
@@ -95,11 +90,11 @@ fun LoginScreen(
                             shape = RoundedCornerShape(10.dp),
                             color = MaterialTheme.colorScheme.backgroundInputEntry
                         ),
-                    inputValue = email,
+                    inputValue = loginScreenState.email,
                     isInputValid = false,
                     placeholderText = stringResource(R.string.email_address),
-                    onInputChange = { newUsername ->
-                        onEmailChanged(newUsername)
+                    onInputChange = { newEmail ->
+                        loginScreenEvent(LoginScreenEvent.OnEmailChanged(newEmail))
                     }
                 )
                 Spacer(modifier = Modifier.height(16.dp))
@@ -111,15 +106,15 @@ fun LoginScreen(
                             shape = RoundedCornerShape(10.dp),
                             color = MaterialTheme.colorScheme.backgroundInputEntry
                         ),
-                    passwordValue = password,
+                    passwordValue = loginScreenState.password,
                     placeholderText = stringResource(R.string.password),
                     onPasswordChange = { newPassword ->
-                        onPasswordChanged(newPassword)
+                        loginScreenEvent(LoginScreenEvent.OnPasswordChanged(newPassword))
                     },
                     onPasswordVisibilityClicked = {
-                        onPasswordVisibilityChanged()
+                        loginScreenEvent(LoginScreenEvent.OnPasswordVisibilityChanged)
                     },
-                    isPasswordVisible = isPasswordVisible
+                    isPasswordVisible = loginScreenState.isPasswordVisible
                 )
 
                 Spacer(modifier = Modifier.height(26.dp))
@@ -130,7 +125,7 @@ fun LoginScreen(
                         .fillMaxWidth(),
                     buttonText = stringResource(R.string.login).uppercase(),
                     onButtonClick = {
-                        onLoginUser(email, password)
+                        loginScreenEvent(LoginScreenEvent.OnLoginUser)
                     }
                 )
             }

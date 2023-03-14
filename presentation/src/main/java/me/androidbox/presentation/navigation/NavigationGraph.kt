@@ -25,10 +25,13 @@ fun NavigationGraph(
             route = Screen.LoginScreen.route
         ) {
             val loginViewModel: LoginViewModel = hiltViewModel()
-            val loginState = loginViewModel.loginState.collectAsState()
+            val loginResponseState = loginViewModel.loginResponseState.collectAsState()
 
             LoginScreen(
-                loginState = loginState,
+                loginResponseState = loginResponseState,
+                loginScreenEvent = { loginEvent ->
+                    loginViewModel.onLoginEvent(loginEvent)
+                },
                 onSignUpClicked = {
                     /* Signup clicked, navigate to register screen */
                     navHostController.navigate(route = Screen.RegisterScreen.route)
@@ -37,21 +40,7 @@ fun NavigationGraph(
                     loginViewModel.saveCurrentUserDetails(login)
                     /* TODO Navigate to the agenda screen (not implemented yet) */
                 },
-                email = loginViewModel.email,
-                onEmailChanged = { newEmail ->
-                    loginViewModel.onEmailChanged(newEmail)
-                },
-                password = loginViewModel.password,
-                onPasswordChanged = { newPassword ->
-                    loginViewModel.onPasswordChanged(newPassword)
-                },
-                onPasswordVisibilityChanged = {
-                    loginViewModel.onPasswordVisibilityChanged()
-                },
-                isPasswordVisible = loginViewModel.isPasswordVisible,
-                onLoginUser = { email, password ->
-                    loginViewModel.loginUser(email, password)
-                }
+                loginScreenState = loginViewModel.loginScreenState.collectAsState().value
             )
         }
 
