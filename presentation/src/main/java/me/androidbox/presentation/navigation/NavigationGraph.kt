@@ -9,6 +9,7 @@ import androidx.navigation.compose.composable
 import me.androidbox.presentation.login.screen.LoginScreen
 import me.androidbox.presentation.login.screen.RegisterScreen
 import me.androidbox.presentation.login.viewmodel.LoginViewModel
+import me.androidbox.presentation.login.viewmodel.RegisterViewModel
 
 @Composable
 fun NavigationGraph(
@@ -58,15 +59,39 @@ fun NavigationGraph(
         composable(
             route = Screen.RegisterScreen.route
         ) {
+            val registerViewModel: RegisterViewModel = hiltViewModel()
+            val registerState = registerViewModel.registrationState.collectAsState()
+
             RegisterScreen(
+                registrationState = registerState,
                 onBackArrowClicked = {
-                /* Back arrow clicked, pop RegisterScreen of the backstack to get back to login screen */
-                navHostController.popBackStack()
-            },
-            onRegistrationSuccess = {
-                /* Registration Success */
-                navHostController.popBackStack()
-            })
+                    /* Back arrow clicked, pop RegisterScreen of the backstack to get back to login screen */
+                    navHostController.popBackStack()
+                },
+                onRegistrationSuccess = {
+                    /* Registration Success */
+                    navHostController.popBackStack()
+                },
+                username = registerViewModel.username.collectAsState().value,
+                email = registerViewModel.email.collectAsState().value,
+                password = registerViewModel.password.collectAsState().value,
+                isPasswordVisible = registerViewModel.isPasswordVisible.collectAsState().value,
+                onUsernameChanged = { newUsername ->
+                    registerViewModel.onUsernameChanged(newUsername)
+                },
+                onEmailAddress = { newEmail ->
+                    registerViewModel.onEmailAddress(newEmail)
+                },
+                onPasswordChanged = { newPassword ->
+                    registerViewModel.onPasswordChanged(newPassword)
+                },
+                onPasswordVisibilityChanged = {
+                    registerViewModel.onPasswordVisibilityChanged()
+                },
+                onRegisterUser = {
+                    registerViewModel.registerUser()
+                }
+            )
         }
     }
 }

@@ -10,8 +10,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.State
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -22,7 +21,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
 import me.androidbox.component.R
 import me.androidbox.component.general.PasswordTextField
 import me.androidbox.component.general.TaskButton
@@ -30,24 +28,27 @@ import me.androidbox.component.general.UserInputTextField
 import me.androidbox.component.ui.theme.BusbyTaskyTheme
 import me.androidbox.component.ui.theme.backgroundInputEntry
 import me.androidbox.domain.authentication.ResponseState
-import me.androidbox.presentation.login.viewmodel.RegisterViewModel
 
 @Composable
 fun RegisterScreen(
     modifier: Modifier = Modifier,
-    registerViewModel: RegisterViewModel = hiltViewModel(),
+    registrationState: State<ResponseState<Unit>?>,
     onBackArrowClicked: () -> Unit,
-    onRegistrationSuccess: () -> Unit
+    onRegistrationSuccess: () -> Unit,
+    username: String,
+    email: String,
+    password: String,
+    isPasswordVisible: Boolean,
+    onUsernameChanged: (newUsername: String) -> Unit,
+    onEmailAddress: (newEmail: String) -> Unit,
+    onPasswordChanged: (newPassword: String) -> Unit,
+    onPasswordVisibilityChanged: () -> Unit,
+    onRegisterUser: () -> Unit
+
 ) {
-    val username by registerViewModel.username.collectAsState()
-    val emailAddress by registerViewModel.emailAddress.collectAsState()
-    val password by registerViewModel.password.collectAsState()
-    val isPasswordVisible by registerViewModel.isPasswordVisible.collectAsState()
 
-    val registration = registerViewModel.registrationState.collectAsState()
-
-    LaunchedEffect(key1 = registration.value) {
-        when(val status = registration.value) {
+    LaunchedEffect(key1 = registrationState.value) {
+        when(val status = registrationState.value) {
             ResponseState.Loading -> {
                 /* TODO Show a loading progress spinner */
             }
@@ -109,7 +110,7 @@ fun RegisterScreen(
                     isInputValid = false,
                     placeholderText = stringResource(R.string.name),
                     onInputChange = { newUsername ->
-                        registerViewModel.onUsernameChanged(newUsername)
+                        onUsernameChanged(newUsername)
                     }
                 )
                 Spacer(modifier = Modifier.height(16.dp))
@@ -122,11 +123,11 @@ fun RegisterScreen(
                             shape = RoundedCornerShape(10.dp),
                             color = MaterialTheme.colorScheme.backgroundInputEntry
                         ),
-                    inputValue = emailAddress,
+                    inputValue = email,
                     isInputValid = false,
                     placeholderText = stringResource(R.string.email_address),
-                    onInputChange = { newEmailAddress ->
-                        registerViewModel.onEmailAddress(newEmailAddress)
+                    onInputChange = { newEmail ->
+                        onEmailAddress(newEmail)
                     }
                 )
                 Spacer(modifier = Modifier.height(16.dp))
@@ -143,10 +144,10 @@ fun RegisterScreen(
                     placeholderText = stringResource(R.string.password),
                     isPasswordVisible = isPasswordVisible,
                     onPasswordChange = { newPassword ->
-                        registerViewModel.onPasswordChanged(newPassword)
+                        onPasswordChanged(newPassword)
                     },
                     onPasswordVisibilityClicked = {
-                        registerViewModel.onPasswordVisibilityChanged()
+                        onPasswordVisibilityChanged()
                     }
                 )
 
@@ -158,11 +159,7 @@ fun RegisterScreen(
                         .fillMaxWidth(),
                     buttonText = stringResource(R.string.get_started).uppercase(),
                     onButtonClick = {
-                        registerViewModel.registerUser(
-                            fullName = registerViewModel.username.value,
-                            email = registerViewModel.emailAddress.value,
-                            password = registerViewModel.password.value
-                        )
+                        onRegisterUser()
                     }
                 )
             }
@@ -201,9 +198,12 @@ fun RegisterScreen(
 @Preview(showBackground = true)
 fun PreviewRegisterScreen() {
     BusbyTaskyTheme {
+        /** TODO Fix these */
+/*
         RegisterScreen(
             onBackArrowClicked = {},
             onRegistrationSuccess = {}
         )
+*/
     }
 }

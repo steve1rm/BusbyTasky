@@ -28,7 +28,7 @@ class RegisterViewModel @Inject constructor(
     }
 
     val username = savedStateHandle.getStateFlow(USERNAME, "")
-    val emailAddress = savedStateHandle.getStateFlow(EMAIL_ADDRESS, "")
+    val email = savedStateHandle.getStateFlow(EMAIL_ADDRESS, "")
     val isPasswordVisible = savedStateHandle.getStateFlow(IS_PASSWORD_VISIBLE, false)
     val password = savedStateHandle.getStateFlow(PASSWORD, "")
 
@@ -48,14 +48,14 @@ class RegisterViewModel @Inject constructor(
         savedStateHandle[IS_PASSWORD_VISIBLE] = !isPasswordVisible.value
     }
 
-    fun registerUser(fullName: String, email: String, password: String) {
+    fun registerUser() {
         viewModelScope.launch {
             registerMutableState.value = ResponseState.Loading
 
             registerMutableState.value = registerUseCase.execute(
-                fullName = fullName,
-                email = email,
-                password = password
+                fullName = username.value,
+                email = email.value,
+                password = password.value
             )
         }
     }
