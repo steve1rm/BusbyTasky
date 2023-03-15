@@ -32,8 +32,8 @@ import me.androidbox.domain.authentication.ResponseState
 @Composable
 fun RegisterScreen(
     modifier: Modifier = Modifier,
-    registerScreenState: State<LoginScreenState>,
-    loginScreenEvent: (LoginScreenEvent) -> Unit,
+    registerScreenState: State<AuthenticationScreenState>,
+    loginScreenEvent: (AuthenticationScreenEvent) -> Unit,
     onBackArrowClicked: () -> Unit,
     onRegistrationSuccess: () -> Unit)
 {
@@ -99,7 +99,7 @@ fun RegisterScreen(
                     isInputValid = false,
                     placeholderText = stringResource(R.string.name),
                     onInputChange = { newUsername ->
-                        loginScreenEvent(LoginScreenEvent.OnUsernameChanged(newUsername))
+                        loginScreenEvent(AuthenticationScreenEvent.OnUsernameChanged(newUsername))
                     }
                 )
                 Spacer(modifier = Modifier.height(16.dp))
@@ -116,7 +116,7 @@ fun RegisterScreen(
                     isInputValid = false,
                     placeholderText = stringResource(R.string.email_address),
                     onInputChange = { newEmail ->
-                        loginScreenEvent(LoginScreenEvent.OnEmailChanged(newEmail))
+                        loginScreenEvent(AuthenticationScreenEvent.OnEmailChanged(newEmail))
                     }
                 )
                 Spacer(modifier = Modifier.height(16.dp))
@@ -133,10 +133,10 @@ fun RegisterScreen(
                     placeholderText = stringResource(R.string.password),
                     isPasswordVisible = registerScreenState.value.isPasswordVisible,
                     onPasswordChange = { newPassword ->
-                        loginScreenEvent(LoginScreenEvent.OnPasswordChanged(newPassword))
+                        loginScreenEvent(AuthenticationScreenEvent.OnPasswordChanged(newPassword))
                     },
                     onPasswordVisibilityClicked = {
-                        loginScreenEvent(LoginScreenEvent.OnPasswordVisibilityChanged)
+                        loginScreenEvent(AuthenticationScreenEvent.OnPasswordVisibilityChanged)
                     }
                 )
 
@@ -148,7 +148,7 @@ fun RegisterScreen(
                         .fillMaxWidth(),
                     buttonText = stringResource(R.string.get_started).uppercase(),
                     onButtonClick = {
-                        loginScreenEvent(LoginScreenEvent.OnRegisterUser)
+                        loginScreenEvent(AuthenticationScreenEvent.OnRegisterUser)
                     }
                 )
             }

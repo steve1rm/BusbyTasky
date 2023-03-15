@@ -8,8 +8,8 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import me.androidbox.domain.authentication.ResponseState
 import me.androidbox.domain.authentication.usecase.RegisterUseCase
-import me.androidbox.presentation.login.screen.LoginScreenEvent
-import me.androidbox.presentation.login.screen.LoginScreenState
+import me.androidbox.presentation.login.screen.AuthenticationScreenEvent
+import me.androidbox.presentation.login.screen.AuthenticationScreenState
 import javax.inject.Inject
 
 @HiltViewModel
@@ -17,43 +17,42 @@ class RegisterViewModel @Inject constructor(
     private val registerUseCase: RegisterUseCase
 ): ViewModel() {
 
-    private val registerScreenMutableState = MutableStateFlow(LoginScreenState("", "", false, "", null, null))
+    private val registerScreenMutableState = MutableStateFlow(AuthenticationScreenState("", "", false, "", null, null))
     val registerScreenState = registerScreenMutableState.asStateFlow()
 
-    fun onLoginEvent(loginScreenEvent: LoginScreenEvent) {
-        when(loginScreenEvent) {
-            is LoginScreenEvent.OnEmailChanged -> {
+    fun onRegistrationEvent(authenticationScreenEvent: AuthenticationScreenEvent) {
+        when(authenticationScreenEvent) {
+            is AuthenticationScreenEvent.OnEmailChanged -> {
                 registerScreenMutableState.value = registerScreenState.value.copy(
-                    email = loginScreenEvent.email
+                    email = authenticationScreenEvent.email
                 )
             }
-            is LoginScreenEvent.OnUsernameChanged -> {
+            is AuthenticationScreenEvent.OnUsernameChanged -> {
                 registerScreenMutableState.value = registerScreenState.value.copy(
-                    username = loginScreenEvent.username
+                    username = authenticationScreenEvent.username
                 )
             }
-            is LoginScreenEvent.OnPasswordChanged -> {
+            is AuthenticationScreenEvent.OnPasswordChanged -> {
                 registerScreenMutableState.value = registerScreenState.value.copy(
-                    password = loginScreenEvent.password
+                    password = authenticationScreenEvent.password
                 )
             }
-            LoginScreenEvent.OnPasswordVisibilityChanged -> {
+            AuthenticationScreenEvent.OnPasswordVisibilityChanged -> {
                 registerScreenMutableState.value = registerScreenState.value.copy(
                     isPasswordVisible = !registerScreenState.value.isPasswordVisible
                 )
             }
-            LoginScreenEvent.OnRegisterUser -> {
+            AuthenticationScreenEvent.OnRegisterUser -> {
                 registerUser()
             }
-            LoginScreenEvent.OnLoginUser -> Unit
+            AuthenticationScreenEvent.OnAuthenticationUser -> Unit
         }
     }
 
     private fun registerUser() {
         viewModelScope.launch {
             registerScreenMutableState.value = registerScreenState.value.copy(
-                registrationResponseState = ResponseState.Loading
-            )
+                registrationResponseState = ResponseState.Loading)
 
             val responseState = registerUseCase.execute(
                 fullName = registerScreenState.value.username,

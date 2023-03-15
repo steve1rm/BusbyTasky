@@ -3,7 +3,7 @@ package me.androidbox.presentation.login.screen
 import me.androidbox.domain.authentication.ResponseState
 import me.androidbox.domain.authentication.model.Login
 
-data class LoginScreenState(
+data class AuthenticationScreenState(
     val email: String,
     val password: String,
     val isPasswordVisible: Boolean,

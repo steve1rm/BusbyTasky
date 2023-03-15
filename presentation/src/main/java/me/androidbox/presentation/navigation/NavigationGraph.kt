@@ -31,7 +31,7 @@ fun NavigationGraph(
                 loginScreenEvent = { loginEvent ->
                     loginViewModel.onLoginEvent(loginEvent)
                 },
-                loginScreenState = loginScreenState,
+                authenticationScreenState = loginScreenState,
                 onSignUpClicked = {
                     /* Signup clicked, navigate to register screen */
                     navHostController.navigate(route = Screen.RegisterScreen.route)
@@ -52,7 +52,7 @@ fun NavigationGraph(
 
             RegisterScreen(
                 loginScreenEvent = { loginScreenEvent ->
-                    registerViewModel.onLoginEvent(loginScreenEvent)
+                    registerViewModel.onRegistrationEvent(loginScreenEvent)
                 },
                 registerScreenState = registerScreenState,
                 onBackArrowClicked = {

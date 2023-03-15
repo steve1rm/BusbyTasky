@@ -8,8 +8,8 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import me.androidbox.domain.authentication.model.Login
 import me.androidbox.domain.authentication.usecase.LoginUseCase
-import me.androidbox.presentation.login.screen.LoginScreenEvent
-import me.androidbox.presentation.login.screen.LoginScreenState
+import me.androidbox.presentation.login.screen.AuthenticationScreenEvent
+import me.androidbox.presentation.login.screen.AuthenticationScreenState
 import javax.inject.Inject
 
 @HiltViewModel
@@ -17,37 +17,39 @@ class LoginViewModel @Inject constructor(
     private val loginUseCase: LoginUseCase
 ) : ViewModel() {
 
-    private val loginScreenMutableState = MutableStateFlow(LoginScreenState("", "", false, "",null, null))
+    private val loginScreenMutableState = MutableStateFlow(AuthenticationScreenState("", "", false, "",null, null))
     val loginScreenState = loginScreenMutableState.asStateFlow()
 
-    fun onLoginEvent(loginScreenEvent: LoginScreenEvent) {
-        when(loginScreenEvent) {
-            is LoginScreenEvent.OnEmailChanged -> {
+    fun onLoginEvent(authenticationScreenEvent: AuthenticationScreenEvent) {
+        when(authenticationScreenEvent) {
+            is AuthenticationScreenEvent.OnEmailChanged -> {
                 loginScreenMutableState.value = loginScreenState.value.copy(
-                    email = loginScreenEvent.email
+                    email = authenticationScreenEvent.email
                 )
             }
-            is LoginScreenEvent.OnPasswordChanged -> {
+            is AuthenticationScreenEvent.OnPasswordChanged -> {
                 loginScreenMutableState.value = loginScreenState.value.copy(
-                    password = loginScreenEvent.password
+                    password = authenticationScreenEvent.password
                 )
             }
-            is LoginScreenEvent.OnPasswordVisibilityChanged -> {
+            is AuthenticationScreenEvent.OnPasswordVisibilityChanged -> {
                 loginScreenMutableState.value = loginScreenState.value.copy(
                         isPasswordVisible = !loginScreenState.value.isPasswordVisible
                     )
             }
-            LoginScreenEvent.OnLoginUser -> {
+            AuthenticationScreenEvent.OnAuthenticationUser -> {
                 loginUser(loginScreenState.value.email, loginScreenState.value.password)
             }
-            LoginScreenEvent.OnRegisterUser -> Unit
-            is LoginScreenEvent.OnUsernameChanged -> Unit
+            AuthenticationScreenEvent.OnRegisterUser -> Unit
+            is AuthenticationScreenEvent.OnUsernameChanged -> Unit
         }
     }
     private fun loginUser(email: String, password: String) {
         viewModelScope.launch {
+            val loginResponseState = loginUseCase.execute(email, password)
+
             loginScreenMutableState.value  = loginScreenState.value.copy(
-                loginResponseState = loginUseCase.execute(email, password))
+                loginResponseState = loginResponseState)
         }
     }
 
