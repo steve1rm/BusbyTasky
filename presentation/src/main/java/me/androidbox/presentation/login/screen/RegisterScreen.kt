@@ -1,7 +1,6 @@
 package me.androidbox.presentation.login.screen
 
 import android.util.Log
-import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -11,12 +10,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.State
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -24,7 +21,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
 import me.androidbox.component.R
 import me.androidbox.component.general.PasswordTextField
 import me.androidbox.component.general.TaskButton
@@ -32,25 +28,18 @@ import me.androidbox.component.general.UserInputTextField
 import me.androidbox.component.ui.theme.BusbyTaskyTheme
 import me.androidbox.component.ui.theme.backgroundInputEntry
 import me.androidbox.domain.authentication.ResponseState
-import me.androidbox.presentation.login.viewmodel.RegisterViewModel
 
 @Composable
 fun RegisterScreen(
     modifier: Modifier = Modifier,
-    registerViewModel: RegisterViewModel = hiltViewModel(),
+    registerScreenState: State<AuthenticationScreenState<Unit>>,
+    loginScreenEvent: (AuthenticationScreenEvent) -> Unit,
     onBackArrowClicked: () -> Unit,
-    onRegistrationSuccess: () -> Unit
-) {
-    val username by registerViewModel.username.collectAsState()
-    val emailAddress by registerViewModel.emailAddress.collectAsState()
-    val password by registerViewModel.password.collectAsState()
-    val isPasswordVisible by registerViewModel.isPasswordVisible.collectAsState()
+    onRegistrationSuccess: () -> Unit)
+{
 
-    val registration = registerViewModel.registrationState.collectAsState()
-    val context = LocalContext.current
-
-    LaunchedEffect(key1 = registration.value) {
-        when(val status = registration.value) {
+    LaunchedEffect(key1 = registerScreenState.value) {
+        when(val status = registerScreenState.value.responseState) {
             ResponseState.Loading -> {
                 /* TODO Show a loading progress spinner */
             }
@@ -61,11 +50,9 @@ fun RegisterScreen(
             }
 
             is ResponseState.Failure -> {
-           //     Toast.makeText(context, "Failed to register ${status.error}", Toast.LENGTH_LONG).show()
-                /* Is there a way to pass in a context to the launched effect? */
                 Log.d("REGISTRATION", "Failed to register ${status.error}")
             }
-            else -> {}
+            else -> Unit
         }
     }
 
@@ -108,11 +95,11 @@ fun RegisterScreen(
                             shape = RoundedCornerShape(10.dp),
                             color = MaterialTheme.colorScheme.backgroundInputEntry
                         ),
-                    inputValue = username,
+                    inputValue = registerScreenState.value.username,
                     isInputValid = false,
                     placeholderText = stringResource(R.string.name),
                     onInputChange = { newUsername ->
-                        registerViewModel.onUsernameChanged(newUsername)
+                        loginScreenEvent(AuthenticationScreenEvent.OnUsernameChanged(newUsername))
                     }
                 )
                 Spacer(modifier = Modifier.height(16.dp))
@@ -125,11 +112,11 @@ fun RegisterScreen(
                             shape = RoundedCornerShape(10.dp),
                             color = MaterialTheme.colorScheme.backgroundInputEntry
                         ),
-                    inputValue = emailAddress,
+                    inputValue = registerScreenState.value.email,
                     isInputValid = false,
                     placeholderText = stringResource(R.string.email_address),
-                    onInputChange = { newEmailAddress ->
-                        registerViewModel.onEmailAddress(newEmailAddress)
+                    onInputChange = { newEmail ->
+                        loginScreenEvent(AuthenticationScreenEvent.OnEmailChanged(newEmail))
                     }
                 )
                 Spacer(modifier = Modifier.height(16.dp))
@@ -142,14 +129,14 @@ fun RegisterScreen(
                             shape = RoundedCornerShape(10.dp),
                             color = MaterialTheme.colorScheme.backgroundInputEntry
                         ),
-                    passwordValue = password,
+                    passwordValue = registerScreenState.value.password,
                     placeholderText = stringResource(R.string.password),
-                    isPasswordVisible = isPasswordVisible,
+                    isPasswordVisible = registerScreenState.value.isPasswordVisible,
                     onPasswordChange = { newPassword ->
-                        registerViewModel.onPasswordChanged(newPassword)
+                        loginScreenEvent(AuthenticationScreenEvent.OnPasswordChanged(newPassword))
                     },
                     onPasswordVisibilityClicked = {
-                        registerViewModel.onPasswordVisibilityChanged()
+                        loginScreenEvent(AuthenticationScreenEvent.OnPasswordVisibilityChanged)
                     }
                 )
 
@@ -161,11 +148,7 @@ fun RegisterScreen(
                         .fillMaxWidth(),
                     buttonText = stringResource(R.string.get_started).uppercase(),
                     onButtonClick = {
-                        registerViewModel.registerUser(
-                            fullName = registerViewModel.username.value,
-                            email = registerViewModel.emailAddress.value,
-                            password = registerViewModel.password.value
-                        )
+                        loginScreenEvent(AuthenticationScreenEvent.OnRegisterUser)
                     }
                 )
             }
@@ -204,9 +187,12 @@ fun RegisterScreen(
 @Preview(showBackground = true)
 fun PreviewRegisterScreen() {
     BusbyTaskyTheme {
+        /** TODO Fix these */
+/*
         RegisterScreen(
             onBackArrowClicked = {},
             onRegistrationSuccess = {}
         )
+*/
     }
 }

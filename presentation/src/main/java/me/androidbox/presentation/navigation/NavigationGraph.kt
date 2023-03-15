@@ -1,12 +1,15 @@
 package me.androidbox.presentation.navigation
 
 import androidx.compose.runtime.Composable
-import androidx.navigation.NavDestination
+import androidx.compose.runtime.collectAsState
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import me.androidbox.presentation.login.screen.LoginScreen
 import me.androidbox.presentation.login.screen.RegisterScreen
+import me.androidbox.presentation.login.viewmodel.LoginViewModel
+import me.androidbox.presentation.login.viewmodel.RegisterViewModel
 
 @Composable
 fun NavigationGraph(
@@ -20,27 +23,47 @@ fun NavigationGraph(
 
         /* LoginScreen */
         composable(
-            route = LoginScreen.route
+            route = Screen.LoginScreen.route
         ) {
-            LoginScreen {
-                /* Signup clicked, navigate to register screen */
-                navHostController.navigate(route = RegisterScreen.route)
-            }
+            val loginViewModel: LoginViewModel = hiltViewModel()
+            val loginScreenState = loginViewModel.loginScreenState.collectAsState()
+
+            LoginScreen(
+                loginScreenEvent = { loginEvent ->
+                    loginViewModel.onLoginEvent(loginEvent)
+                },
+                authenticationScreenState = loginScreenState,
+                onSignUpClicked = {
+                    /* Signup clicked, navigate to register screen */
+                    navHostController.navigate(route = Screen.RegisterScreen.route)
+                },
+                onLoginSuccess = { login ->
+                    /* TODO Navigate to the agenda screen (not implemented yet) */
+                },
+            )
         }
 
         /* Register Screen */
         composable(
-            route = RegisterScreen.route
+            route = Screen.RegisterScreen.route
         ) {
+            val registerViewModel: RegisterViewModel = hiltViewModel()
+            val registerScreenState = registerViewModel.registerScreenState.collectAsState()
+
             RegisterScreen(
+                loginScreenEvent = { loginScreenEvent ->
+                    registerViewModel.onRegistrationEvent(loginScreenEvent)
+                },
+                registerScreenState = registerScreenState,
                 onBackArrowClicked = {
-                /* Back arrow clicked, pop RegisterScreen of the backstack to get back to login screen */
-                navHostController.popBackStack()
-            },
-            onRegistrationSuccess = {
-                /* Registration Success */
-                navHostController.popBackStack()
-            })
+                    /* Back arrow clicked, pop RegisterScreen of the backstack to get back to login screen */
+                    navHostController.popBackStack()
+                },
+                onRegistrationSuccess = {
+                    /* Registration Success */
+                    navHostController.popBackStack()
+                },
+            )
         }
     }
 }
