@@ -6,6 +6,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import me.androidbox.domain.authentication.ResponseState
 import me.androidbox.domain.authentication.model.Login
 import me.androidbox.domain.authentication.usecase.LoginUseCase
 import me.androidbox.presentation.login.screen.AuthenticationScreenEvent
@@ -48,12 +49,16 @@ class LoginViewModel @Inject constructor(
         viewModelScope.launch {
             val loginResponseState = loginUseCase.execute(email, password)
 
+            if (loginResponseState is ResponseState.Success) {
+                saveCurrentUserDetails(loginResponseState.data)
+            }
+
             loginScreenMutableState.value  = loginScreenState.value.copy(
                 loginResponseState = loginResponseState)
         }
     }
 
-    fun saveCurrentUserDetails(login: Login) {
+    private fun saveCurrentUserDetails(login: Login) {
         /* Will call use-case to save user login details to shared preferences WIP */
     }
 }
