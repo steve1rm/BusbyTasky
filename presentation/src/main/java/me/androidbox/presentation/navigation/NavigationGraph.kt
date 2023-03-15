@@ -25,10 +25,9 @@ fun NavigationGraph(
             route = Screen.LoginScreen.route
         ) {
             val loginViewModel: LoginViewModel = hiltViewModel()
-            val loginResponseState = loginViewModel.loginResponseState.collectAsState()
+            val loginScreenState = loginViewModel.loginScreenState.collectAsState()
 
             LoginScreen(
-                loginResponseState = loginResponseState,
                 loginScreenEvent = { loginEvent ->
                     loginViewModel.onLoginEvent(loginEvent)
                 },
@@ -40,7 +39,7 @@ fun NavigationGraph(
                     loginViewModel.saveCurrentUserDetails(login)
                     /* TODO Navigate to the agenda screen (not implemented yet) */
                 },
-                loginScreenState = loginViewModel.loginScreenState.collectAsState().value
+                loginScreenState = loginScreenState
             )
         }
 

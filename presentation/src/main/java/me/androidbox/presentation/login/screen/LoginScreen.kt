@@ -33,14 +33,13 @@ import me.androidbox.domain.authentication.model.Login
 fun LoginScreen(
     modifier: Modifier = Modifier,
     loginScreenEvent: (LoginScreenEvent) -> Unit,
-    loginResponseState: State<ResponseState<Login>?>,
     onLoginSuccess: (login: Login) -> Unit,
     onSignUpClicked: () -> Unit,
-    loginScreenState: LoginScreenState
+    loginScreenState: State<LoginScreenState>
 ) {
 
-    LaunchedEffect(key1 = loginResponseState.value) {
-        when(val status = loginResponseState.value) {
+    LaunchedEffect(key1 = loginScreenState.value.responseState) {
+        when(val status = loginScreenState.value.responseState) {
             is ResponseState.Loading -> {
                 /* TODO Showing loading spinner */
             }
@@ -90,7 +89,7 @@ fun LoginScreen(
                             shape = RoundedCornerShape(10.dp),
                             color = MaterialTheme.colorScheme.backgroundInputEntry
                         ),
-                    inputValue = loginScreenState.email,
+                    inputValue = loginScreenState.value.email,
                     isInputValid = false,
                     placeholderText = stringResource(R.string.email_address),
                     onInputChange = { newEmail ->
@@ -106,7 +105,7 @@ fun LoginScreen(
                             shape = RoundedCornerShape(10.dp),
                             color = MaterialTheme.colorScheme.backgroundInputEntry
                         ),
-                    passwordValue = loginScreenState.password,
+                    passwordValue = loginScreenState.value.password,
                     placeholderText = stringResource(R.string.password),
                     onPasswordChange = { newPassword ->
                         loginScreenEvent(LoginScreenEvent.OnPasswordChanged(newPassword))
@@ -114,7 +113,7 @@ fun LoginScreen(
                     onPasswordVisibilityClicked = {
                         loginScreenEvent(LoginScreenEvent.OnPasswordVisibilityChanged)
                     },
-                    isPasswordVisible = loginScreenState.isPasswordVisible
+                    isPasswordVisible = loginScreenState.value.isPasswordVisible
                 )
 
                 Spacer(modifier = Modifier.height(26.dp))
