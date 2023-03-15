@@ -6,7 +6,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import me.androidbox.domain.authentication.ResponseState
 import me.androidbox.domain.authentication.model.Login
 import me.androidbox.domain.authentication.usecase.LoginUseCase
 import me.androidbox.presentation.login.screen.LoginScreenEvent
@@ -18,7 +17,7 @@ class LoginViewModel @Inject constructor(
     private val loginUseCase: LoginUseCase
 ) : ViewModel() {
 
-    private val loginScreenMutableState = MutableStateFlow(LoginScreenState("", "", false, "",null))
+    private val loginScreenMutableState = MutableStateFlow(LoginScreenState("", "", false, "",null, null))
     val loginScreenState = loginScreenMutableState.asStateFlow()
 
     fun onLoginEvent(loginScreenEvent: LoginScreenEvent) {
@@ -48,7 +47,7 @@ class LoginViewModel @Inject constructor(
     private fun loginUser(email: String, password: String) {
         viewModelScope.launch {
             loginScreenMutableState.value  = loginScreenState.value.copy(
-                responseState = loginUseCase.execute(email, password))
+                loginResponseState = loginUseCase.execute(email, password))
         }
     }
 

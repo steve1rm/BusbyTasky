@@ -38,8 +38,8 @@ fun LoginScreen(
     loginScreenState: State<LoginScreenState>
 ) {
 
-    LaunchedEffect(key1 = loginScreenState.value.responseState) {
-        when(val status = loginScreenState.value.responseState) {
+    LaunchedEffect(key1 = loginScreenState.value.loginResponseState) {
+        when(val status = loginScreenState.value.loginResponseState) {
             is ResponseState.Loading -> {
                 /* TODO Showing loading spinner */
             }

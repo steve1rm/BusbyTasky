@@ -8,5 +8,6 @@ data class LoginScreenState(
     val password: String,
     val isPasswordVisible: Boolean,
     val username: String,
-    val responseState: ResponseState<Login>?
+    val loginResponseState: ResponseState<Login>?,
+    val registrationResponseState: ResponseState<Unit>?
 )

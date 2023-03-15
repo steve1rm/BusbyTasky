@@ -48,15 +48,12 @@ fun NavigationGraph(
             route = Screen.RegisterScreen.route
         ) {
             val registerViewModel: RegisterViewModel = hiltViewModel()
-            val registerState = registerViewModel.registrationState.collectAsState()
-
             val registerScreenState = registerViewModel.registerScreenState.collectAsState()
 
             RegisterScreen(
                 loginScreenEvent = { loginScreenEvent ->
                     registerViewModel.onLoginEvent(loginScreenEvent)
                 },
-                registrationState = registerState,
                 registerScreenState = registerScreenState,
                 onBackArrowClicked = {
                     /* Back arrow clicked, pop RegisterScreen of the backstack to get back to login screen */
@@ -66,33 +63,6 @@ fun NavigationGraph(
                     /* Registration Success */
                     navHostController.popBackStack()
                 },
-        //        username = registerViewModel.username.collectAsState().value,
-                //email = registerViewModel.email.collectAsState().value,
-        //        password = registerViewModel.password.collectAsState().value,
-        //        isPasswordVisible = registerViewModel.isPasswordVisible.collectAsState().value,
-/*
-                onUsernameChanged = { newUsername ->
-                    registerViewModel.onUsernameChanged(newUsername)
-                },
-*/
-/*
-                onEmailAddress = { newEmail ->
-                    registerViewModel.onEmailAddress(newEmail)
-                },
-*/
-/*
-                onPasswordChanged = { newPassword ->
-                    registerViewModel.onPasswordChanged(newPassword)
-                },
-                onPasswordVisibilityChanged = {
-                    registerViewModel.onPasswordVisibilityChanged()
-                },
-*/
-/*
-                onRegisterUser = {
-                    registerViewModel.registerUser()
-                }
-*/
             )
         }
     }

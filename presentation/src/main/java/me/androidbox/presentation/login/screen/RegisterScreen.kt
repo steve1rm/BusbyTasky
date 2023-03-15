@@ -34,22 +34,12 @@ fun RegisterScreen(
     modifier: Modifier = Modifier,
     registerScreenState: State<LoginScreenState>,
     loginScreenEvent: (LoginScreenEvent) -> Unit,
-    registrationState: State<ResponseState<Unit>?>,
     onBackArrowClicked: () -> Unit,
-    onRegistrationSuccess: () -> Unit,
-  //  username: String,
-  //  email: String,
- //   password: String,
- //   isPasswordVisible: Boolean,
- //   onUsernameChanged: (newUsername: String) -> Unit,
- //   onEmailAddress: (newEmail: String) -> Unit,
- //   onPasswordChanged: (newPassword: String) -> Unit,
- //   onPasswordVisibilityChanged: () -> Unit,
-  //  onRegisterUser: () -> Unit
-) {
+    onRegistrationSuccess: () -> Unit)
+{
 
-    LaunchedEffect(key1 = registrationState.value) {
-        when(val status = registrationState.value) {
+    LaunchedEffect(key1 = registerScreenState.value) {
+        when(val status = registerScreenState.value.registrationResponseState) {
             ResponseState.Loading -> {
                 /* TODO Show a loading progress spinner */
             }
