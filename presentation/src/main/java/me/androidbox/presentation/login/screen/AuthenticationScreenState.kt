@@ -1,7 +1,6 @@
 package me.androidbox.presentation.login.screen
 
 import me.androidbox.domain.authentication.ResponseState
-import me.androidbox.domain.authentication.model.Login
 
 data class AuthenticationScreenState<T>(
     val email: String,
