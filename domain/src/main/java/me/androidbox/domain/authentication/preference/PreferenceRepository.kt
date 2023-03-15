@@ -3,11 +3,11 @@ package me.androidbox.domain.authentication.preference
 import me.androidbox.domain.authentication.model.LoginUser
 
 interface PreferenceRepository {
-    suspend fun saveToken(token: String)
-    suspend fun saveUserId(userId: String)
-    suspend fun saveFullName(fullName: String)
+    fun saveToken(token: String)
+    fun saveUserId(userId: String)
+    fun saveFullName(fullName: String)
 
-    suspend fun retrieveCurrentUserOrNull(): LoginUser?
+    fun retrieveCurrentUserOrNull(): LoginUser?
 
-    suspend fun deleteCurrentUser()
+    fun deleteCurrentUser()
 }

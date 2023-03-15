@@ -7,7 +7,7 @@ import javax.inject.Inject
 class SaveFullNameUseCaseImp @Inject constructor(
     private val preferenceRepository: PreferenceRepository) : SaveFullNameUseCase {
 
-    override suspend fun execute(fullName: String) {
+    override fun execute(fullName: String) {
         preferenceRepository.saveFullName(fullName)
     }
 }

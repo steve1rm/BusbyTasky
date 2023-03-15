@@ -7,7 +7,7 @@ import javax.inject.Inject
 class SaveTokenUseCaseImp @Inject constructor(
     private val preferenceRepository: PreferenceRepository) : SaveTokenUseCase {
 
-    override suspend fun execute(token: String) {
+    override fun execute(token: String) {
         preferenceRepository.saveToken(token)
     }
 }

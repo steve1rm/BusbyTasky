@@ -7,7 +7,7 @@ import javax.inject.Inject
 class SaveUserIdUseCaseImp @Inject constructor(private val preferenceRepository: PreferenceRepository)
     : SaveUserIdUseCase {
 
-    override suspend fun execute(userId: String) {
+    override fun execute(userId: String) {
         preferenceRepository.saveUserId(userId)
     }
 }

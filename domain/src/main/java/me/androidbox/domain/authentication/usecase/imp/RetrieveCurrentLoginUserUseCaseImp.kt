@@ -8,7 +8,7 @@ import javax.inject.Inject
 class RetrieveCurrentLoginUserUseCaseImp @Inject constructor(
     private val preferenceRepository: PreferenceRepository) : RetrieveCurrentLoginUserUseCase {
 
-    override suspend fun execute(): LoginUser? {
+    override fun execute(): LoginUser? {
         return preferenceRepository.retrieveCurrentUserOrNull()
     }
 }

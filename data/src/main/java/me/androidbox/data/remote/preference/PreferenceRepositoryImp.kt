@@ -33,28 +33,28 @@ class PreferenceRepositoryImp @Inject constructor(
         )
     }
 
-    override suspend fun saveToken(token: String) {
+    override fun saveToken(token: String) {
         sharedPreferences
             .edit()
             .putString(TOKEN_KEY, token)
             .apply()
     }
 
-    override suspend fun saveUserId(userId: String) {
+    override fun saveUserId(userId: String) {
         sharedPreferences
             .edit()
             .putString(USER_ID_KEY, userId)
             .apply()
     }
 
-    override suspend fun saveFullName(fullName: String) {
+    override fun saveFullName(fullName: String) {
         sharedPreferences
             .edit()
             .putString(FULL_NAME_KEY, fullName)
             .apply()
     }
 
-    override suspend fun retrieveCurrentUserOrNull(): LoginUser? {
+    override fun retrieveCurrentUserOrNull(): LoginUser? {
         val token = sharedPreferences.getString(TOKEN_KEY, "")
         val userId = sharedPreferences.getString(USER_ID_KEY, "")
         val fullName = sharedPreferences.getString(FULL_NAME_KEY, "")
@@ -71,7 +71,7 @@ class PreferenceRepositoryImp @Inject constructor(
         }
     }
 
-    override suspend fun deleteCurrentUser() {
+    override fun deleteCurrentUser() {
         sharedPreferences
             .edit()
             .remove(TOKEN_KEY)
