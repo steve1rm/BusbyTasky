@@ -32,19 +32,20 @@ import me.androidbox.domain.authentication.ResponseState
 @Composable
 fun RegisterScreen(
     modifier: Modifier = Modifier,
+    registerScreenState: State<LoginScreenState>,
+    loginScreenEvent: (LoginScreenEvent) -> Unit,
     registrationState: State<ResponseState<Unit>?>,
     onBackArrowClicked: () -> Unit,
     onRegistrationSuccess: () -> Unit,
-    username: String,
-    email: String,
-    password: String,
-    isPasswordVisible: Boolean,
-    onUsernameChanged: (newUsername: String) -> Unit,
-    onEmailAddress: (newEmail: String) -> Unit,
-    onPasswordChanged: (newPassword: String) -> Unit,
-    onPasswordVisibilityChanged: () -> Unit,
-    onRegisterUser: () -> Unit
-
+  //  username: String,
+  //  email: String,
+ //   password: String,
+ //   isPasswordVisible: Boolean,
+ //   onUsernameChanged: (newUsername: String) -> Unit,
+ //   onEmailAddress: (newEmail: String) -> Unit,
+ //   onPasswordChanged: (newPassword: String) -> Unit,
+ //   onPasswordVisibilityChanged: () -> Unit,
+  //  onRegisterUser: () -> Unit
 ) {
 
     LaunchedEffect(key1 = registrationState.value) {
@@ -104,11 +105,11 @@ fun RegisterScreen(
                             shape = RoundedCornerShape(10.dp),
                             color = MaterialTheme.colorScheme.backgroundInputEntry
                         ),
-                    inputValue = username,
+                    inputValue = registerScreenState.value.username,
                     isInputValid = false,
                     placeholderText = stringResource(R.string.name),
                     onInputChange = { newUsername ->
-                        onUsernameChanged(newUsername)
+                        loginScreenEvent(LoginScreenEvent.OnUsernameChanged(newUsername))
                     }
                 )
                 Spacer(modifier = Modifier.height(16.dp))
@@ -121,11 +122,11 @@ fun RegisterScreen(
                             shape = RoundedCornerShape(10.dp),
                             color = MaterialTheme.colorScheme.backgroundInputEntry
                         ),
-                    inputValue = email,
+                    inputValue = registerScreenState.value.email,
                     isInputValid = false,
                     placeholderText = stringResource(R.string.email_address),
                     onInputChange = { newEmail ->
-                        onEmailAddress(newEmail)
+                        loginScreenEvent(LoginScreenEvent.OnEmailChanged(newEmail))
                     }
                 )
                 Spacer(modifier = Modifier.height(16.dp))
@@ -138,14 +139,14 @@ fun RegisterScreen(
                             shape = RoundedCornerShape(10.dp),
                             color = MaterialTheme.colorScheme.backgroundInputEntry
                         ),
-                    passwordValue = password,
+                    passwordValue = registerScreenState.value.password,
                     placeholderText = stringResource(R.string.password),
-                    isPasswordVisible = isPasswordVisible,
+                    isPasswordVisible = registerScreenState.value.isPasswordVisible,
                     onPasswordChange = { newPassword ->
-                        onPasswordChanged(newPassword)
+                        loginScreenEvent(LoginScreenEvent.OnPasswordChanged(newPassword))
                     },
                     onPasswordVisibilityClicked = {
-                        onPasswordVisibilityChanged()
+                        loginScreenEvent(LoginScreenEvent.OnPasswordVisibilityChanged)
                     }
                 )
 
@@ -157,7 +158,7 @@ fun RegisterScreen(
                         .fillMaxWidth(),
                     buttonText = stringResource(R.string.get_started).uppercase(),
                     onButtonClick = {
-                        onRegisterUser()
+                        loginScreenEvent(LoginScreenEvent.OnRegisterUser)
                     }
                 )
             }

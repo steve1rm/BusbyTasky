@@ -18,7 +18,7 @@ class LoginViewModel @Inject constructor(
     private val loginUseCase: LoginUseCase
 ) : ViewModel() {
 
-    private val loginScreenMutableState = MutableStateFlow(LoginScreenState("", "", false, null))
+    private val loginScreenMutableState = MutableStateFlow(LoginScreenState("", "", false, "",null))
     val loginScreenState = loginScreenMutableState.asStateFlow()
 
     fun onLoginEvent(loginScreenEvent: LoginScreenEvent) {
@@ -41,6 +41,8 @@ class LoginViewModel @Inject constructor(
             LoginScreenEvent.OnLoginUser -> {
                 loginUser(loginScreenState.value.email, loginScreenState.value.password)
             }
+            LoginScreenEvent.OnRegisterUser -> Unit
+            is LoginScreenEvent.OnUsernameChanged -> Unit
         }
     }
     private fun loginUser(email: String, password: String) {
