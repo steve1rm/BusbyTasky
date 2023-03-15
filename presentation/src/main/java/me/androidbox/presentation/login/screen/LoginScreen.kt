@@ -35,11 +35,11 @@ fun LoginScreen(
     loginScreenEvent: (AuthenticationScreenEvent) -> Unit,
     onLoginSuccess: (login: Login) -> Unit,
     onSignUpClicked: () -> Unit,
-    authenticationScreenState: State<AuthenticationScreenState>
+    authenticationScreenState: State<AuthenticationScreenState<Login>>
 ) {
 
-    LaunchedEffect(key1 = authenticationScreenState.value.loginResponseState) {
-        when(val status = authenticationScreenState.value.loginResponseState) {
+    LaunchedEffect(key1 = authenticationScreenState.value.responseState) {
+        when(val status = authenticationScreenState.value.responseState) {
             is ResponseState.Loading -> {
                 /* TODO Showing loading spinner */
             }

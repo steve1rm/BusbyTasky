@@ -32,14 +32,14 @@ import me.androidbox.domain.authentication.ResponseState
 @Composable
 fun RegisterScreen(
     modifier: Modifier = Modifier,
-    registerScreenState: State<AuthenticationScreenState>,
+    registerScreenState: State<AuthenticationScreenState<Unit>>,
     loginScreenEvent: (AuthenticationScreenEvent) -> Unit,
     onBackArrowClicked: () -> Unit,
     onRegistrationSuccess: () -> Unit)
 {
 
     LaunchedEffect(key1 = registerScreenState.value) {
-        when(val status = registerScreenState.value.registrationResponseState) {
+        when(val status = registerScreenState.value.responseState) {
             ResponseState.Loading -> {
                 /* TODO Show a loading progress spinner */
             }

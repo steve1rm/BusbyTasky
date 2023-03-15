@@ -17,7 +17,7 @@ class RegisterViewModel @Inject constructor(
     private val registerUseCase: RegisterUseCase
 ): ViewModel() {
 
-    private val registerScreenMutableState = MutableStateFlow(AuthenticationScreenState("", "", false, "", null, null))
+    private val registerScreenMutableState = MutableStateFlow(AuthenticationScreenState<Unit>("", "", false, "", null))
     val registerScreenState = registerScreenMutableState.asStateFlow()
 
     fun onRegistrationEvent(authenticationScreenEvent: AuthenticationScreenEvent) {
@@ -52,7 +52,7 @@ class RegisterViewModel @Inject constructor(
     private fun registerUser() {
         viewModelScope.launch {
             registerScreenMutableState.value = registerScreenState.value.copy(
-                registrationResponseState = ResponseState.Loading)
+                responseState = ResponseState.Loading)
 
             val responseState = registerUseCase.execute(
                 fullName = registerScreenState.value.username,
@@ -60,7 +60,7 @@ class RegisterViewModel @Inject constructor(
                 password = registerScreenState.value.password)
 
             registerScreenMutableState.value = registerScreenState.value.copy(
-                registrationResponseState = responseState
+                responseState = responseState
             )
         }
     }

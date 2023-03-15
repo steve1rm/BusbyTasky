@@ -37,7 +37,6 @@ fun NavigationGraph(
                     navHostController.navigate(route = Screen.RegisterScreen.route)
                 },
                 onLoginSuccess = { login ->
-                    loginViewModel.saveCurrentUserDetails(login)
                     /* TODO Navigate to the agenda screen (not implemented yet) */
                 },
             )
