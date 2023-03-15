@@ -6,8 +6,6 @@ interface PreferenceRepository {
     fun saveToken(token: String)
     fun saveUserId(userId: String)
     fun saveFullName(fullName: String)
-
     fun retrieveCurrentUserOrNull(): LoginUser?
-
     fun deleteCurrentUser()
 }
