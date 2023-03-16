@@ -9,7 +9,7 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
 import me.androidbox.domain.authentication.ResponseState
-import me.androidbox.presentation.login.viewmodel.SplashScreenViewModel
+import me.androidbox.presentation.login.viewmodel.HomeViewModel
 import me.androidbox.presentation.navigation.NavigationGraph
 import me.androidbox.presentation.navigation.Screen
 import me.androidbox.presentation.ui.theme.BusbyTaskyTheme
@@ -19,18 +19,18 @@ class HomeActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val splashScreenViewModel by viewModels<SplashScreenViewModel>()
+        val homeViewModel by viewModels<HomeViewModel>()
 
         installSplashScreen().apply {
             this.setKeepOnScreenCondition {
-                splashScreenViewModel.isCompletedState.value
+                homeViewModel.isCompletedState.value
             }
         }
 
-        splashScreenViewModel.authenticateUser()
+        homeViewModel.authenticateUser()
 
         setContent {
-            val authenticatedState = splashScreenViewModel.authenticationState.collectAsState()
+            val authenticatedState = homeViewModel.authenticationState.collectAsState()
             val destination = when(authenticatedState.value) {
                 is ResponseState.Success -> {
                     /* TODO Go to the Agenda Screen when implemented */

@@ -11,7 +11,7 @@ import me.androidbox.domain.authentication.usecase.AuthenticateUserUseCase
 import javax.inject.Inject
 
 @HiltViewModel
-class SplashScreenViewModel @Inject constructor(
+class HomeViewModel @Inject constructor(
     private val authenticateUserUseCase: AuthenticateUserUseCase
 ) : ViewModel() {
 
