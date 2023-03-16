@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import me.androidbox.domain.authentication.ResponseState
-import me.androidbox.domain.authentication.model.LoginUser
+import me.androidbox.domain.authentication.model.AuthenticatedUser
 import me.androidbox.domain.authentication.usecase.LoginUseCase
 import me.androidbox.presentation.login.screen.AuthenticationScreenEvent
 import me.androidbox.presentation.login.screen.AuthenticationScreenState
@@ -18,7 +18,7 @@ class LoginViewModel @Inject constructor(
     private val loginUseCase: LoginUseCase
 ) : ViewModel() {
 
-    private val loginScreenMutableState = MutableStateFlow(AuthenticationScreenState<LoginUser>())
+    private val loginScreenMutableState = MutableStateFlow(AuthenticationScreenState<AuthenticatedUser>())
     val loginScreenState = loginScreenMutableState.asStateFlow()
 
     fun onLoginEvent(authenticationScreenEvent: AuthenticationScreenEvent) {
@@ -58,7 +58,7 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-    private fun saveCurrentUserDetails(loginUser: LoginUser) {
+    private fun saveCurrentUserDetails(authenticatedUser: AuthenticatedUser) {
         /* Will call use-case to save user login details to shared preferences WIP */
     }
 }

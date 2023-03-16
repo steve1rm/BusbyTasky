@@ -1,7 +1,7 @@
 package me.androidbox.domain.authentication.usecase
 
-import me.androidbox.domain.authentication.model.LoginUser
+import me.androidbox.domain.authentication.model.AuthenticatedUser
 
 fun interface SaveCurrentUserUseCase {
-    fun execute(loginUser: LoginUser)
+    fun execute(authenticatedUser: AuthenticatedUser)
 }

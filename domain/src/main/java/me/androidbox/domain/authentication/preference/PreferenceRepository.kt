@@ -1,9 +1,9 @@
 package me.androidbox.domain.authentication.preference
 
-import me.androidbox.domain.authentication.model.LoginUser
+import me.androidbox.domain.authentication.model.AuthenticatedUser
 
 interface PreferenceRepository {
-    fun retrieveCurrentUserOrNull(): LoginUser?
-    fun saveCurrentUser(loginUser: LoginUser)
+    fun retrieveCurrentUserOrNull(): AuthenticatedUser?
+    fun saveCurrentUser(authenticatedUser: AuthenticatedUser)
     fun deleteCurrentUser()
 }

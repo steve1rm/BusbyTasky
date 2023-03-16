@@ -5,7 +5,7 @@ import android.content.Context
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
 import dagger.hilt.android.qualifiers.ApplicationContext
-import me.androidbox.domain.authentication.model.LoginUser
+import me.androidbox.domain.authentication.model.AuthenticatedUser
 import me.androidbox.domain.authentication.preference.PreferenceRepository
 import javax.inject.Inject
 
@@ -33,22 +33,22 @@ class PreferenceRepositoryImp @Inject constructor(
         )
     }
 
-    override fun saveCurrentUser(loginUser: LoginUser) {
+    override fun saveCurrentUser(authenticatedUser: AuthenticatedUser) {
         sharedPreferences
             .edit()
-            .putString(TOKEN_KEY, loginUser.token)
-            .putString(USER_ID_KEY, loginUser.userId)
-            .putString(FULL_NAME_KEY, loginUser.fullName)
+            .putString(TOKEN_KEY, authenticatedUser.token)
+            .putString(USER_ID_KEY, authenticatedUser.userId)
+            .putString(FULL_NAME_KEY, authenticatedUser.fullName)
             .apply()
     }
 
-    override fun retrieveCurrentUserOrNull(): LoginUser? {
+    override fun retrieveCurrentUserOrNull(): AuthenticatedUser? {
         val token = sharedPreferences.getString(TOKEN_KEY, "")
         val userId = sharedPreferences.getString(USER_ID_KEY, "")
         val fullName = sharedPreferences.getString(FULL_NAME_KEY, "")
 
         return if(!token.isNullOrEmpty() && !userId.isNullOrEmpty() && !fullName.isNullOrEmpty()) {
-            LoginUser(
+            AuthenticatedUser(
                 token = token,
                 userId = userId,
                 fullName = fullName
