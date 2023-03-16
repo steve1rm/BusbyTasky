@@ -33,24 +33,12 @@ class PreferenceRepositoryImp @Inject constructor(
         )
     }
 
-    override fun saveToken(token: String) {
+    override fun saveCurrentUser(loginUser: LoginUser) {
         sharedPreferences
             .edit()
-            .putString(TOKEN_KEY, token)
-            .apply()
-    }
-
-    override fun saveUserId(userId: String) {
-        sharedPreferences
-            .edit()
-            .putString(USER_ID_KEY, userId)
-            .apply()
-    }
-
-    override fun saveFullName(fullName: String) {
-        sharedPreferences
-            .edit()
-            .putString(FULL_NAME_KEY, fullName)
+            .putString(TOKEN_KEY, loginUser.token)
+            .putString(USER_ID_KEY, loginUser.userId)
+            .putString(FULL_NAME_KEY, loginUser.fullName)
             .apply()
     }
 

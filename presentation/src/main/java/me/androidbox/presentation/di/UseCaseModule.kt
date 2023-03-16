@@ -19,15 +19,7 @@ interface UseCaseModule {
 
     @Reusable
     @Binds
-    fun bindsSaveTokenUseCaseImp(saveTokenUseCaseImp: SaveTokenUseCaseImp): SaveTokenUseCase
-
-    @Reusable
-    @Binds
-    fun bindsSaveUserIdUseCaseImp(saveUserIdUseCaseImp: SaveUserIdUseCaseImp): SaveUserIdUseCase
-
-    @Reusable
-    @Binds
-    fun bindsSaveFullNameUseCaseImp(saveFullNameUseCaseImp: SaveFullNameUseCaseImp): SaveFullNameUseCase
+    fun bindsSaveCurrentUserUseCaseImp(saveCurrentUserUseCase: SaveCurrentUserUseCase): SaveCurrentUserUseCase
 
     @Reusable
     @Binds
