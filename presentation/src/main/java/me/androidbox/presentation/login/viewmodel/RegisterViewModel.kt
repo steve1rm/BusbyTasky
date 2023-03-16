@@ -17,7 +17,7 @@ class RegisterViewModel @Inject constructor(
     private val registerUseCase: RegisterUseCase
 ): ViewModel() {
 
-    private val registerScreenMutableState = MutableStateFlow(AuthenticationScreenState<Unit>("", "", false, "", null))
+    private val registerScreenMutableState = MutableStateFlow(AuthenticationScreenState<Unit>())
     val registerScreenState = registerScreenMutableState.asStateFlow()
 
     fun onRegistrationEvent(authenticationScreenEvent: AuthenticationScreenEvent) {
