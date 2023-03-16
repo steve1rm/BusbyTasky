@@ -30,7 +30,7 @@ class AuthenticationRepositoryImp @Inject constructor(
         return if(unit!= null) {
             ResponseState.Success(unit)
         } else {
-            ResponseState.Failure((result.exceptionOrNull() ?: Exception()) as Exception)
+            ResponseState.Failure((result.exceptionOrNull() ?: Exception()))
         }
     }
 
