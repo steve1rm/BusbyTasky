@@ -1,36 +1,19 @@
 package me.androidbox.data.remote.preference
 
 
-import android.content.Context
-import androidx.security.crypto.EncryptedSharedPreferences
-import androidx.security.crypto.MasterKey
-import dagger.hilt.android.qualifiers.ApplicationContext
+import android.content.SharedPreferences
 import me.androidbox.domain.authentication.model.AuthenticatedUser
 import me.androidbox.domain.authentication.preference.PreferenceRepository
 import javax.inject.Inject
 
 class PreferenceRepositoryImp @Inject constructor(
-    @ApplicationContext private val context: Context
+    private val sharedPreferences: SharedPreferences
 ) : PreferenceRepository {
 
     companion object {
         const val TOKEN_KEY = "token_key"
         const val USER_ID_KEY = "user_id_key"
         const val FULL_NAME_KEY = "full_name"
-    }
-
-    private val masterKey by lazy {
-        MasterKey.Builder(context).setKeyScheme(MasterKey.KeyScheme.AES256_GCM).build()
-    }
-
-    private val sharedPreferences by lazy {
-        EncryptedSharedPreferences.create(
-            context,
-            "secret_shared_preferences",
-            masterKey,
-            EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
-            EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
-        )
     }
 
     override fun saveCurrentUser(authenticatedUser: AuthenticatedUser) {
