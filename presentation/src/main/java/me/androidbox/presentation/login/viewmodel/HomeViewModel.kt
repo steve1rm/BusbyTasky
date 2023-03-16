@@ -21,7 +21,11 @@ class HomeViewModel @Inject constructor(
     private val isCompletedMutableState: MutableStateFlow<Boolean> = MutableStateFlow(true)
     val isCompletedState = isCompletedMutableState.asStateFlow()
 
-    fun authenticateUser() {
+    init {
+        authenticateUser()
+    }
+
+    private fun authenticateUser() {
         viewModelScope.launch {
             authenticationMutableState.value = authenticateUserUseCase.execute()
             isCompletedMutableState.value = false

@@ -27,8 +27,6 @@ class HomeActivity : ComponentActivity() {
             }
         }
 
-        homeViewModel.authenticateUser()
-
         setContent {
             val authenticatedState = homeViewModel.authenticationState.collectAsState()
             val destination = when(authenticatedState.value) {
