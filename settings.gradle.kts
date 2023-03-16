@@ -48,6 +48,7 @@ fun MutableVersionCatalogContainer.createLibs() {
         version("version.retrofit2", "_")
         version("version.okhttp3", "_")
         version("version.androidx.navigation", "_")
+        version("version.androidx.security-crypto", "1.0.0")
         version("version.androidx.core-splashscreen", "_")
 
         /* UI */
@@ -79,6 +80,9 @@ fun MutableVersionCatalogContainer.createLibs() {
         library("retrofit", "com.squareup.retrofit2", "retrofit").versionRef("version.retrofit2")
         library("converter-moshi", "com.squareup.retrofit2", "converter-moshi").versionRef("version.retrofit2")
         library("logging-interceptor","com.squareup.okhttp3", "logging-interceptor").versionRef("version.okhttp3")
+
+        /* Encrypted shared preferences */
+        library("security-crypto-ktx", "androidx.security", "security-crypto-ktx").versionRef("version.androidx.security-crypto")
 
         /* splash screen */
         library("core-splashscreen", "androidx.core", "core-splashscreen").versionRef("version.androidx.core-splashscreen")
