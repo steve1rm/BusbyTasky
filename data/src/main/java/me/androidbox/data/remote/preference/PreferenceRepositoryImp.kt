@@ -59,7 +59,7 @@ class PreferenceRepositoryImp @Inject constructor(
         val userId = sharedPreferences.getString(USER_ID_KEY, "")
         val fullName = sharedPreferences.getString(FULL_NAME_KEY, "")
 
-        return if(token != null && userId != null && fullName != null) {
+        return if(!token.isNullOrEmpty() && !userId.isNullOrEmpty() && !fullName.isNullOrEmpty()) {
             LoginUser(
                 token = token,
                 userId = userId,
