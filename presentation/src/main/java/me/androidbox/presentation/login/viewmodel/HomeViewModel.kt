@@ -18,9 +18,6 @@ class HomeViewModel @Inject constructor(
     private val authenticationMutableState: MutableStateFlow<ResponseState<Unit>?> = MutableStateFlow(null)
     val authenticationState = authenticationMutableState.asStateFlow()
 
-    private val isCompletedMutableState: MutableStateFlow<Boolean> = MutableStateFlow(true)
-    val isCompletedState = isCompletedMutableState.asStateFlow()
-
     init {
         authenticateUser()
     }
@@ -28,7 +25,6 @@ class HomeViewModel @Inject constructor(
     private fun authenticateUser() {
         viewModelScope.launch {
             authenticationMutableState.value = authenticateUserUseCase.execute()
-            isCompletedMutableState.value = false
         }
     }
 }

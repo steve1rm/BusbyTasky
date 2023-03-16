@@ -23,7 +23,7 @@ class HomeActivity : ComponentActivity() {
 
         installSplashScreen().apply {
             this.setKeepOnScreenCondition {
-                homeViewModel.isCompletedState.value
+                homeViewModel.authenticationState.value == null
             }
         }
 
