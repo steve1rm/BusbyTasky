@@ -6,6 +6,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import me.androidbox.presentation.agenda.screen.AgendaScreen
+import me.androidbox.presentation.agenda.viewmodel.AgendaViewModel
 import me.androidbox.presentation.login.screen.LoginScreen
 import me.androidbox.presentation.login.screen.RegisterScreen
 import me.androidbox.presentation.login.viewmodel.LoginViewModel
@@ -37,8 +39,9 @@ fun NavigationGraph(
                     /* Signup clicked, navigate to register screen */
                     navHostController.navigate(route = Screen.RegisterScreen.route)
                 },
-                onLoginSuccess = { login ->
-                    /* TODO Navigate to the agenda screen (not implemented yet) */
+                onLoginSuccess = { authenticatedUser ->
+                    /* TODO Pass the authenticatedUser as an argument */
+                    navHostController.navigate(route = Screen.AgendaScreen.route)
                 },
             )
         }
@@ -64,6 +67,20 @@ fun NavigationGraph(
                     navHostController.popBackStack()
                 },
             )
+        }
+
+        /* Agenda Screen */
+        composable(
+            route = Screen.AgendaScreen.route
+        ) {
+            val agendaViewModel: AgendaViewModel = hiltViewModel()
+            val agendaScreenState = agendaViewModel.agendaScreenState.collectAsState()
+
+            AgendaScreen(
+                agendaScreenState = agendaScreenState,
+            agendaScreenEvent = { agendaScreenEvent ->
+                agendaViewModel.onAgendaScreenEvent(agendaScreenEvent)
+            })
         }
     }
 }
