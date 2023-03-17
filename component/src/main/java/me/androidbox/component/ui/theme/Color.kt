@@ -136,3 +136,9 @@ val ColorScheme.topbarButtonBackgroundColor: Color
     get() {
         return Light
     }
+
+val ColorScheme.agendaBackgroundColor: Color
+    @Composable
+    get() {
+        return White
+    }
