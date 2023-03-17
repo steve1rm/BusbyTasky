@@ -6,23 +6,19 @@ import okhttp3.Response
 
 class TokenInterceptor(private val preferenceRepository: PreferenceRepository) : Interceptor {
 
-    private companion object {
-        const val AUTHORIZATION_HEADER = "Authorization"
-    }
-
     override fun intercept(chain: Interceptor.Chain): Response {
         val loginUser = preferenceRepository.retrieveCurrentUserOrNull()
 
-        return if(loginUser != null) {
+        return if(loginUser == null) {
+            chain.proceed(chain.request())
+        }
+        else {
             val request = chain.request()
                 .newBuilder()
-                .addHeader(AUTHORIZATION_HEADER, "Bearer ${loginUser.token}")
+                .addHeader("Authorization", "Bearer ${loginUser.token}")
                 .build()
 
             chain.proceed(request)
-        }
-        else {
-            chain.proceed(chain.request())
         }
     }
 }
