@@ -1,16 +1,13 @@
 package me.androidbox.data.remote.preference
 
 
-import android.content.Context
-import androidx.security.crypto.EncryptedSharedPreferences
-import androidx.security.crypto.MasterKey
-import dagger.hilt.android.qualifiers.ApplicationContext
-import me.androidbox.domain.authentication.model.LoginUser
+import android.content.SharedPreferences
+import me.androidbox.domain.authentication.model.AuthenticatedUser
 import me.androidbox.domain.authentication.preference.PreferenceRepository
 import javax.inject.Inject
 
 class PreferenceRepositoryImp @Inject constructor(
-    @ApplicationContext private val context: Context
+    private val sharedPreferences: SharedPreferences
 ) : PreferenceRepository {
 
     companion object {
@@ -19,48 +16,22 @@ class PreferenceRepositoryImp @Inject constructor(
         const val FULL_NAME_KEY = "full_name"
     }
 
-    private val masterKey by lazy {
-        MasterKey.Builder(context).setKeyScheme(MasterKey.KeyScheme.AES256_GCM).build()
-    }
-
-    private val sharedPreferences by lazy {
-        EncryptedSharedPreferences.create(
-            context,
-            "secret_shared_preferences",
-            masterKey,
-            EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
-            EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
-        )
-    }
-
-    override suspend fun saveToken(token: String) {
+    override fun saveCurrentUser(authenticatedUser: AuthenticatedUser) {
         sharedPreferences
             .edit()
-            .putString(TOKEN_KEY, token)
+            .putString(TOKEN_KEY, authenticatedUser.token)
+            .putString(USER_ID_KEY, authenticatedUser.userId)
+            .putString(FULL_NAME_KEY, authenticatedUser.fullName)
             .apply()
     }
 
-    override suspend fun saveUserId(userId: String) {
-        sharedPreferences
-            .edit()
-            .putString(USER_ID_KEY, userId)
-            .apply()
-    }
-
-    override suspend fun saveFullName(fullName: String) {
-        sharedPreferences
-            .edit()
-            .putString(FULL_NAME_KEY, fullName)
-            .apply()
-    }
-
-    override suspend fun retrieveCurrentUserOrNull(): LoginUser? {
+    override fun retrieveCurrentUserOrNull(): AuthenticatedUser? {
         val token = sharedPreferences.getString(TOKEN_KEY, "")
         val userId = sharedPreferences.getString(USER_ID_KEY, "")
         val fullName = sharedPreferences.getString(FULL_NAME_KEY, "")
 
-        return if(token != null && userId != null && fullName != null) {
-            LoginUser(
+        return if(!token.isNullOrEmpty() && !userId.isNullOrEmpty() && !fullName.isNullOrEmpty()) {
+            AuthenticatedUser(
                 token = token,
                 userId = userId,
                 fullName = fullName
@@ -71,7 +42,7 @@ class PreferenceRepositoryImp @Inject constructor(
         }
     }
 
-    override suspend fun deleteCurrentUser() {
+    override fun deleteCurrentUser() {
         sharedPreferences
             .edit()
             .remove(TOKEN_KEY)

@@ -27,15 +27,15 @@ import me.androidbox.component.general.UserInputTextField
 import me.androidbox.component.ui.theme.BusbyTaskyTheme
 import me.androidbox.component.ui.theme.backgroundInputEntry
 import me.androidbox.domain.authentication.ResponseState
-import me.androidbox.domain.authentication.model.LoginUser
+import me.androidbox.domain.authentication.model.AuthenticatedUser
 
 @Composable
 fun LoginScreen(
     modifier: Modifier = Modifier,
     loginScreenEvent: (AuthenticationScreenEvent) -> Unit,
-    onLoginSuccess: (login: LoginUser) -> Unit,
+    onLoginSuccess: (login: AuthenticatedUser) -> Unit,
     onSignUpClicked: () -> Unit,
-    authenticationScreenState: State<AuthenticationScreenState<LoginUser>>
+    authenticationScreenState: State<AuthenticationScreenState<AuthenticatedUser>>
 ) {
 
     LaunchedEffect(key1 = authenticationScreenState.value.responseState) {

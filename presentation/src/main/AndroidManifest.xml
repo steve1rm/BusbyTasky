@@ -9,12 +9,12 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/Theme.BusbyTasky">
+        android:theme="@style/Theme.App.Starting">
         <activity
             android:name=".HomeActivity"
             android:exported="true"
             android:label="@string/app_name"
-            android:theme="@style/Theme.BusbyTasky">
+            android:theme="@style/Theme.App.Starting">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

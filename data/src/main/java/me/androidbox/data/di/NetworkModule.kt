@@ -46,14 +46,8 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun providesPreferenceRepositoryImp(@ApplicationContext context: Context): PreferenceRepositoryImp {
-        return PreferenceRepositoryImp(context)
-    }
-
-    @Singleton
-    @Provides
-    fun provideTokenInterceptor(preferenceRepositoryImp: PreferenceRepositoryImp): TokenInterceptor {
-        return TokenInterceptor(preferenceRepositoryImp)
+    fun providesTokenInterceptor(preferenceRepository: PreferenceRepository): TokenInterceptor {
+        return TokenInterceptor(preferenceRepository)
     }
 
     @Singleton

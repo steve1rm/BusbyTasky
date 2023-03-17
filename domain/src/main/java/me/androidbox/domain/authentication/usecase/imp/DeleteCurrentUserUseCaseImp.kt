@@ -8,7 +8,7 @@ class DeleteCurrentUserUseCaseImp @Inject constructor(
     private val preferenceRepository: PreferenceRepository
 ) : DeleteCurrentUserUseCase {
 
-    override suspend fun execute() {
+    override fun execute() {
         preferenceRepository.deleteCurrentUser()
     }
 }

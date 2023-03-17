@@ -80,6 +80,8 @@ dependencies {
     implementation(libs.hilt.navigation.compose)
     implementation(libs.navigation.compose)
 
+    implementation(libs.core.splashscreen)
+
     debugImplementation(tests.ui.tooling)
     debugImplementation(tests.ui.test.manifest)
 

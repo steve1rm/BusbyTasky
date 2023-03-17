@@ -49,6 +49,7 @@ fun MutableVersionCatalogContainer.createLibs() {
         version("version.okhttp3", "_")
         version("version.androidx.navigation", "_")
         version("version.androidx.security-crypto", "1.0.0")
+        version("version.androidx.core-splashscreen", "_")
 
         /* UI */
         library("core-ktx", "androidx.core", "core-ktx").versionRef("version.androidx.core")
@@ -82,6 +83,9 @@ fun MutableVersionCatalogContainer.createLibs() {
 
         /* Encrypted shared preferences */
         library("security-crypto-ktx", "androidx.security", "security-crypto-ktx").versionRef("version.androidx.security-crypto")
+
+        /* splash screen */
+        library("core-splashscreen", "androidx.core", "core-splashscreen").versionRef("version.androidx.core-splashscreen")
 
         bundle("retrofit", listOf("moshi-kotlin", "retrofit", "converter-moshi", "logging-interceptor"))
         bundle("compose", listOf("activity-compose", "material", "ui", "ui-tooling-preview"))

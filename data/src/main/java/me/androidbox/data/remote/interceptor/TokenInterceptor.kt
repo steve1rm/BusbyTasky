@@ -1,25 +1,19 @@
 package me.androidbox.data.remote.interceptor
 
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import me.androidbox.domain.authentication.model.LoginUser
+import me.androidbox.domain.authentication.model.AuthenticatedUser
 import me.androidbox.domain.authentication.preference.PreferenceRepository
 import okhttp3.Interceptor
 import okhttp3.Response
-import kotlin.coroutines.EmptyCoroutineContext
 
 class TokenInterceptor(preferenceRepository: PreferenceRepository) : Interceptor {
 
     private companion object {
         const val AUTHORIZATION_HEADER = "Authorization"
     }
-    private var loginUser: LoginUser? = null
+    private var loginUser: AuthenticatedUser? = null
 
     init {
-        CoroutineScope(EmptyCoroutineContext).launch {
-            loginUser = preferenceRepository.retrieveCurrentUserOrNull()
-        }
+        loginUser = preferenceRepository.retrieveCurrentUserOrNull()
     }
 
     override fun intercept(chain: Interceptor.Chain): Response {

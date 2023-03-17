@@ -13,11 +13,12 @@ import me.androidbox.presentation.login.viewmodel.RegisterViewModel
 
 @Composable
 fun NavigationGraph(
-    navHostController: NavHostController
+    navHostController: NavHostController,
+    startDestination: String
 ) {
     NavHost(
         navController = navHostController,
-        startDestination = Screen.LoginScreen.route
+        startDestination = startDestination
     ) {
 
         /* LoginScreen */
