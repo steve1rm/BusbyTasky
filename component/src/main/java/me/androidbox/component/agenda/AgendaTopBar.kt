@@ -1,6 +1,5 @@
 package me.androidbox.component.agenda
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -27,6 +26,7 @@ import java.time.LocalDate
 @Composable
 fun AgendaTopBar(
     initials: String,
+    displayMonth: String,
     onProfileButtonClicked: () -> Unit,
     onCalendarClicked: () -> Unit,
     onDateChanged: (localDate: LocalDate) -> Unit,
@@ -55,7 +55,7 @@ fun AgendaTopBar(
             modifier = Modifier.clickable {
                 onCalendarClicked()
             },
-            text = "March",
+            text = displayMonth,
             fontSize = 16.sp,
             fontWeight = FontWeight.Bold,
             color = MaterialTheme.colorScheme.topbarFontColor
@@ -89,6 +89,7 @@ fun PreviewAgendaTopBar() {
                 .fillMaxWidth()
                 .background(color = MaterialTheme.colorScheme.backgroundColor)
                 .padding(horizontal = 16.dp),
+            displayMonth = "August",
             initials = "SM",
             onCalendarClicked = {},
             onProfileButtonClicked = {},
