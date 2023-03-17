@@ -17,11 +17,16 @@ class TokenInterceptor(preferenceRepository: PreferenceRepository) : Interceptor
     }
 
     override fun intercept(chain: Interceptor.Chain): Response {
-        val request = chain.request()
-            .newBuilder()
-            .addHeader(AUTHORIZATION_HEADER, loginUser?.token ?: "")
-            .build()
+        return if(!loginUser?.token.isNullOrEmpty()) {
+            val request = chain.request()
+                .newBuilder()
+                .addHeader(AUTHORIZATION_HEADER, loginUser?.token ?: "")
+                .build()
 
-        return chain.proceed(request)
+            chain.proceed(request)
+        }
+        else {
+            chain.proceed(chain.request())
+        }
     }
 }
