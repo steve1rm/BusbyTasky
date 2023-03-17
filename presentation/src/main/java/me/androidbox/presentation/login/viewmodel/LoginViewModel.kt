@@ -9,13 +9,15 @@ import kotlinx.coroutines.launch
 import me.androidbox.domain.authentication.ResponseState
 import me.androidbox.domain.authentication.model.AuthenticatedUser
 import me.androidbox.domain.authentication.usecase.LoginUseCase
+import me.androidbox.domain.authentication.usecase.SaveCurrentUserUseCase
 import me.androidbox.presentation.login.screen.AuthenticationScreenEvent
 import me.androidbox.presentation.login.screen.AuthenticationScreenState
 import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val loginUseCase: LoginUseCase
+    private val loginUseCase: LoginUseCase,
+    private val saveCurrentUserUseCase: SaveCurrentUserUseCase
 ) : ViewModel() {
 
     private val loginScreenMutableState = MutableStateFlow(AuthenticationScreenState<AuthenticatedUser>())
@@ -59,6 +61,6 @@ class LoginViewModel @Inject constructor(
     }
 
     private fun saveCurrentUserDetails(authenticatedUser: AuthenticatedUser) {
-        /* Will call use-case to save user login details to shared preferences WIP */
+        saveCurrentUserUseCase.execute(authenticatedUser)
     }
 }

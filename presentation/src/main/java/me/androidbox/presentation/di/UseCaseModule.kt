@@ -25,7 +25,7 @@ interface UseCaseModule {
 
     @Reusable
     @Binds
-    fun bindsSaveCurrentUserUseCaseImp(saveCurrentUserUseCase: SaveCurrentUserUseCase): SaveCurrentUserUseCase
+    fun bindsSaveCurrentUserUseCaseImp(saveCurrentUserUseCaseImp: SaveCurrentUserUseCaseImp): SaveCurrentUserUseCase
 
     @Reusable
     @Binds
