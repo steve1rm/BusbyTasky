@@ -3,6 +3,7 @@ package me.androidbox.presentation.navigation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -74,7 +75,7 @@ fun NavigationGraph(
             route = Screen.AgendaScreen.route
         ) {
             val agendaViewModel: AgendaViewModel = hiltViewModel()
-            val agendaScreenState = agendaViewModel.agendaScreenState.collectAsState()
+            val agendaScreenState = agendaViewModel.agendaScreenState.collectAsStateWithLifecycle()
 
             AgendaScreen(
                 agendaScreenState = agendaScreenState,

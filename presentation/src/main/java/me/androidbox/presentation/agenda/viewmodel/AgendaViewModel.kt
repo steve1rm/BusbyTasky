@@ -20,7 +20,7 @@ class AgendaViewModel @Inject constructor() : ViewModel() {
             is AgendaScreenEvent.OnDateChanged -> {
                 _agendaScreenState.update { agendaScreenState ->
                     agendaScreenState.copy(
-                        displayMonth = agendaScreenState.displayMonth
+                        displayMonth = agendaScreenEvent.month
                     )
                 }
             }
