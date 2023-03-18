@@ -4,14 +4,16 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.maxkeppeker.sheets.core.models.base.rememberUseCaseState
 import com.maxkeppeler.sheets.calendar.CalendarDialog
 import com.maxkeppeler.sheets.calendar.models.CalendarConfig
 import com.maxkeppeler.sheets.calendar.models.CalendarSelection
@@ -30,10 +32,8 @@ fun AgendaScreen(
     agendaScreenEvent: (AgendaScreenEvent) -> Unit,
     modifier: Modifier = Modifier) {
 
-    val calendarState = rememberUseCaseState()
-
     CalendarDialog(
-        state = calendarState,
+        state = agendaScreenState.calendarState,
         config = CalendarConfig(
             style = CalendarStyle.MONTH,
             monthSelection = true,
@@ -58,12 +58,18 @@ fun AgendaScreen(
 
                 },
                 onDateClicked = {
-                    calendarState.show()
+                    agendaScreenState.calendarState.show()
                 },
             )
         },
         floatingActionButton = {
             TaskActionButton(
+                modifier =  Modifier
+                    .size(56.dp)
+                    .background(
+                        color = Color.Black,
+                        shape = RoundedCornerShape(size = 16.dp)
+                    ),
                 iconResource = R.drawable.add_white,
                 onActionClicked = {
                     /* TODO Open options menu */

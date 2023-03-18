@@ -17,9 +17,9 @@ import me.androidbox.component.ui.theme.BusbyTaskyTheme
 
 @Composable
 fun TaskActionButton(
-    modifier: Modifier = Modifier,
     @DrawableRes iconResource: Int,
-    onActionClicked: () -> Unit
+    onActionClicked: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     IconButton(
         modifier = modifier,
