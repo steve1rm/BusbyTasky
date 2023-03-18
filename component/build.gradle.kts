@@ -51,10 +51,6 @@ dependencies {
     implementation(libs.appcompat)
     implementation(libs.material)
 
-    implementation("com.maxkeppeler.sheets-compose-dialogs:core:1.1.1")
-    implementation("com.maxkeppeler.sheets-compose-dialogs:calendar:1.1.1")
-    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:1.1.5")
-
     debugImplementation(tests.ui.tooling)
 
     testImplementation(tests.junit)
