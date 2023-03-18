@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import me.androidbox.presentation.agenda.screen.AgendaScreenEvent
 import me.androidbox.presentation.agenda.screen.AgendaScreenState
 import javax.inject.Inject
@@ -11,15 +12,17 @@ import javax.inject.Inject
 @HiltViewModel
 class AgendaViewModel @Inject constructor() : ViewModel() {
 
-    private val agendaScreenMutableState = MutableStateFlow(AgendaScreenState())
-    val agendaScreenState = agendaScreenMutableState.asStateFlow()
+    private val _agendaScreenState = MutableStateFlow(AgendaScreenState())
+    val agendaScreenState = _agendaScreenState.asStateFlow()
 
     fun onAgendaScreenEvent(agendaScreenEvent: AgendaScreenEvent) {
         when(agendaScreenEvent) {
             is AgendaScreenEvent.OnDateChanged -> {
-                agendaScreenMutableState.value = agendaScreenState.value.copy(
-                    displayMonth = agendaScreenEvent.month
-                )
+                _agendaScreenState.update { agendaScreenState ->
+                    agendaScreenState.copy(
+                        displayMonth = agendaScreenState.displayMonth
+                    )
+                }
             }
             AgendaScreenEvent.OnUserProfileClicked -> {
 
