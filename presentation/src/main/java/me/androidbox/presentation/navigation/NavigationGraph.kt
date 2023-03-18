@@ -1,6 +1,7 @@
 package me.androidbox.presentation.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
@@ -76,14 +77,13 @@ fun NavigationGraph(
             route = Screen.AgendaScreen.route
         ) {
             val agendaViewModel: AgendaViewModel = hiltViewModel()
-            val agendaScreenState
-                    = agendaViewModel.agendaScreenState.collectAsStateWithLifecycle()
+            val agendaScreenState by agendaViewModel.agendaScreenState.collectAsStateWithLifecycle()
 
             AgendaScreen(
                 agendaScreenState = agendaScreenState,
-            agendaScreenEvent = { agendaScreenEvent ->
-                agendaViewModel.onAgendaScreenEvent(agendaScreenEvent)
-            })
+                agendaScreenEvent = { agendaScreenEvent ->
+                    agendaViewModel.onAgendaScreenEvent(agendaScreenEvent)
+                })
         }
     }
 }

@@ -19,13 +19,14 @@ import com.maxkeppeler.sheets.calendar.models.CalendarStyle
 import me.androidbox.component.R
 import me.androidbox.component.agenda.AgendaTopBar
 import me.androidbox.component.general.TaskActionButton
+import me.androidbox.component.ui.theme.agendaBackgroundColor
 import me.androidbox.component.ui.theme.backgroundColor
 import me.androidbox.presentation.ui.theme.BusbyTaskyTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AgendaScreen(
-    agendaScreenState: State<AgendaScreenState>,
+    agendaScreenState: AgendaScreenState,
     agendaScreenEvent: (AgendaScreenEvent) -> Unit,
     modifier: Modifier = Modifier) {
 
@@ -51,8 +52,8 @@ fun AgendaScreen(
                     .fillMaxWidth()
                     .background(color = MaterialTheme.colorScheme.backgroundColor)
                     .padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 8.dp),
-                initials = agendaScreenState.value.usersInitials,
-                displayMonth = agendaScreenState.value.displayMonth,
+                initials = agendaScreenState.usersInitials,
+                displayMonth = agendaScreenState.displayMonth,
                 onProfileButtonClicked = {
 
                 },
@@ -79,10 +80,12 @@ fun AgendaScreen(
 @Preview(showBackground = true)
 fun PreviewAgendaScreen() {
     BusbyTaskyTheme {
-   /*     AgendaScreen(
+        AgendaScreen(
+            agendaScreenState = AgendaScreenState(),
             modifier = Modifier
                 .background(
-                    color = MaterialTheme.colorScheme.agendaBackgroundColor)
-        )*/
+                    color = MaterialTheme.colorScheme.agendaBackgroundColor),
+            agendaScreenEvent = {}
+        )
     }
 }

@@ -1,5 +1,8 @@
 package me.androidbox.presentation.agenda.viewmodel
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,6 +17,9 @@ class AgendaViewModel @Inject constructor() : ViewModel() {
 
     private val _agendaScreenState = MutableStateFlow(AgendaScreenState())
     val agendaScreenState = _agendaScreenState.asStateFlow()
+
+    var agendaScreenMutableState by mutableStateOf(AgendaScreenState())
+        private set
 
     fun onAgendaScreenEvent(agendaScreenEvent: AgendaScreenEvent) {
         when(agendaScreenEvent) {
