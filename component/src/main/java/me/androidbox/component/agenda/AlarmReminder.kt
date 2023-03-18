@@ -19,28 +19,28 @@ import me.androidbox.component.ui.theme.agendaBodyTextColor
 import me.androidbox.component.ui.theme.backgroundColor
 
 @Composable
-fun AlarmReminder(modifier: Modifier = Modifier) {
-    Column(modifier = modifier) {
-        Row(modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically) {
-            Row(modifier = Modifier.weight(4F)) {
+fun AlarmReminder(
+    reminderText: String,
+    modifier: Modifier = Modifier) {
+        Row(modifier = modifier,
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween) {
+            Row {
                 Icon(painter = painterResource(id = R.drawable.bell), contentDescription = "bell")
 
                 Spacer(modifier = Modifier.width(20.dp))
 
                 Text(
-                    text = "30 minutes before",
+                    text = reminderText,
                     fontWeight = FontWeight.Normal,
                     fontSize = 16.sp,
                     color = MaterialTheme.colorScheme.agendaBodyTextColor)
             }
 
-            Row(modifier = Modifier.weight(1f),
-                horizontalArrangement = Arrangement.End) {
+            Row {
                 Icon(painter = painterResource(id = R.drawable.forward_arrow), contentDescription = "forward arrow")
             }
         }
-    }
 }
 
 @Composable
@@ -48,6 +48,7 @@ fun AlarmReminder(modifier: Modifier = Modifier) {
 fun PreviewAlarmReminder() {
     BusbyTaskyTheme {
         AlarmReminder(
+            reminderText = "30 minutes before",
             modifier = Modifier
                 .fillMaxWidth()
                 .background(color = MaterialTheme.colorScheme.backgroundColor)
