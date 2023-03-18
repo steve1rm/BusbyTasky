@@ -70,13 +70,6 @@ fun AgendaDuration(
         }
 
         Spacer(modifier = Modifier.height(28.dp))
-
-        Divider(
-            Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp),
-            color = MaterialTheme.colorScheme.divider,
-            thickness = 1.dp)
     }
 }
 
