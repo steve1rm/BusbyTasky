@@ -67,6 +67,8 @@ hilt {
 
 dependencies {
     implementation(project(":component"))
+    implementation(project(":domain"))
+    implementation(project(":data"))
 
     implementation(libs.core.ktx)
     implementation(libs.lifecycle.runtime.ktx)
@@ -74,6 +76,11 @@ dependencies {
     implementation(libs.ui)
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
+    implementation(libs.retrofit)
+    implementation(libs.hilt.navigation.compose)
+    implementation(libs.navigation.compose)
+
+    implementation(libs.core.splashscreen)
 
     debugImplementation(tests.ui.tooling)
     debugImplementation(tests.ui.test.manifest)
