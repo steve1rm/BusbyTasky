@@ -49,7 +49,8 @@ class AgendaViewModel @Inject constructor(
     }
 
     private fun String.extractInitials() : String {
-        val listOfFullName = this.split(" ")
+        /** Only take 2 names i.e. first name and last name */
+        val listOfFullName = this.split(" ").take(2)
         var initials = ""
 
         listOfFullName.forEach { name ->
