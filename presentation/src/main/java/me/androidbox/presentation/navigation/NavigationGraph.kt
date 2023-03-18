@@ -29,7 +29,8 @@ fun NavigationGraph(
             route = Screen.LoginScreen.route
         ) {
             val loginViewModel: LoginViewModel = hiltViewModel()
-            val loginScreenState = loginViewModel.loginScreenState.collectAsState()
+            val loginScreenState
+                    = loginViewModel.loginScreenState.collectAsStateWithLifecycle()
 
             LoginScreen(
                 loginScreenEvent = { loginEvent ->
@@ -52,7 +53,8 @@ fun NavigationGraph(
             route = Screen.RegisterScreen.route
         ) {
             val registerViewModel: RegisterViewModel = hiltViewModel()
-            val registerScreenState = registerViewModel.registerScreenState.collectAsState()
+            val registerScreenState
+                    = registerViewModel.registerScreenState.collectAsStateWithLifecycle()
 
             RegisterScreen(
                 loginScreenEvent = { loginScreenEvent ->
@@ -75,7 +77,8 @@ fun NavigationGraph(
             route = Screen.AgendaScreen.route
         ) {
             val agendaViewModel: AgendaViewModel = hiltViewModel()
-            val agendaScreenState = agendaViewModel.agendaScreenState.collectAsStateWithLifecycle()
+            val agendaScreenState
+                    = agendaViewModel.agendaScreenState.collectAsStateWithLifecycle()
 
             AgendaScreen(
                 agendaScreenState = agendaScreenState,
