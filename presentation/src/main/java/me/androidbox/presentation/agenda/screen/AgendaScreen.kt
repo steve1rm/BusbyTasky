@@ -1,10 +1,11 @@
 package me.androidbox.presentation.agenda.screen
 
+import android.util.Log
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -40,7 +41,7 @@ fun AgendaScreen(
             yearSelection = true
         ),
         selection = CalendarSelection.Date { localDate ->
-            agendaScreenEvent(AgendaScreenEvent.OnDateChanged(localDate.month.toString()))
+            agendaScreenEvent(AgendaScreenEvent.OnDateChanged(localDate))
         }
     )
 
@@ -55,7 +56,8 @@ fun AgendaScreen(
                 initials = agendaScreenState.usersInitials,
                 displayMonth = agendaScreenState.displayMonth,
                 onProfileButtonClicked = {
-
+                    /** TODO Open dropdown menu here */
+                    Log.d("AGENDA_SCREEN", "Profile button clicked")
                 },
                 onDateClicked = {
                     agendaScreenState.calendarState.show()
@@ -72,12 +74,19 @@ fun AgendaScreen(
                     ),
                 iconResource = R.drawable.add_white,
                 onActionClicked = {
-                    /* TODO Open options menu */
+                    /* TODO Add dropdown menu to create new events, reminders, and tasks */
+                    Log.d("AGENDA_SCREEN", "Action button clicked")
             })
         },
     ) { paddingValues ->
-        Column(Modifier.padding(paddingValues)) {
 
+        LazyColumn(Modifier.padding(paddingValues)) {
+            /*
+            *
+            * TODO Add content here for each of the agenda items
+            *  i.e. Event, Reminders, and Tasks
+            *
+            * */
         }
     }
 }
@@ -87,7 +96,7 @@ fun AgendaScreen(
 fun PreviewAgendaScreen() {
     BusbyTaskyTheme {
         AgendaScreen(
-            agendaScreenState = AgendaScreenState(),
+            agendaScreenState = AgendaScreenState(usersInitials = "SM"),
             modifier = Modifier
                 .background(
                     color = MaterialTheme.colorScheme.agendaBackgroundColor),

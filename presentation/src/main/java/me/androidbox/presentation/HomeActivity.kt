@@ -36,7 +36,7 @@ class HomeActivity : ComponentActivity() {
                 }
                 else -> {
                     Screen.AgendaScreen.route
-                    // TODO for testing purposes that skip to the agendaScreen Screen.LoginScreen.route
+                    // TODO for testing purposes that skip to the agendaScreen. // Screen.LoginScreen.route
                 }
             }
 
