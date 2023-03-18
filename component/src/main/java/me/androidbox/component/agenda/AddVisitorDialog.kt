@@ -21,7 +21,7 @@ import me.androidbox.component.ui.theme.BusbyTaskyTheme
 import me.androidbox.component.ui.theme.agendaBodyTextColor
 
 @Composable
-fun AddVisitorNotification(modifier: Modifier = Modifier) {
+fun AddVisitorDialog(modifier: Modifier = Modifier) {
 
     var emailAddress by remember {
         mutableStateOf("")
@@ -73,6 +73,6 @@ fun AddVisitorNotification(modifier: Modifier = Modifier) {
 @Preview(showBackground = true)
 fun PreviewAddVisitorNotification() {
     BusbyTaskyTheme {
-        AddVisitorNotification()
+        AddVisitorDialog()
     }
 }
