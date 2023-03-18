@@ -1,6 +1,5 @@
 package me.androidbox.presentation.login.viewmodel
 
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -9,53 +8,59 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import me.androidbox.domain.authentication.ResponseState
 import me.androidbox.domain.authentication.usecase.RegisterUseCase
+import me.androidbox.presentation.login.screen.AuthenticationScreenEvent
+import me.androidbox.presentation.login.screen.AuthenticationScreenState
 import javax.inject.Inject
 
 @HiltViewModel
 class RegisterViewModel @Inject constructor(
-    private val savedStateHandle: SavedStateHandle,
     private val registerUseCase: RegisterUseCase
 ): ViewModel() {
 
-    private val registerMutableState: MutableStateFlow<ResponseState<Unit>?> = MutableStateFlow(null)
-    val registrationState = registerMutableState.asStateFlow()
+    private val registerScreenMutableState = MutableStateFlow(AuthenticationScreenState<Unit>())
+    val registerScreenState = registerScreenMutableState.asStateFlow()
 
-    private companion object {
-        const val USERNAME = "username"
-        const val EMAIL_ADDRESS = "email_address"
-        const val PASSWORD = "password"
-        const val IS_PASSWORD_VISIBLE = "is_password_visible"
+    fun onRegistrationEvent(authenticationScreenEvent: AuthenticationScreenEvent) {
+        when(authenticationScreenEvent) {
+            is AuthenticationScreenEvent.OnEmailChanged -> {
+                registerScreenMutableState.value = registerScreenState.value.copy(
+                    email = authenticationScreenEvent.email
+                )
+            }
+            is AuthenticationScreenEvent.OnUsernameChanged -> {
+                registerScreenMutableState.value = registerScreenState.value.copy(
+                    username = authenticationScreenEvent.username
+                )
+            }
+            is AuthenticationScreenEvent.OnPasswordChanged -> {
+                registerScreenMutableState.value = registerScreenState.value.copy(
+                    password = authenticationScreenEvent.password
+                )
+            }
+            AuthenticationScreenEvent.OnPasswordVisibilityChanged -> {
+                registerScreenMutableState.value = registerScreenState.value.copy(
+                    isPasswordVisible = !registerScreenState.value.isPasswordVisible
+                )
+            }
+            AuthenticationScreenEvent.OnRegisterUser -> {
+                registerUser()
+            }
+            AuthenticationScreenEvent.OnAuthenticationUser -> Unit
+        }
     }
 
-    val username = savedStateHandle.getStateFlow(USERNAME, "")
-    val emailAddress = savedStateHandle.getStateFlow(EMAIL_ADDRESS, "")
-    val isPasswordVisible = savedStateHandle.getStateFlow(IS_PASSWORD_VISIBLE, false)
-    val password = savedStateHandle.getStateFlow(PASSWORD, "")
-
-    fun onUsernameChanged(newUsername: String) {
-        savedStateHandle[USERNAME] = newUsername
-    }
-
-    fun onEmailAddress(emailAddress: String) {
-        savedStateHandle[EMAIL_ADDRESS] = emailAddress
-    }
-
-    fun onPasswordChanged(newPassword: String) {
-        savedStateHandle[PASSWORD] = newPassword
-    }
-
-    fun onPasswordVisibilityChanged() {
-        savedStateHandle[IS_PASSWORD_VISIBLE] = !isPasswordVisible.value
-    }
-
-    fun registerUser(fullName: String, email: String, password: String) {
+    private fun registerUser() {
         viewModelScope.launch {
-            registerMutableState.value = ResponseState.Loading
+            registerScreenMutableState.value = registerScreenState.value.copy(
+                responseState = ResponseState.Loading)
 
-            registerMutableState.value = registerUseCase.execute(
-                fullName = fullName,
-                email = email,
-                password = password
+            val responseState = registerUseCase.execute(
+                fullName = registerScreenState.value.username,
+                email = registerScreenState.value.email,
+                password = registerScreenState.value.password)
+
+            registerScreenMutableState.value = registerScreenState.value.copy(
+                responseState = responseState
             )
         }
     }

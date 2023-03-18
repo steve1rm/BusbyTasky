@@ -6,7 +6,7 @@ import me.androidbox.data.remote.model.response.LoginDto
 import me.androidbox.data.remote.network.authentication.AuthenticationService
 import me.androidbox.data.remote.util.CheckResult.checkResult
 import me.androidbox.domain.authentication.ResponseState
-import me.androidbox.domain.authentication.model.Login
+import me.androidbox.domain.authentication.model.AuthenticatedUser
 import me.androidbox.domain.authentication.remote.AuthenticationRepository
 import javax.inject.Inject
 
@@ -30,11 +30,11 @@ class AuthenticationRepositoryImp @Inject constructor(
         return if(unit!= null) {
             ResponseState.Success(unit)
         } else {
-            ResponseState.Failure((result.exceptionOrNull() ?: Exception()) as Exception)
+            ResponseState.Failure((result.exceptionOrNull() ?: Exception()))
         }
     }
 
-    override suspend fun loginUser(email: String, password: String): ResponseState<Login> {
+    override suspend fun loginUser(email: String, password: String): ResponseState<AuthenticatedUser> {
         val loginRequestDto = LoginRequestDto(
             email = email,
             password = password
@@ -47,7 +47,7 @@ class AuthenticationRepositoryImp @Inject constructor(
         /* TODO Is this the best way to extract the value from the Result<T> */
         val loginDto = result.getOrNull()
         return if(loginDto != null) {
-            val login = Login(
+            val login = AuthenticatedUser(
                 token = loginDto.token,
                 userId = loginDto.userId,
                 fullName = loginDto.fullName
@@ -55,6 +55,19 @@ class AuthenticationRepositoryImp @Inject constructor(
             ResponseState.Success(login)
         } else {
             ResponseState.Failure((result.exceptionOrNull() ?: Exception()) as Exception)
+        }
+    }
+
+    override suspend fun authenticateUser(): ResponseState<Unit> {
+        val result = checkResult<Unit> {
+            authenticationService.authenticate()
+        }
+
+        return if(result.isSuccess) {
+            ResponseState.Success(Unit)
+        }
+        else {
+            ResponseState.Failure(result.exceptionOrNull() as? Exception ?: Exception())
         }
     }
 }
