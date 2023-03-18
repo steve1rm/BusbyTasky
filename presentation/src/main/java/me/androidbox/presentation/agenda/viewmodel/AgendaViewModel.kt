@@ -33,12 +33,6 @@ class AgendaViewModel @Inject constructor(
                     )
                 }
             }
-            AgendaScreenEvent.OnUserProfileClicked -> {
-
-            }
-            AgendaScreenEvent.OnFloatingActionButtonClicked -> {
-
-            }
         }
     }
 
