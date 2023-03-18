@@ -16,10 +16,10 @@ import com.maxkeppeler.sheets.calendar.CalendarDialog
 import com.maxkeppeler.sheets.calendar.models.CalendarConfig
 import com.maxkeppeler.sheets.calendar.models.CalendarSelection
 import com.maxkeppeler.sheets.calendar.models.CalendarStyle
+import me.androidbox.component.R
 import me.androidbox.component.agenda.AgendaTopBar
 import me.androidbox.component.general.TaskActionButton
 import me.androidbox.component.ui.theme.backgroundColor
-import me.androidbox.component.R
 import me.androidbox.presentation.ui.theme.BusbyTaskyTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
