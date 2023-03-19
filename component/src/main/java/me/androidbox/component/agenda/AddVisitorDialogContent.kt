@@ -16,16 +16,17 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import me.androidbox.component.R
 import me.androidbox.component.general.TaskButton
-import me.androidbox.component.general.UserInputEntry
+import me.androidbox.component.general.UserInputTextField
 import me.androidbox.component.ui.theme.BusbyTaskyTheme
 import me.androidbox.component.ui.theme.agendaBodyTextColor
 
 @Composable
-fun AddVisitorDialog(modifier: Modifier = Modifier) {
-
-    var emailAddress by remember {
-        mutableStateOf("")
-    }
+fun AddVisitorDialogContent(
+    modifier: Modifier = Modifier,
+    email: String,
+    onEmailChanged: (email: String) -> Unit,
+    onDialogClose: () -> Unit,
+    onTaskButtonClicked: () -> Unit) {
 
     Column(modifier = modifier.fillMaxWidth(),
     horizontalAlignment = Alignment.CenterHorizontally) {
@@ -34,7 +35,7 @@ fun AddVisitorDialog(modifier: Modifier = Modifier) {
         ) {
             IconButton(
                 onClick = {
-                    /** TODO Close the notification */
+                    onDialogClose()
                 }) {
                 Icon(painter = painterResource(id = R.drawable.close), contentDescription = "close button")
             }
@@ -50,13 +51,12 @@ fun AddVisitorDialog(modifier: Modifier = Modifier) {
 
         Spacer(modifier = Modifier.height(30.dp))
 
-        UserInputEntry(
+        UserInputTextField(
             isInputValid = true,
-            inputValue = emailAddress,
+            inputValue = email,
             placeholderText = stringResource(id = R.string.email_address),
-            onInputChange = { newInput ->
-                emailAddress = newInput
-                /** TODO Check is a correct email address */
+            onInputChange = { newEmail ->
+                onEmailChanged(newEmail)
             }
         )
 
@@ -64,7 +64,9 @@ fun AddVisitorDialog(modifier: Modifier = Modifier) {
 
         TaskButton(
             buttonText = stringResource(R.string.add),
-            onButtonClick = { /*TODO*/ }
+            onButtonClick = {
+                onTaskButtonClicked()
+            }
         )
     }
 }
@@ -73,6 +75,12 @@ fun AddVisitorDialog(modifier: Modifier = Modifier) {
 @Preview(showBackground = true)
 fun PreviewAddVisitorNotification() {
     BusbyTaskyTheme {
-        AddVisitorDialog()
+        AddVisitorDialogContent(
+        modifier = Modifier,
+        email = "steve@gmail.com",
+        onEmailChanged = {},
+        onDialogClose = {},
+        onTaskButtonClicked = {}
+        )
     }
 }
