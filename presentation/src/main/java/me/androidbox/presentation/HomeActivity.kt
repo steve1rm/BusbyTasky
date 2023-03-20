@@ -9,6 +9,7 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
 import me.androidbox.domain.authentication.ResponseState
+import me.androidbox.presentation.event.viewmodel.EventViewModel
 import me.androidbox.presentation.login.viewmodel.HomeViewModel
 import me.androidbox.presentation.navigation.NavigationGraph
 import me.androidbox.presentation.navigation.Screen
@@ -20,12 +21,15 @@ class HomeActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val homeViewModel by viewModels<HomeViewModel>()
+        val eventEvent by viewModels<EventViewModel>()
 
         installSplashScreen().apply {
             this.setKeepOnScreenCondition {
                 homeViewModel.authenticationState.value == null
             }
         }
+
+        eventEvent.insertEvent()
 
         setContent {
             val authenticatedState = homeViewModel.authenticationState.collectAsState()

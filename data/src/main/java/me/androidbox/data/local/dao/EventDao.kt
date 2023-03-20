@@ -11,12 +11,12 @@ interface EventDao {
     fun getEventsFromTimeStamp(startTimeStamp: Long, endTimeStamp: Long): Flow<List<EventEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertEvent(eventEntity: EventEntity)
+    suspend fun insertEvent(eventEntity: EventEntity)
 
     @Query("DELETE FROM ${DatabaseConstant.EVENT_TABLE} WHERE id = :id")
-    fun deleteEventById(id: String)
+    suspend fun deleteEventById(id: String)
 
     /* TODO Maybe there is a use case when the user want to clear all events */
     @Query("DELETE FROM ${DatabaseConstant.EVENT_TABLE}")
-    fun deleteAllEvent()
+    suspend fun deleteAllEvent()
 }
