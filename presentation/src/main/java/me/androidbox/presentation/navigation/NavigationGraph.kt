@@ -1,11 +1,14 @@
 package me.androidbox.presentation.navigation
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import me.androidbox.presentation.agenda.screen.AgendaScreen
+import me.androidbox.presentation.agenda.viewmodel.AgendaViewModel
 import me.androidbox.presentation.login.screen.LoginScreen
 import me.androidbox.presentation.login.screen.RegisterScreen
 import me.androidbox.presentation.login.viewmodel.LoginViewModel
@@ -26,7 +29,8 @@ fun NavigationGraph(
             route = Screen.LoginScreen.route
         ) {
             val loginViewModel: LoginViewModel = hiltViewModel()
-            val loginScreenState = loginViewModel.loginScreenState.collectAsState()
+            val loginScreenState
+                    = loginViewModel.loginScreenState.collectAsStateWithLifecycle()
 
             LoginScreen(
                 loginScreenEvent = { loginEvent ->
@@ -37,8 +41,9 @@ fun NavigationGraph(
                     /* Signup clicked, navigate to register screen */
                     navHostController.navigate(route = Screen.RegisterScreen.route)
                 },
-                onLoginSuccess = { login ->
-                    /* TODO Navigate to the agenda screen (not implemented yet) */
+                onLoginSuccess = { authenticatedUser ->
+                    /* TODO Pass the authenticatedUser as an argument */
+                    navHostController.navigate(route = Screen.AgendaScreen.route)
                 },
             )
         }
@@ -48,7 +53,8 @@ fun NavigationGraph(
             route = Screen.RegisterScreen.route
         ) {
             val registerViewModel: RegisterViewModel = hiltViewModel()
-            val registerScreenState = registerViewModel.registerScreenState.collectAsState()
+            val registerScreenState
+                    = registerViewModel.registerScreenState.collectAsStateWithLifecycle()
 
             RegisterScreen(
                 loginScreenEvent = { loginScreenEvent ->
@@ -64,6 +70,20 @@ fun NavigationGraph(
                     navHostController.popBackStack()
                 },
             )
+        }
+
+        /* Agenda Screen */
+        composable(
+            route = Screen.AgendaScreen.route
+        ) {
+            val agendaViewModel: AgendaViewModel = hiltViewModel()
+            val agendaScreenState by agendaViewModel.agendaScreenState.collectAsStateWithLifecycle()
+
+            AgendaScreen(
+                agendaScreenState = agendaScreenState,
+                agendaScreenEvent = { agendaScreenEvent ->
+                    agendaViewModel.onAgendaScreenEvent(agendaScreenEvent)
+                })
         }
     }
 }
