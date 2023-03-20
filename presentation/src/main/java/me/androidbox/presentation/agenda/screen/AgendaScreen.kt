@@ -33,18 +33,6 @@ fun AgendaScreen(
     agendaScreenEvent: (AgendaScreenEvent) -> Unit,
     modifier: Modifier = Modifier) {
 
-    CalendarDialog(
-        state = agendaScreenState.calendarState,
-        config = CalendarConfig(
-            style = CalendarStyle.MONTH,
-            monthSelection = true,
-            yearSelection = true
-        ),
-        selection = CalendarSelection.Date { localDate ->
-            agendaScreenEvent(AgendaScreenEvent.OnDateChanged(localDate))
-        }
-    )
-
     Scaffold(
         modifier = modifier,
         topBar = {
@@ -89,6 +77,18 @@ fun AgendaScreen(
             * */
         }
     }
+
+    CalendarDialog(
+        state = agendaScreenState.calendarState,
+        config = CalendarConfig(
+            style = CalendarStyle.MONTH,
+            monthSelection = true,
+            yearSelection = true
+        ),
+        selection = CalendarSelection.Date { localDate ->
+            agendaScreenEvent(AgendaScreenEvent.OnDateChanged(localDate))
+        }
+    )
 }
 
 @Composable
