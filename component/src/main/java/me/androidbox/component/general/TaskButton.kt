@@ -15,8 +15,8 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import me.androidbox.component.ui.theme.BusbyTaskyTheme
-import me.androidbox.component.ui.theme.loginTextColor
 import me.androidbox.component.ui.theme.buttonColor
+import me.androidbox.component.ui.theme.loginTextColor
 
 @Composable
 fun TaskButton(
