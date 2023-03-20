@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import me.androidbox.domain.agenda.usecase.UsersInitialsExtractionUseCase
 import me.androidbox.domain.authentication.preference.PreferenceRepository
 import me.androidbox.presentation.agenda.screen.AgendaScreenEvent
 import me.androidbox.presentation.agenda.screen.AgendaScreenState
@@ -14,7 +15,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AgendaViewModel @Inject constructor(
-    private val preferenceRepository: PreferenceRepository
+    private val preferenceRepository: PreferenceRepository,
+    private val usersInitialsExtractionUseCase: UsersInitialsExtractionUseCase
 ) : ViewModel() {
 
     private val _agendaScreenState = MutableStateFlow(AgendaScreenState())
@@ -41,22 +43,10 @@ class AgendaViewModel @Inject constructor(
             preferenceRepository.retrieveCurrentUserOrNull()?.let { authenticatedUser ->
                 _agendaScreenState.update { agendaScreenState ->
                     agendaScreenState.copy(
-                        usersInitials = authenticatedUser.fullName.extractInitials()
+                        usersInitials = usersInitialsExtractionUseCase.execute(authenticatedUser.fullName)
                     )
                 }
             }
         }
-    }
-
-    private fun String.extractInitials() : String {
-        /** Only take 2 names i.e. first name and last name */
-        val listOfFullName = this.split(" ").take(2)
-        var initials = ""
-
-        listOfFullName.forEach { name ->
-            initials += name.first()
-        }
-
-        return initials.uppercase()
     }
 }
