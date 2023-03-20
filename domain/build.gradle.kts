@@ -11,6 +11,7 @@ java {
 
 dependencies {
     implementation(libs.dagger)
+    implementation(libs.coroutines)
 
     testImplementation(tests.junit)
 }
