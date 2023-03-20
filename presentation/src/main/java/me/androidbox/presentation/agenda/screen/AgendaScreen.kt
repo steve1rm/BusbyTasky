@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.maxkeppeker.sheets.core.models.base.rememberUseCaseState
 import com.maxkeppeler.sheets.calendar.CalendarDialog
 import com.maxkeppeler.sheets.calendar.models.CalendarConfig
 import com.maxkeppeler.sheets.calendar.models.CalendarSelection
@@ -33,6 +34,8 @@ fun AgendaScreen(
     agendaScreenEvent: (AgendaScreenEvent) -> Unit,
     modifier: Modifier = Modifier) {
 
+    val calendarState = rememberUseCaseState()
+
     Scaffold(
         modifier = modifier,
         topBar = {
@@ -48,13 +51,13 @@ fun AgendaScreen(
                     Log.d("AGENDA_SCREEN", "Profile button clicked")
                 },
                 onDateClicked = {
-                    agendaScreenState.calendarState.show()
+                    calendarState.show()
                 },
             )
         },
         floatingActionButton = {
             TaskActionButton(
-                modifier =  Modifier
+                modifier = Modifier
                     .size(56.dp)
                     .background(
                         color = Color.Black,
@@ -79,7 +82,7 @@ fun AgendaScreen(
     }
 
     CalendarDialog(
-        state = agendaScreenState.calendarState,
+        state = calendarState,
         config = CalendarConfig(
             style = CalendarStyle.MONTH,
             monthSelection = true,
