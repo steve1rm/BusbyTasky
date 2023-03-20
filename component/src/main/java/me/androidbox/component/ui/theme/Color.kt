@@ -132,8 +132,33 @@ val ColorScheme.agendaBodyTextColor: Color
         return Black
     }
 
-val ColorScheme.backgroundColor: Color
+val ColorScheme.backgroundWhiteColor: Color
     @Composable
     get() {
         return Background
+    }
+
+
+val ColorScheme.backgroundBackColor: Color
+    @Composable
+    get() {
+        return Black
+    }
+
+val ColorScheme.topbarFontColor: Color
+    @Composable
+    get() {
+        return LightBlue
+    }
+
+val ColorScheme.topbarButtonBackgroundColor: Color
+    @Composable
+    get() {
+        return Light
+    }
+
+val ColorScheme.agendaBackgroundColor: Color
+    @Composable
+    get() {
+        return White
     }

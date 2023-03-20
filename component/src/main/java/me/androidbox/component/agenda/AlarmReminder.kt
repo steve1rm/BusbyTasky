@@ -16,7 +16,7 @@ import androidx.compose.ui.unit.sp
 import me.androidbox.component.R
 import me.androidbox.component.ui.theme.BusbyTaskyTheme
 import me.androidbox.component.ui.theme.agendaBodyTextColor
-import me.androidbox.component.ui.theme.backgroundColor
+import me.androidbox.component.ui.theme.backgroundWhiteColor
 
 @Composable
 fun AlarmReminder(
@@ -51,7 +51,7 @@ fun PreviewAlarmReminder() {
             reminderText = "30 minutes before",
             modifier = Modifier
                 .fillMaxWidth()
-                .background(color = MaterialTheme.colorScheme.backgroundColor)
+                .background(color = MaterialTheme.colorScheme.backgroundWhiteColor)
         )
     }
 }
