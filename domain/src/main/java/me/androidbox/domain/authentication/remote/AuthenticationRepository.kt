@@ -1,6 +1,5 @@
 package me.androidbox.domain.authentication.remote
 
-
 import me.androidbox.domain.authentication.ResponseState
 import me.androidbox.domain.authentication.model.AuthenticatedUser
 

@@ -21,9 +21,8 @@ import me.androidbox.component.R
 import me.androidbox.component.general.TaskButton
 import me.androidbox.component.general.UserInputTextField
 import me.androidbox.component.ui.theme.BusbyTaskyTheme
-import me.androidbox.component.ui.theme.agendaBodyTextColor
 import me.androidbox.component.ui.theme.agendaSubTitleHeaderColor
-import me.androidbox.component.ui.theme.backgroundColor
+import me.androidbox.component.ui.theme.backgroundWhiteColor
 
 @Composable
 fun AddVisitorDialog(
@@ -91,7 +90,7 @@ fun PreviewAddVisitorDialog() {
             modifier = Modifier
                 .fillMaxWidth()
                 .background(
-                    color = MaterialTheme.colorScheme.backgroundColor,
+                    color = MaterialTheme.colorScheme.backgroundWhiteColor,
                     shape = RoundedCornerShape(16.dp)
                 )
                 .padding(20.dp),
