@@ -1,11 +1,9 @@
 package me.androidbox.data.local.event
 
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.*
 import me.androidbox.data.local.dao.EventDao
 import me.androidbox.data.local.entity.EventEntity
+import me.androidbox.data.remote.util.CheckResult.checkResult
 import me.androidbox.domain.authentication.ResponseState
 import me.androidbox.domain.authentication.model.Event
 import me.androidbox.domain.authentication.remote.EventRepository
@@ -15,13 +13,17 @@ class EventRepositoryImp @Inject constructor(
     private val eventDao: EventDao
 ) : EventRepository {
 
-    override fun getEventsFromTimeStamp(
+    override suspend fun getEventsFromTimeStamp(
         startTimeStamp: Long,
         endTimeStamp: Long
-    ): Flow<ResponseState<List<Event>>> {
-        return flow<ResponseState<List<Event>>> {
-            eventDao.getEventsFromTimeStamp(startTimeStamp, endTimeStamp).onEach { listOfEventEntity ->
-                val listOfEvent = listOfEventEntity.map { eventEntity ->
+    ): ResponseState<List<Event>> {
+        val result = checkResult<List<EventEntity>> {
+            eventDao.getEventsFromTimeStamp(startTimeStamp, endTimeStamp)
+        }
+
+        val responseState = result.fold(
+            onSuccess = { listOfEventEntity ->
+                val listOfEntity = listOfEventEntity.map { eventEntity ->
                     Event(
                         id = eventEntity.id,
                         title = eventEntity.title,
@@ -35,11 +37,15 @@ class EventRepositoryImp @Inject constructor(
                         photos = eventEntity.photos
                     )
                 }
-                emit(ResponseState.Success(listOfEvent))
+
+                ResponseState.Success(listOfEntity)
+            },
+            onFailure = { throwable ->
+                ResponseState.Failure(throwable)
             }
-        }.catch { throwable ->
-            emit(ResponseState.Failure(throwable))
-        }
+        )
+
+        return responseState
     }
 
     override suspend fun insertEvent(event: Event) {
