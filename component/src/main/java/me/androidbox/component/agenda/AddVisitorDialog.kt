@@ -84,7 +84,7 @@ fun AddVisitorDialog(
 
 @Composable
 @Preview(showBackground = true)
-fun PreviewAddVisitorNotification() {
+fun PreviewAddVisitorDialog() {
     BusbyTaskyTheme {
         AddVisitorDialog(
             modifier = Modifier
