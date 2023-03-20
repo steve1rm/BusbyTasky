@@ -22,6 +22,7 @@ import me.androidbox.component.general.TaskButton
 import me.androidbox.component.general.UserInputTextField
 import me.androidbox.component.ui.theme.BusbyTaskyTheme
 import me.androidbox.component.ui.theme.agendaBodyTextColor
+import me.androidbox.component.ui.theme.agendaSubTitleHeaderColor
 import me.androidbox.component.ui.theme.backgroundColor
 
 @Composable
@@ -54,7 +55,7 @@ fun AddVisitorDialog(
                 text = stringResource(R.string.add_visitor),
                 fontWeight = FontWeight.Bold,
                 fontSize = 20.sp,
-                color = MaterialTheme.colorScheme.agendaBodyTextColor
+                color = MaterialTheme.colorScheme.agendaSubTitleHeaderColor
             )
 
             Spacer(modifier = Modifier.height(30.dp))
