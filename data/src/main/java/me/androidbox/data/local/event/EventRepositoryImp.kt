@@ -22,7 +22,7 @@ class EventRepositoryImp @Inject constructor(
 
         val responseState = result.fold(
             onSuccess = { listOfEventEntity ->
-                val listOfEntity = listOfEventEntity.map { eventEntity ->
+                val listOfEvent = listOfEventEntity.map { eventEntity ->
                     Event(
                         id = eventEntity.id,
                         title = eventEntity.title,
@@ -37,7 +37,7 @@ class EventRepositoryImp @Inject constructor(
                     )
                 }
 
-                ResponseState.Success(listOfEntity)
+                ResponseState.Success(listOfEvent)
             },
             onFailure = { throwable ->
                 ResponseState.Failure(throwable)
