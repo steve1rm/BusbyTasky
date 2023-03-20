@@ -6,7 +6,7 @@ import me.androidbox.domain.authentication.model.Event
 interface EventRepository {
     suspend fun getEventsFromTimeStamp(startTimeStamp: Long, endTimeStamp: Long): ResponseState<List<Event>>
 
-    suspend fun insertEvent(event: Event)
+    suspend fun insertEvent(event: Event): ResponseState<Unit>
 
-    suspend fun deleteEventById(id: String)
+    suspend fun deleteEventById(id: String): ResponseState<Unit>
 }

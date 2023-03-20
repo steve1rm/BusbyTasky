@@ -1,6 +1,5 @@
 package me.androidbox.data.local.event
 
-import kotlinx.coroutines.flow.*
 import me.androidbox.data.local.dao.EventDao
 import me.androidbox.data.local.entity.EventEntity
 import me.androidbox.data.remote.util.CheckResult.checkResult
@@ -48,7 +47,7 @@ class EventRepositoryImp @Inject constructor(
         return responseState
     }
 
-    override suspend fun insertEvent(event: Event) {
+    override suspend fun insertEvent(event: Event): ResponseState<Unit> {
         val eventEntity = EventEntity(
             id = event.id,
             title = event.title,
@@ -61,10 +60,36 @@ class EventRepositoryImp @Inject constructor(
             attendees = event.attendees,
             photos = event.photos
         )
-        eventDao.insertEvent(eventEntity)
+        val result = checkResult {
+            eventDao.insertEvent(eventEntity)
+        }
+
+        val responseState = result.fold(
+            onSuccess = {
+                ResponseState.Success(Unit)
+            },
+            onFailure = { throwable ->
+                ResponseState.Failure(throwable)
+            }
+        )
+
+        return responseState
     }
 
-    override suspend fun deleteEventById(id: String) {
-        eventDao.deleteEventById(id)
+    override suspend fun deleteEventById(id: String): ResponseState<Unit> {
+        val result = checkResult {
+            eventDao.deleteEventById(id)
+        }
+
+        val responseState = result.fold(
+            onSuccess = {
+                ResponseState.Success(Unit)
+            },
+            onFailure = { throwable ->
+                ResponseState.Failure(throwable)
+            }
+        )
+
+        return responseState
     }
 }
