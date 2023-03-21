@@ -35,6 +35,13 @@ class AgendaViewModel @Inject constructor(
                     )
                 }
             }
+            is AgendaScreenEvent.OnShowDropdown -> {
+                _agendaScreenState.update { agendaScreenState ->
+                    agendaScreenState.copy(
+                        agendaDropdownItemId = agendaScreenEvent.listOfItems
+                    )
+                }
+            }
         }
     }
 

@@ -22,9 +22,11 @@ import com.maxkeppeler.sheets.calendar.models.CalendarSelection
 import com.maxkeppeler.sheets.calendar.models.CalendarStyle
 import me.androidbox.component.R
 import me.androidbox.component.agenda.AgendaTopBar
+import me.androidbox.component.general.AgendaDropDownMenu
 import me.androidbox.component.general.TaskActionButton
 import me.androidbox.component.ui.theme.agendaBackgroundColor
 import me.androidbox.component.ui.theme.backgroundBackColor
+import me.androidbox.component.ui.theme.dropDownMenuBackgroundColor
 import me.androidbox.presentation.ui.theme.BusbyTaskyTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -33,7 +35,6 @@ fun AgendaScreen(
     agendaScreenState: AgendaScreenState,
     agendaScreenEvent: (AgendaScreenEvent) -> Unit,
     modifier: Modifier = Modifier) {
-
     val calendarState = rememberUseCaseState()
 
     Scaffold(
@@ -65,9 +66,16 @@ fun AgendaScreen(
                     ),
                 iconResource = R.drawable.add_white,
                 onActionClicked = {
-                    /* TODO Add dropdown menu to create new events, reminders, and tasks */
-                    Log.d("AGENDA_SCREEN", "Action button clicked")
-            })
+                    agendaScreenEvent(
+                        AgendaScreenEvent.OnShowDropdown(
+                            listOf(
+                                R.string.open,
+                                R.string.edit,
+                                R.string.delete
+                            )
+                        )
+                    )
+                })
         },
     ) { paddingValues ->
 
@@ -90,6 +98,19 @@ fun AgendaScreen(
         ),
         selection = CalendarSelection.Date { localDate ->
             agendaScreenEvent(AgendaScreenEvent.OnDateChanged(localDate))
+        }
+    )
+
+    AgendaDropDownMenu(
+        modifier = Modifier.background(color = MaterialTheme.colorScheme.dropDownMenuBackgroundColor),
+        isExpanded = agendaScreenState.agendaDropdownItemId.isNotEmpty(),
+        onCloseDropdown = {
+            /* Empty the list of item ids so the isExpanded dropdown will close as the items are empty */
+            agendaScreenEvent(AgendaScreenEvent.OnShowDropdown(listOf()))
+        },
+        listOfMenuItemId = listOf(R.string.open, R.string.edit, R.string.delete),
+        onSelectedOption = { item ->
+            Log.d("AGENDA", "ITEM [ $item ]")
         }
     )
 }

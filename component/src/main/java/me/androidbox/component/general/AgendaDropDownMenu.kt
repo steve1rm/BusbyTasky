@@ -11,16 +11,16 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import me.androidbox.component.R
 import me.androidbox.component.ui.theme.BusbyTaskyTheme
 import me.androidbox.component.ui.theme.divider
 import me.androidbox.component.ui.theme.dropDownMenuBackgroundColor
 import me.androidbox.component.ui.theme.dropDownMenuColor
-import me.androidbox.component.R
 
 @Composable
 fun AgendaDropDownMenu(
     isExpanded: Boolean,
-    @StringRes  listOfMenuItemId: List<Int>,
+    @StringRes listOfMenuItemId: List<Int>,
     onSelectedOption: (item: Int) -> Unit,
     onCloseDropdown: () -> Unit,
     modifier: Modifier = Modifier,
@@ -64,7 +64,8 @@ fun AgendaDropDownMenu(
 fun PreviewAgendaDropDownMenuAgenda() {
     BusbyTaskyTheme {
         AgendaDropDownMenu(
-            modifier = Modifier.background(color = MaterialTheme.colorScheme.dropDownMenuBackgroundColor),
+            modifier = Modifier
+                .background(color = MaterialTheme.colorScheme.dropDownMenuBackgroundColor),
             isExpanded = true,
             onCloseDropdown = { },
             listOfMenuItemId = listOf(R.string.open, R.string.edit, R.string.delete),
