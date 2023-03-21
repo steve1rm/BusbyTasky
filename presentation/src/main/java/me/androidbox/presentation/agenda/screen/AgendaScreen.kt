@@ -103,7 +103,7 @@ fun AgendaScreen(
 
     AgendaDropDownMenu(
         modifier = Modifier.background(color = MaterialTheme.colorScheme.dropDownMenuBackgroundColor),
-        isExpanded = agendaScreenState.agendaDropdownItemId.isNotEmpty(),
+        shouldOpen = agendaScreenState.agendaDropdownItemId.isNotEmpty(),
         onCloseDropdown = {
             /* Empty the list of item ids so the isExpanded dropdown will close as the items are empty */
             agendaScreenEvent(AgendaScreenEvent.OnShowDropdown(listOf()))

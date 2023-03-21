@@ -19,7 +19,7 @@ import me.androidbox.component.ui.theme.dropDownMenuColor
 
 @Composable
 fun AgendaDropDownMenu(
-    isExpanded: Boolean,
+    shouldOpen: Boolean,
     @StringRes listOfMenuItemId: List<Int>,
     onSelectedOption: (item: Int) -> Unit,
     onCloseDropdown: () -> Unit,
@@ -28,7 +28,7 @@ fun AgendaDropDownMenu(
 
     DropdownMenu(
         modifier = modifier,
-        expanded = isExpanded,
+        expanded = shouldOpen,
         onDismissRequest = {
             onCloseDropdown()
         }
@@ -66,7 +66,7 @@ fun PreviewAgendaDropDownMenuAgenda() {
         AgendaDropDownMenu(
             modifier = Modifier
                 .background(color = MaterialTheme.colorScheme.dropDownMenuBackgroundColor),
-            isExpanded = true,
+            shouldOpen = true,
             onCloseDropdown = { },
             listOfMenuItemId = listOf(R.string.open, R.string.edit, R.string.delete),
             onSelectedOption = { }
@@ -80,7 +80,7 @@ fun PreviewAgendaDropDownMenuReminder() {
     BusbyTaskyTheme {
         AgendaDropDownMenu(
             modifier = Modifier.background(color = MaterialTheme.colorScheme.dropDownMenuBackgroundColor),
-            isExpanded = true,
+            shouldOpen = true,
             onCloseDropdown = { },
             listOfMenuItemId = listOf(
                 R.string.ten_minutes_before,
