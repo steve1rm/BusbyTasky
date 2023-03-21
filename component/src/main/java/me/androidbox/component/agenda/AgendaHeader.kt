@@ -32,8 +32,8 @@ fun AgendaHeader(
         verticalAlignment = Alignment.CenterVertically) {
             Image(
                 painter = painterResource(id = agendaHeaderItem.drawableRes),
-                contentDescription = stringResource(R.string.agenda_image)
-                            )
+                contentDescription = stringResource(R.string.agenda_image))
+
             Spacer(modifier = Modifier.width(10.dp))
 
             Text(
