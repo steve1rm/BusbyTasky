@@ -17,20 +17,25 @@ import me.androidbox.component.ui.theme.agendaBodyTextColor
 import me.androidbox.component.ui.theme.divider
 
 @Composable
-fun AgendaDuration(modifier: Modifier = Modifier) {
-    Column(modifier.fillMaxWidth()) {
+fun AgendaDuration(
+    startTime: String,
+    endTime: String,
+    startDate: String,
+    endDate: String,
+    modifier: Modifier = Modifier) {
+    Column(modifier = modifier) {
         Row(modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween) {
             Text(
                 modifier = Modifier.padding(start = 10.dp),
-                text = stringResource(R.string.from_duration).format("08:00"),
+                text = stringResource(R.string.from_duration).format(startTime),
                     fontWeight = FontWeight.Normal,
                     fontSize = 16.sp,
                     color = MaterialTheme.colorScheme.agendaBodyTextColor)
 
             Text(
                 modifier = Modifier.padding(end = 10.dp),
-                text = "Jul 21 2022",
+                text = startDate,
                 fontWeight = FontWeight.Normal,
                 fontSize = 16.sp,
                 color = MaterialTheme.colorScheme.agendaBodyTextColor)
@@ -39,7 +44,7 @@ fun AgendaDuration(modifier: Modifier = Modifier) {
         Spacer(modifier = Modifier.height(28.dp))
 
         Divider(
-            modifier
+            Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp),
             color = MaterialTheme.colorScheme.divider,
@@ -51,27 +56,20 @@ fun AgendaDuration(modifier: Modifier = Modifier) {
             horizontalArrangement = Arrangement.SpaceBetween) {
             Text(
                 modifier = Modifier.padding(start = 10.dp),
-                text = stringResource(id = R.string.to_duration).format("08:30"),
+                text = stringResource(id = R.string.to_duration).format(endTime),
                 fontWeight = FontWeight.Normal,
                 fontSize = 16.sp,
                 color = MaterialTheme.colorScheme.agendaBodyTextColor)
 
             Text(
                 modifier = Modifier.padding(end = 10.dp),
-                text = "Jul 21 2022",
+                text = endDate,
                 fontWeight = FontWeight.Normal,
                 fontSize = 16.sp,
                 color = MaterialTheme.colorScheme.agendaBodyTextColor)
         }
 
         Spacer(modifier = Modifier.height(28.dp))
-
-        Divider(
-            modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp),
-            color = MaterialTheme.colorScheme.divider,
-            thickness = 1.dp)
     }
 }
 
@@ -79,7 +77,13 @@ fun AgendaDuration(modifier: Modifier = Modifier) {
 @Preview(showBackground = true, name = "Shows the duraton of time and day")
 fun PreviewAgendaDuration() {
     BusbyTaskyTheme {
-        AgendaDuration()
+        AgendaDuration(
+            startTime = "08:00",
+            endTime = "08:30",
+            startDate = "Jul 21 2022",
+            endDate = "Jul 21 2022",
+            modifier = Modifier.fillMaxWidth()
+        )
     }
 }
 

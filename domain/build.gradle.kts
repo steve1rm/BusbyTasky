@@ -1,6 +1,7 @@
 plugins {
     id("java-library")
-    id("org.jetbrains.kotlin.jvm")
+    id("kotlin")
+    kotlin("kapt")
 }
 
 java {
@@ -9,5 +10,8 @@ java {
 }
 
 dependencies {
+    implementation(libs.dagger)
+    implementation(libs.coroutines)
 
+    testImplementation(tests.junit)
 }

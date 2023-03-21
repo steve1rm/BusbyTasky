@@ -10,6 +10,8 @@ val Purple500 = Color(0xFF6200EE)
 val Purple700 = Color(0xFF3700B3)
 val Teal200 = Color(0xFF03DAC5)
 val LightGray = Color(0xFFA1A4B2)
+val Light = Color(0xFFEEF6FF)
+val Light2 = Color(0xFFF2F3F7)
 val DarkGray = Color(0xFF5C5D5A)
 val ExtraLightGray = Color(0xFFF2F3F7)
 val LightBlue = Color(0xFFB7C6DE)
@@ -21,6 +23,7 @@ val ExtraLightWhite = Color(0xFFf5f5f5)
 val Brown = Color(0xff40492D)
 val Green = Color(0xFF279F70)
 val LightGreen = Color(0xFFCAEF45)
+val Background = Color(0xFFF5F5F5)
 
 val ColorScheme.placeholderEntry: Color
     @Composable
@@ -76,18 +79,23 @@ val ColorScheme.agendaCardItemBodyTextColor: Color
         return DarkGray
     }
 
-val ColorScheme.agendaItemBackgroundGreen: Color
+val ColorScheme.TaskCardBackgroundColor: Color
     @Composable
     get() {
         return Green
     }
 
-val ColorScheme.agendaItemBackgroundLightGreen: Color
+val ColorScheme.EventCardBackgroundColor: Color
     @Composable
     get() {
         return LightGreen
     }
 
+val ColorScheme.ReminderCardBackgroundColor: Color
+    @Composable
+    get() {
+        return Light2
+    }
 
 val ColorScheme.agendaItemBackgroundLightGray: Color
     @Composable
@@ -99,6 +107,12 @@ val ColorScheme.divider: Color
     @Composable
     get() {
         return LightWhite
+    }
+
+val ColorScheme.headerDividerColor: Color
+    @Composable
+    get() {
+        return Light
     }
 
 val ColorScheme.dividerBlack: Color
@@ -119,13 +133,42 @@ val ColorScheme.agendaSubTitleHeaderColor: Color
         return Black
     }
 
-
 val ColorScheme.agendaBodyTextColor: Color
     @Composable
     get() {
         return Black
     }
 
+val ColorScheme.backgroundWhiteColor: Color
+    @Composable
+    get() {
+        return Background
+    }
+
+
+val ColorScheme.backgroundBackColor: Color
+    @Composable
+    get() {
+        return Black
+    }
+
+val ColorScheme.topbarFontColor: Color
+    @Composable
+    get() {
+        return LightBlue
+    }
+
+val ColorScheme.topbarButtonBackgroundColor: Color
+    @Composable
+    get() {
+        return Light
+    }
+
+val ColorScheme.agendaBackgroundColor: Color
+    @Composable
+    get() {
+        return White
+    }
 val ColorScheme.visitorBackgroundColor: Color
     @Composable
     get() {
@@ -159,6 +202,18 @@ val ColorScheme.topbarText: Color
     }
 
 val ColorScheme.editScreenBackground: Color
+    @Composable
+    get() {
+        return ExtraLightWhite
+    }
+
+val ColorScheme.dropDownMenuColor: Color
+    @Composable
+    get() {
+        return Black
+    }
+
+val ColorScheme.dropDownMenuBackgroundColor: Color
     @Composable
     get() {
         return ExtraLightWhite
