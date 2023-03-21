@@ -15,7 +15,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import me.androidbox.component.ui.theme.BusbyTaskyTheme
-import me.androidbox.component.ui.theme.backgroundBlackColor
+import me.androidbox.component.ui.theme.backgroundBackColor
 import me.androidbox.component.ui.theme.topbarButtonBackgroundColor
 import me.androidbox.component.ui.theme.topbarFontColor
 
@@ -69,7 +69,7 @@ fun PreviewAgendaTopBar() {
         AgendaTopBar(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(color = MaterialTheme.colorScheme.backgroundBlackColor)
+                .background(color = MaterialTheme.colorScheme.backgroundBackColor)
                 .padding(horizontal = 16.dp),
             displayMonth = "August",
             initials = "SM",

@@ -22,7 +22,7 @@ val LightWhite = Color(0xFFEEF6FF)
 val Brown = Color(0xff40492D)
 val Green = Color(0xFF279F70)
 val LightGreen = Color(0xFFCAEF45)
-val Background = Color(0xFFf5f5f5)
+val Background = Color(0xFFF5F5F5)
 
 val ColorScheme.placeholderEntry: Color
     @Composable
@@ -72,7 +72,7 @@ val ColorScheme.darkOptionButton: Color
         return Brown
     }
 
-val ColorScheme.agendaBodyTextColor: Color
+val ColorScheme.agendaCardItemBodyTextColor: Color
     @Composable
     get() {
         return DarkGray
@@ -94,6 +94,12 @@ val ColorScheme.ReminderCardBackgroundColor: Color
     @Composable
     get() {
         return Light2
+    }
+
+val ColorScheme.agendaItemBackgroundLightGray: Color
+    @Composable
+    get() {
+        return LightGray
     }
 
 val ColorScheme.divider: Color
@@ -120,6 +126,12 @@ val ColorScheme.agendaSubTitleHeaderColor: Color
         return Black
     }
 
+val ColorScheme.agendaBodyTextColor: Color
+    @Composable
+    get() {
+        return Black
+    }
+
 val ColorScheme.backgroundWhiteColor: Color
     @Composable
     get() {
@@ -127,7 +139,7 @@ val ColorScheme.backgroundWhiteColor: Color
     }
 
 
-val ColorScheme.backgroundBlackColor: Color
+val ColorScheme.backgroundBackColor: Color
     @Composable
     get() {
         return Black
