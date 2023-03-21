@@ -1,5 +1,6 @@
 package me.androidbox.component.general
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.*
@@ -10,20 +11,19 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import me.androidbox.component.R
 import me.androidbox.component.ui.theme.BusbyTaskyTheme
 import me.androidbox.component.ui.theme.divider
 import me.androidbox.component.ui.theme.dropDownMenuBackgroundColor
 import me.androidbox.component.ui.theme.dropDownMenuColor
+import me.androidbox.component.R
 
 @Composable
 fun AgendaDropDownMenu(
-    modifier: Modifier = Modifier,
     isExpanded: Boolean,
+    @StringRes  listOfMenuItemId: List<Int>,
+    onSelectedOption: (item: Int) -> Unit,
     onCloseDropdown: () -> Unit,
-    onOpenClicked: () -> Unit,
-    onEditClicked: () -> Unit,
-    onDeleteClicked: () -> Unit
+    modifier: Modifier = Modifier,
 ) {
 
     DropdownMenu(
@@ -33,52 +33,29 @@ fun AgendaDropDownMenu(
             onCloseDropdown()
         }
     ) {
-        DropdownMenuItem(
-            text = {
-                Text(
-                    text = stringResource(R.string.open),
-                    fontWeight = FontWeight.Medium,
-                    fontSize = 16.sp,
-                    color = MaterialTheme.colorScheme.dropDownMenuColor)
-            },
-            onClick = {
-                onOpenClicked()
+        listOfMenuItemId.forEachIndexed { index, itemId, ->
+            DropdownMenuItem(
+                text = {
+                    Text(
+                        text = stringResource(id = itemId),
+                        fontWeight = FontWeight.Medium,
+                        fontSize = 16.sp,
+                        color = MaterialTheme.colorScheme.dropDownMenuColor)
+                },
+                onClick = {
+                    onSelectedOption(index)
+                }
+            )
+
+            /* Avoid displaying a divider for the final item */
+            if(index < listOfMenuItemId.count() - 1) {
+                Divider(
+                    modifier = Modifier.fillMaxWidth(),
+                    color = MaterialTheme.colorScheme.divider,
+                    thickness = 1.dp
+                )
             }
-        )
-
-        Divider(
-            modifier = Modifier.fillMaxWidth(),
-            color = MaterialTheme.colorScheme.divider,
-            thickness = 1.dp)
-
-        DropdownMenuItem(
-            text = {
-                Text(text = stringResource(R.string.edit),
-                    fontWeight = FontWeight.Medium,
-                    fontSize = 16.sp,
-                    color = MaterialTheme.colorScheme.dropDownMenuColor)
-            },
-            onClick = {
-                onEditClicked()
-            }
-        )
-
-        Divider(
-            modifier = Modifier.fillMaxWidth(),
-            color = MaterialTheme.colorScheme.divider,
-            thickness = 1.dp)
-
-        DropdownMenuItem(
-            text = {
-                Text(text = stringResource(R.string.delete),
-                    fontWeight = FontWeight.Medium,
-                    fontSize = 16.sp,
-                    color = MaterialTheme.colorScheme.dropDownMenuColor)
-            },
-            onClick = {
-                onDeleteClicked()
-            }
-        )
+        }
     }
 }
 
@@ -86,14 +63,12 @@ fun AgendaDropDownMenu(
 @Preview(showBackground = true)
 fun PreviewAgendaDropDownMenu() {
     BusbyTaskyTheme {
-
         AgendaDropDownMenu(
             modifier = Modifier.background(color = MaterialTheme.colorScheme.dropDownMenuBackgroundColor),
             isExpanded = true,
             onCloseDropdown = { },
-            onOpenClicked  = { },
-            onEditClicked = { },
-            onDeleteClicked = { }
+            listOfMenuItemId = listOf(R.string.open, R.string.edit, R.string.delete),
+            onSelectedOption = { }
         )
     }
 }
