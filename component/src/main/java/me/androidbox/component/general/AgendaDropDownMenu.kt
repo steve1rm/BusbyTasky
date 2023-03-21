@@ -61,13 +61,33 @@ fun AgendaDropDownMenu(
 
 @Composable
 @Preview(showBackground = true)
-fun PreviewAgendaDropDownMenu() {
+fun PreviewAgendaDropDownMenuAgenda() {
     BusbyTaskyTheme {
         AgendaDropDownMenu(
             modifier = Modifier.background(color = MaterialTheme.colorScheme.dropDownMenuBackgroundColor),
             isExpanded = true,
             onCloseDropdown = { },
             listOfMenuItemId = listOf(R.string.open, R.string.edit, R.string.delete),
+            onSelectedOption = { }
+        )
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+fun PreviewAgendaDropDownMenuReminder() {
+    BusbyTaskyTheme {
+        AgendaDropDownMenu(
+            modifier = Modifier.background(color = MaterialTheme.colorScheme.dropDownMenuBackgroundColor),
+            isExpanded = true,
+            onCloseDropdown = { },
+            listOfMenuItemId = listOf(
+                R.string.ten_minutes_before,
+                R.string.thirty_minutes_before,
+                R.string.one_hour_before,
+                R.string.six_hours_before,
+                R.string.one_day_before
+            ),
             onSelectedOption = { }
         )
     }
