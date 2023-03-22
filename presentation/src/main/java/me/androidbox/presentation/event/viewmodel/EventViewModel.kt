@@ -67,7 +67,7 @@ class EventViewModel @Inject constructor(
                 when(responseState) {
                     is ResponseState.Success -> {
                         responseState.data.map { event ->
-                            Log.d("EVENT", "[ ${event.startDateTime} | ${event.endDateTime} ]")
+                            Log.d("EVENT", "[ ${event.id} ] [ ${event.startDateTime} | ${event.endDateTime} ]")
                         }
                     }
                     is ResponseState.Failure -> {

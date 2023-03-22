@@ -20,6 +20,8 @@ class EventRepositoryImp @Inject constructor(
         startTimeStamp: Long,
         endTimeStamp: Long
     ): Flow<ResponseState<List<Event>>> {
+
+/*
         return flow {
             val result = checkResult<Flow<List<EventEntity>>> {
                 eventDao.getEventsFromTimeStamp(startTimeStamp, endTimeStamp)
@@ -27,6 +29,7 @@ class EventRepositoryImp @Inject constructor(
 
             result.fold(
                 onSuccess = { listOfEventEntity ->
+                    // FIXME Sometime related to this is not working
                     listOfEventEntity.map {
                         val listOfEvent = dataToDomainMapper(it)
                         emit(ResponseState.Success(listOfEvent))
@@ -37,7 +40,17 @@ class EventRepositoryImp @Inject constructor(
                 }
             )
         }
+*/
+
+        return eventDao.getEventsFromTimeStamp(startTimeStamp, endTimeStamp)
+            .map { listOfEventEntity ->
+                ResponseState.Success(dataToDomainMapper(listOfEventEntity))
+            }
+            .catch { throwable ->
+                ResponseState.Failure(throwable)
+            }
     }
+
 
     override suspend fun insertEvent(event: Event): ResponseState<Unit> {
         val eventEntity = EventEntity(
