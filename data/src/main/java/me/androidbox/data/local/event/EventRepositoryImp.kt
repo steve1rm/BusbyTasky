@@ -2,6 +2,7 @@ package me.androidbox.data.local.event
 
 import me.androidbox.data.local.dao.EventDao
 import me.androidbox.data.local.entity.EventEntity
+import me.androidbox.data.mapper.DataToDomainMapper
 import me.androidbox.data.remote.util.CheckResult.checkResult
 import me.androidbox.domain.authentication.ResponseState
 import me.androidbox.domain.authentication.model.Event
@@ -9,7 +10,8 @@ import me.androidbox.domain.authentication.remote.EventRepository
 import javax.inject.Inject
 
 class EventRepositoryImp @Inject constructor(
-    private val eventDao: EventDao
+    private val eventDao: EventDao,
+    private val dataToDomainMapper: DataToDomainMapper<@JvmSuppressWildcards List<EventEntity>, @JvmSuppressWildcards List<Event>>
 ) : EventRepository {
 
     override suspend fun getEventsFromTimeStamp(
@@ -22,20 +24,7 @@ class EventRepositoryImp @Inject constructor(
 
         val responseState = result.fold(
             onSuccess = { listOfEventEntity ->
-                val listOfEvent = listOfEventEntity.map { eventEntity ->
-                    Event(
-                        id = eventEntity.id,
-                        title = eventEntity.title,
-                        description = eventEntity.description,
-                        startDateTime = eventEntity.startDateTime,
-                        endDateTime = eventEntity.endDateTime,
-                        remindAt = eventEntity.remindAt,
-                        eventCreatorId = eventEntity.eventCreatorId,
-                        isUserEventCreator = eventEntity.isUserEventCreator,
-                        attendees = eventEntity.attendees,
-                        photos = eventEntity.photos
-                    )
-                }
+                val listOfEvent = dataToDomainMapper(listOfEventEntity)
 
                 ResponseState.Success(listOfEvent)
             },
