@@ -2,15 +2,14 @@ package me.androidbox.presentation.agenda.screen
 
 import android.util.Log
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
@@ -78,15 +77,39 @@ fun AgendaScreen(
                     )
                 })
         },
-    ) { paddingValues ->
+    )
+    { paddingValues ->
+        Box(modifier = Modifier
+            .fillMaxSize()
+            .padding(paddingValues)) {
 
-        LazyColumn(Modifier.padding(paddingValues)) {
+            LazyColumn(Modifier.fillMaxWidth()) {
             /*
             *
             * TODO Add content here for each of the agenda items
             *  i.e. Event, Reminders, and Tasks
             *
             * */
+            }
+
+            AgendaDropDownMenu(
+                modifier = Modifier
+                    .background(color = MaterialTheme.colorScheme.dropDownMenuBackgroundColor)
+                    .align(Alignment.BottomEnd),
+                shouldOpenDropdown = agendaScreenState.shouldOpenDropdown,
+                onCloseDropdown = {
+                    agendaScreenEvent(
+                        AgendaScreenEvent.OnShowDropdown(
+                            shouldOpen = false,
+                            listOfItems = listOf()
+                        )
+                    )
+                },
+                listOfMenuItemId = listOf(R.string.open, R.string.edit, R.string.delete),
+                onSelectedOption = { item ->
+                    Log.d("AGENDA", "ITEM [ $item ]")
+                }
+            )
         }
     }
 
@@ -99,18 +122,6 @@ fun AgendaScreen(
         ),
         selection = CalendarSelection.Date { localDate ->
             agendaScreenEvent(AgendaScreenEvent.OnDateChanged(localDate))
-        }
-    )
-
-    AgendaDropDownMenu(
-        modifier = Modifier.background(color = MaterialTheme.colorScheme.dropDownMenuBackgroundColor),
-        shouldOpenDropdown = agendaScreenState.shouldOpenDropdown,
-        onCloseDropdown = {
-           agendaScreenEvent(AgendaScreenEvent.OnShowDropdown(shouldOpen = false, listOfItems = listOf()))
-        },
-        listOfMenuItemId = listOf(R.string.open, R.string.edit, R.string.delete),
-        onSelectedOption = { item ->
-            Log.d("AGENDA", "ITEM [ $item ]")
         }
     )
 }
