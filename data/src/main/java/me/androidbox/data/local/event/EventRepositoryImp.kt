@@ -1,8 +1,7 @@
 package me.androidbox.data.local.event
 
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.map
+import android.util.Log
+import kotlinx.coroutines.flow.*
 import me.androidbox.data.local.dao.EventDao
 import me.androidbox.data.local.entity.EventEntity
 import me.androidbox.data.mapper.DataToDomainMapper
@@ -30,7 +29,6 @@ class EventRepositoryImp @Inject constructor(
                 onSuccess = { listOfEventEntity ->
                     listOfEventEntity.map {
                         val listOfEvent = dataToDomainMapper(it)
-
                         emit(ResponseState.Success(listOfEvent))
                     }
                 },
