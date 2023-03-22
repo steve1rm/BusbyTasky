@@ -1,5 +1,8 @@
 package me.androidbox.data.local.event
 
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
 import me.androidbox.data.local.dao.EventDao
 import me.androidbox.data.local.entity.EventEntity
 import me.androidbox.data.mapper.DataToDomainMapper
@@ -14,26 +17,28 @@ class EventRepositoryImp @Inject constructor(
     private val dataToDomainMapper: DataToDomainMapper<@JvmSuppressWildcards List<EventEntity>, @JvmSuppressWildcards List<Event>>
 ) : EventRepository {
 
-    override suspend fun getEventsFromTimeStamp(
+    override fun getEventsFromTimeStamp(
         startTimeStamp: Long,
         endTimeStamp: Long
-    ): ResponseState<List<Event>> {
-        val result = checkResult<List<EventEntity>> {
-            eventDao.getEventsFromTimeStamp(startTimeStamp, endTimeStamp)
-        }
-
-        val responseState = result.fold(
-            onSuccess = { listOfEventEntity ->
-                val listOfEvent = dataToDomainMapper(listOfEventEntity)
-
-                ResponseState.Success(listOfEvent)
-            },
-            onFailure = { throwable ->
-                ResponseState.Failure(throwable)
+    ): Flow<ResponseState<List<Event>>> {
+        return flow {
+            val result = checkResult<Flow<List<EventEntity>>> {
+                eventDao.getEventsFromTimeStamp(startTimeStamp, endTimeStamp)
             }
-        )
 
-        return responseState
+            result.fold(
+                onSuccess = { listOfEventEntity ->
+                    listOfEventEntity.map {
+                        val listOfEvent = dataToDomainMapper(it)
+
+                        emit(ResponseState.Success(listOfEvent))
+                    }
+                },
+                onFailure = { throwable ->
+                    emit(ResponseState.Failure(throwable))
+                }
+            )
+        }
     }
 
     override suspend fun insertEvent(event: Event): ResponseState<Unit> {
