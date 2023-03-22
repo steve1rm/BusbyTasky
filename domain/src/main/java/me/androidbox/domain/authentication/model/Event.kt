@@ -7,7 +7,7 @@ data class Event(
     val startDateTime: Long,
     val endDateTime: Long,
     val remindAt: Long,
-    val host: String, /* event creator ID */
+    val eventCreatorId: String,
     val isUserEventCreator: Boolean,
     val attendees: String,
     val photos: String,

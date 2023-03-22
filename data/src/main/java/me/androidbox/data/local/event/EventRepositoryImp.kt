@@ -30,7 +30,7 @@ class EventRepositoryImp @Inject constructor(
                         startDateTime = eventEntity.startDateTime,
                         endDateTime = eventEntity.endDateTime,
                         remindAt = eventEntity.remindAt,
-                        host = eventEntity.host,
+                        eventCreatorId = eventEntity.eventCreatorId,
                         isUserEventCreator = eventEntity.isUserEventCreator,
                         attendees = eventEntity.attendees,
                         photos = eventEntity.photos
@@ -55,7 +55,7 @@ class EventRepositoryImp @Inject constructor(
             startDateTime = event.startDateTime,
             endDateTime = event.endDateTime,
             remindAt = event.remindAt,
-            host = event.host,
+            eventCreatorId = event.eventCreatorId,
             isUserEventCreator = event.isUserEventCreator,
             attendees = event.attendees,
             photos = event.photos

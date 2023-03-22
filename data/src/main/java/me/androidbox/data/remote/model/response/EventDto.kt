@@ -15,7 +15,7 @@ data class EventDto(
     val from: Long,
     val to: Long,
     val remindAt: Long,
-    val host: String, /* event creator ID */
+    val eventCreatorId: String,
     val isUserEventCreator: Boolean,
     val attendees: List<AttendeeDto>,
     val photos: List<PhotoDto>
