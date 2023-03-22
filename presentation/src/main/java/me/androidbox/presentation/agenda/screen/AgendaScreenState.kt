@@ -6,5 +6,6 @@ import java.time.ZonedDateTime
 data class AgendaScreenState(
     val displayMonth: String = ZonedDateTime.now(ZoneId.systemDefault()).month.toString(),
     val usersInitials: String = "",
-    val agendaDropdownItemId: List<Int> = listOf()
+    val agendaDropdownItemId: List<Int> = listOf(),
+    val shouldOpenDropdown: Boolean = false
 )

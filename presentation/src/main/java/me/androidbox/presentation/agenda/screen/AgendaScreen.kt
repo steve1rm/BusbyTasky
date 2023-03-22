@@ -68,11 +68,12 @@ fun AgendaScreen(
                 onActionClicked = {
                     agendaScreenEvent(
                         AgendaScreenEvent.OnShowDropdown(
-                            listOf(
+                            listOfItems = listOf(
                                 R.string.open,
                                 R.string.edit,
                                 R.string.delete
-                            )
+                            ),
+                            shouldOpen = true
                         )
                     )
                 })
@@ -103,10 +104,9 @@ fun AgendaScreen(
 
     AgendaDropDownMenu(
         modifier = Modifier.background(color = MaterialTheme.colorScheme.dropDownMenuBackgroundColor),
-        shouldOpen = agendaScreenState.agendaDropdownItemId.isNotEmpty(),
+        shouldOpenDropdown = agendaScreenState.shouldOpenDropdown,
         onCloseDropdown = {
-            /* Empty the list of item ids so the isExpanded dropdown will close as the items are empty */
-            agendaScreenEvent(AgendaScreenEvent.OnShowDropdown(listOf()))
+           agendaScreenEvent(AgendaScreenEvent.OnShowDropdown(shouldOpen = false, listOfItems = listOf()))
         },
         listOfMenuItemId = listOf(R.string.open, R.string.edit, R.string.delete),
         onSelectedOption = { item ->
