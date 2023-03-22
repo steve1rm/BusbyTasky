@@ -24,7 +24,7 @@ import me.androidbox.component.R
 import me.androidbox.component.agenda.AgendaTopBar
 import me.androidbox.component.general.TaskActionButton
 import me.androidbox.component.ui.theme.agendaBackgroundColor
-import me.androidbox.component.ui.theme.backgroundColor
+import me.androidbox.component.ui.theme.backgroundBackColor
 import me.androidbox.presentation.ui.theme.BusbyTaskyTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -42,7 +42,7 @@ fun AgendaScreen(
             AgendaTopBar(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(color = MaterialTheme.colorScheme.backgroundColor)
+                    .background(color = MaterialTheme.colorScheme.backgroundBackColor)
                     .padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 8.dp),
                 initials = agendaScreenState.usersInitials,
                 displayMonth = agendaScreenState.displayMonth,

@@ -12,4 +12,13 @@
     <string name="subtitle_icon">subtitle icon</string>
     <string name="forward_arrow">forward arrow</string>
     <string name="agenda_image">Agenda image</string>
+    <string name="ten_minutes_before">10 minutes before</string>
+    <string name="thirty_minutes_before">30 minutes before</string>
+    <string name="one_hour_before">1 hour before</string>
+    <string name="six_hours_before">6 hours before</string>
+    <string name="one_day_before">1 day before</string>
+    <string name="from_duration">From %1$s</string>
+    <string name="to_duration">To %1$s</string>
+    <string name="add">Add</string>
+    <string name="add_visitor">Add visitor</string>
 </resources>
