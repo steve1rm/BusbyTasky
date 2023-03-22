@@ -48,7 +48,7 @@ fun AgendaDropDownMenu(
             )
 
             /* Avoid displaying a divider for the final item */
-            if(index < listOfMenuItemId.count() - 1) {
+            if(index < listOfMenuItemId.lastIndex) {
                 Divider(
                     modifier = Modifier.fillMaxWidth(),
                     color = MaterialTheme.colorScheme.divider,
