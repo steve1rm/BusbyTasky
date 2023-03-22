@@ -20,7 +20,7 @@ import me.androidbox.component.ui.theme.dropDownMenuColor
 @Composable
 fun AgendaDropDownMenu(
     shouldOpenDropdown: Boolean,
-    @StringRes listOfMenuItemId: List<Int>,
+    listOfMenuItemId: List<Int>,
     onSelectedOption: (item: Int) -> Unit,
     onCloseDropdown: () -> Unit,
     modifier: Modifier = Modifier,
