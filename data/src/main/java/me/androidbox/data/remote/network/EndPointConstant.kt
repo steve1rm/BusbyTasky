@@ -5,4 +5,5 @@ object EndPointConstant {
     const val LOGIN = "login"
     const val LOGOUT = "logout"
     const val AUTHENTICATE =  "authenticate"
+    const val EVENT = "event"
 }
