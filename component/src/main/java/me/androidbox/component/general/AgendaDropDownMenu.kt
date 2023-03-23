@@ -45,15 +45,6 @@ fun AgendaDropDownMenu(
                     onSelectedOption(index)
                 }
             )
-
-            /* Avoid displaying a divider for the final item */
-            if(index < listOfMenuItemId.lastIndex) {
-                Divider(
-                    modifier = Modifier.fillMaxWidth(),
-                    color = MaterialTheme.colorScheme.divider,
-                    thickness = 1.dp
-                )
-            }
         }
     }
 }
