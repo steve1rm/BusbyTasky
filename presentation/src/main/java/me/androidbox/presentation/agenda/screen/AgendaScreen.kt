@@ -56,26 +56,47 @@ fun AgendaScreen(
             )
         },
         floatingActionButton = {
-            TaskActionButton(
-                modifier = Modifier
-                    .size(56.dp)
-                    .background(
-                        color = Color.Black,
-                        shape = RoundedCornerShape(size = 16.dp)
-                    ),
-                iconResource = R.drawable.add_white,
-                onActionClicked = {
-                    agendaScreenEvent(
-                        AgendaScreenEvent.OnShowDropdown(
-                            listOfItems = listOf(
-                                R.string.open,
-                                R.string.edit,
-                                R.string.delete
-                            ),
-                            shouldOpen = true
+            Box {
+                TaskActionButton(
+                    modifier = Modifier
+                        .size(56.dp)
+                        .background(
+                            color = Color.Black,
+                            shape = RoundedCornerShape(size = 16.dp)
+                        ),
+                    iconResource = R.drawable.add_white,
+                    onActionClicked = {
+                        agendaScreenEvent(
+                            AgendaScreenEvent.OnShowDropdown(
+                                listOfItems = listOf(
+                                    R.string.open,
+                                    R.string.edit,
+                                    R.string.delete
+                                ),
+                                shouldOpen = true
+                            )
                         )
-                    )
-                })
+                    })
+
+                AgendaDropDownMenu(
+                    modifier = Modifier
+                        .background(color = MaterialTheme.colorScheme.dropDownMenuBackgroundColor)
+                        .align(Alignment.BottomEnd),
+                    shouldOpenDropdown = agendaScreenState.shouldOpenDropdown,
+                    onCloseDropdown = {
+                        agendaScreenEvent(
+                            AgendaScreenEvent.OnShowDropdown(
+                                shouldOpen = false,
+                                listOfItems = listOf()
+                            )
+                        )
+                    },
+                    listOfMenuItemId = listOf(R.string.open, R.string.edit, R.string.delete),
+                    onSelectedOption = { item ->
+                        Log.d("AGENDA", "ITEM [ $item ]")
+                    }
+                )
+            }
         },
     )
     { paddingValues ->
@@ -91,25 +112,6 @@ fun AgendaScreen(
             *
             * */
             }
-
-            AgendaDropDownMenu(
-                modifier = Modifier
-                    .background(color = MaterialTheme.colorScheme.dropDownMenuBackgroundColor)
-                    .align(Alignment.BottomEnd),
-                shouldOpenDropdown = agendaScreenState.shouldOpenDropdown,
-                onCloseDropdown = {
-                    agendaScreenEvent(
-                        AgendaScreenEvent.OnShowDropdown(
-                            shouldOpen = false,
-                            listOfItems = listOf()
-                        )
-                    )
-                },
-                listOfMenuItemId = listOf(R.string.open, R.string.edit, R.string.delete),
-                onSelectedOption = { item ->
-                    Log.d("AGENDA", "ITEM [ $item ]")
-                }
-            )
         }
     }
 
