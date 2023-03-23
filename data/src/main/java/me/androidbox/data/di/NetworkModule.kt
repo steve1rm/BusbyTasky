@@ -12,12 +12,14 @@ import me.androidbox.data.BuildConfig
 import me.androidbox.data.remote.interceptor.ApiKeyInterceptor
 import me.androidbox.data.remote.interceptor.TokenInterceptor
 import me.androidbox.data.remote.network.authentication.AuthenticationService
+import me.androidbox.data.remote.network.event.EventService
 import me.androidbox.data.remote.preference.PreferenceRepositoryImp
 import me.androidbox.domain.authentication.preference.PreferenceRepository
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
+import retrofit2.create
 import javax.inject.Singleton
 
 @Module
@@ -87,5 +89,11 @@ object NetworkModule {
     @Provides
     fun provideAuthenticationService(retrofit: Retrofit): AuthenticationService {
         return retrofit.create(AuthenticationService::class.java)
+    }
+
+    @Singleton
+    @Provides
+    fun providesEventService(retrofit: Retrofit): EventService {
+        return retrofit.create(EventService::class.java)
     }
 }

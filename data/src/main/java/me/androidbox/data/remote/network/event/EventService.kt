@@ -11,8 +11,8 @@ interface EventService {
     @Multipart
     @POST(EndPointConstant.EVENT)
     suspend fun createEvent(
-        @Part photoFile: MultipartBody.Part,
-        @Part eventRequestDto: EventRequestDto
+        @Part listOfPhoto: List<MultipartBody.Part>,
+        @Part eventBody: MultipartBody.Part
     ): EventDto
 
     @GET(EndPointConstant.EVENT)
@@ -28,7 +28,7 @@ interface EventService {
     @Multipart
     @PUT(EndPointConstant.EVENT)
     suspend fun updateEvent(
-        @Part photoFile: MultipartBody.Part,
-        @Part eventUpdateRequestDto: EventUpdateRequestDto
+        @Part listOfPhoto: List<MultipartBody.Part>,
+        @Part eventBody: MultipartBody.Part
     ): EventDto
 }
