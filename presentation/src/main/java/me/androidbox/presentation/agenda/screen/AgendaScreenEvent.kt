@@ -4,5 +4,5 @@ import java.time.LocalDate
 
 sealed interface AgendaScreenEvent {
     data class OnDateChanged(val date: LocalDate) : AgendaScreenEvent
-    data class OnShowDropdown(val listOfItems: List<Int>, val shouldOpen: Boolean) : AgendaScreenEvent
+    data class OnShowDropdown(val shouldOpen: Boolean) : AgendaScreenEvent
 }
