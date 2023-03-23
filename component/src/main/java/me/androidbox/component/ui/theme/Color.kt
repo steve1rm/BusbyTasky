@@ -19,6 +19,7 @@ val Red = Color(0xFFFF7272)
 val Black = Color(0xFF16161C)
 val White = Color(0xFFFFFFFF)
 val LightWhite = Color(0xFFEEF6FF)
+val ExtraLightWhite = Color(0xFFf5f5f5)
 val Brown = Color(0xff40492D)
 val Green = Color(0xFF279F70)
 val LightGreen = Color(0xFFCAEF45)
@@ -114,6 +115,12 @@ val ColorScheme.headerDividerColor: Color
         return Light
     }
 
+val ColorScheme.dividerBlack: Color
+    @Composable
+    get() {
+        return Black
+    }
+
 val ColorScheme.agendaTitleHeaderColor: Color
     @Composable
     get() {
@@ -161,4 +168,53 @@ val ColorScheme.agendaBackgroundColor: Color
     @Composable
     get() {
         return White
+    }
+val ColorScheme.visitorBackgroundColor: Color
+    @Composable
+    get() {
+        return ExtraLightGray
+    }
+
+val ColorScheme.visitorInitialsFontColor: Color
+    @Composable
+    get() {
+        return White
+    }
+
+
+val ColorScheme.visitorTextFontColor: Color
+    @Composable
+    get() {
+        return DarkGray
+    }
+
+val ColorScheme.creatorTextFontColor: Color
+    @Composable
+    get() {
+        return LightBlue
+    }
+
+
+val ColorScheme.topbarText: Color
+    @Composable
+    get() {
+        return Green
+    }
+
+val ColorScheme.editScreenBackground: Color
+    @Composable
+    get() {
+        return ExtraLightWhite
+    }
+
+val ColorScheme.dropDownMenuColor: Color
+    @Composable
+    get() {
+        return Black
+    }
+
+val ColorScheme.dropDownMenuBackgroundColor: Color
+    @Composable
+    get() {
+        return ExtraLightWhite
     }
