@@ -21,27 +21,6 @@ class EventRepositoryImp @Inject constructor(
         endTimeStamp: Long
     ): Flow<ResponseState<List<Event>>> {
 
-/*
-        return flow {
-            val result = checkResult<Flow<List<EventEntity>>> {
-                eventDao.getEventsFromTimeStamp(startTimeStamp, endTimeStamp)
-            }
-
-            result.fold(
-                onSuccess = { listOfEventEntity ->
-                    // FIXME Sometime related to this is not working
-                    listOfEventEntity.map {
-                        val listOfEvent = dataToDomainMapper(it)
-                        emit(ResponseState.Success(listOfEvent))
-                    }
-                },
-                onFailure = { throwable ->
-                    emit(ResponseState.Failure(throwable))
-                }
-            )
-        }
-*/
-
         return eventDao.getEventsFromTimeStamp(startTimeStamp, endTimeStamp)
             .map { listOfEventEntity ->
                 val listOfEvent = listOfEventEntity.map { eventEntity ->
