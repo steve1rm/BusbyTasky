@@ -51,7 +51,7 @@ class CreatePhotoMultipartImp @Inject constructor(@ApplicationContext private va
     }
 
     private suspend fun getByteArrayFromUri(uri: Uri): ByteArray {
-       return withContext(Dispatchers.Default) {
+        return withContext(Dispatchers.IO) {
       //     context.contentResolver.takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION)
            val inputStream = context.contentResolver.openInputStream(uri)
 
