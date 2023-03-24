@@ -50,10 +50,6 @@ class HomeActivity : ComponentActivity() {
                 }
             }
 
-            val eventState by derivedStateOf {
-                val downloadEvent = downloadInfo?.outputData?.getString("")?.toUri()
-            }
-
             /** TODO Just testing using work manager to send a event request */
             LaunchedEffect(key1 = true, block = {
                 workManager.beginUniqueWork("upload_event", ExistingWorkPolicy.KEEP, uploadEventWorkerRequest).enqueue()
