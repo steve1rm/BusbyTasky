@@ -81,7 +81,7 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.hilt.navigation.compose)
     implementation(libs.navigation.compose)
-
+    implementation(libs.bundles.retrofit)
     implementation(libs.core.splashscreen)
 
     /* TODO Adds these to settings */

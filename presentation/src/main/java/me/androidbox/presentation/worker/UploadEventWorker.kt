@@ -6,6 +6,7 @@ import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
 import androidx.work.ForegroundInfo
 import androidx.work.WorkerParameters
+import com.squareup.moshi.Moshi
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import me.androidbox.data.R
@@ -58,7 +59,9 @@ class UploadEventWorker @AssistedInject constructor(
         )
 
         /* Serialize the event request to json */
-        val eventRequestJson = eventConverter.toJson(eventRequest)
+        val moshi = Moshi.Builder().build()
+        val jsonAdapter = moshi.adapter<EventRequestDto>(EventRequestDto::class.java)
+        val eventRequestJson = jsonAdapter.toJson(eventRequest)
 
         /* These are just a random set of photos that I got from selecting photos from the device.
          * I just copied them here to try and send them as a multi-part request just to test if I can send them */
