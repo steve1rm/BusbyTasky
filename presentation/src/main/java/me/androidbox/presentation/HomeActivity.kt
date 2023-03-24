@@ -4,11 +4,8 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.remember
 import androidx.core.net.toUri
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.compose.rememberNavController
@@ -57,8 +54,9 @@ class HomeActivity : ComponentActivity() {
                 val downloadEvent = downloadInfo?.outputData?.getString("")?.toUri()
             }
 
-            workManager.beginUniqueWork("upload_event", ExistingWorkPolicy.KEEP, uploadEventWorkerRequest).enqueue()
-
+            LaunchedEffect(key1 = true, block = {
+                workManager.beginUniqueWork("upload_event", ExistingWorkPolicy.KEEP, uploadEventWorkerRequest).enqueue()
+            })
 
             val authenticatedState = homeViewModel.authenticationState.collectAsState()
             val destination = when(authenticatedState.value) {

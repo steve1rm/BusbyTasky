@@ -15,7 +15,7 @@ import javax.inject.Inject
 class CreatePhotoMultipartImp @Inject constructor(@ApplicationContext private val context: Context) : CreatePhotoMultipart {
 
     override suspend fun createMultipartPhotos(listOfPhoto: List<String>): List<MultipartBody.Part> {
-        val listOfPhotos = listOf("/photo1.jpg","/photo2.jpg")
+        val listOfPhotos = listOf("/storage/emulated/0/Download/androidalien.png")
 
         val listOfMultiPartBody = listOfPhotos.mapIndexed  { index, photo ->
             val url = Uri.parse(photo)
