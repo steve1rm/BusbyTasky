@@ -3,6 +3,7 @@ package me.androidbox.presentation.util.imp
 import android.content.Context
 import android.net.Uri
 import android.webkit.MimeTypeMap
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import me.androidbox.presentation.util.CreatePhotoMultipart
@@ -11,7 +12,7 @@ import okhttp3.RequestBody.Companion.toRequestBody
 import java.util.*
 import javax.inject.Inject
 
-class CreatePhotoMultipartImp @Inject constructor(private val context: Context) : CreatePhotoMultipart {
+class CreatePhotoMultipartImp @Inject constructor(@ApplicationContext private val context: Context) : CreatePhotoMultipart {
 
     override suspend fun createMultipartPhotos(listOfPhoto: List<String>): List<MultipartBody.Part> {
         val listOfPhotos = listOf("/photo1.jpg","/photo2.jpg")
