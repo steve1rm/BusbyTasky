@@ -10,10 +10,10 @@ data class EventEntity(
     val id: String,
     val title: String,
     val description: String,
-    val from: Long,
-    val to: Long,
+    val startDateTime: Long,
+    val endDateTime: Long,
     val remindAt: Long,
-    val host: String, /* event creator ID */
+    val eventCreatorId: String,
     val isUserEventCreator: Boolean,
     val attendees: String,
     val photos: String,

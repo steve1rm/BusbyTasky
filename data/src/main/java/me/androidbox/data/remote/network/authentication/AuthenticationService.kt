@@ -2,7 +2,6 @@ package me.androidbox.data.remote.network.authentication
 
 import me.androidbox.data.remote.model.request.LoginRequestDto
 import me.androidbox.data.remote.model.request.RegistrationRequestDto
-import me.androidbox.data.remote.model.response.ErrorResponseDto
 import me.androidbox.data.remote.model.response.LoginDto
 import me.androidbox.data.remote.network.EndPointConstant
 import retrofit2.http.Body
