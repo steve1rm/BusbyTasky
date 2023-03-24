@@ -2,24 +2,25 @@ package me.androidbox.presentation.worker
 
 import android.content.Context
 import androidx.core.app.NotificationCompat
-import androidx.work.*
-import kotlinx.coroutines.delay
+import androidx.hilt.work.HiltWorker
+import androidx.work.CoroutineWorker
+import androidx.work.ForegroundInfo
+import androidx.work.WorkerParameters
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedInject
 import me.androidbox.data.R
 import me.androidbox.data.remote.model.request.EventRequestDto
 import me.androidbox.data.remote.network.event.EventService
 import me.androidbox.data.remote.util.CheckResult.checkResult
 import me.androidbox.presentation.util.CreatePhotoMultipart
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
-import okhttp3.RequestBody.Companion.asRequestBody
-import java.io.File
-import java.util.UUID
+import java.util.*
 import kotlin.random.Random
 
-
-class UploadEventWorker(
-    private val context: Context,
-    private val workerParameters: WorkerParameters,
+@HiltWorker
+class UploadEventWorker @AssistedInject constructor(
+    @Assisted private val context: Context,
+    @Assisted private val workerParameters: WorkerParameters,
     private val eventService: EventService,
     private val createPhotoMultipart: CreatePhotoMultipart
 ) : CoroutineWorker(context, workerParameters)  {
