@@ -58,10 +58,14 @@ class UploadEventWorker @AssistedInject constructor(
             )
         )
 
+        val eventRequestJson = eventConverter.toJson(eventRequest)
+
         /* Serialize the event request to json */
+/*
         val moshi = Moshi.Builder().build()
         val jsonAdapter = moshi.adapter<EventRequestDto>(EventRequestDto::class.java)
         val eventRequestJson = jsonAdapter.toJson(eventRequest)
+*/
 
         /* These are just a random set of photos that I got from selecting photos from the device.
          * I just copied them here to try and send them as a multi-part request just to test if I can send them */

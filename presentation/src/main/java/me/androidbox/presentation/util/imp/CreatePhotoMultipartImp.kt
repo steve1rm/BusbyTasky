@@ -1,7 +1,6 @@
 package me.androidbox.presentation.util.imp
 
 import android.content.Context
-import android.content.Intent
 import android.net.Uri
 import android.webkit.MimeTypeMap
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -52,7 +51,6 @@ class CreatePhotoMultipartImp @Inject constructor(@ApplicationContext private va
 
     private suspend fun getByteArrayFromUri(uri: Uri): ByteArray {
         return withContext(Dispatchers.IO) {
-      //     context.contentResolver.takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION)
            val inputStream = context.contentResolver.openInputStream(uri)
 
             val photoByteArray = inputStream?.use { inputStream ->
