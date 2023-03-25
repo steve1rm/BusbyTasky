@@ -233,4 +233,11 @@ val ColorScheme.photoBackgroundColor: Color
         return ExtraLightGray
     }
 
+val ColorScheme.photoPickerBorderColor: Color
+    @Composable
+    get() {
+        return LightBlue
+    }
+
+
 
