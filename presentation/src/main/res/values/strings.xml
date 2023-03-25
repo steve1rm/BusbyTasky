@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">presentation</string>
+    <string name="welcome_back">Welcome Back!</string>
 </resources>
