@@ -38,29 +38,27 @@ import me.androidbox.component.ui.theme.photoPickerBorderColor
 import me.androidbox.component.ui.theme.photoTextColor
 
 @Composable
-fun PhotoPicker(modifier: Modifier = Modifier) {
-
-    val selectedImageUri = remember {
-        mutableStateListOf<Uri>()
-    }
+fun PhotoPicker(
+    listOfPhotoUri: SnapshotStateList<Uri>,
+    modifier: Modifier = Modifier) {
 
     val photoPickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickVisualMedia(),
         onResult = { uri ->
             if (uri != null) {
-                Log.d("PHOTO", "[$uri]")
-                selectedImageUri.add(uri)
+                Log.d("PHOTO", "[ $uri ]")
+                listOfPhotoUri.add(uri)
             }
         })
 
     /* We have no images attached */
-    if(selectedImageUri.isEmpty()) {
+    if(listOfPhotoUri.isEmpty()) {
         AddFirstPhoto(modifier = modifier) {
             photoPickerLauncher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
         }
     }
     else {
-        AddSequentialPhoto(modifier = modifier, selectedImageUri = selectedImageUri, onAddPhotosClicked = {
+        AddSequentialPhoto(modifier = modifier, selectedImageUri = listOfPhotoUri, onAddPhotosClicked = {
             photoPickerLauncher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
         })
     }
@@ -80,7 +78,7 @@ fun AddFirstPhoto(
         }) {
             Image(
                 painter = painterResource(id = R.drawable.add_photo),
-                contentDescription = "Add photos"
+                contentDescription = stringResource(id = R.string.add_photos)
             )
         }
 
@@ -115,7 +113,7 @@ fun AddSequentialPhoto(modifier: Modifier, selectedImageUri: SnapshotStateList<U
             items(selectedImageUri) { uri ->
                 AsyncImage(
                     model = uri,
-                    contentDescription = "Selected image",
+                    contentDescription = stringResource(R.string.selected_image),
                     modifier = Modifier
                         .size(60.dp)
                         .border(
@@ -143,7 +141,7 @@ fun AddSequentialPhoto(modifier: Modifier, selectedImageUri: SnapshotStateList<U
                                 shape = RoundedCornerShape(5.dp)
                             ),
                         painter = painterResource(id = R.drawable.add_photo),
-                        contentDescription = "Add photos"
+                        contentDescription = stringResource(id = R.string.add_photos)
                     )
                 }
             }
@@ -183,8 +181,15 @@ fun PreviewAddSequentialPhoto() {
 @Preview(showBackground = true)
 fun PreviewEventPhotoPicker() {
     BusbyTaskyTheme {
-        PhotoPicker(modifier = Modifier
-            .fillMaxWidth()
-            .background(color = MaterialTheme.colorScheme.photoBackgroundColor))
+
+        val listOfPhoto = remember {
+            mutableStateListOf<Uri>()
+        }
+
+        PhotoPicker(
+            listOfPhotoUri = listOfPhoto,
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(color = MaterialTheme.colorScheme.photoBackgroundColor))
     }
 }

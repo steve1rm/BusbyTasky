@@ -1,20 +1,24 @@
 package me.androidbox.presentation.event.viewmodel
 
+import android.net.Uri
 import android.util.Log
+import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import me.androidbox.domain.authentication.ResponseState
-import me.androidbox.domain.authentication.remote.EventRepository
-import java.util.UUID
-import javax.inject.Inject
 import me.androidbox.domain.authentication.model.Event
+import me.androidbox.domain.authentication.remote.EventRepository
+import java.util.*
+import javax.inject.Inject
 
 @HiltViewModel
 class EventViewModel @Inject constructor(
     private val eventRepository: EventRepository
 ) : ViewModel() {
+
+    val listOfPhotoUri = mutableStateListOf<Uri>()
 
 
     /* TODO Remove this as I am only using this to MOCK data to test inserting and fetching */
