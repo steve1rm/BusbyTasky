@@ -60,7 +60,7 @@ fun PhotoPicker(modifier: Modifier = Modifier) {
         }
     }
     else {
-        AddSequentialPhoto(modifier = Modifier, selectedImageUri = selectedImageUri, onAddPhotosClicked = {
+        AddSequentialPhoto(modifier = modifier, selectedImageUri = selectedImageUri, onAddPhotosClicked = {
             photoPickerLauncher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
         })
     }
@@ -71,9 +71,7 @@ fun AddFirstPhoto(
     modifier: Modifier,
     onAddPhotosClicked: () -> Unit) {
     Row(modifier = modifier
-        .fillMaxWidth()
-        .height(100.dp)
-        .background(color = MaterialTheme.colorScheme.photoBackgroundColor),
+        .height(100.dp),
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically) {
 
@@ -99,10 +97,7 @@ fun AddFirstPhoto(
 @Composable
 fun AddSequentialPhoto(modifier: Modifier, selectedImageUri: SnapshotStateList<Uri>, onAddPhotosClicked: () -> Unit) {
     /* We have images that have been selected */
-    Column(modifier = Modifier
-        .fillMaxWidth()
-        .background(color = MaterialTheme.colorScheme.photoBackgroundColor)) {
-
+    Column(modifier = modifier) {
         Spacer(modifier = Modifier.height(20.dp))
 
         Text(
@@ -163,7 +158,9 @@ fun AddSequentialPhoto(modifier: Modifier, selectedImageUri: SnapshotStateList<U
 fun PreviewAddFirstPhoto() {
     BusbyTaskyTheme {
         AddFirstPhoto(
-            modifier = Modifier,
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(color = MaterialTheme.colorScheme.photoBackgroundColor),
             onAddPhotosClicked = {}
         )
     }
@@ -174,7 +171,9 @@ fun PreviewAddFirstPhoto() {
 fun PreviewAddSequentialPhoto() {
     BusbyTaskyTheme {
         AddSequentialPhoto(
-            modifier = Modifier,
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(color = MaterialTheme.colorScheme.photoBackgroundColor),
             selectedImageUri = SnapshotStateList(),
             onAddPhotosClicked = {})
     }
@@ -184,6 +183,8 @@ fun PreviewAddSequentialPhoto() {
 @Preview(showBackground = true)
 fun PreviewEventPhotoPicker() {
     BusbyTaskyTheme {
-        PhotoPicker()
+        PhotoPicker(modifier = Modifier
+            .fillMaxWidth()
+            .background(color = MaterialTheme.colorScheme.photoBackgroundColor))
     }
 }
