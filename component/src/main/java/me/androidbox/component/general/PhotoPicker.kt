@@ -182,12 +182,12 @@ fun PreviewAddSequentialPhoto() {
 fun PreviewEventPhotoPicker() {
     BusbyTaskyTheme {
 
-        val listOfPhoto = remember {
+        val listOfPhotoUri = remember {
             mutableStateListOf<Uri>()
         }
 
         PhotoPicker(
-            listOfPhotoUri = listOfPhoto,
+            listOfPhotoUri = listOfPhotoUri,
             modifier = Modifier
                 .fillMaxWidth()
                 .background(color = MaterialTheme.colorScheme.photoBackgroundColor))
