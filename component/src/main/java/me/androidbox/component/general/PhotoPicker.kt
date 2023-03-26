@@ -40,14 +40,15 @@ import me.androidbox.component.ui.theme.photoTextColor
 @Composable
 fun PhotoPicker(
     listOfPhotoUri: SnapshotStateList<Uri>,
+    onPhotoUriSelected: (photoUri: Uri) -> Unit,
     modifier: Modifier = Modifier) {
 
     val photoPickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickVisualMedia(),
         onResult = { uri ->
             if (uri != null) {
-                Log.d("PHOTO", "[ $uri ]")
-                listOfPhotoUri.add(uri)
+                Log.d("PHOTO", "Path of image [ $uri ]")
+                onPhotoUriSelected(uri)
             }
         })
 
@@ -190,6 +191,7 @@ fun PreviewEventPhotoPicker() {
             listOfPhotoUri = listOfPhotoUri,
             modifier = Modifier
                 .fillMaxWidth()
-                .background(color = MaterialTheme.colorScheme.photoBackgroundColor))
+                .background(color = MaterialTheme.colorScheme.photoBackgroundColor),
+            onPhotoUriSelected = {})
     }
 }

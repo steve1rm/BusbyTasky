@@ -1,8 +1,6 @@
 package me.androidbox.presentation.event.viewmodel
 
-import android.net.Uri
 import android.util.Log
-import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -19,19 +17,16 @@ import javax.inject.Inject
 
 @HiltViewModel
 class EventViewModel @Inject constructor(
-    private val eventRepository: EventRepository
+    private val eventRepository: EventRepository,
 ) : ViewModel() {
 
-    private val _eventScreenState: MutableStateFlow<EventScreenState> = MutableStateFlow(
-        EventScreenState()
-    )
+    private val _eventScreenState: MutableStateFlow<EventScreenState> = MutableStateFlow(EventScreenState())
     val eventScreenState = _eventScreenState.asStateFlow()
 
     fun onEventScreenEvent(eventScreenEvent: EventScreenEvent) {
         when(eventScreenEvent) {
             is EventScreenEvent.OnPhotoUriAdded -> {
-                _eventScreenState.value = eventScreenState.value.copy(
-                    listOfPhotoUri = eventScreenEvent.listOfPhotoUri)
+                _eventScreenState.value.listOfPhotoUri.add(eventScreenEvent.photoUri)
             }
         }
     }

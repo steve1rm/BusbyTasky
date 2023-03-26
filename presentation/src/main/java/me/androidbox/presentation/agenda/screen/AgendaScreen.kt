@@ -22,10 +22,13 @@ import com.maxkeppeler.sheets.calendar.models.CalendarStyle
 import me.androidbox.component.R
 import me.androidbox.component.agenda.AgendaTopBar
 import me.androidbox.component.general.AgendaDropDownMenu
+import me.androidbox.component.general.PhotoPicker
 import me.androidbox.component.general.TaskActionButton
 import me.androidbox.component.ui.theme.agendaBackgroundColor
 import me.androidbox.component.ui.theme.backgroundBackColor
 import me.androidbox.component.ui.theme.dropDownMenuBackgroundColor
+import me.androidbox.presentation.event.screen.EventScreenEvent
+import me.androidbox.presentation.event.screen.EventScreenState
 import me.androidbox.presentation.ui.theme.BusbyTaskyTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -33,6 +36,8 @@ import me.androidbox.presentation.ui.theme.BusbyTaskyTheme
 fun AgendaScreen(
     agendaScreenState: AgendaScreenState,
     agendaScreenEvent: (AgendaScreenEvent) -> Unit,
+    eventScreenEvent: (EventScreenEvent) -> Unit,
+    eventScreenState: EventScreenState,
     modifier: Modifier = Modifier) {
     val calendarState = rememberUseCaseState()
 
@@ -91,7 +96,13 @@ fun AgendaScreen(
             .fillMaxSize()
             .padding(paddingValues)) {
 
-            LazyColumn(Modifier.fillMaxWidth()) {
+            Column(Modifier.fillMaxWidth()) {
+                PhotoPicker(
+                    listOfPhotoUri = eventScreenState.listOfPhotoUri,
+                    onPhotoUriSelected = { uri ->
+                        eventScreenEvent(EventScreenEvent.OnPhotoUriAdded(uri))
+                    }
+                )
             /*
             *
             * TODO Add content here for each of the agenda items
@@ -124,7 +135,9 @@ fun PreviewAgendaScreen() {
             modifier = Modifier
                 .background(
                     color = MaterialTheme.colorScheme.agendaBackgroundColor),
-            agendaScreenEvent = {}
+            agendaScreenEvent = {},
+            eventScreenEvent = {},
+            eventScreenState = EventScreenState()
         )
     }
 }
