@@ -26,7 +26,9 @@ class EventViewModel @Inject constructor(
     fun onEventScreenEvent(eventScreenEvent: EventScreenEvent) {
         when(eventScreenEvent) {
             is EventScreenEvent.OnPhotoUriAdded -> {
-                _eventScreenState.value.listOfPhotoUri.add(eventScreenEvent.photoUri)
+                _eventScreenState.value = eventScreenState.value.copy(
+                    listOfPhotoUri = eventScreenState.value.listOfPhotoUri + eventScreenEvent.photoUri
+                )
             }
         }
     }

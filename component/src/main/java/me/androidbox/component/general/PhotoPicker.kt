@@ -39,7 +39,7 @@ import me.androidbox.component.ui.theme.photoTextColor
 
 @Composable
 fun PhotoPicker(
-    listOfPhotoUri: SnapshotStateList<Uri>,
+    listOfPhotoUri: List<Uri>,
     onPhotoUriSelected: (photoUri: Uri) -> Unit,
     modifier: Modifier = Modifier) {
 
@@ -94,7 +94,7 @@ fun AddFirstPhoto(
 }
 
 @Composable
-fun AddSequentialPhoto(modifier: Modifier, selectedImageUri: SnapshotStateList<Uri>, onAddPhotosClicked: () -> Unit) {
+fun AddSequentialPhoto(modifier: Modifier, selectedImageUri: List<Uri>, onAddPhotosClicked: () -> Unit) {
     /* We have images that have been selected */
     Column(modifier = modifier) {
         Spacer(modifier = Modifier.height(20.dp))
