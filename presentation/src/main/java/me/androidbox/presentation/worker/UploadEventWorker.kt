@@ -28,6 +28,7 @@ content://com.google.android.apps.photos.contentprovider/0/1/mediakey%3A%2Flocal
 content://com.google.android.apps.photos.contentprovider/0/1/content%3A%2F%2Fmedia%2Fexternal%2Fimages%2Fmedia%2F38330/ORIGINAL/NONE/image%2Fjpeg/1631907737
 content://com.android.providers.media.documents/document/image%3A38324
 content://com.android.providers.media.documents/document/image%3A38337
+content://com.android.providers.media.documents/document/image%3A38325
 * */
 
 @HiltWorker
@@ -70,9 +71,12 @@ class UploadEventWorker @AssistedInject constructor(
         /* These are just a random set of photos that I got from selecting photos from the device.
          * I just copied them here to try and send them as a multi-part request just to test if I can send them */
         val listOfPhotos = listOf(
+            "content://com.android.providers.media.documents/document/image%3A38325")
+/*
             "content://com.google.android.apps.photos.contentprovider/0/1/mediakey%3A%2Flocal%253A44f502c3-7f36-4f9b-887c-5d8f2f45f3cc/ORIGINAL/NONE/image%2Fjpeg/430889281",
             "content://com.android.providers.media.documents/document/image%3A38324",
             "content://com.google.android.apps.photos.contentprovider/-1/1/content%3A%2F%2Fmedia%2Fexternal%2Fimages%2Fmedia%2F37452/ORIGINAL/NONE/image%2Fjpeg/640889962")
+*/
 
         /* Create the multipart for the list of photos */
         val listOfPhotoMultiPart = createPhotoMultipart.createMultipartPhotos(listOfPhotos)
