@@ -10,6 +10,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -22,8 +23,8 @@ import me.androidbox.component.ui.theme.*
 @Composable
 fun VisitorFilter(
     modifier: Modifier = Modifier,
+    listOfVisitorType: List<VisitorType>,
     onSelectedTypeClicked: (VisitorType) -> Unit) {
-    val listOfVisitorType = VisitorType.values().toList()
 
     var selectedVisitorType by rememberSaveable {
         mutableStateOf(listOfVisitorType[0])
@@ -41,13 +42,9 @@ fun VisitorFilter(
         Row(modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceEvenly) {
             listOfVisitorType.forEach { visitorType ->
-                val backgroundColor = if(selectedVisitorType == visitorType) { MaterialTheme.colorScheme.backgroundWhiteColor } else { MaterialTheme.colorScheme.backgroundBackColor }
-                val textColor = if(selectedVisitorType == visitorType) {
-                    MaterialTheme.colorScheme.dividerBlack
-                }
-                else {
-                    MaterialTheme.colorScheme.backgroundWhiteColor
-                }
+                val backgroundColor = getBackgroundColor(selectedVisitorType, visitorType)
+                val textColor = getTextColor(selectedVisitorType, visitorType)
+                
                 TaskButton(
                     modifier = Modifier
                         .height(36.dp)
@@ -65,6 +62,30 @@ fun VisitorFilter(
     }
 }
 
+@Composable
+private fun getTextColor(
+    selectedVisitorType: VisitorType,
+    visitorType: VisitorType
+) : Color {
+    return if (selectedVisitorType == visitorType) {
+        MaterialTheme.colorScheme.dividerBlack
+    } else {
+        MaterialTheme.colorScheme.backgroundWhiteColor
+    }
+}
+
+@Composable
+private fun getBackgroundColor(
+    selectedVisitorType: VisitorType,
+    visitorType: VisitorType
+): Color {
+    return if (selectedVisitorType == visitorType) {
+        MaterialTheme.colorScheme.backgroundWhiteColor
+    } else {
+        MaterialTheme.colorScheme.backgroundBackColor
+    }
+}
+
 enum class VisitorType(@StringRes val titleRes: Int) {
     ALL(titleRes = R.string.all),
     GOING(titleRes = R.string.going),
@@ -76,6 +97,7 @@ enum class VisitorType(@StringRes val titleRes: Int) {
 fun PreviewVisitorFilter() {
     BusbyTaskyTheme {
         VisitorFilter(
+            listOfVisitorType = VisitorType.values().toList(),
             onSelectedTypeClicked = {}
         )
     }
