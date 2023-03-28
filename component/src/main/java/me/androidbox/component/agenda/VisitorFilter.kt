@@ -5,10 +5,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
@@ -24,13 +20,10 @@ import me.androidbox.component.ui.theme.*
 fun VisitorFilter(
     modifier: Modifier = Modifier,
     listOfVisitorType: List<VisitorType>,
+    selectedVisitorType: VisitorType,
     onSelectedTypeClicked: (VisitorType) -> Unit) {
 
-    var selectedVisitorType by rememberSaveable {
-        mutableStateOf(listOfVisitorType[0])
-    }
-
-    Column(modifier = modifier.fillMaxWidth()) {
+    Column(modifier = modifier) {
         Text(
             text = stringResource(R.string.visitors),
             fontWeight = FontWeight.Bold,
@@ -44,7 +37,7 @@ fun VisitorFilter(
             listOfVisitorType.forEach { visitorType ->
                 val backgroundColor = getBackgroundColor(selectedVisitorType, visitorType)
                 val textColor = getTextColor(selectedVisitorType, visitorType)
-                
+
                 TaskButton(
                     modifier = Modifier
                         .height(36.dp)
@@ -52,7 +45,6 @@ fun VisitorFilter(
                     textSize = 14.sp,
                     buttonText = stringResource(visitorType.titleRes),
                     onButtonClick = {
-                        selectedVisitorType = visitorType
                         onSelectedTypeClicked(visitorType)
                     },
                     buttonTextColor = textColor,
@@ -97,6 +89,8 @@ enum class VisitorType(@StringRes val titleRes: Int) {
 fun PreviewVisitorFilter() {
     BusbyTaskyTheme {
         VisitorFilter(
+            modifier = Modifier.fillMaxWidth(),
+            selectedVisitorType = VisitorType.ALL,
             listOfVisitorType = VisitorType.values().toList(),
             onSelectedTypeClicked = {}
         )

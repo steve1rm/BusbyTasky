@@ -30,6 +30,11 @@ class EventViewModel @Inject constructor(
                     listOfPhotoUri = eventScreenState.value.listOfPhotoUri + eventScreenEvent.photoUri
                 )
             }
+            is EventScreenEvent.OnSelectedVisitorType -> {
+                _eventScreenState.value = eventScreenState.value.copy(
+                    selectedVisitorType = eventScreenEvent.visitorType
+                )
+            }
         }
     }
 
