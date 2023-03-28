@@ -21,6 +21,7 @@ fun VisitorFilter(
     onAllClicked: () -> Unit,
     onGoingClicked: () -> Unit,
     onNotGoingClicked: () -> Unit) {
+    
     Column(modifier = modifier.fillMaxWidth()) {
         Text(
             text = stringResource(R.string.visitors),
@@ -31,7 +32,7 @@ fun VisitorFilter(
         Spacer(modifier = Modifier.height(36.dp))
 
         Row(modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween) {
+        horizontalArrangement = Arrangement.SpaceEvenly) {
             TaskButton(
                 modifier = Modifier.height(36.dp).width(120.dp),
                 textSize = 14.sp,
