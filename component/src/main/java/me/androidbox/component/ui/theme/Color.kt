@@ -170,6 +170,7 @@ val ColorScheme.agendaBackgroundColor: Color
     get() {
         return White
     }
+
 val ColorScheme.visitorBackgroundColor: Color
     @Composable
     get() {
@@ -182,6 +183,17 @@ val ColorScheme.visitorInitialsFontColor: Color
         return White
     }
 
+val ColorScheme.visitorFontWhiteColor: Color
+    @Composable
+    get() {
+        return White
+    }
+
+val ColorScheme.visitorSelectedWhiteBackgroundColor: Color
+    @Composable
+    get() {
+        return Light2
+    }
 
 val ColorScheme.visitorTextFontColor: Color
     @Composable

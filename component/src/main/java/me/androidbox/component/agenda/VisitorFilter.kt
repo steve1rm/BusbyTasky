@@ -60,9 +60,9 @@ private fun getTextColor(
     visitorType: VisitorType
 ) : Color {
     return if (selectedVisitorType == visitorType) {
-        MaterialTheme.colorScheme.dividerBlack
+        MaterialTheme.colorScheme.visitorFontWhiteColor
     } else {
-        MaterialTheme.colorScheme.backgroundWhiteColor
+        MaterialTheme.colorScheme.visitorTextFontColor
     }
 }
 
@@ -72,9 +72,9 @@ private fun getBackgroundColor(
     visitorType: VisitorType
 ): Color {
     return if (selectedVisitorType == visitorType) {
-        MaterialTheme.colorScheme.backgroundWhiteColor
+        MaterialTheme.colorScheme.buttonColor
     } else {
-        MaterialTheme.colorScheme.backgroundBackColor
+        MaterialTheme.colorScheme.visitorSelectedWhiteBackgroundColor
     }
 }
 
