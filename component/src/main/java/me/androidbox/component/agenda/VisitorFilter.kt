@@ -87,34 +87,3 @@ fun PreviewVisitorFilter() {
         )
     }
 }
-
-/*
-
-      TaskButton(
-                backgroundColor = if(selectedType.isSelected) MaterialTheme.colorScheme.backgroundWhiteColor else MaterialTheme.colorScheme.dividerBlack,
-                modifier = Modifier
-                    .height(36.dp)
-                    .width(120.dp),
-                textSize = 14.sp,
-                buttonText = stringResource(R.string.all), onButtonClick = {
-                    onAllClicked(VisitorType.ALL)
-                })
-
-            TaskButton(
-                modifier = Modifier
-                    .height(36.dp)
-                    .width(120.dp),
-                textSize = 14.sp,
-                buttonText = stringResource(R.string.going), onButtonClick = {
-                    onGoingClicked(VisitorType.GOING)
-                })
-
-            TaskButton(
-                modifier = Modifier
-                    .height(36.dp)
-                    .width(120.dp),
-                textSize = 14.sp,
-                buttonText = stringResource(R.string.not_going), onButtonClick = {
-                    onNotGoingClicked(VisitorType.NOT_GOING)
-                })
-* */
