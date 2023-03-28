@@ -15,6 +15,7 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import me.androidbox.component.ui.theme.BusbyTaskyTheme
+import me.androidbox.component.ui.theme.backgroundWhiteColor
 import me.androidbox.component.ui.theme.buttonColor
 import me.androidbox.component.ui.theme.loginTextColor
 
@@ -27,7 +28,23 @@ fun TaskButton(
     backgroundColor: Color = MaterialTheme.colorScheme.buttonColor,
     onButtonClick: () -> Unit,
     borderRadius: Dp = 38.dp,
+    isSelected: Boolean = false
 ) {
+
+    val selectedBackgroundColor = if(isSelected) {
+        MaterialTheme.colorScheme.backgroundWhiteColor
+    }
+    else {
+        backgroundColor
+    }
+
+    val selectedTextColor = if(isSelected) {
+        MaterialTheme.colorScheme.error
+    }
+    else {
+        MaterialTheme.colorScheme.loginTextColor
+    }
+
     Button(
         modifier = modifier,
         colors = ButtonDefaults.buttonColors(
