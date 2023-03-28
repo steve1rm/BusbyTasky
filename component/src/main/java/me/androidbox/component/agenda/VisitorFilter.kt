@@ -3,9 +3,9 @@ package me.androidbox.component.agenda
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
@@ -14,8 +14,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.runtime.setValue
-import androidx.compose.runtime.getValue
 import me.androidbox.component.R
 import me.androidbox.component.general.TaskButton
 import me.androidbox.component.ui.theme.*
@@ -23,14 +21,10 @@ import me.androidbox.component.ui.theme.*
 @Composable
 fun VisitorFilter(
     modifier: Modifier = Modifier,
-    onAllClicked: (VisitorType) -> Unit,
-    onGoingClicked: (VisitorType) -> Unit,
-    onNotGoingClicked: (VisitorType) -> Unit,
     onSelectedTypeClicked: (VisitorType) -> Unit) {
-
     val listOfVisitorType = VisitorType.values().toList()
 
-    var selectedVisitorType by rememberSaveable {
+    val selectedVisitorType by rememberSaveable {
         mutableStateOf(listOfVisitorType[0])
     }
 
@@ -60,7 +54,7 @@ fun VisitorFilter(
                     textSize = 14.sp,
                     buttonText = stringResource(visitorType.titleRes),
                     onButtonClick = {
-                        selectedVisitorType = visitorType
+                        onSelectedTypeClicked(visitorType)
                     },
                     buttonTextColor = textColor,
                     backgroundColor = backgroundColor)
@@ -80,9 +74,6 @@ enum class VisitorType(@StringRes val titleRes: Int) {
 fun PreviewVisitorFilter() {
     BusbyTaskyTheme {
         VisitorFilter(
-            onAllClicked = {},
-            onGoingClicked = {},
-            onNotGoingClicked = {},
             onSelectedTypeClicked = {}
         )
     }
