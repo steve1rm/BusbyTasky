@@ -4,18 +4,34 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import me.androidbox.domain.authentication.ResponseState
-import me.androidbox.domain.authentication.remote.EventRepository
-import java.util.UUID
-import javax.inject.Inject
 import me.androidbox.domain.authentication.model.Event
+import me.androidbox.domain.authentication.remote.EventRepository
+import me.androidbox.presentation.event.screen.EventScreenEvent
+import me.androidbox.presentation.event.screen.EventScreenState
+import java.util.*
+import javax.inject.Inject
 
 @HiltViewModel
 class EventViewModel @Inject constructor(
-    private val eventRepository: EventRepository
+    private val eventRepository: EventRepository,
 ) : ViewModel() {
 
+    private val _eventScreenState: MutableStateFlow<EventScreenState> = MutableStateFlow(EventScreenState())
+    val eventScreenState = _eventScreenState.asStateFlow()
+
+    fun onEventScreenEvent(eventScreenEvent: EventScreenEvent) {
+        when(eventScreenEvent) {
+            is EventScreenEvent.OnPhotoUriAdded -> {
+                _eventScreenState.value = eventScreenState.value.copy(
+                    listOfPhotoUri = eventScreenState.value.listOfPhotoUri + eventScreenEvent.photoUri
+                )
+            }
+        }
+    }
 
     /* TODO Remove this as I am only using this to MOCK data to test inserting and fetching */
     fun insertEvent() {
