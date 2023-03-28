@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -24,7 +25,7 @@ fun VisitorFilter(
     onSelectedTypeClicked: (VisitorType) -> Unit) {
     val listOfVisitorType = VisitorType.values().toList()
 
-    val selectedVisitorType by rememberSaveable {
+    var selectedVisitorType by rememberSaveable {
         mutableStateOf(listOfVisitorType[0])
     }
 
@@ -54,6 +55,7 @@ fun VisitorFilter(
                     textSize = 14.sp,
                     buttonText = stringResource(visitorType.titleRes),
                     onButtonClick = {
+                        selectedVisitorType = visitorType
                         onSelectedTypeClicked(visitorType)
                     },
                     buttonTextColor = textColor,
