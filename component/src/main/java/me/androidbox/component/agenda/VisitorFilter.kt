@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.capitalize
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -15,6 +16,7 @@ import androidx.compose.ui.unit.sp
 import me.androidbox.component.R
 import me.androidbox.component.general.TaskButton
 import me.androidbox.component.ui.theme.*
+import java.util.*
 
 @Composable
 fun VisitorFilter(
@@ -33,17 +35,20 @@ fun VisitorFilter(
         Spacer(modifier = Modifier.height(36.dp))
 
         Row(modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceEvenly) {
+        horizontalArrangement = Arrangement.SpaceBetween) {
             listOfVisitorType.forEach { visitorType ->
                 val backgroundColor = getBackgroundColor(selectedVisitorType, visitorType)
                 val textColor = getTextColor(selectedVisitorType, visitorType)
 
                 TaskButton(
+                    fontWeight = FontWeight.Medium,
                     modifier = Modifier
                         .height(36.dp)
                         .width(120.dp),
                     textSize = 14.sp,
-                    buttonText = stringResource(visitorType.titleRes),
+                    buttonText = stringResource(visitorType.titleRes).replaceFirstChar {char ->
+                        if (char.isLowerCase()) char.titlecase(Locale.getDefault()) else char.toString()
+                    },
                     onButtonClick = {
                         onSelectedTypeClicked(visitorType)
                     },
