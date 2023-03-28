@@ -109,8 +109,7 @@ fun AddSequentialPhoto(modifier: Modifier, selectedImageUri: List<Uri>, onAddPho
 
         LazyRow(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(12.dp),
-            state = rememberLazyListState()) {
+            horizontalArrangement = Arrangement.spacedBy(12.dp)) {
             items(selectedImageUri) { uri ->
                 AsyncImage(
                     model = uri,
