@@ -83,6 +83,7 @@ dependencies {
     implementation(libs.navigation.compose)
     implementation(libs.bundles.retrofit)
     implementation(libs.core.splashscreen)
+    implementation("io.coil-kt:coil-compose:2.1.0")
 
     /* TODO Adds these to settings */
     implementation("com.maxkeppeler.sheets-compose-dialogs:core:1.1.1")
