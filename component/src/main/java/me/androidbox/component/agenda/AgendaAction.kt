@@ -33,6 +33,7 @@ fun AgendaAction(
     Column(modifier = modifier,
     horizontalAlignment = Alignment.CenterHorizontally) {
 
+        /* Reminders and Tasks have a top divider */
         if(showTopDivider) {
             Divider(
                 modifier
@@ -69,6 +70,14 @@ fun AgendaAction(
                 ),
             thickness = 2.dp)
     }
+}
+
+enum class AgendaActionType(@StringRes titleRes: Int) {
+    DELETE_EVENT(titleRes = R.string.delete_event),
+    LEAVE_EVENT(titleRes = R.string.leave_event),
+    JOIN_EVENT(titleRes = R.string.join_event),
+    DELETE_TASK(titleRes = R.string.delete_task),
+    DELETE_REMINDER(titleRes = R.string.delete_reminder)
 }
 
 @Composable
