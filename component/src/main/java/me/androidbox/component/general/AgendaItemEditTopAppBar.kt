@@ -25,7 +25,7 @@ import me.androidbox.component.ui.theme.topbarText
 fun AgendaItemEditTopAppBar(
     title: String,
     modifier: Modifier = Modifier,
-    onTopIconClicked: () -> Unit,
+    onBackIconClicked: () -> Unit,
     onSaveClicked: () -> Unit
 ) {
     TopAppBar(
@@ -60,7 +60,7 @@ fun AgendaItemEditTopAppBar(
         },
         navigationIcon = {
             IconButton(onClick = {
-                onTopIconClicked()
+                onBackIconClicked()
             }) {
                 Icon(painter = painterResource(id = R.drawable.back_arrow_black), contentDescription = "Top app bar")
             }
@@ -77,7 +77,7 @@ fun PreviewAgendaTopAppBar() {
     BusbyTaskyTheme {
         AgendaItemEditTopAppBar(
             title = stringResource(id = R.string.edit_description),
-            onTopIconClicked = {},
+            onBackIconClicked = {},
             onSaveClicked = {})
     }
 }
