@@ -3,6 +3,7 @@ package me.androidbox.presentation.agenda.screen
 import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -20,15 +21,11 @@ import com.maxkeppeler.sheets.calendar.models.CalendarSelection
 import com.maxkeppeler.sheets.calendar.models.CalendarStyle
 import me.androidbox.component.R
 import me.androidbox.component.agenda.AgendaTopBar
-import me.androidbox.component.agenda.VisitorFilter
 import me.androidbox.component.general.AgendaDropDownMenu
-import me.androidbox.component.general.PhotoPicker
 import me.androidbox.component.general.TaskActionButton
 import me.androidbox.component.ui.theme.agendaBackgroundColor
 import me.androidbox.component.ui.theme.backgroundBackColor
 import me.androidbox.component.ui.theme.dropDownMenuBackgroundColor
-import me.androidbox.presentation.event.screen.EventScreenEvent
-import me.androidbox.presentation.event.screen.EventScreenState
 import me.androidbox.presentation.ui.theme.BusbyTaskyTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -36,8 +33,6 @@ import me.androidbox.presentation.ui.theme.BusbyTaskyTheme
 fun AgendaScreen(
     agendaScreenState: AgendaScreenState,
     agendaScreenEvent: (AgendaScreenEvent) -> Unit,
-    eventScreenEvent: (EventScreenEvent) -> Unit,
-    eventScreenState: EventScreenState,
     modifier: Modifier = Modifier) {
     val calendarState = rememberUseCaseState()
 
@@ -96,20 +91,7 @@ fun AgendaScreen(
             .fillMaxSize()
             .padding(paddingValues)) {
 
-            Column(Modifier.fillMaxWidth()) {
-                PhotoPicker(
-                    listOfPhotoUri = eventScreenState.listOfPhotoUri,
-                    onPhotoUriSelected = { uri ->
-                        eventScreenEvent(EventScreenEvent.OnPhotoUriAdded(uri))
-                    }
-                )
-
-                VisitorFilter(
-                    selectedVisitorType = eventScreenState.selectedVisitorType,
-                    onSelectedTypeClicked = { visitorType ->
-                        eventScreenEvent(EventScreenEvent.OnSelectedVisitorType(visitorType))
-                    }
-                )
+            LazyColumn(Modifier.fillMaxWidth()) {
             /*
             *
             * TODO Add content here for each of the agenda items
@@ -142,9 +124,7 @@ fun PreviewAgendaScreen() {
             modifier = Modifier
                 .background(
                     color = MaterialTheme.colorScheme.agendaBackgroundColor),
-            agendaScreenEvent = {},
-            eventScreenEvent = {},
-            eventScreenState = EventScreenState()
+            agendaScreenEvent = {}
         )
     }
 }
