@@ -44,7 +44,7 @@ fun VisitorFilter(
                         .height(36.dp)
                         .width(120.dp),
                     textSize = 14.sp,
-                    buttonText = stringResource(visitorType.titleRes).replaceFirstChar {char ->
+                    buttonText = stringResource(visitorType.titleRes).replaceFirstChar { char ->
                         if (char.isLowerCase()) char.titlecase(Locale.getDefault()) else char.toString()
                     },
                     onButtonClick = {
