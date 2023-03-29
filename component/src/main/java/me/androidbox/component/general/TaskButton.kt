@@ -1,7 +1,5 @@
 package me.androidbox.component.general
 
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -17,28 +15,26 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import me.androidbox.component.ui.theme.BusbyTaskyTheme
-import me.androidbox.component.ui.theme.loginTextColor
 import me.androidbox.component.ui.theme.buttonColor
+import me.androidbox.component.ui.theme.loginTextColor
 
 @Composable
 fun TaskButton(
-    modifier: Modifier = Modifier,
     buttonText: String,
+    modifier: Modifier = Modifier,
     textSize: TextUnit = 16.sp,
+    fontWeight: FontWeight = FontWeight.Bold,
     buttonTextColor: Color = MaterialTheme.colorScheme.loginTextColor,
     backgroundColor: Color = MaterialTheme.colorScheme.buttonColor,
     onButtonClick: () -> Unit,
-    radius: Dp= 38.dp,
-    height: Dp = 50.dp
+    borderRadius: Dp = 38.dp,
 ) {
     Button(
-        modifier = modifier
-            .height(height)
-            .fillMaxWidth(),
+        modifier = modifier,
         colors = ButtonDefaults.buttonColors(
             containerColor = backgroundColor
         ),
-        shape = RoundedCornerShape(radius),
+        shape = RoundedCornerShape(borderRadius),
         onClick = {
             onButtonClick()
         }) {
@@ -46,7 +42,7 @@ fun TaskButton(
             text = buttonText,
             color = buttonTextColor,
             fontSize = textSize,
-            fontWeight = FontWeight.Bold
+            fontWeight = fontWeight
         )
     }
 }

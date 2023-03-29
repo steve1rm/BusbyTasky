@@ -17,7 +17,7 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import me.androidbox.component.R
-import me.androidbox.component.general.AgendaTopAppBar
+import me.androidbox.component.general.AgendaItemEditTopAppBar
 import me.androidbox.component.ui.theme.BusbyTaskyTheme
 import me.androidbox.component.ui.theme.agendaBodyTextColor
 import me.androidbox.component.ui.theme.divider
@@ -39,10 +39,11 @@ fun EditScreen(
                 TitleType.DESCRIPTION -> stringResource(id = TitleType.DESCRIPTION.contentTypeRes)
             }
 
-            AgendaTopAppBar(
+            AgendaItemEditTopAppBar(
                 title = contentType,
+                modifier = Modifier.fillMaxWidth(),
                 onSaveClicked = onSaveClicked,
-                onTopIconClicked = onTopIconClicked
+                onBackIconClicked = onTopIconClicked
             )
         }
     ) { paddingValues ->
