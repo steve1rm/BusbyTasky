@@ -23,8 +23,8 @@ import me.androidbox.component.ui.theme.topbarText
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AgendaTopAppBar(
-    modifier: Modifier = Modifier,
     title: String,
+    modifier: Modifier = Modifier,
     onTopIconClicked: () -> Unit,
     onSaveClicked: () -> Unit
 ) {
