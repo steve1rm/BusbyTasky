@@ -6,9 +6,13 @@ import javax.inject.Inject
 
 class UsersInitialsExtractionUseCaseImp @Inject constructor() : UsersInitialsExtractionUseCase {
     override fun execute(fullName: String): String {
-        val listOfFullName = fullName.split(" ").take(2)
+        val listOfName = fullName.split(" ")
+        var initials = ""
 
-        /** Only take 2 names i.e. first name and last name */
-        return "${listOfFullName.first()} ${listOfFullName.last()}".uppercase(Locale.getDefault())
+        listOfName.forEach { name ->
+            initials += name.first()
+        }
+
+        return initials.uppercase(Locale.getDefault())
     }
 }
