@@ -27,7 +27,6 @@ fun EditScreen(
     editScreenState: EditScreenState,
     editScreenEvent: (EditScreenEvent) -> Unit,
     modifier: Modifier = Modifier,
-    onSaveClicked: () -> Unit,
     onTopIconClicked: () -> Unit,
 ) {
     Scaffold(modifier = modifier,
@@ -40,7 +39,9 @@ fun EditScreen(
             AgendaItemEditTopAppBar(
                 title = contentType,
                 modifier = Modifier.fillMaxWidth(),
-                onSaveClicked = onSaveClicked,
+                onSaveClicked = {
+                    editScreenEvent(EditScreenEvent.OnSaveClicked)
+                },
                 onBackIconClicked = onTopIconClicked
             )
         }
@@ -93,7 +94,6 @@ fun PreviewEditScreenTitle() {
             editScreenEvent = {},
             titleType = TitleType.TITLE,
             onTopIconClicked = {},
-            onSaveClicked = {},
         )
     }
 }
@@ -108,7 +108,6 @@ fun PreviewEditScreenDescription() {
             editScreenEvent = {},
             titleType = TitleType.DESCRIPTION,
             onTopIconClicked = {},
-            onSaveClicked = {},
         )
     }
 }
