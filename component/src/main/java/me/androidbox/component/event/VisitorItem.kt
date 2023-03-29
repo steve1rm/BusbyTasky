@@ -24,11 +24,11 @@ import me.androidbox.component.ui.theme.*
 
 @Composable
 fun VisitorItem(
-    modifier: Modifier = Modifier,
     visitorInitials: String,
     visitorName: String,
     isCreator: Boolean = true,
-    onDeleteClicked: () -> Unit) {
+    modifier: Modifier = Modifier,
+    onDeleteClicked: (visitorName: String) -> Unit) {
 
     Row(modifier = modifier
         .fillMaxWidth()
@@ -68,7 +68,7 @@ fun VisitorItem(
         }
         else {
             IconButton(onClick = {
-                onDeleteClicked()
+                onDeleteClicked(visitorName)
             }) {
                 Icon(
                     painter = painterResource(id = R.drawable.bin),
@@ -84,11 +84,10 @@ fun VisitorItem(
 fun PreviewVisitorIsCreator() {
     BusbyTaskyTheme {
         VisitorItem(
-            onDeleteClicked = {},
             visitorInitials = "SM",
             visitorName = "Steve Mason",
             isCreator = true
-        )
+        ) {}
     }
 }
 
@@ -97,10 +96,9 @@ fun PreviewVisitorIsCreator() {
 fun PreviewVisitorIsVisitor() {
     BusbyTaskyTheme {
         VisitorItem(
-            onDeleteClicked = {},
             visitorInitials = "SM",
             visitorName = "Steve Mason",
             isCreator = false
-        )
+        ) {}
     }
 }
