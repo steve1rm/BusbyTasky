@@ -25,16 +25,15 @@ import java.util.*
 
 @Composable
 fun AgendaAction(
+    agendaActionType: AgendaActionType,
     modifier: Modifier = Modifier,
-    showTopDivider: Boolean = false,
-    @StringRes headingResId: Int,
     onActionClicked: () -> Unit,
 ) {
     Column(modifier = modifier,
     horizontalAlignment = Alignment.CenterHorizontally) {
 
         /* Reminders and Tasks have a top divider */
-        if(showTopDivider) {
+        if(agendaActionType.showDivider) {
             Divider(
                 modifier
                     .fillMaxWidth()
@@ -53,7 +52,7 @@ fun AgendaAction(
             modifier = Modifier.clickable {
                 onActionClicked()
             },
-            text = stringResource(id = headingResId).uppercase(Locale.getDefault()),
+            text = stringResource(id = agendaActionType.titleRes).uppercase(Locale.getDefault()),
             fontSize = 16.sp,
             color = MaterialTheme.colorScheme.visitorTextFontColor,
             fontWeight = FontWeight.SemiBold)
@@ -72,12 +71,12 @@ fun AgendaAction(
     }
 }
 
-enum class AgendaActionType(@StringRes titleRes: Int) {
-    DELETE_EVENT(titleRes = R.string.delete_event),
-    LEAVE_EVENT(titleRes = R.string.leave_event),
-    JOIN_EVENT(titleRes = R.string.join_event),
-    DELETE_TASK(titleRes = R.string.delete_task),
-    DELETE_REMINDER(titleRes = R.string.delete_reminder)
+enum class AgendaActionType(@StringRes val titleRes: Int, val showDivider: Boolean) {
+    DELETE_EVENT(titleRes = R.string.delete_event, showDivider = false),
+    LEAVE_EVENT(titleRes = R.string.leave_event, showDivider = false),
+    JOIN_EVENT(titleRes = R.string.join_event, showDivider = false),
+    DELETE_TASK(titleRes = R.string.delete_task, showDivider = true),
+    DELETE_REMINDER(titleRes = R.string.delete_reminder, showDivider = true)
 }
 
 @Composable
@@ -85,21 +84,18 @@ enum class AgendaActionType(@StringRes titleRes: Int) {
 fun PreviewAgendaActionShowDivider() {
     BusbyTaskyTheme {
         AgendaAction(
-            headingResId = R.string.delete_reminder,
-            showTopDivider = true,
+            agendaActionType = AgendaActionType.DELETE_REMINDER,
             onActionClicked = {}
         )
     }
 }
-
 
 @Composable
 @Preview(showBackground = true)
 fun PreviewAgendaActionHideDivider() {
     BusbyTaskyTheme {
         AgendaAction(
-            headingResId = R.string.leave_event,
-            showTopDivider = false,
+            agendaActionType = AgendaActionType.LEAVE_EVENT,
             onActionClicked = {}
         )
     }
