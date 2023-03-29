@@ -73,10 +73,21 @@ fun AgendaItemEditTopAppBar(
 
 @Composable
 @Preview(showBackground = true)
-fun PreviewAgendaTopAppBar() {
+fun PreviewAgendaDescriptionTopAppBar() {
     BusbyTaskyTheme {
         AgendaItemEditTopAppBar(
             title = stringResource(id = R.string.edit_description),
+            onBackIconClicked = {},
+            onSaveClicked = {})
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+fun PreviewAgendaTitleTopAppBar() {
+    BusbyTaskyTheme {
+        AgendaItemEditTopAppBar(
+            title = stringResource(id = R.string.edit_title),
             onBackIconClicked = {},
             onSaveClicked = {})
     }
