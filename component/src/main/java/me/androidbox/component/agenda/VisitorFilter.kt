@@ -20,7 +20,6 @@ import java.util.*
 @Composable
 fun VisitorFilter(
     modifier: Modifier = Modifier,
-    listOfVisitorType: List<VisitorType>,
     selectedVisitorType: VisitorType,
     onSelectedTypeClicked: (VisitorType) -> Unit) {
 
@@ -35,7 +34,7 @@ fun VisitorFilter(
 
         Row(modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween) {
-            listOfVisitorType.forEach { visitorType ->
+            VisitorType.values().forEach { visitorType ->
                 val backgroundColor = getBackgroundColor(selectedVisitorType, visitorType)
                 val textColor = getTextColor(selectedVisitorType, visitorType)
 
@@ -95,7 +94,6 @@ fun PreviewVisitorFilter() {
         VisitorFilter(
             modifier = Modifier.fillMaxWidth(),
             selectedVisitorType = VisitorType.ALL,
-            listOfVisitorType = VisitorType.values().toList(),
             onSelectedTypeClicked = {}
         )
     }
