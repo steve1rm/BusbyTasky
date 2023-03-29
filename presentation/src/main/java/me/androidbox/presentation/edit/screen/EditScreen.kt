@@ -1,4 +1,4 @@
-package me.androidbox.component.edit
+package me.androidbox.presentation.edit.screen
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background
@@ -23,12 +23,12 @@ import me.androidbox.component.ui.theme.editScreenBackground
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EditScreen(
-    content: String,
     titleType: TitleType,
+    editScreenState: EditScreenState,
+    editScreenEvent: (EditScreenEvent) -> Unit,
     modifier: Modifier = Modifier,
     onSaveClicked: () -> Unit,
     onTopIconClicked: () -> Unit,
-    onContentChanged: (content: String) -> Unit
 ) {
     Scaffold(modifier = modifier,
         topBar = {
@@ -67,9 +67,9 @@ fun EditScreen(
                 modifier = Modifier
                     .fillMaxSize(),
                 singleLine = false,
-                value = content,
+                value = editScreenState.content,
                 onValueChange = { newContent ->
-                    onContentChanged(newContent)
+                    editScreenEvent(EditScreenEvent.OnContentChanged(newContent))
                 },
                 colors = TextFieldDefaults.textFieldColors(containerColor = MaterialTheme.colorScheme.editScreenBackground),
                 textStyle = TextStyle(fontSize = fontSize, fontWeight = FontWeight.Normal, color = MaterialTheme.colorScheme.agendaBodyTextColor)
@@ -88,11 +88,12 @@ enum class TitleType(@StringRes val contentTypeRes: Int, val fontSize: TextUnit)
 fun PreviewEditScreenTitle() {
     BusbyTaskyTheme {
         EditScreen(
-            content = "Meeting",
+            modifier = Modifier.fillMaxSize(),
+            editScreenState = EditScreenState(content = "Meeting"),
+            editScreenEvent = {},
             titleType = TitleType.TITLE,
             onTopIconClicked = {},
             onSaveClicked = {},
-            onContentChanged = {}
         )
     }
 }
@@ -103,11 +104,11 @@ fun PreviewEditScreenDescription() {
     BusbyTaskyTheme {
         EditScreen(
             modifier = Modifier.fillMaxSize(),
-            content = "This is the description of the project",
+            editScreenState = EditScreenState(content = "This is the description of the project"),
+            editScreenEvent = {},
             titleType = TitleType.DESCRIPTION,
             onTopIconClicked = {},
             onSaveClicked = {},
-            onContentChanged = {}
         )
     }
 }
