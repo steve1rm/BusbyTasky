@@ -35,6 +35,11 @@ class EventViewModel @Inject constructor(
                     selectedVisitorType = eventScreenEvent.visitorType
                 )
             }
+            is EventScreenEvent.OnSelectedAgendaAction -> {
+                _eventScreenState.value = eventScreenState.value.copy(
+                    selectedAgendaActionType = eventScreenEvent.agendaActionType
+                )
+            }
         }
     }
 

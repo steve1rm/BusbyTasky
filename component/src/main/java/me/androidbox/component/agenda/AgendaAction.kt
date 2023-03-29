@@ -27,7 +27,7 @@ import java.util.*
 fun AgendaAction(
     agendaActionType: AgendaActionType,
     modifier: Modifier = Modifier,
-    onActionClicked: () -> Unit,
+    onActionClicked: (AgendaActionType) -> Unit,
 ) {
     Column(modifier = modifier,
     horizontalAlignment = Alignment.CenterHorizontally) {
@@ -50,7 +50,7 @@ fun AgendaAction(
 
         Text(
             modifier = Modifier.clickable {
-                onActionClicked()
+                onActionClicked(agendaActionType)
             },
             text = stringResource(id = agendaActionType.titleRes).uppercase(Locale.getDefault()),
             fontSize = 16.sp,
