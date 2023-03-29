@@ -39,7 +39,7 @@ class EventViewModel @Inject constructor(
             }
             is EventScreenEvent.OnDeleteVisitor -> {
                 _eventScreenState.value = eventScreenState.value.copy(
-                    selectedVisitor = eventScreenEvent.visitorName
+                    selectedVisitor = eventScreenEvent.visitorInfo
                 )
             }
         }
