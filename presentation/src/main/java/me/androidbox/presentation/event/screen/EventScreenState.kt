@@ -8,5 +8,6 @@ import me.androidbox.component.event.VisitorInfo
 data class EventScreenState(
     val listOfPhotoUri: List<Uri> = mutableStateListOf<Uri>(),
     val selectedVisitorType: VisitorType = VisitorType.ALL,
-    val selectedVisitor: VisitorInfo = VisitorInfo()
+    val saveEditOrDescriptionContent: String = "",
+    val selectedVisitor: VisitorInfo? = null
 )

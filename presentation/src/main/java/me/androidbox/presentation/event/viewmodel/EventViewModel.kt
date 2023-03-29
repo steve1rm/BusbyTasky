@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import me.androidbox.domain.agenda.usecase.UsersInitialsExtractionUseCase
 import me.androidbox.domain.authentication.ResponseState
@@ -28,14 +29,25 @@ class EventViewModel @Inject constructor(
     fun onEventScreenEvent(eventScreenEvent: EventScreenEvent) {
         when(eventScreenEvent) {
             is EventScreenEvent.OnPhotoUriAdded -> {
-                _eventScreenState.value = eventScreenState.value.copy(
-                    listOfPhotoUri = eventScreenState.value.listOfPhotoUri + eventScreenEvent.photoUri
-                )
+                _eventScreenState.update { eventScreenState ->
+                    eventScreenState.copy(
+                        listOfPhotoUri = eventScreenState.listOfPhotoUri + eventScreenEvent.photoUri
+                    )
+                }
             }
             is EventScreenEvent.OnSelectedVisitorType -> {
-                _eventScreenState.value = eventScreenState.value.copy(
-                    selectedVisitorType = eventScreenEvent.visitorType
-                )
+                _eventScreenState.update { eventScreenState ->
+                    eventScreenState.copy(
+                        selectedVisitorType = eventScreenEvent.visitorType
+                    )
+                }
+            }
+            is EventScreenEvent.OnSaveEditOrDescriptionContent -> {
+                _eventScreenState.update { eventScreenState ->
+                    eventScreenState.copy(
+                        saveEditOrDescriptionContent = eventScreenEvent.content
+                    )
+                }
             }
             is EventScreenEvent.OnDeleteVisitor -> {
                 _eventScreenState.value = eventScreenState.value.copy(
