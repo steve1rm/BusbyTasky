@@ -5,9 +5,13 @@
     <string name="name">name</string>
     <string name="email_address">Email address</string>
     <string name="get_started">Get Started</string>
+    <string name="agenda_status">Agenda status</string>
     <string name="event">Event</string>
     <string name="task">Task</string>
     <string name="reminder">Reminder</string>
+    <string name="subtitle_icon">subtitle icon</string>
+    <string name="forward_arrow">forward arrow</string>
+    <string name="agenda_image">Agenda image</string>
     <string name="ten_minutes_before">10 minutes before</string>
     <string name="thirty_minutes_before">30 minutes before</string>
     <string name="one_hour_before">1 hour before</string>
@@ -20,8 +24,20 @@
     <string name="all">All</string>
     <string name="going">Going</string>
     <string name="not_going">Not going</string>
-    <string name="vistors">Visitors</string>
+    <string name="visitors">Visitors</string>
     <string name="creator">Creator</string>
     <string name="edit_description">Edit Description</string>
+    <string name="edit_title">Edit Title</string>
     <string name="save">Save</string>
+    <string name="delete_event">delete event</string>
+    <string name="leave_event">leave event</string>
+    <string name="join_event">join event</string>
+    <string name="delete_reminder">delete reminder</string>
+    <string name="delete_task">delete task</string>
+    <string name="open">Open</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
+    <string name="add_photos">Add photos</string>
+    <string name="photos">Photos</string>
+    <string name="selected_image">Selected image</string>
 </resources>
