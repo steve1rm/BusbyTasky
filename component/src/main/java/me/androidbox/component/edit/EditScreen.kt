@@ -5,9 +5,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -26,11 +23,12 @@ import me.androidbox.component.ui.theme.editScreenBackground
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EditScreen(
-    content: MutableState<String>,
+    content: String,
     titleType: TitleType,
     modifier: Modifier = Modifier,
     onSaveClicked: () -> Unit,
-    onTopIconClicked: () -> Unit
+    onTopIconClicked: () -> Unit,
+    onContentChanged: (content: String) -> Unit
 ) {
     Scaffold(modifier = modifier,
         topBar = {
@@ -69,32 +67,14 @@ fun EditScreen(
                 modifier = Modifier
                     .fillMaxSize(),
                 singleLine = false,
-                value = content.value,
+                value = content,
                 onValueChange = { newContent ->
-                    content.value = newContent
+                    onContentChanged(newContent)
                 },
                 colors = TextFieldDefaults.textFieldColors(containerColor = MaterialTheme.colorScheme.editScreenBackground),
                 textStyle = TextStyle(fontSize = fontSize, fontWeight = FontWeight.Normal, color = MaterialTheme.colorScheme.agendaBodyTextColor)
             )
         }
-    }
-}
-
-
-@Composable
-@Preview(showBackground = true)
-fun PreviewEditScreenTitle() {
-    BusbyTaskyTheme {
-        val editableContent = remember {
-            mutableStateOf("Meeting")
-        }
-
-        EditScreen(
-            content = editableContent,
-            titleType = TitleType.TITLE,
-            onTopIconClicked = {},
-            onSaveClicked = {}
-        )
     }
 }
 
@@ -105,18 +85,29 @@ enum class TitleType(@StringRes val contentTypeRes: Int, val fontSize: TextUnit)
 
 @Composable
 @Preview(showBackground = true)
+fun PreviewEditScreenTitle() {
+    BusbyTaskyTheme {
+        EditScreen(
+            content = "Meeting",
+            titleType = TitleType.TITLE,
+            onTopIconClicked = {},
+            onSaveClicked = {},
+            onContentChanged = {}
+        )
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
 fun PreviewEditScreenDescription() {
     BusbyTaskyTheme {
-        val editableContent = remember {
-            mutableStateOf("This is the description of the project")
-        }
-
         EditScreen(
             modifier = Modifier.fillMaxSize(),
-            content = editableContent,
+            content = "This is the description of the project",
             titleType = TitleType.DESCRIPTION,
             onTopIconClicked = {},
-            onSaveClicked = {}
+            onSaveClicked = {},
+            onContentChanged = {}
         )
     }
 }
