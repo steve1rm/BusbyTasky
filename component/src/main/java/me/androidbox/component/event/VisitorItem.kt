@@ -23,12 +23,13 @@ import me.androidbox.component.R
 import me.androidbox.component.ui.theme.*
 
 @Composable
-fun Visitor(
+fun VisitorItem(
     modifier: Modifier = Modifier,
     visitorInitials: String,
     visitorName: String,
     isCreator: Boolean = true,
     onDeleteClicked: () -> Unit) {
+
     Row(modifier = modifier
         .fillMaxWidth()
         .background(color = MaterialTheme.colorScheme.visitorBackgroundColor),
@@ -82,7 +83,7 @@ fun Visitor(
 @Preview(showBackground = true)
 fun PreviewVisitorIsCreator() {
     BusbyTaskyTheme {
-        Visitor(
+        VisitorItem(
             onDeleteClicked = {},
             visitorInitials = "SM",
             visitorName = "Steve Mason",
@@ -95,7 +96,7 @@ fun PreviewVisitorIsCreator() {
 @Preview(showBackground = true)
 fun PreviewVisitorIsVisitor() {
     BusbyTaskyTheme {
-        Visitor(
+        VisitorItem(
             onDeleteClicked = {},
             visitorInitials = "SM",
             visitorName = "Steve Mason",
