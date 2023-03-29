@@ -78,7 +78,7 @@ fun AgendaScreen(
                         agendaScreenEvent(
                             AgendaScreenEvent.OnShowDropdown(shouldOpen = false))
                     },
-                    listOfMenuItemId = listOf(R.string.open, R.string.edit, R.string.delete),
+                    listOfMenuItemId = listOf(R.string.event, R.string.task, R.string.reminder),
                     onSelectedOption = { item ->
                         Log.d("AGENDA", "ITEM [ $item ]")
                     }
