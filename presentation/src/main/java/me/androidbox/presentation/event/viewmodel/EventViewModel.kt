@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import me.androidbox.domain.agenda.usecase.UsersInitialsExtractionUseCase
 import me.androidbox.domain.authentication.ResponseState
 import me.androidbox.domain.authentication.model.Event
 import me.androidbox.domain.authentication.remote.EventRepository
@@ -19,6 +20,7 @@ import javax.inject.Inject
 @HiltViewModel
 class EventViewModel @Inject constructor(
     private val eventRepository: EventRepository,
+    private val usersInitialsExtractionUseCase: UsersInitialsExtractionUseCase
 ) : ViewModel() {
 
     private val _eventScreenState: MutableStateFlow<EventScreenState> = MutableStateFlow(EventScreenState())
@@ -46,6 +48,11 @@ class EventViewModel @Inject constructor(
                         saveEditOrDescriptionContent = eventScreenEvent.content
                     )
                 }
+            }
+            is EventScreenEvent.OnDeleteVisitor -> {
+                _eventScreenState.value = eventScreenState.value.copy(
+                    selectedVisitor = eventScreenEvent.visitorInfo
+                )
             }
             is EventScreenEvent.OnSelectedAgendaAction -> {
                 _eventScreenState.value = eventScreenState.value.copy(
