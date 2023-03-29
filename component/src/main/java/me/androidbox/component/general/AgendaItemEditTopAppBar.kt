@@ -22,7 +22,7 @@ import me.androidbox.component.ui.theme.topbarText
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AgendaTopAppBar(
+fun AgendaItemEditTopAppBar(
     title: String,
     modifier: Modifier = Modifier,
     onTopIconClicked: () -> Unit,
@@ -75,7 +75,7 @@ fun AgendaTopAppBar(
 @Preview(showBackground = true)
 fun PreviewAgendaTopAppBar() {
     BusbyTaskyTheme {
-        AgendaTopAppBar(
+        AgendaItemEditTopAppBar(
             title = stringResource(id = R.string.edit_description),
             onTopIconClicked = {},
             onSaveClicked = {})
