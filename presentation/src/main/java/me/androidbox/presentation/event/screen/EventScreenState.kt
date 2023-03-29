@@ -6,6 +6,5 @@ import me.androidbox.component.agenda.VisitorType
 
 data class EventScreenState(
     val listOfPhotoUri: List<Uri> = mutableStateListOf<Uri>(),
-    val selectedVisitorType: VisitorType = VisitorType.ALL,
-    val saveEditOrDescriptionContent: String = ""
+    val selectedVisitorType: VisitorType = VisitorType.ALL
 )
