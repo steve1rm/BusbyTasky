@@ -26,13 +26,13 @@ import me.androidbox.component.ui.theme.editScreenBackground
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EditScreen(
-    modifier: Modifier = Modifier,
     content: MutableState<String>,
     titleType: TitleType,
+    modifier: Modifier = Modifier,
     onSaveClicked: () -> Unit,
     onTopIconClicked: () -> Unit
 ) {
-    Scaffold(modifier = modifier.fillMaxSize(),
+    Scaffold(modifier = modifier,
         topBar = {
             val contentType = when(titleType) {
                 TitleType.TITLE -> stringResource(id = TitleType.TITLE.contentTypeRes)
@@ -53,8 +53,8 @@ fun EditScreen(
         ) {
 
             val fontSize =  when(titleType) {
-                TitleType.TITLE -> 26.sp
-                TitleType.DESCRIPTION -> 16.sp
+                TitleType.TITLE -> TitleType.TITLE.fontSize
+                TitleType.DESCRIPTION -> TitleType.DESCRIPTION.fontSize
             }
 
             Divider(
@@ -97,6 +97,11 @@ fun PreviewEditScreenTitle() {
     }
 }
 
+enum class TitleType(@StringRes val contentTypeRes: Int, val fontSize: TextUnit) {
+    TITLE(contentTypeRes = R.string.edit_title, fontSize =  26.sp),
+    DESCRIPTION(contentTypeRes = R.string.edit_description, fontSize =  16.sp)
+}
+
 @Composable
 @Preview(showBackground = true)
 fun PreviewEditScreenDescription() {
@@ -106,15 +111,11 @@ fun PreviewEditScreenDescription() {
         }
 
         EditScreen(
+            modifier = Modifier.fillMaxSize(),
             content = editableContent,
             titleType = TitleType.DESCRIPTION,
             onTopIconClicked = {},
             onSaveClicked = {}
         )
     }
-}
-
-enum class TitleType(@StringRes val contentTypeRes: Int, fontSize: TextUnit) {
-    TITLE(R.string.edit_title, 26.sp),
-    DESCRIPTION(R.string.edit_description, 16.sp)
 }
