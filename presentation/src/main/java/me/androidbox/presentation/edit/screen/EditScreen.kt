@@ -27,7 +27,7 @@ fun EditScreen(
     editScreenState: EditScreenState,
     editScreenEvent: (EditScreenEvent) -> Unit,
     modifier: Modifier = Modifier,
-    onTopIconClicked: () -> Unit,
+    onBackClicked: () -> Unit,
 ) {
     Scaffold(modifier = modifier,
         topBar = {
@@ -42,7 +42,7 @@ fun EditScreen(
                 onSaveClicked = {
                     editScreenEvent(EditScreenEvent.OnSaveClicked)
                 },
-                onBackIconClicked = onTopIconClicked
+                onBackIconClicked = onBackClicked
             )
         }
     ) { paddingValues ->
@@ -93,7 +93,7 @@ fun PreviewEditScreenTitle() {
             editScreenState = EditScreenState(content = "Meeting"),
             editScreenEvent = {},
             titleType = TitleType.TITLE,
-            onTopIconClicked = {},
+            onBackClicked = {},
         )
     }
 }
@@ -107,7 +107,7 @@ fun PreviewEditScreenDescription() {
             editScreenState = EditScreenState(content = "This is the description of the project"),
             editScreenEvent = {},
             titleType = TitleType.DESCRIPTION,
-            onTopIconClicked = {},
+            onBackClicked = {},
         )
     }
 }
