@@ -23,6 +23,7 @@ fun TaskButton(
     buttonText: String,
     modifier: Modifier = Modifier,
     textSize: TextUnit = 16.sp,
+    fontWeight: FontWeight = FontWeight.Bold,
     buttonTextColor: Color = MaterialTheme.colorScheme.loginTextColor,
     backgroundColor: Color = MaterialTheme.colorScheme.buttonColor,
     onButtonClick: () -> Unit,
@@ -38,10 +39,10 @@ fun TaskButton(
             onButtonClick()
         }) {
         Text(
-            text = buttonText.uppercase(),
+            text = buttonText,
             color = buttonTextColor,
             fontSize = textSize,
-            fontWeight = FontWeight.Bold
+            fontWeight = fontWeight
         )
     }
 }
