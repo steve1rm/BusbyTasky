@@ -3,7 +3,6 @@ package me.androidbox.component.agenda
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -23,7 +22,6 @@ import me.androidbox.component.R
 import me.androidbox.component.ui.theme.BusbyTaskyTheme
 import me.androidbox.component.ui.theme.backgroundBackColor
 import me.androidbox.component.ui.theme.fontWhiteColor
-import me.androidbox.component.ui.theme.topbarFontColor
 
 @Composable
 fun AgendaDetailTopBar(
@@ -52,7 +50,7 @@ fun AgendaDetailTopBar(
             color = MaterialTheme.colorScheme.fontWhiteColor)
 
         when(editModeType) {
-            EditModeType.IS_EDIT -> {
+            is EditModeType.EditMode -> {
                 IconButton(onClick = {
                     onEditClicked()
                 }) {
@@ -61,8 +59,7 @@ fun AgendaDetailTopBar(
                         contentDescription = null)
                 }
             }
-
-            EditModeType.SAVE -> {
+            is EditModeType.SaveMode -> {
                 TextButton(
                     onClick = {
                         onSaveClicked()
@@ -78,12 +75,9 @@ fun AgendaDetailTopBar(
     }
 }
 
-enum class EditModeType(
-    @DrawableRes val editIcon: Int = R.drawable.pencil,
-    @StringRes val saveRes: Int = R.string.save
-) {
-    IS_EDIT(editIcon = R.drawable.pencil),
-    SAVE(saveRes = R.string.save)
+sealed interface EditModeType {
+    data class EditMode(@DrawableRes val editIcon: Int = R.drawable.pencil): EditModeType
+    data class SaveMode(@StringRes val saveRes: Int = R.string.save): EditModeType
 }
 
 @Preview(showBackground = true)
@@ -91,7 +85,7 @@ enum class EditModeType(
 fun PreviewAgendaDetailTopBarEdit() {
     BusbyTaskyTheme {
         AgendaDetailTopBar(
-            editModeType = EditModeType.IS_EDIT,
+            editModeType = EditModeType.EditMode(),
             displayDate = "30 MARCH 2023",
             modifier = Modifier
                 .fillMaxWidth()
@@ -109,7 +103,7 @@ fun PreviewAgendaDetailTopBarEdit() {
 fun PreviewAgendaDetailTopBarSave() {
     BusbyTaskyTheme {
         AgendaDetailTopBar(
-            editModeType = EditModeType.SAVE,
+            editModeType = EditModeType.SaveMode(),
             displayDate = "30 MARCH 2023",
             modifier = Modifier
                 .fillMaxWidth()
