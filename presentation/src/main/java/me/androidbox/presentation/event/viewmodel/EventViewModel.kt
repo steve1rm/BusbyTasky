@@ -50,14 +50,18 @@ class EventViewModel @Inject constructor(
                 }
             }
             is EventScreenEvent.OnDeleteVisitor -> {
-                _eventScreenState.value = eventScreenState.value.copy(
-                    selectedVisitor = eventScreenEvent.visitorInfo
-                )
+                _eventScreenState.update { eventScreenState ->
+                    eventScreenState.copy(
+                        selectedVisitor = eventScreenEvent.visitorInfo
+                    )
+                }
             }
             is EventScreenEvent.OnSelectedAgendaAction -> {
-                _eventScreenState.value = eventScreenState.value.copy(
-                    selectedAgendaActionType = eventScreenEvent.agendaActionType
-                )
+                _eventScreenState.update { eventScreenState ->
+                    eventScreenState.copy(
+                        selectedAgendaActionType = eventScreenEvent.agendaActionType
+                    )
+                }
             }
         }
     }
