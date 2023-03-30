@@ -62,7 +62,11 @@ fun AgendaItemEditTopAppBar(
             IconButton(onClick = {
                 onBackIconClicked()
             }) {
-                Icon(painter = painterResource(id = R.drawable.back_arrow_black), contentDescription = "Top app bar")
+                Icon(
+                    painter = painterResource(id = R.drawable.back_arrow_black),
+                    tint = Color.Black,
+                    contentDescription = "Top app bar"
+                )
             }
         },
         colors = TopAppBarDefaults.smallTopAppBarColors(
