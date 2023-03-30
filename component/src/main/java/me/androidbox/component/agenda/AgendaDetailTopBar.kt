@@ -8,10 +8,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -66,14 +63,16 @@ fun AgendaDetailTopBar(
             }
 
             EditModeType.SAVE -> {
-                Text(
-                    modifier = Modifier.clickable {
+                TextButton(
+                    onClick = {
                         onSaveClicked()
-                    },
-                    text = stringResource(id = editModeType.saveRes),
-                    fontWeight = FontWeight.SemiBold,
-                    fontSize = 16.sp,
-                    color = MaterialTheme.colorScheme.fontWhiteColor)
+                    }) {
+                    Text(
+                        text = stringResource(id = editModeType.saveRes),
+                        fontWeight = FontWeight.SemiBold,
+                        fontSize = 16.sp,
+                        color = MaterialTheme.colorScheme.fontWhiteColor)
+                }
             }
         }
     }
