@@ -63,7 +63,7 @@ private fun getTextColor(
     visitorType: VisitorType
 ) : Color {
     return if (selectedVisitorType == visitorType) {
-        MaterialTheme.colorScheme.visitorFontWhiteColor
+        MaterialTheme.colorScheme.fontWhiteColor
     } else {
         MaterialTheme.colorScheme.visitorTextFontColor
     }

@@ -183,7 +183,7 @@ val ColorScheme.visitorInitialsFontColor: Color
         return White
     }
 
-val ColorScheme.visitorFontWhiteColor: Color
+val ColorScheme.fontWhiteColor: Color
     @Composable
     get() {
         return White
