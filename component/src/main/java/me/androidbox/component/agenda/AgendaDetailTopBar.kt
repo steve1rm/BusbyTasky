@@ -32,10 +32,10 @@ import me.androidbox.component.ui.theme.topbarFontColor
 fun AgendaDetailTopBar(
     editModeType: EditModeType,
     displayDate: String,
-    modifier: Modifier = Modifier,
     onCloseClicked: () -> Unit,
     onEditClicked: () -> Unit,
-    onSaveClicked: () -> Unit
+    onSaveClicked: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     Row(modifier = modifier,
         verticalAlignment = Alignment.CenterVertically,
