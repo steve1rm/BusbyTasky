@@ -13,5 +13,4 @@ data class EventScreenState(
     val selectedVisitor: VisitorInfo? = null,
     val saveEditOrDescriptionContent: String = "",
     val selectedAgendaActionType: AgendaActionType = AgendaActionType.DELETE_EVENT,
-    val saveEventDetails: Event = Event()
 )

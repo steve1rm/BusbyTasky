@@ -64,21 +64,26 @@ class EventViewModel @Inject constructor(
                 }
             }
             is EventScreenEvent.OnSaveEventDetails -> {
-                _eventScreenState.update { eventScreenState ->
-                    eventScreenState.copy(
-                        saveEventDetails = eventScreenEvent.event
-                    )
-                }
+                /* TODO Get all the information related from teh EventScreenState
+                *       and create the Event object */
 
-                /* Insert this event into the room db */
-                insertEventDetails()
+                /* Then insert this event into the room db
+                val Event = Event(
+                    id = UUID.randomUUID().toString(),
+                    description = eventScreenState.value.saveEditOrDescriptionContent,
+                    photos = eventScreenState.value.listOfPhotoUri,
+                    isUserEventCreator = true,
+                    ...
+                )
+                   insertEventDetails(event)
+                 */
             }
         }
     }
 
-    private fun insertEventDetails() {
+    private fun insertEventDetails(event: Event) {
         viewModelScope.launch {
-            eventRepository.insertEvent(eventScreenState.value.saveEventDetails)
+            eventRepository.insertEvent(event)
         }
     }
 
