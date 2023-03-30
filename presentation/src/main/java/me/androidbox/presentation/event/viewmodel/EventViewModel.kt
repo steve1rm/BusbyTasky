@@ -70,7 +70,7 @@ class EventViewModel @Inject constructor(
                     )
                 }
 
-                /* TODO Insert this event into the room db */
+                /* Insert this event into the room db */
                 insertEventDetails()
             }
         }
