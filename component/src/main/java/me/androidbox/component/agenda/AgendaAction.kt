@@ -11,6 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -38,11 +39,9 @@ fun AgendaAction(
                 modifier
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp)
-                    .background(
-                        color = MaterialTheme.colorScheme.divider,
-                        shape = RoundedCornerShape(8.dp)
-                    ),
-                thickness = 1.dp
+                    .clip(shape = RoundedCornerShape(8.dp)),
+                thickness = 1.dp,
+                color = MaterialTheme.colorScheme.divider
             )
         }
 
@@ -63,10 +62,8 @@ fun AgendaAction(
             modifier
                 .fillMaxWidth()
                 .padding(horizontal = 144.dp)
-                .background(
-                    color = MaterialTheme.colorScheme.dividerBlack,
-                    shape = RoundedCornerShape(8.dp)
-                ),
+                .clip(RoundedCornerShape(16.dp)),
+            color = MaterialTheme.colorScheme.dividerBlack,
             thickness = 2.dp)
     }
 }
