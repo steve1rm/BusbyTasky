@@ -1,6 +1,7 @@
 package me.androidbox.presentation.event.screen
 
 import android.net.Uri
+import me.androidbox.component.agenda.AgendaActionType
 import me.androidbox.component.agenda.VisitorType
 import me.androidbox.component.event.VisitorInfo
 
@@ -10,4 +11,5 @@ sealed interface EventScreenEvent {
     data class OnSelectedVisitorType(val visitorType: VisitorType): EventScreenEvent
     data class OnSaveEditOrDescriptionContent(val content: String): EventScreenEvent
     data class OnDeleteVisitor(val visitorInfo: VisitorInfo): EventScreenEvent
+    data class OnSelectedAgendaAction(val agendaActionType: AgendaActionType): EventScreenEvent
 }
