@@ -63,6 +63,22 @@ class EventViewModel @Inject constructor(
                     )
                 }
             }
+            is EventScreenEvent.OnSaveEventDetails -> {
+                _eventScreenState.update { eventScreenState ->
+                    eventScreenState.copy(
+                        saveEventDetails = eventScreenEvent.event
+                    )
+                }
+
+                /* TODO Insert this event into the room db */
+                insertEventDetails()
+            }
+        }
+    }
+
+    private fun insertEventDetails() {
+        viewModelScope.launch {
+            eventRepository.insertEvent(eventScreenState.value.saveEventDetails)
         }
     }
 
