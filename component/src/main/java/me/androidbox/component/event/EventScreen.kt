@@ -49,32 +49,40 @@ fun EventScreen(
             AgendaHeader(agendaHeaderItem = AgendaHeaderItem.EVENT, subTitle = "Meeting")
 
             Spacer(modifier = modifier.height(26.dp))
-            AgendaDuration()
+     //       AgendaDuration()
 
             Spacer(modifier = modifier.height(26.dp))
-            AlarmReminder()
+     //       AlarmReminder()
 
             Spacer(modifier = modifier.height(26.dp))
+/*
             VisitorFilter(
                 onAllClicked = {  },
                 onGoingClicked = {  },
                 onNotGoingClicked = { })
+*/
 
             Spacer(modifier = modifier.height(26.dp))
+/*
             VisitorSection(titleResId = R.string.going) {
                 Visitor(visitorInitials = "SM", visitorName = "Steve Mason") {
                 }
             }
+*/
 
             Spacer(modifier = modifier.height(26.dp))
+/*
             VisitorSection(titleResId = R.string.not_going) {
                 Visitor(visitorInitials = "PR", visitorName = "Peter Rabbit", isCreator = false) {
                 }
             }
+*/
 
             Spacer(modifier = modifier.height(16.dp))
+/*
             AgendaAction(headingResId = R.string.delete_reminder, showTopDivider = true) {
             }
+*/
         }
     }
 }

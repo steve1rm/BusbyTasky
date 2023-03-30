@@ -43,8 +43,10 @@ fun VisitorSection(
 fun PreviewVisitorSection() {
     BusbyTaskyTheme {
         VisitorSection(titleResId = R.string.going) {
-            Visitor(visitorInitials = "SM", visitorName = "Steve Mason") {
+/*
+            VisitorItem(visitorInitials = "SM", visitorName = "Steve Mason") {
             }
+*/
         }
     }
 }

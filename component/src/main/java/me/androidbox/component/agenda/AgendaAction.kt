@@ -11,6 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -25,24 +26,22 @@ import java.util.*
 
 @Composable
 fun AgendaAction(
+    agendaActionType: AgendaActionType,
     modifier: Modifier = Modifier,
-    showTopDivider: Boolean = false,
-    @StringRes headingResId: Int,
-    onActionClicked: () -> Unit,
+    onActionClicked: (AgendaActionType) -> Unit,
 ) {
     Column(modifier = modifier,
     horizontalAlignment = Alignment.CenterHorizontally) {
 
-        if(showTopDivider) {
+        /* Reminders and Tasks have a top divider */
+        if(agendaActionType.showDivider) {
             Divider(
                 modifier
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp)
-                    .background(
-                        color = MaterialTheme.colorScheme.divider,
-                        shape = RoundedCornerShape(8.dp)
-                    ),
-                thickness = 1.dp
+                    .clip(shape = RoundedCornerShape(8.dp)),
+                thickness = 1.dp,
+                color = MaterialTheme.colorScheme.divider
             )
         }
 
@@ -50,9 +49,9 @@ fun AgendaAction(
 
         Text(
             modifier = Modifier.clickable {
-                onActionClicked()
+                onActionClicked(agendaActionType)
             },
-            text = stringResource(id = headingResId).uppercase(Locale.getDefault()),
+            text = stringResource(id = agendaActionType.titleRes).uppercase(Locale.getDefault()),
             fontSize = 16.sp,
             color = MaterialTheme.colorScheme.visitorTextFontColor,
             fontWeight = FontWeight.SemiBold)
@@ -63,12 +62,18 @@ fun AgendaAction(
             modifier
                 .fillMaxWidth()
                 .padding(horizontal = 144.dp)
-                .background(
-                    color = MaterialTheme.colorScheme.dividerBlack,
-                    shape = RoundedCornerShape(8.dp)
-                ),
+                .clip(RoundedCornerShape(16.dp)),
+            color = MaterialTheme.colorScheme.dividerBlack,
             thickness = 2.dp)
     }
+}
+
+enum class AgendaActionType(@StringRes val titleRes: Int, val showDivider: Boolean) {
+    DELETE_EVENT(titleRes = R.string.delete_event, showDivider = false),
+    LEAVE_EVENT(titleRes = R.string.leave_event, showDivider = false),
+    JOIN_EVENT(titleRes = R.string.join_event, showDivider = false),
+    DELETE_TASK(titleRes = R.string.delete_task, showDivider = true),
+    DELETE_REMINDER(titleRes = R.string.delete_reminder, showDivider = true)
 }
 
 @Composable
@@ -76,8 +81,7 @@ fun AgendaAction(
 fun PreviewAgendaActionShowDivider() {
     BusbyTaskyTheme {
         AgendaAction(
-            headingResId = R.string.delete_reminder,
-            showTopDivider = true,
+            agendaActionType = AgendaActionType.DELETE_REMINDER,
             onActionClicked = {}
         )
     }
@@ -88,8 +92,7 @@ fun PreviewAgendaActionShowDivider() {
 fun PreviewAgendaActionHideDivider() {
     BusbyTaskyTheme {
         AgendaAction(
-            headingResId = R.string.leave_event,
-            showTopDivider = false,
+            agendaActionType = AgendaActionType.LEAVE_EVENT,
             onActionClicked = {}
         )
     }

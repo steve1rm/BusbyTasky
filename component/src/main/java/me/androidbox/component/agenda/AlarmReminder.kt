@@ -2,7 +2,6 @@ package me.androidbox.component.agenda
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -17,45 +16,43 @@ import androidx.compose.ui.unit.sp
 import me.androidbox.component.R
 import me.androidbox.component.ui.theme.BusbyTaskyTheme
 import me.androidbox.component.ui.theme.agendaBodyTextColor
-import me.androidbox.component.ui.theme.divider
+import me.androidbox.component.ui.theme.backgroundWhiteColor
 
 @Composable
-fun AlarmReminder(modifier: Modifier = Modifier) {
-    Column(modifier = modifier.fillMaxWidth().background(color = MaterialTheme.colorScheme.background)) {
-        Row(modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically) {
-            Row(modifier = Modifier.weight(4F)) {
+fun AlarmReminder(
+    reminderText: String,
+    modifier: Modifier = Modifier) {
+        Row(modifier = modifier,
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween) {
+            Row {
                 Icon(painter = painterResource(id = R.drawable.bell), contentDescription = "bell")
 
                 Spacer(modifier = Modifier.width(20.dp))
 
                 Text(
-                    text = "30 minutes before",
+                    text = reminderText,
                     fontWeight = FontWeight.Normal,
                     fontSize = 16.sp,
                     color = MaterialTheme.colorScheme.agendaBodyTextColor)
             }
 
-            Row(modifier = Modifier.weight(1f),
-                horizontalArrangement = Arrangement.End) {
+            Row {
                 Icon(painter = painterResource(id = R.drawable.forward_arrow), contentDescription = "forward arrow")
             }
         }
-
-        Spacer(modifier = Modifier.height(26.dp))
-
-        Divider(
-            modifier.fillMaxWidth().padding(horizontal = 16.dp),
-            color = MaterialTheme.colorScheme.divider,
-            thickness = 1.dp)
-    }
 }
 
 @Composable
 @Preview(showBackground = true, name = "Alarm reminder")
 fun PreviewAlarmReminder() {
     BusbyTaskyTheme {
-        AlarmReminder()
+        AlarmReminder(
+            reminderText = "30 minutes before",
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(color = MaterialTheme.colorScheme.backgroundWhiteColor)
+        )
     }
 }
 

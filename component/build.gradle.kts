@@ -49,6 +49,8 @@ dependencies {
     implementation(libs.appcompat)
     implementation(libs.material)
 
+    implementation("io.coil-kt:coil-compose:2.1.0")
+
     debugImplementation(tests.ui.tooling)
 
     testImplementation(tests.junit)
