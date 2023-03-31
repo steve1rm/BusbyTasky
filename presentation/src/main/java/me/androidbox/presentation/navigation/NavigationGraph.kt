@@ -7,9 +7,11 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navigation
 import me.androidbox.presentation.agenda.screen.AgendaScreen
 import me.androidbox.presentation.agenda.viewmodel.AgendaViewModel
 import me.androidbox.presentation.event.screen.EventScreen
+import me.androidbox.presentation.event.screen.EventScreenState
 import me.androidbox.presentation.event.viewmodel.EventViewModel
 import me.androidbox.presentation.login.screen.LoginScreen
 import me.androidbox.presentation.login.screen.RegisterScreen
@@ -85,12 +87,15 @@ fun NavigationGraph(
                 agendaScreenState = agendaScreenState,
                 agendaScreenEvent = { agendaScreenEvent ->
                     agendaViewModel.onAgendaScreenEvent(agendaScreenEvent)
-                })
+                },
+            onSelectedAgendaItem = {
+                navHostController.navigate(Screen.EventScreen.route)
+            })
         }
 
         /* Event Screen */
         composable(
-            route = Screen.EditScreen.route
+            route = Screen.EventScreen.route
         ) {
             val eventViewModel: EventViewModel = hiltViewModel()
             val eventScreenState by eventViewModel.eventScreenState.collectAsStateWithLifecycle()
