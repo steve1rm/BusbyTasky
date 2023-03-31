@@ -10,6 +10,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import me.androidbox.presentation.agenda.screen.AgendaScreen
 import me.androidbox.presentation.agenda.viewmodel.AgendaViewModel
+import me.androidbox.presentation.edit.screen.EditScreen
+import me.androidbox.presentation.edit.screen.TitleType
+import me.androidbox.presentation.edit.viewmodel.EditScreenViewModel
 import me.androidbox.presentation.event.screen.EventScreen
 import me.androidbox.presentation.event.screen.EventScreenState
 import me.androidbox.presentation.event.viewmodel.EventViewModel
@@ -105,6 +108,31 @@ fun NavigationGraph(
                 eventScreenState = eventScreenState,
                 eventScreenEvent = { eventScreenEvent ->
                     eventViewModel.onEventScreenEvent(eventScreenEvent)
+                },
+                onEditTitle = { title ->
+                    navHostController.navigate(Screen.EditScreen.route)
+                },
+                onEditDescription = { description ->
+                    navHostController.navigate(Screen.EditScreen.route)
+                }
+            )
+        }
+        
+        /* Edit Screen */
+        composable(
+            route = Screen.EditScreen.route
+        ) {
+            val editScreenViewModel: EditScreenViewModel = hiltViewModel()
+            val editScreenState by editScreenViewModel.editScreenState.collectAsStateWithLifecycle()
+            
+            EditScreen(
+                titleType = TitleType.TITLE,
+                editScreenState = editScreenState,
+                editScreenEvent = { editScreenEvent ->
+                    editScreenViewModel.onEditScreenEvent(editScreenEvent)
+                },
+                onBackClicked = {
+                    navHostController.popBackStack()
                 }
             )
         }

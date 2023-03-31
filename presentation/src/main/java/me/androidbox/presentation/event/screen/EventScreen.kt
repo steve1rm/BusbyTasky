@@ -31,6 +31,8 @@ import me.androidbox.presentation.edit.screen.TitleType
 fun EventScreen(
     eventScreenState: EventScreenState,
     eventScreenEvent: (EventScreenEvent) -> Unit,
+    onEditTitle: (title: String) -> Unit,
+    onEditDescription: (description: String) -> Unit,
     modifier: Modifier = Modifier) {
 
     Scaffold(
@@ -63,7 +65,18 @@ fun EventScreen(
                     .padding(horizontal = 16.dp)
                 ) {
                     Spacer(modifier = modifier.height(30.dp))
-                    AgendaHeader(agendaHeaderItem = AgendaHeaderItem.EVENT, subTitle = "Meeting")
+                    AgendaHeader(
+                        agendaHeaderItem = AgendaHeaderItem.EVENT,
+                        subTitle = "Meeting",
+                        description = "This is the description",
+                        isEditMode = true,
+                        onEditTitleClicked = {
+                            onEditTitle("title")
+                        },
+                        onEditDescriptionClicked = {
+                            onEditDescription("description")
+                        }
+                    )
 
                     PhotoPicker(
                         listOfPhotoUri = eventScreenState.listOfPhotoUri,
@@ -136,7 +149,9 @@ fun PreviewEventScreen() {
         EventScreen(
             eventScreenState = EventScreenState(),
             eventScreenEvent = {},
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
+            onEditDescription = {},
+            onEditTitle = {}
         )
     }
 }

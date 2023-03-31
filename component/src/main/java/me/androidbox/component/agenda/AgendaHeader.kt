@@ -9,6 +9,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -24,8 +25,8 @@ fun AgendaHeader(
     subTitle: String,
     description: String,
     isEditMode: Boolean,
-    onEditTitleClicked: () -> Unit,
-    onEditDescriptionClicked: () -> Unit,
+    onEditTitleClicked: (title: String) -> Unit,
+    onEditDescriptionClicked: (description: String) -> Unit,
     modifier: Modifier = Modifier) {
 
     Column(modifier = modifier) {
@@ -70,11 +71,12 @@ fun AgendaHeader(
             ) {
                 if(isEditMode) {
                     IconButton(onClick = {
-                        /* Open edit screen to change the description */
+                        onEditTitleClicked(subTitle)
                     }) {
                         Icon(
                             painter = painterResource(id = R.drawable.forward_arrow),
-                            contentDescription = stringResource(R.string.forward_arrow)
+                            contentDescription = stringResource(R.string.forward_arrow),
+                            tint = Color.Black
                         )
                     }
                 }
@@ -104,11 +106,12 @@ fun AgendaHeader(
 
             if(isEditMode) {
                 IconButton(onClick = {
-                    /* Open edit screen to change the description */
+                    onEditDescriptionClicked(description)
                 }) {
                     Icon(
                         painter = painterResource(id = R.drawable.forward_arrow),
-                        contentDescription = stringResource(R.string.forward_arrow)
+                        contentDescription = stringResource(R.string.forward_arrow),
+                        tint = Color.Black
                     )
                 }
             }
