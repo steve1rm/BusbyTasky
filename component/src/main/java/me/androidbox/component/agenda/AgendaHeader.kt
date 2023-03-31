@@ -23,6 +23,7 @@ fun AgendaHeader(
     agendaHeaderItem: AgendaHeaderItem,
     subTitle: String,
     description: String,
+    isEditMode: Boolean,
     onEditTitleClicked: () -> Unit,
     onEditDescriptionClicked: () -> Unit,
     modifier: Modifier = Modifier) {
@@ -67,13 +68,15 @@ fun AgendaHeader(
             Row(modifier = Modifier.weight(1F),
                 horizontalArrangement = Arrangement.End
             ) {
-                IconButton(onClick = {
-                    /* Open edit screen to change the description */
-                }) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.forward_arrow),
-                        contentDescription = stringResource(R.string.forward_arrow)
-                    )
+                if(isEditMode) {
+                    IconButton(onClick = {
+                        /* Open edit screen to change the description */
+                    }) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.forward_arrow),
+                            contentDescription = stringResource(R.string.forward_arrow)
+                        )
+                    }
                 }
             }
         }
@@ -99,13 +102,15 @@ fun AgendaHeader(
 
             Spacer(modifier = Modifier.width(14.dp))
 
-            IconButton(onClick = {
-               /* Open edit screen to change the description */
-            }) {
-                Icon(
-                    painter = painterResource(id = R.drawable.forward_arrow),
-                    contentDescription = stringResource(R.string.forward_arrow)
-                )
+            if(isEditMode) {
+                IconButton(onClick = {
+                    /* Open edit screen to change the description */
+                }) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.forward_arrow),
+                        contentDescription = stringResource(R.string.forward_arrow)
+                    )
+                }
             }
         }
     }
@@ -123,6 +128,7 @@ fun PreviewAgendaHeaderEvent() {
             subTitle = "Sample task",
             description = "Needs to complete the event details",
             onEditTitleClicked = {},
+            isEditMode = true,
             onEditDescriptionClicked = {}
         )
     }
@@ -139,6 +145,7 @@ fun PreviewAgendaHeaderTask() {
             agendaHeaderItem = AgendaHeaderItem.TASK,
             subTitle = "Sample event",
             description = "Needs to complete the task details",
+            isEditMode = false,
             onEditTitleClicked = {},
             onEditDescriptionClicked = {}
         )
@@ -156,6 +163,7 @@ fun PreviewAgendaHeaderReminder() {
             agendaHeaderItem = AgendaHeaderItem.REMINDER,
             subTitle = "Sample reminder",
             description = "Needs to complete",
+            isEditMode = true,
             onEditTitleClicked = {},
             onEditDescriptionClicked = {}
         )
