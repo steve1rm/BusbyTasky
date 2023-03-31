@@ -5,10 +5,7 @@ import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.Divider
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -23,10 +20,14 @@ import me.androidbox.component.ui.theme.*
 
 @Composable
 fun AgendaHeader(
-    modifier: Modifier = Modifier,
     agendaHeaderItem: AgendaHeaderItem,
-    subTitle: String
-    ) {
+    subTitle: String,
+    description: String,
+    isEditMode: Boolean,
+    onEditTitleClicked: () -> Unit,
+    onEditDescriptionClicked: () -> Unit,
+    modifier: Modifier = Modifier) {
+
     Column(modifier = modifier) {
         Row(modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically) {
@@ -67,13 +68,18 @@ fun AgendaHeader(
             Row(modifier = Modifier.weight(1F),
                 horizontalArrangement = Arrangement.End
             ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.forward_arrow),
-                    contentDescription = stringResource(R.string.forward_arrow)
-                )
+                if(isEditMode) {
+                    IconButton(onClick = {
+                        /* Open edit screen to change the description */
+                    }) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.forward_arrow),
+                            contentDescription = stringResource(R.string.forward_arrow)
+                        )
+                    }
+                }
             }
         }
-
         Spacer(modifier = Modifier.height(22.dp))
 
         Divider(
@@ -81,6 +87,32 @@ fun AgendaHeader(
                 .fillMaxWidth()
                 .background(color = MaterialTheme.colorScheme.headerDividerColor)
         )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Row(modifier = Modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween) {
+            Text(
+                text = description,
+                fontWeight = FontWeight.Normal,
+                fontSize = 16.sp,
+                color = MaterialTheme.colorScheme.agendaSubTitleHeaderColor
+            )
+
+            Spacer(modifier = Modifier.width(14.dp))
+
+            if(isEditMode) {
+                IconButton(onClick = {
+                    /* Open edit screen to change the description */
+                }) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.forward_arrow),
+                        contentDescription = stringResource(R.string.forward_arrow)
+                    )
+                }
+            }
+        }
     }
 }
 
@@ -89,9 +121,15 @@ fun AgendaHeader(
 fun PreviewAgendaHeaderEvent() {
     BusbyTaskyTheme {
         AgendaHeader(
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp),
             agendaHeaderItem = AgendaHeaderItem.EVENT,
-            subTitle = "Sample task"
+            subTitle = "Sample task",
+            description = "Needs to complete the event details",
+            onEditTitleClicked = {},
+            isEditMode = true,
+            onEditDescriptionClicked = {}
         )
     }
 }
@@ -101,9 +139,15 @@ fun PreviewAgendaHeaderEvent() {
 fun PreviewAgendaHeaderTask() {
     BusbyTaskyTheme {
         AgendaHeader(
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp),
             agendaHeaderItem = AgendaHeaderItem.TASK,
-            subTitle = "Sample event"
+            subTitle = "Sample event",
+            description = "Needs to complete the task details",
+            isEditMode = false,
+            onEditTitleClicked = {},
+            onEditDescriptionClicked = {}
         )
     }
 }
@@ -113,9 +157,15 @@ fun PreviewAgendaHeaderTask() {
 fun PreviewAgendaHeaderReminder() {
     BusbyTaskyTheme {
         AgendaHeader(
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp),
             agendaHeaderItem = AgendaHeaderItem.REMINDER,
-            subTitle = "Sample reminder"
+            subTitle = "Sample reminder",
+            description = "Needs to complete",
+            isEditMode = true,
+            onEditTitleClicked = {},
+            onEditDescriptionClicked = {}
         )
     }
 }
