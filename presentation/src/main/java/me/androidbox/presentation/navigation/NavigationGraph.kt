@@ -1,20 +1,23 @@
 package me.androidbox.presentation.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.core.os.bundleOf
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.navigation
+import androidx.navigation.navArgument
 import me.androidbox.presentation.agenda.screen.AgendaScreen
 import me.androidbox.presentation.agenda.viewmodel.AgendaViewModel
 import me.androidbox.presentation.edit.screen.EditScreen
+import me.androidbox.presentation.edit.screen.EditScreenEvent
 import me.androidbox.presentation.edit.screen.TitleType
 import me.androidbox.presentation.edit.viewmodel.EditScreenViewModel
 import me.androidbox.presentation.event.screen.EventScreen
-import me.androidbox.presentation.event.screen.EventScreenState
 import me.androidbox.presentation.event.viewmodel.EventViewModel
 import me.androidbox.presentation.login.screen.LoginScreen
 import me.androidbox.presentation.login.screen.RegisterScreen
@@ -109,10 +112,10 @@ fun NavigationGraph(
                 eventScreenEvent = { eventScreenEvent ->
                     eventViewModel.onEventScreenEvent(eventScreenEvent)
                 },
-                onEditTitle = { title ->
-                    navHostController.navigate(Screen.EditScreen.route)
+                onEditTitleClicked = { title ->
+                    navHostController.navigate(route = "edit_screen/$title")
                 },
-                onEditDescription = { description ->
+                onEditDescriptionClicked = { description ->
                     navHostController.navigate(Screen.EditScreen.route)
                 }
             )
@@ -120,11 +123,22 @@ fun NavigationGraph(
         
         /* Edit Screen */
         composable(
-            route = Screen.EditScreen.route
+            route = Screen.EditScreen.route,
+            arguments = listOf(navArgument("content") {
+                type = NavType.StringType
+            })
         ) {
             val editScreenViewModel: EditScreenViewModel = hiltViewModel()
             val editScreenState by editScreenViewModel.editScreenState.collectAsStateWithLifecycle()
-            
+
+            /* TODO Just assigning an empty string for now if null just to get this working */
+            val content = it.arguments?.getString("content") ?: ""
+
+            LaunchedEffect(key1 = true) {
+                editScreenViewModel.onEditScreenEvent(
+                    editScreenEvent = EditScreenEvent.OnContentChanged(content))
+            }
+
             EditScreen(
                 titleType = TitleType.TITLE,
                 editScreenState = editScreenState,
