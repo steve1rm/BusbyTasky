@@ -65,9 +65,12 @@ fun EventScreen(
                     Spacer(modifier = modifier.height(30.dp))
                     AgendaHeader(agendaHeaderItem = AgendaHeaderItem.EVENT, subTitle = "Meeting")
 
-                    PhotoPicker(listOfPhotoUri = emptyList(), onPhotoUriSelected = {
-
-                    })
+                    PhotoPicker(
+                        listOfPhotoUri = eventScreenState.listOfPhotoUri,
+                        onPhotoUriSelected = { uri ->
+                            eventScreenEvent(EventScreenEvent.OnPhotoUriAdded(uri))
+                        }
+                    )
 
                     Spacer(modifier = modifier.height(26.dp))
                     AgendaDuration(
