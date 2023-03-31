@@ -42,7 +42,7 @@ fun EventScreen(
                     .background(color = MaterialTheme.colorScheme.backgroundBackColor)
                     .padding(horizontal = 16.dp),
                 editModeType = EditModeType.EditMode(),
-                displayDate = "31 March 2023",
+                displayDate = "31 March 2023", /* TODO Get the current date from the zoneDateTime and format it */
                 onCloseClicked = {  },
                 onEditClicked = {  },
                 onSaveClicked = {  })
