@@ -27,7 +27,8 @@ class EditScreenViewModel @Inject constructor() : ViewModel() {
             }
             EditScreenEvent.OnSaveClicked -> {
                 Log.d("EDIT_SCREEN", "Content [ ${editScreenState.value} ]")
-                /* TODO Save the content which could be either the title of the description */
+                /* TODO Not sure about this - Should this be saved directly to the DB which could be either the title of the description
+                *   Or do we navigate back and save the title and description on the Edit Screen when the save is clicked */
             }
         }
     }
