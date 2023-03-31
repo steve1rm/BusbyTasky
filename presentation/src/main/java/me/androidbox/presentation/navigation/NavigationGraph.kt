@@ -89,6 +89,7 @@ fun NavigationGraph(
                     agendaViewModel.onAgendaScreenEvent(agendaScreenEvent)
                 },
             onSelectedAgendaItem = {
+                /* TODO The item in the dropdown menu should be an enum or a sealed class that will determine which item was clicked */
                 navHostController.navigate(Screen.EventScreen.route)
             })
         }
