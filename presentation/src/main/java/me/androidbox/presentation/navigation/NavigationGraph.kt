@@ -9,6 +9,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import me.androidbox.presentation.agenda.screen.AgendaScreen
 import me.androidbox.presentation.agenda.viewmodel.AgendaViewModel
+import me.androidbox.presentation.event.screen.EventScreen
+import me.androidbox.presentation.event.viewmodel.EventViewModel
 import me.androidbox.presentation.login.screen.LoginScreen
 import me.androidbox.presentation.login.screen.RegisterScreen
 import me.androidbox.presentation.login.viewmodel.LoginViewModel
@@ -84,6 +86,21 @@ fun NavigationGraph(
                 agendaScreenEvent = { agendaScreenEvent ->
                     agendaViewModel.onAgendaScreenEvent(agendaScreenEvent)
                 })
+        }
+
+        /* Event Screen */
+        composable(
+            route = Screen.EditScreen.route
+        ) {
+            val eventViewModel: EventViewModel = hiltViewModel()
+            val eventScreenState by eventViewModel.eventScreenState.collectAsStateWithLifecycle()
+
+            EventScreen(
+                eventScreenState = eventScreenState,
+                eventScreenEvent = { eventScreenEvent ->
+                    eventViewModel.onEventScreenEvent(eventScreenEvent)
+                }
+            )
         }
     }
 }

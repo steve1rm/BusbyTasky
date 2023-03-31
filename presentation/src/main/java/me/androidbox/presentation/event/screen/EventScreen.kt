@@ -28,6 +28,8 @@ import me.androidbox.presentation.edit.screen.TitleType
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EventScreen(
+    eventScreenState: EventScreenState,
+    eventScreenEvent: (EventScreenEvent) -> Unit,
     modifier: Modifier = Modifier) {
 
     Scaffold(
@@ -128,6 +130,8 @@ fun EventScreen(
 fun PreviewEventScreen() {
     BusbyTaskyTheme {
         EventScreen(
+            eventScreenState = EventScreenState(),
+            eventScreenEvent = {},
             modifier = Modifier.fillMaxWidth()
         )
     }
