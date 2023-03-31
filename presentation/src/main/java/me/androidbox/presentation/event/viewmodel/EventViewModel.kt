@@ -63,6 +63,27 @@ class EventViewModel @Inject constructor(
                     )
                 }
             }
+            is EventScreenEvent.OnSaveEventDetails -> {
+                /* TODO Get all the information related from teh EventScreenState
+                *       and create the Event object */
+
+                /* Then insert this event into the room db
+                val Event = Event(
+                    id = UUID.randomUUID().toString(),
+                    description = eventScreenState.value.saveEditOrDescriptionContent,
+                    photos = eventScreenState.value.listOfPhotoUri,
+                    isUserEventCreator = true,
+                    ...
+                )
+                   insertEventDetails(event)
+                 */
+            }
+        }
+    }
+
+    private fun insertEventDetails(event: Event) {
+        viewModelScope.launch {
+            eventRepository.insertEvent(event)
         }
     }
 
