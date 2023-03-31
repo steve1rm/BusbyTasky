@@ -21,6 +21,7 @@ import me.androidbox.component.agenda.*
 import me.androidbox.component.general.AgendaItemEditTopAppBar
 import me.androidbox.component.general.PhotoPicker
 import me.androidbox.component.ui.theme.BusbyTaskyTheme
+import me.androidbox.component.ui.theme.backgroundBackColor
 import me.androidbox.component.ui.theme.backgroundWhiteColor
 import me.androidbox.presentation.edit.screen.EditScreenEvent
 import me.androidbox.presentation.edit.screen.TitleType
@@ -35,16 +36,16 @@ fun EventScreen(
     Scaffold(
         modifier = modifier,
         topBar = {
-            AgendaItemEditTopAppBar(
-                title = stringResource(id = TitleType.TITLE.contentTypeRes),
+            AgendaDetailTopBar(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(color = Color.Black),
-                onSaveClicked = {
-           //         editScreenEvent(EditScreenEvent.OnSaveClicked)
-                },
-                onBackIconClicked = {}
-            )
+                    .background(color = MaterialTheme.colorScheme.backgroundBackColor)
+                    .padding(horizontal = 16.dp),
+                editModeType = EditModeType.EditMode(),
+                displayDate = "31 March 2023",
+                onCloseClicked = {  },
+                onEditClicked = {  },
+                onSaveClicked = {  })
 
         },
         content = {
