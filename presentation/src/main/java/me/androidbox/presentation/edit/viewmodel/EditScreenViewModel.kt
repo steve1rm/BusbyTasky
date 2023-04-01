@@ -13,14 +13,10 @@ import me.androidbox.presentation.edit.screen.EditScreenState
 import javax.inject.Inject
 
 @HiltViewModel
-class EditScreenViewModel @Inject constructor(
-    private val savedStateHandle: SavedStateHandle
-) : ViewModel() {
+class EditScreenViewModel @Inject constructor() : ViewModel() {
 
     private val _editScreenState = MutableStateFlow(EditScreenState())
     val editScreenState = _editScreenState.asStateFlow()
-
-    val contentSavedState = savedStateHandle.getStateFlow("content", "")
 
     fun onEditScreenEvent(editScreenEvent: EditScreenEvent) {
         when(editScreenEvent) {
@@ -30,11 +26,6 @@ class EditScreenViewModel @Inject constructor(
                         content = editScreenEvent.content
                     )
                 }
-            }
-            is EditScreenEvent.OnSaveClicked -> {
-                Log.d("EDIT_SCREEN", "Content [ ${editScreenState.value} ]")
-                /* TODO save the updated content to savedStateHandle to be retrieved in the navigation EventScreen when navigating back to there */
-                savedStateHandle["content"] = editScreenEvent.content
             }
         }
     }

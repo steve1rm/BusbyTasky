@@ -28,20 +28,20 @@ fun EditScreen(
     editScreenEvent: (EditScreenEvent) -> Unit,
     modifier: Modifier = Modifier,
     onBackClicked: () -> Unit,
-    onSaveClicked: (content: String) -> Unit,
+    onSaveClicked: (content: String, contentType: ContentType) -> Unit,
 ) {
     Scaffold(modifier = modifier,
         topBar = {
-            val contentType = when(contentType) {
-                ContentType.Content -> stringResource(id = ContentType.Content.contentTypeRes)
+            val content = when(contentType) {
+                ContentType.TITLE -> stringResource(id = ContentType.TITLE.contentTypeRes)
                 ContentType.DESCRIPTION -> stringResource(id = ContentType.DESCRIPTION.contentTypeRes)
             }
 
             AgendaItemEditTopAppBar(
-                title = contentType,
+                title = content,
                 modifier = Modifier.fillMaxWidth(),
                 onSaveClicked = {
-                    onSaveClicked(editScreenState.content)
+                    onSaveClicked(editScreenState.content, contentType)
                 },
                 onBackIconClicked = {
                     onBackClicked()
@@ -56,7 +56,7 @@ fun EditScreen(
         ) {
 
             val fontSize =  when(contentType) {
-                ContentType.Content -> ContentType.Content.fontSize
+                ContentType.TITLE -> ContentType.TITLE.fontSize
                 ContentType.DESCRIPTION -> ContentType.DESCRIPTION.fontSize
             }
 
@@ -83,7 +83,7 @@ fun EditScreen(
 }
 
 enum class ContentType(@StringRes val contentTypeRes: Int, val fontSize: TextUnit) {
-    Content(contentTypeRes = R.string.edit_title, fontSize =  26.sp),
+    TITLE(contentTypeRes = R.string.edit_title, fontSize =  26.sp),
     DESCRIPTION(contentTypeRes = R.string.edit_description, fontSize =  16.sp)
 }
 
@@ -95,9 +95,9 @@ fun PreviewEditScreenTitle() {
             modifier = Modifier.fillMaxSize(),
             editScreenState = EditScreenState(content = "Meeting"),
             editScreenEvent = {},
-            contentType = ContentType.Content,
+            contentType = ContentType.TITLE,
             onBackClicked = {},
-            onSaveClicked = {}
+            onSaveClicked = { _, _, -> }
         )
     }
 }
@@ -112,7 +112,7 @@ fun PreviewEditScreenDescription() {
             editScreenEvent = {},
             contentType = ContentType.DESCRIPTION,
             onBackClicked = {},
-            onSaveClicked = {}
+            onSaveClicked = { _, _-> }
         )
     }
 }

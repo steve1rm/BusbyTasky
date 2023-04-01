@@ -106,8 +106,8 @@ fun NavigationGraph(
         ) {
             val eventViewModel: EventViewModel = hiltViewModel()
             val eventScreenState by eventViewModel.eventScreenState.collectAsStateWithLifecycle()
-            val title = it.savedStateHandle.get<String>("title") ?: "New Event"
-            val description = it.savedStateHandle.get<String>("description") ?: "New Description"
+            val title = it.savedStateHandle.get<String>(ContentType.TITLE.name) ?: "New Event"
+            val description = it.savedStateHandle.get<String>(ContentType.DESCRIPTION.name) ?: "New Description"
 
             LaunchedEffect(key1 = title, key2 = description) {
                 eventViewModel.onEventScreenEvent(
@@ -151,7 +151,7 @@ fun NavigationGraph(
             }
 
             EditScreen(
-                contentType = ContentType.Content,
+                contentType = ContentType.DESCRIPTION,
                 editScreenState = editScreenState,
                 editScreenEvent = { editScreenEvent ->
                     editScreenViewModel.onEditScreenEvent(editScreenEvent)
@@ -159,8 +159,8 @@ fun NavigationGraph(
                 onBackClicked = {
                     navHostController.popBackStack()
                 },
-                onSaveClicked = { content ->
-                    navHostController.previousBackStackEntry?.savedStateHandle?.set("title", content)
+                onSaveClicked = { content, contentType ->
+                    navHostController.previousBackStackEntry?.savedStateHandle?.set(contentType.name, content)
                     navHostController.popBackStack()
                 }
             )
