@@ -23,8 +23,6 @@ import me.androidbox.presentation.event.viewmodel.EventViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EventScreen(
-    title: String,
-    description: String,
     eventScreenState: EventScreenState,
     eventScreenEvent: (EventScreenEvent) -> Unit,
     onEditTitleClicked: (title: String) -> Unit,
@@ -32,13 +30,15 @@ fun EventScreen(
     viewModel: EventViewModel = hiltViewModel(),
     modifier: Modifier = Modifier) {
 
+/*
     LaunchedEffect(key1 = title, key2 = description) {
-     /*   viewModel.onEventScreenEvent(
+        viewModel.onEventScreenEvent(
             EventScreenEvent.OnSaveEditOrDescription(
                 title, description
             )
-        )*/
+        )
     }
+*/
 
     Scaffold(
         modifier = modifier,
@@ -132,8 +132,6 @@ fun EventScreen(
 fun PreviewEventScreen() {
     BusbyTaskyTheme {
         EventScreen(
-            title = "title of event",
-            description = "description of event",
             eventScreenState = EventScreenState(),
             eventScreenEvent = {},
             modifier = Modifier.fillMaxWidth(),

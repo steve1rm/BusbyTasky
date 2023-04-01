@@ -3,7 +3,6 @@ package me.androidbox.presentation.navigation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.core.os.bundleOf
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
@@ -18,6 +17,7 @@ import me.androidbox.presentation.edit.screen.EditScreenEvent
 import me.androidbox.presentation.edit.screen.TitleType
 import me.androidbox.presentation.edit.viewmodel.EditScreenViewModel
 import me.androidbox.presentation.event.screen.EventScreen
+import me.androidbox.presentation.event.screen.EventScreenEvent
 import me.androidbox.presentation.event.viewmodel.EventViewModel
 import me.androidbox.presentation.login.screen.LoginScreen
 import me.androidbox.presentation.login.screen.RegisterScreen
@@ -106,14 +106,19 @@ fun NavigationGraph(
         ) {
             val eventViewModel: EventViewModel = hiltViewModel()
             val eventScreenState by eventViewModel.eventScreenState.collectAsStateWithLifecycle()
-            val title = it.savedStateHandle.get<String>("title") ?: ""
-            val description = it.savedStateHandle.get<String>("description") ?: ""
+            val title = it.savedStateHandle.get<String>("title") ?: "New Event"
+            val description = it.savedStateHandle.get<String>("description") ?: "New Description"
 
-            val content = it.savedStateHandle.get<String>("id") ?: ""
+            LaunchedEffect(key1 = title, key2 = description) {
+                eventViewModel.onEventScreenEvent(
+                    EventScreenEvent.OnSaveEditOrDescription(
+                        title,
+                        description
+                    )
+                )
+            }
 
             EventScreen(
-                title = content,
-                description = description,
                 eventScreenState = eventScreenState,
                 eventScreenEvent = { eventScreenEvent ->
                     eventViewModel.onEventScreenEvent(eventScreenEvent)
@@ -158,7 +163,7 @@ fun NavigationGraph(
                 },
                 onSaveClicked = { content ->
                    // editScreenViewModel.onEditScreenEvent(EditScreenEvent.OnSaveClicked(content))
-                    navHostController.previousBackStackEntry?.savedStateHandle?.set("id", content)
+                    navHostController.previousBackStackEntry?.savedStateHandle?.set("title", content)
                     navHostController.popBackStack()
                 }
             )
