@@ -28,6 +28,7 @@ fun EditScreen(
     editScreenEvent: (EditScreenEvent) -> Unit,
     modifier: Modifier = Modifier,
     onBackClicked: () -> Unit,
+    onSaveClicked: (content: String) -> Unit,
 ) {
     Scaffold(modifier = modifier,
         topBar = {
@@ -40,9 +41,11 @@ fun EditScreen(
                 title = contentType,
                 modifier = Modifier.fillMaxWidth(),
                 onSaveClicked = {
-                    editScreenEvent(EditScreenEvent.OnSaveClicked)
+                    onSaveClicked(editScreenState.content)
                 },
-                onBackIconClicked = onBackClicked
+                onBackIconClicked = {
+                    onBackClicked()
+                }
             )
         }
     ) { paddingValues ->
@@ -94,6 +97,7 @@ fun PreviewEditScreenTitle() {
             editScreenEvent = {},
             titleType = TitleType.TITLE,
             onBackClicked = {},
+            onSaveClicked = {}
         )
     }
 }
@@ -108,6 +112,7 @@ fun PreviewEditScreenDescription() {
             editScreenEvent = {},
             titleType = TitleType.DESCRIPTION,
             onBackClicked = {},
+            onSaveClicked = {}
         )
     }
 }
