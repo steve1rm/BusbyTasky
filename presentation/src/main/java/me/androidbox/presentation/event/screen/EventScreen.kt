@@ -1,5 +1,6 @@
 package me.androidbox.presentation.event.screen
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -11,11 +12,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.maxkeppeker.sheets.core.models.base.rememberUseCaseState
+import com.maxkeppeler.sheets.calendar.CalendarDialog
+import com.maxkeppeler.sheets.calendar.models.CalendarConfig
+import com.maxkeppeler.sheets.calendar.models.CalendarSelection
+import com.maxkeppeler.sheets.calendar.models.CalendarStyle
+import com.maxkeppeler.sheets.date_time.DateTimeDialog
+import com.maxkeppeler.sheets.date_time.models.DateTimeSelection
 import me.androidbox.component.agenda.*
 import me.androidbox.component.general.PhotoPicker
 import me.androidbox.component.ui.theme.BusbyTaskyTheme
 import me.androidbox.component.ui.theme.backgroundBackColor
 import me.androidbox.component.ui.theme.backgroundWhiteColor
+import java.time.ZoneOffset
+import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
 
@@ -27,6 +37,9 @@ fun EventScreen(
     onEditTitleClicked: (title: String) -> Unit,
     onEditDescriptionClicked: (description: String) -> Unit,
     modifier: Modifier = Modifier) {
+
+    val calendarStateTime = rememberUseCaseState()
+    val calendarStateDate = rememberUseCaseState()
 
     Scaffold(
         modifier = modifier,
@@ -80,11 +93,18 @@ fun EventScreen(
 
                     Spacer(modifier = modifier.height(26.dp))
                     AgendaDuration(
+                        isEditMode = true,
                         startTime = timeFormatter.format(eventScreenState.startTimeDuration),
                         endTime = timeFormatter.format(eventScreenState.endTimeDuration),
                         startDate = dateFormatter.format(eventScreenState.startDateDuration),
                         endDate = dateFormatter.format(eventScreenState.endDateDuration),
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier.fillMaxWidth(),
+                        onStartDurationClicked = {
+                            calendarStateTime.show()
+                        },
+                        onEndDurationClicked = {
+                            calendarStateDate.show()
+                        }
                     )
 
                     Spacer(modifier = modifier.height(26.dp))
@@ -114,6 +134,30 @@ fun EventScreen(
             }
         }
     )
+
+    CalendarDialog(
+        state = calendarStateDate,
+        config = CalendarConfig(
+            style = CalendarStyle.MONTH,
+            monthSelection = true,
+            yearSelection = true
+        ),
+        selection = CalendarSelection.Date { localDate ->
+            Log.d("EVENT_SCREEN", "${dateFormatter.format(localDate)}")
+         //   agendaScreenEvent(AgendaScreenEvent.OnDateChanged(localDate))
+        }
+    )
+
+    DateTimeDialog(
+        state = calendarStateTime,
+        selection = DateTimeSelection.Time { localTime ->
+            localTime.toEpochSecond(localTime, ZoneOffset.UTC)
+
+            Log.d("EVENT_SCREEN", "${timeFormatter.format(localTime)}")
+            //   agendaScreenEvent(AgendaScreenEvent.OnDateChanged(localDate))
+        }
+    )
+
 }
 
 val dateFormatter = DateTimeFormatter.ofPattern("MMM dd yyyy", Locale.getDefault())
