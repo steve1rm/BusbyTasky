@@ -111,7 +111,7 @@ fun NavigationGraph(
 
             LaunchedEffect(key1 = title, key2 = description) {
                 eventViewModel.onEventScreenEvent(
-                    EventScreenEvent.OnSaveEditOrDescription(
+                    EventScreenEvent.OnSaveTitleOrDescription(
                         title,
                         description
                     )
