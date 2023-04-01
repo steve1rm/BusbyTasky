@@ -6,7 +6,9 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import me.androidbox.domain.agenda.usecase.UsersInitialsExtractionUseCase
 import me.androidbox.domain.authentication.ResponseState
 import me.androidbox.domain.authentication.model.Event
 import me.androidbox.domain.authentication.remote.EventRepository
@@ -18,6 +20,7 @@ import javax.inject.Inject
 @HiltViewModel
 class EventViewModel @Inject constructor(
     private val eventRepository: EventRepository,
+    private val usersInitialsExtractionUseCase: UsersInitialsExtractionUseCase
 ) : ViewModel() {
 
     private val _eventScreenState: MutableStateFlow<EventScreenState> = MutableStateFlow(EventScreenState())
@@ -26,10 +29,61 @@ class EventViewModel @Inject constructor(
     fun onEventScreenEvent(eventScreenEvent: EventScreenEvent) {
         when(eventScreenEvent) {
             is EventScreenEvent.OnPhotoUriAdded -> {
-                _eventScreenState.value = eventScreenState.value.copy(
-                    listOfPhotoUri = eventScreenState.value.listOfPhotoUri + eventScreenEvent.photoUri
-                )
+                _eventScreenState.update { eventScreenState ->
+                    eventScreenState.copy(
+                        listOfPhotoUri = eventScreenState.listOfPhotoUri + eventScreenEvent.photoUri
+                    )
+                }
             }
+            is EventScreenEvent.OnSelectedVisitorType -> {
+                _eventScreenState.update { eventScreenState ->
+                    eventScreenState.copy(
+                        selectedVisitorType = eventScreenEvent.visitorType
+                    )
+                }
+            }
+            is EventScreenEvent.OnSaveEditOrDescriptionContent -> {
+                _eventScreenState.update { eventScreenState ->
+                    eventScreenState.copy(
+                        saveEditOrDescriptionContent = eventScreenEvent.content
+                    )
+                }
+            }
+            is EventScreenEvent.OnDeleteVisitor -> {
+                _eventScreenState.update { eventScreenState ->
+                    eventScreenState.copy(
+                        selectedVisitor = eventScreenEvent.visitorInfo
+                    )
+                }
+            }
+            is EventScreenEvent.OnSelectedAgendaAction -> {
+                _eventScreenState.update { eventScreenState ->
+                    eventScreenState.copy(
+                        selectedAgendaActionType = eventScreenEvent.agendaActionType
+                    )
+                }
+            }
+            is EventScreenEvent.OnSaveEventDetails -> {
+                /* TODO Get all the information related from teh EventScreenState
+                *       and create the Event object */
+
+                /* Then insert this event into the room db
+                val Event = Event(
+                    id = UUID.randomUUID().toString(),
+                    description = eventScreenState.value.saveEditOrDescriptionContent,
+                    photos = eventScreenState.value.listOfPhotoUri,
+                    isUserEventCreator = true,
+                    ...
+                )
+                   insertEventDetails(event)
+                 */
+            }
+        }
+    }
+
+    private fun insertEventDetails(event: Event) {
+        viewModelScope.launch {
+            eventRepository.insertEvent(event)
         }
     }
 
