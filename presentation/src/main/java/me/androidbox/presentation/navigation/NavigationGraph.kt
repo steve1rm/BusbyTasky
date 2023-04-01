@@ -100,23 +100,31 @@ fun NavigationGraph(
             })
         }
 
-        /* Event Screen */
+        /* Event Detail Screen */
         composable(
             route = Screen.EventScreen.route
         ) {
             val eventViewModel: EventViewModel = hiltViewModel()
             val eventScreenState by eventViewModel.eventScreenState.collectAsStateWithLifecycle()
+            val title = it.savedStateHandle.get<String>("title") ?: ""
+            val description = it.savedStateHandle.get<String>("description") ?: ""
+
+            val content = it.savedStateHandle.get<String>("id") ?: ""
 
             EventScreen(
+                title = content,
+                description = description,
                 eventScreenState = eventScreenState,
                 eventScreenEvent = { eventScreenEvent ->
                     eventViewModel.onEventScreenEvent(eventScreenEvent)
                 },
                 onEditTitleClicked = { title ->
+                    /** Navigate to the edit screen with the title of the agenda item */
                     navHostController.navigate(route = "edit_screen/$title")
                 },
                 onEditDescriptionClicked = { description ->
-                    navHostController.navigate(Screen.EditScreen.route)
+                    /** Navigate to the edit screen with the title of the agenda item */
+                    navHostController.navigate("edit_screen/$description")
                 }
             )
         }
@@ -134,7 +142,7 @@ fun NavigationGraph(
             /* TODO Just assigning an empty string for now if null just to get this working */
             val content = it.arguments?.getString("content") ?: ""
 
-            LaunchedEffect(key1 = true) {
+            LaunchedEffect(key1 = content) {
                 editScreenViewModel.onEditScreenEvent(
                     editScreenEvent = EditScreenEvent.OnContentChanged(content))
             }
@@ -146,6 +154,11 @@ fun NavigationGraph(
                     editScreenViewModel.onEditScreenEvent(editScreenEvent)
                 },
                 onBackClicked = {
+                    navHostController.popBackStack()
+                },
+                onSaveClicked = { content ->
+                   // editScreenViewModel.onEditScreenEvent(EditScreenEvent.OnSaveClicked(content))
+                    navHostController.previousBackStackEntry?.savedStateHandle?.set("id", content)
                     navHostController.popBackStack()
                 }
             )

@@ -42,10 +42,11 @@ class EventViewModel @Inject constructor(
                     )
                 }
             }
-            is EventScreenEvent.OnSaveEditOrDescriptionContent -> {
+            is EventScreenEvent.OnSaveEditOrDescription -> {
                 _eventScreenState.update { eventScreenState ->
                     eventScreenState.copy(
-                        saveEditOrDescriptionContent = eventScreenEvent.content
+                        eventTitle = eventScreenEvent.title,
+                        eventDescription = eventScreenEvent.description
                     )
                 }
             }
