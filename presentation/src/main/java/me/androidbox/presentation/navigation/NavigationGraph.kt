@@ -137,19 +137,19 @@ fun NavigationGraph(
         /* Edit Screen */
         composable(
             route = Screen.EditScreen.route,
-            arguments = listOf(navArgument("content") {
+            arguments = listOf(navArgument(Screen.EditScreen.CONTENT) {
                 type = NavType.StringType
-            }, navArgument("contentType") {
+            }, navArgument(Screen.EditScreen.CONTENT_TYPE) {
                 type = NavType.StringType
             })
         ) {
             val editScreenViewModel: EditScreenViewModel = hiltViewModel()
             val editScreenState by editScreenViewModel.editScreenState.collectAsStateWithLifecycle()
-            val content = it.arguments?.getString("content") ?: ""
+            val content = it.arguments?.getString(Screen.EditScreen.CONTENT) ?: ""
 
             /** Get the contentType that has been edited which could be either the Title or the Description
              *  If null then return the default title instead */
-            val contentType = it.arguments?.getString("contentType")?.let { contentType ->
+            val contentType = it.arguments?.getString(Screen.EditScreen.CONTENT_TYPE)?.let { contentType ->
                 when(contentType) {
                     ContentType.TITLE.name -> ContentType.TITLE
                     ContentType.DESCRIPTION.name -> ContentType.DESCRIPTION
