@@ -14,7 +14,7 @@ import me.androidbox.presentation.agenda.screen.AgendaScreen
 import me.androidbox.presentation.agenda.viewmodel.AgendaViewModel
 import me.androidbox.presentation.edit.screen.EditScreen
 import me.androidbox.presentation.edit.screen.EditScreenEvent
-import me.androidbox.presentation.edit.screen.TitleType
+import me.androidbox.presentation.edit.screen.ContentType
 import me.androidbox.presentation.edit.viewmodel.EditScreenViewModel
 import me.androidbox.presentation.event.screen.EventScreen
 import me.androidbox.presentation.event.screen.EventScreenEvent
@@ -143,8 +143,6 @@ fun NavigationGraph(
         ) {
             val editScreenViewModel: EditScreenViewModel = hiltViewModel()
             val editScreenState by editScreenViewModel.editScreenState.collectAsStateWithLifecycle()
-
-            /* TODO Just assigning an empty string for now if null just to get this working */
             val content = it.arguments?.getString("content") ?: ""
 
             LaunchedEffect(key1 = content) {
@@ -153,7 +151,7 @@ fun NavigationGraph(
             }
 
             EditScreen(
-                titleType = TitleType.TITLE,
+                contentType = ContentType.Content,
                 editScreenState = editScreenState,
                 editScreenEvent = { editScreenEvent ->
                     editScreenViewModel.onEditScreenEvent(editScreenEvent)
@@ -162,7 +160,6 @@ fun NavigationGraph(
                     navHostController.popBackStack()
                 },
                 onSaveClicked = { content ->
-                   // editScreenViewModel.onEditScreenEvent(EditScreenEvent.OnSaveClicked(content))
                     navHostController.previousBackStackEntry?.savedStateHandle?.set("title", content)
                     navHostController.popBackStack()
                 }

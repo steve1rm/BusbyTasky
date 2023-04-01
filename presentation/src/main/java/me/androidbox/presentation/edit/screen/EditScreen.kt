@@ -23,7 +23,7 @@ import me.androidbox.component.ui.theme.editScreenBackground
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EditScreen(
-    titleType: TitleType,
+    contentType: ContentType,
     editScreenState: EditScreenState,
     editScreenEvent: (EditScreenEvent) -> Unit,
     modifier: Modifier = Modifier,
@@ -32,9 +32,9 @@ fun EditScreen(
 ) {
     Scaffold(modifier = modifier,
         topBar = {
-            val contentType = when(titleType) {
-                TitleType.TITLE -> stringResource(id = TitleType.TITLE.contentTypeRes)
-                TitleType.DESCRIPTION -> stringResource(id = TitleType.DESCRIPTION.contentTypeRes)
+            val contentType = when(contentType) {
+                ContentType.Content -> stringResource(id = ContentType.Content.contentTypeRes)
+                ContentType.DESCRIPTION -> stringResource(id = ContentType.DESCRIPTION.contentTypeRes)
             }
 
             AgendaItemEditTopAppBar(
@@ -55,9 +55,9 @@ fun EditScreen(
             .background(color = MaterialTheme.colorScheme.editScreenBackground)
         ) {
 
-            val fontSize =  when(titleType) {
-                TitleType.TITLE -> TitleType.TITLE.fontSize
-                TitleType.DESCRIPTION -> TitleType.DESCRIPTION.fontSize
+            val fontSize =  when(contentType) {
+                ContentType.Content -> ContentType.Content.fontSize
+                ContentType.DESCRIPTION -> ContentType.DESCRIPTION.fontSize
             }
 
             Divider(
@@ -82,8 +82,8 @@ fun EditScreen(
     }
 }
 
-enum class TitleType(@StringRes val contentTypeRes: Int, val fontSize: TextUnit) {
-    TITLE(contentTypeRes = R.string.edit_title, fontSize =  26.sp),
+enum class ContentType(@StringRes val contentTypeRes: Int, val fontSize: TextUnit) {
+    Content(contentTypeRes = R.string.edit_title, fontSize =  26.sp),
     DESCRIPTION(contentTypeRes = R.string.edit_description, fontSize =  16.sp)
 }
 
@@ -95,7 +95,7 @@ fun PreviewEditScreenTitle() {
             modifier = Modifier.fillMaxSize(),
             editScreenState = EditScreenState(content = "Meeting"),
             editScreenEvent = {},
-            titleType = TitleType.TITLE,
+            contentType = ContentType.Content,
             onBackClicked = {},
             onSaveClicked = {}
         )
@@ -110,7 +110,7 @@ fun PreviewEditScreenDescription() {
             modifier = Modifier.fillMaxSize(),
             editScreenState = EditScreenState(content = "This is the description of the project"),
             editScreenEvent = {},
-            titleType = TitleType.DESCRIPTION,
+            contentType = ContentType.DESCRIPTION,
             onBackClicked = {},
             onSaveClicked = {}
         )
