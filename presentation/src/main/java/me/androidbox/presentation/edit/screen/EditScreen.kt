@@ -32,13 +32,8 @@ fun EditScreen(
 ) {
     Scaffold(modifier = modifier,
         topBar = {
-            val content = when(contentType) {
-                ContentType.TITLE -> stringResource(id = ContentType.TITLE.contentTypeRes)
-                ContentType.DESCRIPTION -> stringResource(id = ContentType.DESCRIPTION.contentTypeRes)
-            }
-
             AgendaItemEditTopAppBar(
-                title = content,
+                title = stringResource(id = contentType.contentTypeRes),
                 modifier = Modifier.fillMaxWidth(),
                 onSaveClicked = {
                     onSaveClicked(editScreenState.content, contentType)
@@ -54,11 +49,6 @@ fun EditScreen(
             .fillMaxSize()
             .background(color = MaterialTheme.colorScheme.editScreenBackground)
         ) {
-
-            val fontSize =  when(contentType) {
-                ContentType.TITLE -> ContentType.TITLE.fontSize
-                ContentType.DESCRIPTION -> ContentType.DESCRIPTION.fontSize
-            }
 
             Divider(
                 modifier
@@ -76,7 +66,7 @@ fun EditScreen(
                     editScreenEvent(EditScreenEvent.OnContentChanged(newContent))
                 },
                 colors = TextFieldDefaults.textFieldColors(containerColor = MaterialTheme.colorScheme.editScreenBackground),
-                textStyle = TextStyle(fontSize = fontSize, fontWeight = FontWeight.Normal, color = MaterialTheme.colorScheme.agendaBodyTextColor)
+                textStyle = TextStyle(fontSize = contentType.fontSize, fontWeight = FontWeight.Normal, color = MaterialTheme.colorScheme.agendaBodyTextColor)
             )
         }
     }
