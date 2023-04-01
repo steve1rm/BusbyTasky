@@ -125,11 +125,11 @@ fun NavigationGraph(
                 },
                 onEditTitleClicked = { title ->
                     /** Navigate to the edit screen with the title of the agenda item */
-                    navHostController.navigate(route = "edit_screen/$title/${ContentType.TITLE}")
+                    navHostController.navigate(route = "${Screen.EditScreen.EDIT_SCREEN}/$title/${ContentType.TITLE}")
                 },
                 onEditDescriptionClicked = { description ->
                     /** Navigate to the edit screen with the title of the agenda item */
-                    navHostController.navigate("edit_screen/$description/${ContentType.DESCRIPTION}")
+                    navHostController.navigate("${Screen.EditScreen.EDIT_SCREEN}/$description/${ContentType.DESCRIPTION}")
                 }
             )
         }

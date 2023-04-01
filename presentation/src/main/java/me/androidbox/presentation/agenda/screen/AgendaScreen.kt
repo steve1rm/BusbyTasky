@@ -33,7 +33,7 @@ import me.androidbox.presentation.ui.theme.BusbyTaskyTheme
 fun AgendaScreen(
     agendaScreenState: AgendaScreenState,
     agendaScreenEvent: (AgendaScreenEvent) -> Unit,
-    onSelectedAgendaItem: (agendaType: Int) -> Unit,
+    onSelectedAgendaItem: (agendaType: Int) -> Unit, /* TODO Check where this is being used */
     modifier: Modifier = Modifier) {
 
     val calendarState = rememberUseCaseState()
