@@ -1,6 +1,5 @@
 package me.androidbox.presentation.edit.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -24,10 +23,6 @@ class EditScreenViewModel @Inject constructor() : ViewModel() {
                         content = editScreenEvent.content
                     )
                 }
-            }
-            EditScreenEvent.OnSaveClicked -> {
-                Log.d("EDIT_SCREEN", "Content [ ${editScreenState.value} ]")
-                /* TODO Save the content which could be either the title of the description */
             }
         }
     }
