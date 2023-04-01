@@ -125,11 +125,11 @@ fun NavigationGraph(
                 },
                 onEditTitleClicked = { title ->
                     /** Navigate to the edit screen with the title of the agenda item */
-                    navHostController.navigate(route = "edit_screen/$title")
+                    navHostController.navigate(route = "edit_screen/$title/${ContentType.TITLE}")
                 },
                 onEditDescriptionClicked = { description ->
                     /** Navigate to the edit screen with the title of the agenda item */
-                    navHostController.navigate("edit_screen/$description")
+                    navHostController.navigate("edit_screen/$description/${ContentType.DESCRIPTION}")
                 }
             )
         }
@@ -139,11 +139,23 @@ fun NavigationGraph(
             route = Screen.EditScreen.route,
             arguments = listOf(navArgument("content") {
                 type = NavType.StringType
+            }, navArgument("contentType") {
+                type = NavType.StringType
             })
         ) {
             val editScreenViewModel: EditScreenViewModel = hiltViewModel()
             val editScreenState by editScreenViewModel.editScreenState.collectAsStateWithLifecycle()
             val content = it.arguments?.getString("content") ?: ""
+
+            /** Get the contentType that has been edited which could be either the Title or the Description
+             *  If null then return the default title instead */
+            val contentType = it.arguments?.getString("contentType")?.let { contentType ->
+                when(contentType) {
+                    ContentType.TITLE.name -> ContentType.TITLE
+                    ContentType.DESCRIPTION.name -> ContentType.DESCRIPTION
+                    else -> { ContentType.TITLE}
+                }
+            } ?: ContentType.TITLE
 
             LaunchedEffect(key1 = content) {
                 editScreenViewModel.onEditScreenEvent(
@@ -151,7 +163,7 @@ fun NavigationGraph(
             }
 
             EditScreen(
-                contentType = ContentType.DESCRIPTION,
+                contentType = contentType,
                 editScreenState = editScreenState,
                 editScreenEvent = { editScreenEvent ->
                     editScreenViewModel.onEditScreenEvent(editScreenEvent)

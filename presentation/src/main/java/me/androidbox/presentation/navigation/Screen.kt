@@ -8,7 +8,7 @@ sealed class Screen(val route: String) {
 
     object AgendaScreen : Screen(route = "agenda_screen") {}
 
-    object EditScreen : Screen(route = "edit_screen/{content}")
+    object EditScreen : Screen(route = "edit_screen/{content}/{contentType}")
 
     object EventScreen : Screen(route = "event_screen")
 }
