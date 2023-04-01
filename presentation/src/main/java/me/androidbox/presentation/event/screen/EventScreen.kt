@@ -16,6 +16,8 @@ import me.androidbox.component.general.PhotoPicker
 import me.androidbox.component.ui.theme.BusbyTaskyTheme
 import me.androidbox.component.ui.theme.backgroundBackColor
 import me.androidbox.component.ui.theme.backgroundWhiteColor
+import java.time.format.DateTimeFormatter
+import java.util.*
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -78,14 +80,15 @@ fun EventScreen(
 
                     Spacer(modifier = modifier.height(26.dp))
                     AgendaDuration(
-                        startTime = "08:00",
-                        endTime = "08:30",
-                        startDate = "Jul 21 2022",
-                        endDate = "Jul 21 2022",
+                        startTime = timeFormatter.format(eventScreenState.startTimeDuration),
+                        endTime = timeFormatter.format(eventScreenState.endTimeDuration),
+                        startDate = dateFormatter.format(eventScreenState.startDateDuration),
+                        endDate = dateFormatter.format(eventScreenState.endDateDuration),
                         modifier = Modifier.fillMaxWidth()
                     )
 
                     Spacer(modifier = modifier.height(26.dp))
+
                     AlarmReminder(
                         reminderText = "30 minutes before",
                         modifier = Modifier
@@ -112,6 +115,9 @@ fun EventScreen(
         }
     )
 }
+
+val dateFormatter = DateTimeFormatter.ofPattern("MMM dd yyyy", Locale.getDefault())
+val timeFormatter = DateTimeFormatter.ofPattern("HH:mm", Locale.ENGLISH)
 
 @Composable
 @Preview(showBackground = true)
