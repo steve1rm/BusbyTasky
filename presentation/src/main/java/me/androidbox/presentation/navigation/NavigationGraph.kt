@@ -12,9 +12,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import me.androidbox.presentation.agenda.screen.AgendaScreen
 import me.androidbox.presentation.agenda.viewmodel.AgendaViewModel
+import me.androidbox.presentation.edit.screen.ContentType
 import me.androidbox.presentation.edit.screen.EditScreen
 import me.androidbox.presentation.edit.screen.EditScreenEvent
-import me.androidbox.presentation.edit.screen.ContentType
 import me.androidbox.presentation.edit.viewmodel.EditScreenViewModel
 import me.androidbox.presentation.event.screen.EventScreen
 import me.androidbox.presentation.event.screen.EventScreenEvent
