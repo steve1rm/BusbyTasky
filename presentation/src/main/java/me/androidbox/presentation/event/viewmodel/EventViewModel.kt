@@ -82,28 +82,28 @@ class EventViewModel @Inject constructor(
             is EventScreenEvent.OnStartTimeDuration -> {
                 _eventScreenState.update { eventScreenState ->
                     eventScreenState.copy(
-                        startTimeDuration = eventScreenEvent.startTime,
+                        startTime = eventScreenEvent.startTime,
                     )
                 }
             }
             is EventScreenEvent.OnStartDateDuration -> {
                 _eventScreenState.update { eventScreenState ->
                     eventScreenState.copy(
-                        startDateDuration = eventScreenEvent.startDate,
+                        startDate = eventScreenEvent.startDate,
                     )
                 }
             }
             is EventScreenEvent.OnEndTimeDuration -> {
                 _eventScreenState.update { eventScreenState ->
                     eventScreenState.copy(
-                        endTimeDuration = eventScreenEvent.endTime,
+                        endTime = eventScreenEvent.endTime,
                     )
                 }
             }
             is EventScreenEvent.OnEndDateDuration -> {
                 _eventScreenState.update { eventScreenState ->
                     eventScreenState.copy(
-                        endDateDuration = eventScreenEvent.endDate,
+                        endDate = eventScreenEvent.endDate,
                     )
                 }
             }

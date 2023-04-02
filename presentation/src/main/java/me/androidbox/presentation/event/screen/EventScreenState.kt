@@ -15,9 +15,9 @@ data class EventScreenState(
     val eventTitle: String = "New Event",
     val eventDescription: String = "Description",
     val selectedAgendaActionType: AgendaActionType = AgendaActionType.DELETE_EVENT,
-    val startTimeDuration: ZonedDateTime = ZonedDateTime.now(ZoneId.systemDefault()),
-    val endTimeDuration: ZonedDateTime = ZonedDateTime.now(ZoneId.systemDefault()),
-    val startDateDuration: ZonedDateTime = ZonedDateTime.now(ZoneId.systemDefault()),
-    val endDateDuration: ZonedDateTime = ZonedDateTime.now(ZoneId.systemDefault()),
+    val startTime: ZonedDateTime = ZonedDateTime.now(ZoneId.systemDefault()),
+    val endTime: ZonedDateTime = ZonedDateTime.now(ZoneId.systemDefault()),
+    val startDate: ZonedDateTime = ZonedDateTime.now(ZoneId.systemDefault()),
+    val endDate: ZonedDateTime = ZonedDateTime.now(ZoneId.systemDefault()),
     val isStartDateTime: Boolean = false
 )

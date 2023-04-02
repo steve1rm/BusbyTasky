@@ -90,10 +90,10 @@ fun EventScreen(
                     Spacer(modifier = modifier.height(26.dp))
                     AgendaDuration(
                         isEditMode = true,
-                        startTime = eventScreenState.startTimeDuration.formatDateTime(TIME_PATTERN),
-                        endTime = eventScreenState.endTimeDuration.formatDateTime(TIME_PATTERN),
-                        startDate = eventScreenState.startDateDuration.formatDateTime(DATE_PATTERN),
-                        endDate = eventScreenState.endDateDuration.formatDateTime(DATE_PATTERN),
+                        startTime = eventScreenState.startTime.formatDateTime(TIME_PATTERN),
+                        endTime = eventScreenState.endTime.formatDateTime(TIME_PATTERN),
+                        startDate = eventScreenState.startDate.formatDateTime(DATE_PATTERN),
+                        endDate = eventScreenState.endDate.formatDateTime(DATE_PATTERN),
                         modifier = Modifier.fillMaxWidth(),
                         onStartDurationClicked = {
                             eventScreenEvent(EventScreenEvent.OnStartDateTimeChanged(isStartDateTime = true))
