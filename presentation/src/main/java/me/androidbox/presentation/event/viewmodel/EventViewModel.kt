@@ -107,6 +107,13 @@ class EventViewModel @Inject constructor(
                     )
                 }
             }
+            is EventScreenEvent.OnStartDateTimeChanged -> {
+                _eventScreenState.update { eventScreenState ->
+                    eventScreenState.copy(
+                        isStartDateTime = eventScreenEvent.isStartDateTime
+                    )
+                }
+            }
         }
     }
 

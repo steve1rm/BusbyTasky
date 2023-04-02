@@ -36,7 +36,6 @@ fun EventScreen(
     modifier: Modifier = Modifier) {
 
     val calendarStateTimeDate = rememberUseCaseState()
-    var isStartDateTime = false
 
     Scaffold(
         modifier = modifier,
@@ -97,11 +96,11 @@ fun EventScreen(
                         endDate = eventScreenState.endDateDuration.formatDateTime(DATE_PATTERN),
                         modifier = Modifier.fillMaxWidth(),
                         onStartDurationClicked = {
-                            isStartDateTime = true
+                            eventScreenEvent(EventScreenEvent.OnStartDateTimeChanged(isStartDateTime = true))
                             calendarStateTimeDate.show()
                         },
                         onEndDurationClicked = {
-                            isStartDateTime = false
+                            eventScreenEvent(EventScreenEvent.OnStartDateTimeChanged(isStartDateTime = false))
                             calendarStateTimeDate.show()
                         }
                     )
@@ -143,7 +142,7 @@ fun EventScreen(
             val zoneId = ZoneId.systemDefault()
             val zonedDateTime = ZonedDateTime.of(localDateTime, zoneId)
 
-            if(isStartDateTime) {
+            if(eventScreenState.isStartDateTime) {
                 eventScreenEvent(EventScreenEvent.OnStartTimeDuration(zonedDateTime))
                 eventScreenEvent(EventScreenEvent.OnStartDateDuration(zonedDateTime))
             }

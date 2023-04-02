@@ -18,5 +18,6 @@ data class EventScreenState(
     val startTimeDuration: ZonedDateTime = ZonedDateTime.now(ZoneId.systemDefault()),
     val endTimeDuration: ZonedDateTime = ZonedDateTime.now(ZoneId.systemDefault()),
     val startDateDuration: ZonedDateTime = ZonedDateTime.now(ZoneId.systemDefault()),
-    val endDateDuration: ZonedDateTime = ZonedDateTime.now(ZoneId.systemDefault())
+    val endDateDuration: ZonedDateTime = ZonedDateTime.now(ZoneId.systemDefault()),
+    val isStartDateTime: Boolean = false
 )

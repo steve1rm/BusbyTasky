@@ -18,4 +18,5 @@ sealed interface EventScreenEvent {
     data class OnStartDateDuration(val startDate: ZonedDateTime): EventScreenEvent
     data class OnEndTimeDuration(val endTime: ZonedDateTime): EventScreenEvent
     data class OnEndDateDuration(val endDate: ZonedDateTime): EventScreenEvent
+    data class OnStartDateTimeChanged(val isStartDateTime: Boolean): EventScreenEvent
 }
