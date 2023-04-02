@@ -7,7 +7,6 @@ import me.androidbox.component.agenda.VisitorType
 import me.androidbox.component.event.VisitorInfo
 import java.time.ZoneId
 import java.time.ZonedDateTime
-import java.util.Locale
 
 data class EventScreenState(
     val listOfPhotoUri: List<Uri> = mutableStateListOf<Uri>(),

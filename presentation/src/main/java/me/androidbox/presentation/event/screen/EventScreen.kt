@@ -1,6 +1,5 @@
 package me.androidbox.presentation.event.screen
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -13,10 +12,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.maxkeppeker.sheets.core.models.base.rememberUseCaseState
-import com.maxkeppeler.sheets.calendar.CalendarDialog
-import com.maxkeppeler.sheets.calendar.models.CalendarConfig
-import com.maxkeppeler.sheets.calendar.models.CalendarSelection
-import com.maxkeppeler.sheets.calendar.models.CalendarStyle
 import com.maxkeppeler.sheets.date_time.DateTimeDialog
 import com.maxkeppeler.sheets.date_time.models.DateTimeSelection
 import me.androidbox.component.agenda.*
@@ -24,9 +19,11 @@ import me.androidbox.component.general.PhotoPicker
 import me.androidbox.component.ui.theme.BusbyTaskyTheme
 import me.androidbox.component.ui.theme.backgroundBackColor
 import me.androidbox.component.ui.theme.backgroundWhiteColor
-import java.time.ZoneOffset
+import me.androidbox.domain.DateTimeFormatterProvider.DATE_PATTERN
+import me.androidbox.domain.DateTimeFormatterProvider.TIME_PATTERN
+import me.androidbox.domain.DateTimeFormatterProvider.formatDateTime
+import java.time.ZoneId
 import java.time.ZonedDateTime
-import java.time.format.DateTimeFormatter
 import java.util.*
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -38,8 +35,8 @@ fun EventScreen(
     onEditDescriptionClicked: (description: String) -> Unit,
     modifier: Modifier = Modifier) {
 
-    val calendarStateTime = rememberUseCaseState()
-    val calendarStateDate = rememberUseCaseState()
+    val calendarStateTimeDate = rememberUseCaseState()
+    var isStartDateTime = false
 
     Scaffold(
         modifier = modifier,
@@ -50,7 +47,7 @@ fun EventScreen(
                     .background(color = MaterialTheme.colorScheme.backgroundBackColor)
                     .padding(horizontal = 16.dp),
                 editModeType = EditModeType.EditMode(),
-                displayDate = "31 March 2023", /* TODO Get the current date from the zoneDateTime and format it */
+                displayDate = "31 March 2023", /* TODO Get the date from the agenda screen that was selected by the user */
                 onCloseClicked = {  },
                 onEditClicked = {  },
                 onSaveClicked = {  })
@@ -94,16 +91,18 @@ fun EventScreen(
                     Spacer(modifier = modifier.height(26.dp))
                     AgendaDuration(
                         isEditMode = true,
-                        startTime = timeFormatter.format(eventScreenState.startTimeDuration),
-                        endTime = timeFormatter.format(eventScreenState.endTimeDuration),
-                        startDate = dateFormatter.format(eventScreenState.startDateDuration),
-                        endDate = dateFormatter.format(eventScreenState.endDateDuration),
+                        startTime = eventScreenState.startTimeDuration.formatDateTime(TIME_PATTERN),
+                        endTime = eventScreenState.endTimeDuration.formatDateTime(TIME_PATTERN),
+                        startDate = eventScreenState.startDateDuration.formatDateTime(DATE_PATTERN),
+                        endDate = eventScreenState.endDateDuration.formatDateTime(DATE_PATTERN),
                         modifier = Modifier.fillMaxWidth(),
                         onStartDurationClicked = {
-                            calendarStateTime.show()
+                            isStartDateTime = true
+                            calendarStateTimeDate.show()
                         },
                         onEndDurationClicked = {
-                            calendarStateDate.show()
+                            isStartDateTime = false
+                            calendarStateTimeDate.show()
                         }
                     )
 
@@ -135,33 +134,26 @@ fun EventScreen(
         }
     )
 
-    CalendarDialog(
-        state = calendarStateDate,
-        config = CalendarConfig(
-            style = CalendarStyle.MONTH,
-            monthSelection = true,
-            yearSelection = true
-        ),
-        selection = CalendarSelection.Date { localDate ->
-            Log.d("EVENT_SCREEN", "${dateFormatter.format(localDate)}")
-         //   agendaScreenEvent(AgendaScreenEvent.OnDateChanged(localDate))
-        }
-    )
-
     DateTimeDialog(
-        state = calendarStateTime,
-        selection = DateTimeSelection.Time { localTime ->
-            localTime.toEpochSecond(localTime, ZoneOffset.UTC)
+        state = calendarStateTimeDate,
+        selection = DateTimeSelection.DateTime(
+            selectedDate = ZonedDateTime.now().toLocalDate(),
+            selectedTime = ZonedDateTime.now().toLocalTime(),
+        ) { localDateTime ->
+            val zoneId = ZoneId.systemDefault()
+            val zonedDateTime = ZonedDateTime.of(localDateTime, zoneId)
 
-            Log.d("EVENT_SCREEN", "${timeFormatter.format(localTime)}")
-            //   agendaScreenEvent(AgendaScreenEvent.OnDateChanged(localDate))
+            if(isStartDateTime) {
+                eventScreenEvent(EventScreenEvent.OnStartTimeDuration(zonedDateTime))
+                eventScreenEvent(EventScreenEvent.OnStartDateDuration(zonedDateTime))
+            }
+            else {
+                eventScreenEvent(EventScreenEvent.OnStartTimeDuration(zonedDateTime))
+                eventScreenEvent(EventScreenEvent.OnStartDateDuration(zonedDateTime))
+            }
         }
     )
-
 }
-
-val dateFormatter = DateTimeFormatter.ofPattern("MMM dd yyyy", Locale.getDefault())
-val timeFormatter = DateTimeFormatter.ofPattern("HH:mm", Locale.ENGLISH)
 
 @Composable
 @Preview(showBackground = true)
