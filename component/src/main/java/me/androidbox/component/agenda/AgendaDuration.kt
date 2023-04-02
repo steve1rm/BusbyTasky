@@ -1,11 +1,11 @@
 package me.androidbox.component.agenda
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.*
+import androidx.compose.material3.Divider
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -18,13 +18,10 @@ import me.androidbox.component.ui.theme.divider
 
 @Composable
 fun AgendaDuration(
-    isEditMode: Boolean,
     startTime: String,
     endTime: String,
     startDate: String,
     endDate: String,
-    onStartDurationClicked: () -> Unit,
-    onEndDurationClicked: () -> Unit,
     modifier: Modifier = Modifier) {
     Column(modifier = modifier) {
         Row(modifier = Modifier.fillMaxWidth(),
@@ -42,18 +39,6 @@ fun AgendaDuration(
                 fontWeight = FontWeight.Normal,
                 fontSize = 16.sp,
                 color = MaterialTheme.colorScheme.agendaBodyTextColor)
-
-            if(isEditMode) {
-                IconButton(onClick = {
-                    onStartDurationClicked()
-                }) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.forward_arrow),
-                        contentDescription = stringResource(R.string.forward_arrow),
-                        tint = Color.Black
-                    )
-                }
-            }
         }
 
         Spacer(modifier = Modifier.height(28.dp))
@@ -82,18 +67,6 @@ fun AgendaDuration(
                 fontWeight = FontWeight.Normal,
                 fontSize = 16.sp,
                 color = MaterialTheme.colorScheme.agendaBodyTextColor)
-
-            if(isEditMode) {
-                IconButton(onClick = {
-                    onEndDurationClicked()
-                }) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.forward_arrow),
-                        contentDescription = stringResource(R.string.forward_arrow),
-                        tint = Color.Black
-                    )
-                }
-            }
         }
 
         Spacer(modifier = Modifier.height(28.dp))
@@ -105,14 +78,11 @@ fun AgendaDuration(
 fun PreviewAgendaDuration() {
     BusbyTaskyTheme {
         AgendaDuration(
-            isEditMode = true,
             startTime = "08:00",
             endTime = "08:30",
             startDate = "Jul 21 2022",
             endDate = "Jul 21 2022",
-            modifier = Modifier.fillMaxWidth(),
-            onStartDurationClicked = {},
-            onEndDurationClicked = {}
+            modifier = Modifier.fillMaxWidth()
         )
     }
 }
