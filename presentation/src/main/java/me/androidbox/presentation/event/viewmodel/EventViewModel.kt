@@ -79,6 +79,13 @@ class EventViewModel @Inject constructor(
                    insertEventDetails(event)
                  */
             }
+            is EventScreenEvent.OnShowDropdown -> {
+                _eventScreenState.update { eventScreenState ->
+                    eventScreenState.copy(
+                        shouldOpenDropdown = eventScreenEvent.shouldOpen
+                    )
+                }
+            }
         }
     }
 

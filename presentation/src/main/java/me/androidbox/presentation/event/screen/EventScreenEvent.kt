@@ -13,4 +13,5 @@ sealed interface EventScreenEvent {
     data class OnDeleteVisitor(val visitorInfo: VisitorInfo): EventScreenEvent
     data class OnSelectedAgendaAction(val agendaActionType: AgendaActionType): EventScreenEvent
     object OnSaveEventDetails: EventScreenEvent
+    data class OnShowDropdown(val shouldOpen: Boolean) : EventScreenEvent
 }

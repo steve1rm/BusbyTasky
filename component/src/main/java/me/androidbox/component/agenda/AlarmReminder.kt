@@ -1,6 +1,7 @@
 package me.androidbox.component.agenda
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -21,8 +22,12 @@ import me.androidbox.component.ui.theme.backgroundWhiteColor
 @Composable
 fun AlarmReminder(
     reminderText: String,
+    onReminderClicked: () -> Unit,
     modifier: Modifier = Modifier) {
-        Row(modifier = modifier,
+
+        Row(modifier = modifier.clickable {
+            onReminderClicked()
+        },
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween) {
             Row {
@@ -51,7 +56,8 @@ fun PreviewAlarmReminder() {
             reminderText = "30 minutes before",
             modifier = Modifier
                 .fillMaxWidth()
-                .background(color = MaterialTheme.colorScheme.backgroundWhiteColor)
+                .background(color = MaterialTheme.colorScheme.backgroundWhiteColor),
+            onReminderClicked = {}
         )
     }
 }

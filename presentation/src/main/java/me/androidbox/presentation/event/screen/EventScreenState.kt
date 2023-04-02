@@ -13,4 +13,5 @@ data class EventScreenState(
     val eventTitle: String = "New Event",
     val eventDescription: String = "New Description",
     val selectedAgendaActionType: AgendaActionType = AgendaActionType.DELETE_EVENT,
+    val shouldOpenDropdown: Boolean = false
 )
