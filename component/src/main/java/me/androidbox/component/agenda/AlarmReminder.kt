@@ -1,5 +1,6 @@
 package me.androidbox.component.agenda
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -46,6 +47,14 @@ fun AlarmReminder(
                 Icon(painter = painterResource(id = R.drawable.forward_arrow), contentDescription = "forward arrow")
             }
         }
+}
+
+enum class AlarmReminderItem(@StringRes val text: Int) {
+    TEN_MINUTES(R.string.ten_minutes_before),
+    THIRTY_MINUTES(R.string.thirty_minutes_before),
+    ONE_HOUR(R.string.one_hour_before),
+    SIX_HOUR(R.string.six_hours_before),
+    ONE_DAY(R.string.one_day_before)
 }
 
 @Composable

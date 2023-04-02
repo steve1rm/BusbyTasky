@@ -153,14 +153,6 @@ fun EventScreen(
     )
 }
 
-enum class AlarmReminderItem(@StringRes val text: Int) {
-    TEN_MINUTES(R.string.ten_minutes_before),
-    THIRTY_MINUTES(R.string.thirty_minutes_before),
-    ONE_HOUR(R.string.one_hour_before),
-    SIX_HOUR(R.string.six_hours_before),
-    ONE_DAY(R.string.one_day_before)
-}
-
 @Composable
 @Preview(showBackground = true)
 fun PreviewEventScreen() {
