@@ -148,8 +148,8 @@ fun EventScreen(
                 eventScreenEvent(EventScreenEvent.OnStartDateDuration(zonedDateTime))
             }
             else {
-                eventScreenEvent(EventScreenEvent.OnStartTimeDuration(zonedDateTime))
-                eventScreenEvent(EventScreenEvent.OnStartDateDuration(zonedDateTime))
+                eventScreenEvent(EventScreenEvent.OnEndTimeDuration(zonedDateTime))
+                eventScreenEvent(EventScreenEvent.OnEndDateDuration(zonedDateTime))
             }
         }
     )

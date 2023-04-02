@@ -14,7 +14,6 @@ sealed interface EventScreenEvent {
     data class OnDeleteVisitor(val visitorInfo: VisitorInfo): EventScreenEvent
     data class OnSelectedAgendaAction(val agendaActionType: AgendaActionType): EventScreenEvent
     object OnSaveEventDetails: EventScreenEvent
-
     data class OnStartTimeDuration(val startTime: ZonedDateTime): EventScreenEvent
     data class OnStartDateDuration(val startDate: ZonedDateTime): EventScreenEvent
     data class OnEndTimeDuration(val endTime: ZonedDateTime): EventScreenEvent
