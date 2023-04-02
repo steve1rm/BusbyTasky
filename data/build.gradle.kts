@@ -84,6 +84,7 @@ dependencies {
     // Encrypted shared preferences
     // implementation(libs.security.crypto.ktx)
     implementation("androidx.security:security-crypto-ktx:1.1.0-alpha05")
+    implementation("com.jakewharton.threetenabp:threetenabp:1.4.6")
 
     testImplementation(tests.hilt.android.testing)
     kaptTest(tests.hilt.compiler)
