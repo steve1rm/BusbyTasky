@@ -1,6 +1,7 @@
 package me.androidbox.presentation.event.screen
 
 import android.util.Log
+import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -10,6 +11,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import me.androidbox.component.R
@@ -96,7 +98,7 @@ fun EventScreen(
                         shouldOpenDropdown = eventScreenState.shouldOpenDropdown,
                         onCloseDropdown = {
                             eventScreenEvent(
-                                EventScreenEvent.OnShowDropdown(shouldOpen = false))
+                                EventScreenEvent.OnShowAlarmReminderDropdown(shouldOpen = false))
                         },
                         listOfMenuItemId = listOf(
                             R.string.ten_minutes_before,
@@ -105,17 +107,24 @@ fun EventScreen(
                             R.string.six_hours_before,
                             R.string.one_day_before),
                         onSelectedOption = { item ->
-                            onSelectedEventReminderItem(item, eventScreenState)
+                            val alarmItem = AlarmReminderItem.values()[item]
+                            eventScreenEvent(EventScreenEvent.OnAlarmReminderTextChanged(alarmItem.text))
+                            eventScreenEvent(EventScreenEvent.OnShowAlarmReminderDropdown(shouldOpen = false))
+                            Log.d("EVENT", "ITEM [ $item ]")
+
+                            /** TODO Set the Alarm Monitor here use the eventScreenState start and end duration */
+
+                            // onSelectedEventReminderItem(item, eventScreenState)
                         }
                     )
 
                     AlarmReminder(
-                        reminderText = "30 minutes before",
+                        reminderText = stringResource(id = eventScreenState.alarmReminderText),
                         modifier = Modifier
                             .fillMaxWidth()
                             .background(color = MaterialTheme.colorScheme.backgroundWhiteColor),
                         onReminderClicked = {
-                            eventScreenEvent(EventScreenEvent.OnShowDropdown(shouldOpen = true))
+                            eventScreenEvent(EventScreenEvent.OnShowAlarmReminderDropdown(shouldOpen = true))
                         }
                     )
                     Spacer(modifier = modifier.height(26.dp))
@@ -139,9 +148,18 @@ fun EventScreen(
     )
 }
 
+enum class AlarmReminderItem(@StringRes val text: Int) {
+    TEN_MINUTES(R.string.ten_minutes_before),
+    THIRTY_MINUTES(R.string.thirty_minutes_before),
+    ONE_HOUR(R.string.one_hour_before),
+    SIX_HOUR(R.string.six_hours_before),
+    ONE_DAY(R.string.one_day_before)
+}
+
 fun onSelectedEventReminderItem(item: Int, eventScreenState: EventScreenState) {
     Log.d("EVENT", "ITEM [ $item ]")
     /** TODO Set the Alarm Monitor here use the eventScreenState start and end duration */
+
 }
 
 @Composable

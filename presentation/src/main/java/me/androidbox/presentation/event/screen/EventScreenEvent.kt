@@ -1,9 +1,11 @@
 package me.androidbox.presentation.event.screen
 
 import android.net.Uri
+import androidx.annotation.StringRes
 import me.androidbox.component.agenda.AgendaActionType
 import me.androidbox.component.agenda.VisitorType
 import me.androidbox.component.event.VisitorInfo
+import me.androidbox.domain.alarm_manager.AlarmItem
 
 sealed interface EventScreenEvent {
     data class OnPhotoUriAdded(val photoUri: Uri): EventScreenEvent
@@ -13,5 +15,7 @@ sealed interface EventScreenEvent {
     data class OnDeleteVisitor(val visitorInfo: VisitorInfo): EventScreenEvent
     data class OnSelectedAgendaAction(val agendaActionType: AgendaActionType): EventScreenEvent
     object OnSaveEventDetails: EventScreenEvent
-    data class OnShowDropdown(val shouldOpen: Boolean) : EventScreenEvent
+    data class OnShowAlarmReminderDropdown(val shouldOpen: Boolean) : EventScreenEvent
+    data class OnScheduleAlarm(val alarmItem: AlarmItem) : EventScreenEvent
+    data class OnAlarmReminderTextChanged(@StringRes val textId: Int): EventScreenEvent
 }

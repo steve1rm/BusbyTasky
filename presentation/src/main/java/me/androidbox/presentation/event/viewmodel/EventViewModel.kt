@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import me.androidbox.domain.agenda.usecase.UsersInitialsExtractionUseCase
+import me.androidbox.domain.alarm_manager.AlarmScheduler
 import me.androidbox.domain.authentication.ResponseState
 import me.androidbox.domain.authentication.model.Event
 import me.androidbox.domain.authentication.remote.EventRepository
@@ -20,7 +21,8 @@ import javax.inject.Inject
 @HiltViewModel
 class EventViewModel @Inject constructor(
     private val eventRepository: EventRepository,
-    private val usersInitialsExtractionUseCase: UsersInitialsExtractionUseCase
+    private val usersInitialsExtractionUseCase: UsersInitialsExtractionUseCase,
+    private val alarmScheduler: AlarmScheduler
 ) : ViewModel() {
 
     private val _eventScreenState: MutableStateFlow<EventScreenState> = MutableStateFlow(EventScreenState())
@@ -79,14 +81,33 @@ class EventViewModel @Inject constructor(
                    insertEventDetails(event)
                  */
             }
-            is EventScreenEvent.OnShowDropdown -> {
+            is EventScreenEvent.OnShowAlarmReminderDropdown -> {
                 _eventScreenState.update { eventScreenState ->
                     eventScreenState.copy(
                         shouldOpenDropdown = eventScreenEvent.shouldOpen
                     )
                 }
             }
+            is EventScreenEvent.OnScheduleAlarm -> {
+                _eventScreenState.update { eventScreenState ->
+                    eventScreenState.copy(
+                        alarmItem = eventScreenEvent.alarmItem
+                    )
+                }
+                setAlarmReminder()
+            }
+            is EventScreenEvent.OnAlarmReminderTextChanged -> {
+                _eventScreenState.update { eventScreenState ->
+                    eventScreenState.copy(
+                        alarmReminderText = eventScreenEvent.textId
+                    )
+                }
+            }
         }
+    }
+
+    private fun setAlarmReminder() {
+        alarmScheduler.schedule(eventScreenState.value.alarmItem)
     }
 
     private fun insertEventDetails(event: Event) {

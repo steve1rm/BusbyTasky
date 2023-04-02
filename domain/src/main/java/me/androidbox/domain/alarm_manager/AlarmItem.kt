@@ -4,5 +4,5 @@ import org.threeten.bp.ZonedDateTime
 
 data class AlarmItem(
     val dateTime: ZonedDateTime,
-    val message: String
+    val message: String?
 )

@@ -25,6 +25,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <receiver
+            android:name="me.androidbox.data.alarm_manager.AlarmReceiver"/>
     </application>
 
 </manifest>
