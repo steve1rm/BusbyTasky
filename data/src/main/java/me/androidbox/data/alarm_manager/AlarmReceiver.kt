@@ -7,7 +7,9 @@ import android.content.Intent
 class AlarmReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context?, intent: Intent?) {
-        val message = intent?.getShortExtra("EXTRA_MESSAGE", 0) ?: return
-        println("Alarm triggered: $message")
+        intent?.getStringExtra("EXTRA_MESSAGE")?.let { message ->
+            /* TODO Add Notification here */
+            println("Alarm triggered: $message")
+        }
     }
 }

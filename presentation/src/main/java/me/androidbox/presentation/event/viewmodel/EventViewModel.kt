@@ -88,7 +88,7 @@ class EventViewModel @Inject constructor(
                     )
                 }
             }
-            is EventScreenEvent.OnScheduleAlarm -> {
+            is EventScreenEvent.OnScheduleAlarmReminder -> {
                 _eventScreenState.update { eventScreenState ->
                     eventScreenState.copy(
                         alarmItem = eventScreenEvent.alarmItem

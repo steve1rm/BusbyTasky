@@ -16,6 +16,6 @@ sealed interface EventScreenEvent {
     data class OnSelectedAgendaAction(val agendaActionType: AgendaActionType): EventScreenEvent
     object OnSaveEventDetails: EventScreenEvent
     data class OnShowAlarmReminderDropdown(val shouldOpen: Boolean) : EventScreenEvent
-    data class OnScheduleAlarm(val alarmItem: AlarmItem) : EventScreenEvent
+    data class OnScheduleAlarmReminder(val alarmItem: AlarmItem) : EventScreenEvent
     data class OnAlarmReminderTextChanged(@StringRes val textId: Int): EventScreenEvent
 }

@@ -22,6 +22,8 @@ import me.androidbox.component.ui.theme.BusbyTaskyTheme
 import me.androidbox.component.ui.theme.backgroundBackColor
 import me.androidbox.component.ui.theme.backgroundWhiteColor
 import me.androidbox.component.ui.theme.dropDownMenuBackgroundColor
+import me.androidbox.domain.alarm_manager.AlarmItem
+import org.threeten.bp.ZonedDateTime
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -107,14 +109,17 @@ fun EventScreen(
                             R.string.six_hours_before,
                             R.string.one_day_before),
                         onSelectedOption = { item ->
-                            val alarmItem = AlarmReminderItem.values()[item]
-                            eventScreenEvent(EventScreenEvent.OnAlarmReminderTextChanged(alarmItem.text))
+                            eventScreenEvent(EventScreenEvent.OnAlarmReminderTextChanged(
+                                AlarmReminderItem.values()[item].text))
+
                             eventScreenEvent(EventScreenEvent.OnShowAlarmReminderDropdown(shouldOpen = false))
-                            Log.d("EVENT", "ITEM [ $item ]")
 
-                            /** TODO Set the Alarm Monitor here use the eventScreenState start and end duration */
-
-                            // onSelectedEventReminderItem(item, eventScreenState)
+                            /** TODO Using mock data to set the Alarm Monitor, here use the eventScreenState start time date */
+                            val alarmItem = AlarmItem(
+                                ZonedDateTime.now().plusSeconds(30L),
+                                "THIS IS THE MESSAGE FROM THE ALARM REMINDER"
+                            )
+                            eventScreenEvent(EventScreenEvent.OnScheduleAlarmReminder(alarmItem))
                         }
                     )
 
