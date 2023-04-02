@@ -161,12 +161,6 @@ enum class AlarmReminderItem(@StringRes val text: Int) {
     ONE_DAY(R.string.one_day_before)
 }
 
-fun onSelectedEventReminderItem(item: Int, eventScreenState: EventScreenState) {
-    Log.d("EVENT", "ITEM [ $item ]")
-    /** TODO Set the Alarm Monitor here use the eventScreenState start and end duration */
-
-}
-
 @Composable
 @Preview(showBackground = true)
 fun PreviewEventScreen() {
