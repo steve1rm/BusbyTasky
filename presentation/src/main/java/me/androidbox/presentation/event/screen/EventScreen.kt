@@ -131,7 +131,7 @@ fun EventScreen(
 
                             /** TODO Using mock data to set the Alarm Monitor, here use the eventScreenState start time date */
                             val alarmItem = AlarmItem(
-                                ZonedDateTime.now().plusSeconds(30L),
+                                ZonedDateTime.now().plusSeconds(10L),
                                 "THIS IS THE MESSAGE FROM THE ALARM REMINDER"
                             )
                             eventScreenEvent(EventScreenEvent.OnScheduleAlarmReminder(alarmItem))
