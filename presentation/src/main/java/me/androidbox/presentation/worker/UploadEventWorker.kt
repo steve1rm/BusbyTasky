@@ -7,7 +7,7 @@ import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
 import androidx.work.ForegroundInfo
 import androidx.work.WorkerParameters
-import com.squareup.moshi.Moshi
+import androidx.work.workDataOf
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import me.androidbox.data.R
@@ -70,8 +70,9 @@ class UploadEventWorker @AssistedInject constructor(
 
         /* Check if the request was successful or not */
         val result = responseResult.fold(
-            onSuccess = {
-                Result.success()
+            onSuccess = { eventDto ->
+                val outputData = workDataOf("eventKey" to eventDto)
+                Result.success(outputData)
             },
             onFailure = {
                 Log.e("WORK_MANAGER", it.localizedMessage)
