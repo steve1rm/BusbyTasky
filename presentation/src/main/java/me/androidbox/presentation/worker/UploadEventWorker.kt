@@ -1,6 +1,7 @@
 package me.androidbox.presentation.worker
 
 import android.content.Context
+import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
@@ -29,7 +30,6 @@ class UploadEventWorker @AssistedInject constructor(
 ) : CoroutineWorker(context, workerParameters)  {
 
     override suspend fun doWork(): Result {
-        startForegroundService()
 
         /** TODO Remove this mock data - this is just for testing purposes */
         val eventRequest = EventRequestDto(
@@ -63,7 +63,7 @@ class UploadEventWorker @AssistedInject constructor(
 
         val responseResult = checkResult {
             eventService.createEvent(
-                listOfPhoto = listOfPhotoMultiPart, /** TODO Just sending an empty Part to just test the request */
+                listOfPhoto = listOfPhotoMultiPart,
                 eventBody = MultipartBody.Part.createFormData("create_event_request", eventRequestJson)
             )
         }
@@ -74,6 +74,7 @@ class UploadEventWorker @AssistedInject constructor(
                 Result.success()
             },
             onFailure = {
+                Log.e("WORK_MANAGER", it.localizedMessage)
                 Result.failure()
             }
         )
