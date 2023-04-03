@@ -92,7 +92,6 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-runtime-compose:2.6.0")
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:1.1.5")
 
-
     debugImplementation(tests.ui.tooling)
     debugImplementation(tests.ui.test.manifest)
 
