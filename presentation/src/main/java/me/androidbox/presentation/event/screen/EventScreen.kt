@@ -11,11 +11,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.maxkeppeker.sheets.core.models.base.rememberUseCaseState
+import com.maxkeppeler.sheets.date_time.DateTimeDialog
+import com.maxkeppeler.sheets.date_time.models.DateTimeSelection
 import me.androidbox.component.agenda.*
 import me.androidbox.component.general.PhotoPicker
 import me.androidbox.component.ui.theme.BusbyTaskyTheme
 import me.androidbox.component.ui.theme.backgroundBackColor
 import me.androidbox.component.ui.theme.backgroundWhiteColor
+import me.androidbox.domain.DateTimeFormatterProvider.DATE_PATTERN
+import me.androidbox.domain.DateTimeFormatterProvider.TIME_PATTERN
+import me.androidbox.domain.DateTimeFormatterProvider.formatDateTime
+import java.time.ZoneId
+import java.time.ZonedDateTime
+import java.util.*
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -26,6 +35,8 @@ fun EventScreen(
     onEditDescriptionClicked: (description: String) -> Unit,
     modifier: Modifier = Modifier) {
 
+    val calendarStateTimeDate = rememberUseCaseState()
+
     Scaffold(
         modifier = modifier,
         topBar = {
@@ -35,7 +46,7 @@ fun EventScreen(
                     .background(color = MaterialTheme.colorScheme.backgroundBackColor)
                     .padding(horizontal = 16.dp),
                 editModeType = EditModeType.EditMode(),
-                displayDate = "31 March 2023", /* TODO Get the current date from the zoneDateTime and format it */
+                displayDate = "31 March 2023", /* TODO Get the date from the agenda screen that was selected by the user */
                 onCloseClicked = {  },
                 onEditClicked = {  },
                 onSaveClicked = {  })
@@ -78,14 +89,24 @@ fun EventScreen(
 
                     Spacer(modifier = modifier.height(26.dp))
                     AgendaDuration(
-                        startTime = "08:00",
-                        endTime = "08:30",
-                        startDate = "Jul 21 2022",
-                        endDate = "Jul 21 2022",
-                        modifier = Modifier.fillMaxWidth()
+                        isEditMode = true,
+                        startTime = eventScreenState.startTime.formatDateTime(TIME_PATTERN),
+                        endTime = eventScreenState.endTime.formatDateTime(TIME_PATTERN),
+                        startDate = eventScreenState.startDate.formatDateTime(DATE_PATTERN),
+                        endDate = eventScreenState.endDate.formatDateTime(DATE_PATTERN),
+                        modifier = Modifier.fillMaxWidth(),
+                        onStartDurationClicked = {
+                            eventScreenEvent(EventScreenEvent.OnStartDateTimeChanged(isStartDateTime = true))
+                            calendarStateTimeDate.show()
+                        },
+                        onEndDurationClicked = {
+                            eventScreenEvent(EventScreenEvent.OnStartDateTimeChanged(isStartDateTime = false))
+                            calendarStateTimeDate.show()
+                        }
                     )
 
                     Spacer(modifier = modifier.height(26.dp))
+
                     AlarmReminder(
                         reminderText = "30 minutes before",
                         modifier = Modifier
@@ -108,6 +129,26 @@ fun EventScreen(
                         onActionClicked = {}
                     )
                 }
+            }
+        }
+    )
+
+    DateTimeDialog(
+        state = calendarStateTimeDate,
+        selection = DateTimeSelection.DateTime(
+            selectedDate = ZonedDateTime.now().toLocalDate(),
+            selectedTime = ZonedDateTime.now().toLocalTime(),
+        ) { localDateTime ->
+            val zoneId = ZoneId.systemDefault()
+            val zonedDateTime = ZonedDateTime.of(localDateTime, zoneId)
+
+            if(eventScreenState.isStartDateTime) {
+                eventScreenEvent(EventScreenEvent.OnStartTimeDuration(zonedDateTime))
+                eventScreenEvent(EventScreenEvent.OnStartDateDuration(zonedDateTime))
+            }
+            else {
+                eventScreenEvent(EventScreenEvent.OnEndTimeDuration(zonedDateTime))
+                eventScreenEvent(EventScreenEvent.OnEndDateDuration(zonedDateTime))
             }
         }
     )
