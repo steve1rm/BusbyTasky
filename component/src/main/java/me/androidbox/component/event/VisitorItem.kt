@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -32,7 +33,7 @@ fun VisitorItem(
 
     Row(modifier = modifier
         .fillMaxWidth()
-        .background(color = MaterialTheme.colorScheme.visitorBackgroundColor),
+        .background(color = MaterialTheme.colorScheme.visitorBackgroundColor, shape = RoundedCornerShape(10.dp)),
         verticalAlignment = Alignment.CenterVertically) {
         Text(
             modifier = Modifier
@@ -60,6 +61,7 @@ fun VisitorItem(
 
         if (isCreator) {
             Text(
+                modifier = modifier.padding(end = 16.dp),
                 text = stringResource(R.string.creator),
                 fontSize = 14.sp,
                 color = MaterialTheme.colorScheme.creatorTextFontColor,

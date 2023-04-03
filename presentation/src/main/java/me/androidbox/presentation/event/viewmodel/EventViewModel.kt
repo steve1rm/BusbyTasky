@@ -42,10 +42,11 @@ class EventViewModel @Inject constructor(
                     )
                 }
             }
-            is EventScreenEvent.OnSaveEditOrDescriptionContent -> {
+            is EventScreenEvent.OnSaveTitleOrDescription -> {
                 _eventScreenState.update { eventScreenState ->
                     eventScreenState.copy(
-                        saveEditOrDescriptionContent = eventScreenEvent.content
+                        eventTitle = eventScreenEvent.title,
+                        eventDescription = eventScreenEvent.description
                     )
                 }
             }
@@ -77,6 +78,41 @@ class EventViewModel @Inject constructor(
                 )
                    insertEventDetails(event)
                  */
+            }
+            is EventScreenEvent.OnStartTimeDuration -> {
+                _eventScreenState.update { eventScreenState ->
+                    eventScreenState.copy(
+                        startTime = eventScreenEvent.startTime,
+                    )
+                }
+            }
+            is EventScreenEvent.OnStartDateDuration -> {
+                _eventScreenState.update { eventScreenState ->
+                    eventScreenState.copy(
+                        startDate = eventScreenEvent.startDate,
+                    )
+                }
+            }
+            is EventScreenEvent.OnEndTimeDuration -> {
+                _eventScreenState.update { eventScreenState ->
+                    eventScreenState.copy(
+                        endTime = eventScreenEvent.endTime,
+                    )
+                }
+            }
+            is EventScreenEvent.OnEndDateDuration -> {
+                _eventScreenState.update { eventScreenState ->
+                    eventScreenState.copy(
+                        endDate = eventScreenEvent.endDate,
+                    )
+                }
+            }
+            is EventScreenEvent.OnStartDateTimeChanged -> {
+                _eventScreenState.update { eventScreenState ->
+                    eventScreenState.copy(
+                        isStartDateTime = eventScreenEvent.isStartDateTime
+                    )
+                }
             }
         }
     }
