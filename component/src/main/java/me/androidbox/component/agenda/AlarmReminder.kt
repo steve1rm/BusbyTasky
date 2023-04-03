@@ -49,7 +49,7 @@ fun AlarmReminder(
         }
 }
 
-enum class AlarmReminderItem(@StringRes val text: Int) {
+enum class AlarmReminderItem(@StringRes val stringResId: Int) {
     TEN_MINUTES(R.string.ten_minutes_before),
     THIRTY_MINUTES(R.string.thirty_minutes_before),
     ONE_HOUR(R.string.one_hour_before),

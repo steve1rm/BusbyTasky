@@ -128,7 +128,7 @@ fun EventScreen(
                             R.string.one_day_before),
                         onSelectedOption = { item ->
                             eventScreenEvent(EventScreenEvent.OnAlarmReminderTextChanged(
-                                AlarmReminderItem.values()[item].text))
+                                AlarmReminderItem.values()[item].stringResId))
 
                             eventScreenEvent(EventScreenEvent.OnShowAlarmReminderDropdown(shouldOpen = false))
 
