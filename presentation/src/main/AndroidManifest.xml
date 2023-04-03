@@ -27,18 +27,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-<<<<<<< HEAD
         <provider
             android:name="androidx.startup.InitializationProvider"
             android:authorities="${applicationId}.androidx-startup"
             tools:node="remove">
 
         </provider>
-=======
-
         <receiver
             android:name="me.androidbox.data.alarm_manager.AlarmReceiver"/>
->>>>>>> 1b530b34dc2e58da2cd177ec4f4f8d55e167a9aa
     </application>
 
 </manifest>

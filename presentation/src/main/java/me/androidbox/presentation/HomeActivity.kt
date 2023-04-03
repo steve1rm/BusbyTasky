@@ -27,15 +27,6 @@ class HomeActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         val homeViewModel by viewModels<HomeViewModel>()
 
-        val uploadEventWorkerRequest = OneTimeWorkRequestBuilder<UploadEventWorker>()
-            .setConstraints(
-                Constraints.Builder()
-                    .setRequiredNetworkType(
-                        NetworkType.CONNECTED).build()
-            ).build()
-
-        val workManager = WorkManager.getInstance(applicationContext)
-
         installSplashScreen().apply {
             this.setKeepOnScreenCondition {
                 homeViewModel.authenticationState.value == null
@@ -47,19 +38,6 @@ class HomeActivity : ComponentActivity() {
         eventViewModel.insertEvent()
 
         setContent {
-            val workInfos by workManager.getWorkInfosForUniqueWorkLiveData("upload_event").observeAsState()
-            
-            val downloadInfo = remember(key1 = workInfos) {
-                workInfos?.find { workInfo ->
-                    workInfo.id == uploadEventWorkerRequest.id
-                }
-            }
-
-            /** TODO Just testing using work manager to send a event request */
-            LaunchedEffect(key1 = true, block = {
-                workManager.beginUniqueWork("upload_event", ExistingWorkPolicy.KEEP, uploadEventWorkerRequest).enqueue()
-            })
-
             val authenticatedState = homeViewModel.authenticationState.collectAsState()
             val destination = when(authenticatedState.value) {
                 is ResponseState.Success -> {
@@ -67,7 +45,7 @@ class HomeActivity : ComponentActivity() {
                     Screen.AgendaScreen.route
                 }
                 else -> {
-                    Screen.AgendaScreen.route
+                    Screen.LoginScreen.route
                     // TODO for testing purposes that skip to the agendaScreen. // Screen.LoginScreen.route
                 }
             }

@@ -44,6 +44,8 @@ class UploadEventWorker @AssistedInject constructor(
     override suspend fun doWork(): Result {
         startForegroundService()
 
+
+
         /** TODO Remove this mock data - this is just for testing purposes */
         val eventRequest = EventRequestDto(
             id = UUID.randomUUID().toString(),
@@ -68,17 +70,18 @@ class UploadEventWorker @AssistedInject constructor(
         val eventRequestJson = jsonAdapter.toJson(eventRequest)
          */
 
+        val photoUrl = inputData.getString("photokey") ?: ""
+
         /* These are actual photos that I got from selecting photos from the device.
          * I just copied them here to try and send them as a multi-part request just to test if I can send them */
-        val listOfPhotos = listOf(
-            "content://com.android.providers.media.documents/document/image%3A38325")
+        val listOfPhotos = listOf(photoUrl)
 
         /* Create the multipart for the list of photos */
         val listOfPhotoMultiPart = createPhotoMultipart.createMultipartPhotos(listOfPhotos)
 
         val responseResult = checkResult {
             eventService.createEvent(
-                listOfPhoto = listOf<MultipartBody.Part>(), /** TODO Just sending an empty Part to just test the request */
+                listOfPhoto = listOfPhotoMultiPart, /** TODO Just sending an empty Part to just test the request */
                 eventBody = MultipartBody.Part.createFormData("create_event_request", eventRequestJson)
             )
         }
