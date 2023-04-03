@@ -23,6 +23,6 @@ data class EventScreenState(
     val endDate: ZonedDateTime = ZonedDateTime.now(ZoneId.systemDefault()),
     val isStartDateTime: Boolean = false,
     val shouldOpenDropdown: Boolean = false,
-    val alarmItem: AlarmItem = AlarmItem(ZonedDateTime.now(), null),
+    val alarmItem: AlarmItem = AlarmItem(ZonedDateTime.now(), ""),
     @StringRes val alarmReminderText: Int = me.androidbox.component.R.string.ten_minutes_before,
 )

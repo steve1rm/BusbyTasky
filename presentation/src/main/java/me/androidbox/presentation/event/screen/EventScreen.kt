@@ -1,5 +1,6 @@
 package me.androidbox.presentation.event.screen
 
+import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -9,6 +10,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -112,6 +114,8 @@ fun EventScreen(
 
                     Spacer(modifier = modifier.height(26.dp))
 
+                    val context: Context = LocalContext.current
+
                     AgendaDropDownMenu(
                         modifier = Modifier
                             .background(color = MaterialTheme.colorScheme.dropDownMenuBackgroundColor),
@@ -129,12 +133,9 @@ fun EventScreen(
 
                             eventScreenEvent(EventScreenEvent.OnShowAlarmReminderDropdown(shouldOpen = false))
 
-                            /** TODO Using mock data to set the Alarm Monitor, here use the eventScreenState start time date */
-                            val alarmItem = AlarmItem(
-                                ZonedDateTime.now().plusSeconds(10L),
-                                "THIS IS THE MESSAGE FROM THE ALARM REMINDER"
-                            )
-                            eventScreenEvent(EventScreenEvent.OnScheduleAlarmReminder(alarmItem))
+                            setupAlarmReminderItem(eventScreenState = eventScreenState, item = item, context)?.let { alarmItem ->
+                                eventScreenEvent(EventScreenEvent.OnScheduleAlarmReminder(alarmItem))
+                            }
                         }
                     )
 
@@ -170,11 +171,11 @@ fun EventScreen(
     DateTimeDialog(
         state = calendarStateTimeDate,
         selection = DateTimeSelection.DateTime(
-            selectedDate = java.time.ZonedDateTime.now().toLocalDate(),
-            selectedTime = java.time.ZonedDateTime.now().toLocalTime(),
+            selectedDate = ZonedDateTime.now().toLocalDate(),
+            selectedTime = ZonedDateTime.now().toLocalTime(),
         ) { localDateTime ->
             val zoneId = ZoneId.systemDefault()
-            val zonedDateTime = java.time.ZonedDateTime.of(localDateTime, zoneId)
+            val zonedDateTime = ZonedDateTime.of(localDateTime, zoneId)
 
             if(eventScreenState.isStartDateTime) {
                 eventScreenEvent(EventScreenEvent.OnStartTimeDuration(zonedDateTime))
@@ -186,6 +187,34 @@ fun EventScreen(
             }
         }
     )
+}
+private fun setupAlarmReminderItem(eventScreenState: EventScreenState, item: Int, context: Context): AlarmItem? {
+    /*
+       check what reminder that user has selected.
+       If user has set the following 10 minutes, 30 minutes, 1 hour, 6 hours. Set the alarm to go off before selected time
+       If user has set the following 1 day then use the date to set the alarm 1 day before
+    **/
+    return when(item) {
+        in 0..3 -> {
+            val startTime = eventScreenState.startTime
+
+            AlarmItem(
+                dateTime = startTime.minusMinutes(startTime.toEpochSecond()),
+                message = context.getString(eventScreenState.alarmReminderText)
+            )
+        }
+        4 -> {
+            val startDate = eventScreenState.startDate
+
+            AlarmItem(
+                dateTime = startDate.minusDays(startDate.toEpochSecond()),
+                message = context.getString(eventScreenState.alarmReminderText)
+            )
+        }
+        else -> {
+            null
+        }
+    }
 }
 
 @Composable
