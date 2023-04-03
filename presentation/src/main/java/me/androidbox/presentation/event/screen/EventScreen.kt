@@ -120,12 +120,9 @@ fun EventScreen(
                             eventScreenEvent(
                                 EventScreenEvent.OnShowAlarmReminderDropdown(shouldOpen = false))
                         },
-                        listOfMenuItemId = listOf(
-                            R.string.ten_minutes_before,
-                            R.string.thirty_minutes_before,
-                            R.string.one_hour_before,
-                            R.string.six_hours_before,
-                            R.string.one_day_before),
+                        listOfMenuItemId = AlarmReminderItem.values().map { alarmReminderItem ->
+                            alarmReminderItem.stringResId
+                        },
                         onSelectedOption = { item ->
                             eventScreenEvent(EventScreenEvent.OnAlarmReminderTextChanged(
                                 AlarmReminderItem.values()[item].stringResId))
