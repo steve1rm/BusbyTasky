@@ -91,7 +91,6 @@ dependencies {
     implementation("com.maxkeppeler.sheets-compose-dialogs:date-time:1.1.1")
     implementation("androidx.lifecycle:lifecycle-runtime-compose:2.6.0")
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:1.1.5")
-    implementation("com.jakewharton.threetenabp:threetenabp:1.4.6")
 
     debugImplementation(tests.ui.tooling)
     debugImplementation(tests.ui.test.manifest)

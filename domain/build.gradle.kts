@@ -12,7 +12,6 @@ java {
 dependencies {
     implementation(libs.dagger)
     implementation(libs.coroutines)
-    implementation("com.jakewharton.threetenabp:threetenabp:1.4.6")
 
     testImplementation(tests.junit)
 }

@@ -41,7 +41,7 @@ android {
     }
     compileOptions {
         isCoreLibraryDesugaringEnabled = true
-        
+
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
@@ -86,7 +86,6 @@ dependencies {
     // Encrypted shared preferences
     // implementation(libs.security.crypto.ktx)
     implementation("androidx.security:security-crypto-ktx:1.1.0-alpha05")
-    implementation("com.jakewharton.threetenabp:threetenabp:1.4.6")
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:1.1.5")
 
     testImplementation(tests.hilt.android.testing)
