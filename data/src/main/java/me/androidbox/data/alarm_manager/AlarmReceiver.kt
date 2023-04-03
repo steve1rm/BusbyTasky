@@ -11,15 +11,19 @@ import androidx.core.app.NotificationCompat
 import me.androidbox.data.R
 
 class AlarmReceiver : BroadcastReceiver() {
-
+    companion object {
+        const val CHANNEL_ID = "alarm_event_id"
+        const val CHANNEL_NAME = "alarm_event_name"
+        const val EXTRA_MESSAGE = "extra_message"
+    }
     override fun onReceive(context: Context?, intent: Intent?) {
-        intent?.getStringExtra("EXTRA_MESSAGE")?.let { message ->
+        intent?.getStringExtra(EXTRA_MESSAGE)?.let { message ->
             val notificationManager = context?.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
             if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 val channel = NotificationChannel(
-                    "alarm_manager_channel",
-                    "event reminder",
+                    CHANNEL_ID,
+                    CHANNEL_NAME,
                     NotificationManager.IMPORTANCE_HIGH
                 )
 
@@ -28,8 +32,8 @@ class AlarmReceiver : BroadcastReceiver() {
 
             val notificationIntent = Intent(context, AlarmReceiver::class.java)
             val pendingIntent = PendingIntent.getActivity(context, 1, notificationIntent, PendingIntent.FLAG_IMMUTABLE)
-            val notification = NotificationCompat.Builder(context, "alarm_manager_channel")
-                .setContentTitle("Event Reminder")
+            val notification = NotificationCompat.Builder(context, CHANNEL_ID)
+                .setContentTitle(context.getString(R.string.notification_title))
                 .setSmallIcon(R.drawable.bell)
                 .setContentText(message)
                 .setAutoCancel(true)
@@ -37,8 +41,7 @@ class AlarmReceiver : BroadcastReceiver() {
                 .build()
 
             notificationManager.notify(1, notification)
-
-            /* TODO Add Notification here */
+            
             println("Alarm triggered: $message")
         }
     }
