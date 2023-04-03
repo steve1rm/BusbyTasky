@@ -40,6 +40,8 @@ android {
         }
     }
     compileOptions {
+        isCoreLibraryDesugaringEnabled = true
+
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
@@ -84,7 +86,11 @@ dependencies {
     // Encrypted shared preferences
     // implementation(libs.security.crypto.ktx)
     implementation("androidx.security:security-crypto-ktx:1.1.0-alpha05")
+<<<<<<< HEAD
     implementation("androidx.work:work-runtime-ktx:2.8.0")
+=======
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:1.1.5")
+>>>>>>> 1b530b34dc2e58da2cd177ec4f4f8d55e167a9aa
 
     testImplementation(tests.hilt.android.testing)
     kaptTest(tests.hilt.compiler)
