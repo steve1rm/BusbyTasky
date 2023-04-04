@@ -51,11 +51,13 @@ fun EventScreen(
                     .fillMaxWidth()
                     .background(color = MaterialTheme.colorScheme.backgroundBackColor)
                     .padding(horizontal = 16.dp),
-                editModeType = EditModeType.EditMode(),
+                editModeType = EditModeType.SaveMode(),
                 displayDate = "31 March 2023", /* TODO Get the date from the agenda screen that was selected by the user */
                 onCloseClicked = {  },
                 onEditClicked = {  },
-                onSaveClicked = {  })
+                onSaveClicked = {
+                    eventScreenEvent(EventScreenEvent.OnSaveEventDetails)
+                })
 
         },
         content = {
@@ -89,7 +91,7 @@ fun EventScreen(
                     PhotoPicker(
                         listOfPhotoUri = eventScreenState.listOfPhotoUri,
                         onPhotoUriSelected = { uri ->
-                            eventScreenEvent(EventScreenEvent.OnPhotoUriAdded(uri))
+                            eventScreenEvent(EventScreenEvent.OnPhotoUriAdded(uri.toString()))
                         }
                     )
 
@@ -187,6 +189,8 @@ fun EventScreen(
         }
     )
 }
+
+/* */
 private fun setupAlarmReminderItem(eventScreenState: EventScreenState, item: Int, context: Context): AlarmItem? {
     /*
        check what reminder that user has selected.

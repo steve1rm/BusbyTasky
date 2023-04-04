@@ -11,7 +11,7 @@ import java.time.ZoneId
 import java.time.ZonedDateTime
 
 data class EventScreenState(
-    val listOfPhotoUri: List<Uri> = mutableStateListOf<Uri>(),
+    val listOfPhotoUri: List<String> = mutableStateListOf<String>(),
     val selectedVisitorType: VisitorType = VisitorType.ALL,
     val selectedVisitor: VisitorInfo? = null,
     val eventTitle: String = "New Event",

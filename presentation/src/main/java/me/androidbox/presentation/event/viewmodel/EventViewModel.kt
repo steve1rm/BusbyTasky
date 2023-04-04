@@ -67,19 +67,7 @@ class EventViewModel @Inject constructor(
                 }
             }
             is EventScreenEvent.OnSaveEventDetails -> {
-                /* TODO Get all the information related from teh EventScreenState
-                *       and create the Event object */
-
-                /* Then insert this event into the room db
-                val Event = Event(
-                    id = UUID.randomUUID().toString(),
-                    description = eventScreenState.value.saveEditOrDescriptionContent,
-                    photos = eventScreenState.value.listOfPhotoUri,
-                    isUserEventCreator = true,
-                    ...
-                )
-                   insertEventDetails(event)
-                 */
+                insertEventDetails()
             }
             is EventScreenEvent.OnStartTimeDuration -> {
                 _eventScreenState.update { eventScreenState ->
@@ -145,7 +133,20 @@ class EventViewModel @Inject constructor(
         alarmScheduler.schedule(eventScreenState.value.alarmItem)
     }
 
-    private fun insertEventDetails(event: Event) {
+    private fun insertEventDetails() {
+        val event = Event(
+            id = UUID.randomUUID().toString(),
+            title = eventScreenState.value.eventTitle,
+            description = eventScreenState.value.eventDescription,
+            startDateTime = eventScreenState.value.startTime.toEpochSecond(),
+            endDateTime = eventScreenState.value.endTime.toEpochSecond(),
+            remindAt = 3L, /* Calculate from the usecase */
+            eventCreatorId = "host 1",
+            isUserEventCreator = false,
+            attendees = "attendee 1",
+            photos = eventScreenState.value.listOfPhotoUri.toString() /* TODO change this to the to serialized */
+        )
+
         viewModelScope.launch {
             eventRepository.insertEvent(event)
         }
