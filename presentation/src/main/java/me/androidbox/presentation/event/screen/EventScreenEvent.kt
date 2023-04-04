@@ -22,6 +22,5 @@ sealed interface EventScreenEvent {
     data class OnEndDateDuration(val endDate: ZonedDateTime): EventScreenEvent
     data class OnStartDateTimeChanged(val isStartDateTime: Boolean): EventScreenEvent
     data class OnShowAlarmReminderDropdown(val shouldOpen: Boolean) : EventScreenEvent
-    data class OnScheduleAlarmReminder(val alarmItem: AlarmItem) : EventScreenEvent
     data class OnAlarmReminderTextChanged(@StringRes val textId: Int): EventScreenEvent
 }

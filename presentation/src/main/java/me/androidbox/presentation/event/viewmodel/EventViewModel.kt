@@ -111,14 +111,6 @@ class EventViewModel @Inject constructor(
                     )
                 }
             }
-            is EventScreenEvent.OnScheduleAlarmReminder -> {
-                _eventScreenState.update { eventScreenState ->
-                    eventScreenState.copy(
-                        alarmItem = eventScreenEvent.alarmItem
-                    )
-                }
-                setAlarmReminder()
-            }
             is EventScreenEvent.OnAlarmReminderTextChanged -> {
                 _eventScreenState.update { eventScreenState ->
                     eventScreenState.copy(
@@ -127,10 +119,6 @@ class EventViewModel @Inject constructor(
                 }
             }
         }
-    }
-
-    private fun setAlarmReminder() {
-        alarmScheduler.schedule(eventScreenState.value.alarmItem)
     }
 
     private fun insertEventDetails() {

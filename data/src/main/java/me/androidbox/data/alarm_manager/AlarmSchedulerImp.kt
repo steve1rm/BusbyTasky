@@ -17,12 +17,12 @@ class AlarmSchedulerImp @Inject constructor(
 
     override fun schedule(item: AlarmItem) {
         val intent = Intent(context, AlarmReceiver::class.java).apply {
-            putExtra("EXTRA_MESSAGE", item.message)
+            putExtra("EXTRA_MESSAGE", item.description)
         }
 
         alarmManager.setExact(
             AlarmManager.RTC_WAKEUP,
-            item.dateTime.toEpochSecond() * 1000,
+            item.remindAt.toEpochSecond() * 1000,
             PendingIntent.getBroadcast(
                 context,
                 item.hashCode(),

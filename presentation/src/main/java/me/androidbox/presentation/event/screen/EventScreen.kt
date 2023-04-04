@@ -133,10 +133,11 @@ fun EventScreen(
                                 AlarmReminderItem.values()[item].stringResId))
 
                             eventScreenEvent(EventScreenEvent.OnShowAlarmReminderDropdown(shouldOpen = false))
-
+/*
                             setupAlarmReminderItem(eventScreenState = eventScreenState, item = item, context)?.let { alarmItem ->
                                 eventScreenEvent(EventScreenEvent.OnScheduleAlarmReminder(alarmItem))
                             }
+*/
                         }
                     )
 
@@ -188,36 +189,6 @@ fun EventScreen(
             }
         }
     )
-}
-
-/* */
-private fun setupAlarmReminderItem(eventScreenState: EventScreenState, item: Int, context: Context): AlarmItem? {
-    /*
-       check what reminder that user has selected.
-       If user has set the following 10 minutes, 30 minutes, 1 hour, 6 hours. Set the alarm to go off before selected time
-       If user has set the following 1 day then use the date to set the alarm 1 day before
-    **/
-    return when(item) {
-        in 0..3 -> {
-            val startTime = eventScreenState.startTime
-
-            AlarmItem(
-                dateTime = startTime.minusMinutes(startTime.toEpochSecond()),
-                message = context.getString(eventScreenState.alarmReminderText)
-            )
-        }
-        4 -> {
-            val startDate = eventScreenState.startDate
-
-            AlarmItem(
-                dateTime = startDate.minusDays(startDate.toEpochSecond()),
-                message = context.getString(eventScreenState.alarmReminderText)
-            )
-        }
-        else -> {
-            null
-        }
-    }
 }
 
 @Composable
