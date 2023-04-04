@@ -17,6 +17,7 @@ class AlarmSchedulerImp @Inject constructor(
         const val EXTRA_ID = "extra_id"
         const val EXTRA_TITLE = "extra_title"
         const val EXTRA_DESCRIPTION = "extra_description"
+        const val EXTRA_AGENDA_TYPE = "extra_agenda_type"
      }
 
     private val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
@@ -25,9 +26,10 @@ class AlarmSchedulerImp @Inject constructor(
         /** Only set the alarm when the remindAt time is less than the current time */
         if (System.currentTimeMillis() < alarmItem.remindAt) {
             val alarmIntent = Intent(context, AlarmReceiver::class.java).apply {
-                putExtra(EXTRA_ID, alarmItem.id)
+                putExtra(EXTRA_ID, alarmItem.agendaId)
                 putExtra(EXTRA_TITLE, alarmItem.title)
                 putExtra(EXTRA_DESCRIPTION, alarmItem.description)
+                putExtra(EXTRA_AGENDA_TYPE, alarmItem.agendaType.name)
             }
 
             alarmManager.setExact(
@@ -35,7 +37,7 @@ class AlarmSchedulerImp @Inject constructor(
                 alarmItem.remindAt,
                 PendingIntent.getBroadcast(
                     context,
-                    alarmItem.id.hashCode(),
+                    alarmItem.agendaId.hashCode(),
                     alarmIntent,
                     PendingIntent.FLAG_UPDATE_CURRENT
                 )
@@ -47,7 +49,7 @@ class AlarmSchedulerImp @Inject constructor(
         alarmManager.cancel(
             PendingIntent.getBroadcast(
                 context,
-                alarmItem.id.hashCode(),
+                alarmItem.agendaId.hashCode(),
                 Intent(context, AlarmReceiver::class.java),
                 PendingIntent.FLAG_UPDATE_CURRENT
             )

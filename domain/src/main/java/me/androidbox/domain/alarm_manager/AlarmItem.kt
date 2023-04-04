@@ -3,7 +3,7 @@ package me.androidbox.domain.alarm_manager
 import me.androidbox.domain.authentication.model.Event
 
 data class AlarmItem(
-    val id: String,
+    val agendaId: String,
     val title: String,
     val description: String,
     val remindAt: Long,
@@ -12,7 +12,7 @@ data class AlarmItem(
 
 fun Event.toAlarmItem(agendaType: AgendaType): AlarmItem {
     return AlarmItem(
-        id = this.id,
+        agendaId = this.id,
         title = this.title,
         description = this.description,
         remindAt = this.remindAt * 1000,

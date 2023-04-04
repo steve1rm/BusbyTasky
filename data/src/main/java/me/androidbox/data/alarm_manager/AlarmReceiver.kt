@@ -9,40 +9,67 @@ import android.content.Intent
 import android.os.Build
 import androidx.core.app.NotificationCompat
 import me.androidbox.data.R
+import me.androidbox.data.alarm_manager.AlarmSchedulerImp.Companion.EXTRA_AGENDA_TYPE
+import me.androidbox.data.alarm_manager.AlarmSchedulerImp.Companion.EXTRA_DESCRIPTION
+import me.androidbox.data.alarm_manager.AlarmSchedulerImp.Companion.EXTRA_ID
+import me.androidbox.data.alarm_manager.AlarmSchedulerImp.Companion.EXTRA_TITLE
 
 class AlarmReceiver : BroadcastReceiver() {
-    companion object {
-        const val CHANNEL_ID = "alarm_event_id"
-        const val CHANNEL_NAME = "alarm_event_name"
-        const val EXTRA_MESSAGE = "extra_message"
-    }
+
     override fun onReceive(context: Context?, intent: Intent?) {
-        intent?.getStringExtra(EXTRA_MESSAGE)?.let { message ->
-            val notificationManager = context?.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        /* TODO Not sure if intent can be null but I guess is ok to cast it anyway */
+        if(intent != null && context != null) {
+            intent.extras?.let { bundle ->
+                val agendaId = bundle.getString(EXTRA_ID) ?: ""
+                val title = bundle.getString(EXTRA_TITLE) ?: "Title"
+                val description = bundle.getString(EXTRA_DESCRIPTION) ?: "Description"
+                val agendaType = bundle.getString(EXTRA_AGENDA_TYPE) ?: "Agenda"
 
-            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                val channel = NotificationChannel(
-                    CHANNEL_ID,
-                    CHANNEL_NAME,
-                    NotificationManager.IMPORTANCE_HIGH
-                )
-
-                notificationManager.createNotificationChannel(channel)
+                if (agendaId.isNotBlank()) {
+                    createNotificationChannel(context, agendaId, agendaType)
+                    createAndShowNotification(context, agendaId, title, description)
+                }
             }
-
-            val notificationIntent = Intent(context, AlarmReceiver::class.java)
-            val pendingIntent = PendingIntent.getActivity(context, 1, notificationIntent, PendingIntent.FLAG_IMMUTABLE)
-            val notification = NotificationCompat.Builder(context, CHANNEL_ID)
-                .setContentTitle(context.getString(R.string.notification_title))
-                .setSmallIcon(R.drawable.bell)
-                .setContentText(message)
-                .setAutoCancel(true)
-                .setContentIntent(pendingIntent)
-                .build()
-
-            notificationManager.notify(1, notification)
-            
-            println("Alarm triggered: $message")
         }
+    }
+
+    private fun createNotificationChannel(context: Context?, agendaId: String, agendaName: String) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val notificationManager = getNotificationManager(context)
+            val notificationChannel = NotificationChannel(
+                agendaId,
+                agendaName,
+                NotificationManager.IMPORTANCE_HIGH
+            )
+
+            notificationManager.createNotificationChannel(notificationChannel)
+        }
+    }
+
+    private fun createAndShowNotification(context: Context, agendaId: String, title: String, description: String) {
+        val notificationManager = getNotificationManager(context)
+        val notificationIntent = Intent(context, AlarmReceiver::class.java)
+        val pendingIntent = PendingIntent.getActivity(
+            context,
+            agendaId.hashCode(),
+            notificationIntent,
+            PendingIntent.FLAG_IMMUTABLE
+        )
+
+        val notification = NotificationCompat.Builder(context, agendaId)
+            .setContentTitle(title)
+            .setContentText(description)
+            .setSmallIcon(R.drawable.bell)
+            .setAutoCancel(true)
+            .setContentIntent(pendingIntent)
+            .build()
+
+        notificationManager.notify(agendaId.hashCode(), notification)
+
+        println("Alarm triggered: $agendaId $title $description")
+    }
+
+    private fun getNotificationManager(context: Context): NotificationManager {
+        return context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
     }
 }
