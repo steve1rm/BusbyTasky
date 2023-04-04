@@ -36,12 +36,10 @@ class HomeActivity : ComponentActivity() {
             val authenticatedState = homeViewModel.authenticationState.collectAsState()
             val destination = when(authenticatedState.value) {
                 is ResponseState.Success -> {
-                    /* TODO Go to the Agenda Screen when implemented */
                     Screen.AgendaScreen.route
                 }
                 else -> {
-                    Screen.AgendaScreen.route
-                    // TODO for testing purposes that skip to the agendaScreen. // Screen.LoginScreen.route
+                    Screen.LoginScreen.route
                 }
             }
 
