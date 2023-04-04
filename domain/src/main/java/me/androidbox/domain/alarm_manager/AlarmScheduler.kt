@@ -1,6 +1,6 @@
 package me.androidbox.domain.alarm_manager
 
 interface AlarmScheduler {
-    fun schedule(item: AlarmItem)
-    fun cancel(item: AlarmItem)
+    fun scheduleAlarmReminder(alarmItem: AlarmItem)
+    fun cancelAlarmReminder(alarmItem: AlarmItem)
 }
