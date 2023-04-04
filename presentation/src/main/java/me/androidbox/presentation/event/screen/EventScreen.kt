@@ -88,7 +88,7 @@ fun EventScreen(
                     PhotoPicker(
                         listOfPhotoUri = eventScreenState.listOfPhotoUri,
                         onPhotoUriSelected = { uri ->
-                            eventScreenEvent(EventScreenEvent.OnPhotoUriAdded(uri))
+                            eventScreenEvent(EventScreenEvent.OnPhotoUriAdded(uri.toString()))
                         }
                     )
 

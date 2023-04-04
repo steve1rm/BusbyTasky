@@ -9,7 +9,7 @@ import java.time.ZonedDateTime
 import me.androidbox.domain.alarm_manager.AlarmItem
 
 sealed interface EventScreenEvent {
-    data class OnPhotoUriAdded(val photoUri: Uri): EventScreenEvent
+    data class OnPhotoUriAdded(val photoUri: String): EventScreenEvent
     /* Visitor Type i.e. All, Going, Not Going */
     data class OnSelectedVisitorType(val visitorType: VisitorType): EventScreenEvent
     data class OnSaveTitleOrDescription(val title: String, val description: String): EventScreenEvent
