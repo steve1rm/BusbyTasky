@@ -8,6 +8,7 @@ package me.androidbox.data.remote.model.response
  *
  * Response body `EventDto`
  * */
+
 data class EventDto(
     val id: String,
     val title: String,
