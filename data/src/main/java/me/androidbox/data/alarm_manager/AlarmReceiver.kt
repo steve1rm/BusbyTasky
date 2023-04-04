@@ -17,7 +17,7 @@ import me.androidbox.data.alarm_manager.AlarmSchedulerImp.Companion.EXTRA_TITLE
 class AlarmReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context?, intent: Intent?) {
-        /* TODO Not sure if intent can be null but I guess is ok to cast it anyway */
+        /* TODO Not sure if intent and context can be null but I guess is ok to cast it anyway */
         if(intent != null && context != null) {
             intent.extras?.let { bundle ->
                 val agendaId = bundle.getString(EXTRA_ID) ?: ""
@@ -33,7 +33,7 @@ class AlarmReceiver : BroadcastReceiver() {
         }
     }
 
-    private fun createNotificationChannel(context: Context?, agendaId: String, agendaName: String) {
+    private fun createNotificationChannel(context: Context, agendaId: String, agendaName: String) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val notificationManager = getNotificationManager(context)
             val notificationChannel = NotificationChannel(

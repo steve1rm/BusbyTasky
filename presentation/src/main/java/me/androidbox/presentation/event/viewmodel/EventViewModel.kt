@@ -16,6 +16,7 @@ import me.androidbox.domain.authentication.ResponseState
 import me.androidbox.domain.authentication.model.Event
 import me.androidbox.domain.authentication.preference.PreferenceRepository
 import me.androidbox.domain.authentication.remote.EventRepository
+import me.androidbox.presentation.alarm_manager.AlarmReminderProvider
 import me.androidbox.presentation.event.screen.EventScreenEvent
 import me.androidbox.presentation.event.screen.EventScreenState
 import java.util.*
@@ -115,10 +116,11 @@ class EventViewModel @Inject constructor(
                     )
                 }
             }
-            is EventScreenEvent.OnAlarmReminderTextChanged -> {
+            is EventScreenEvent.OnAlarmReminderChanged -> {
                 _eventScreenState.update { eventScreenState ->
                     eventScreenState.copy(
-                        alarmReminderText = eventScreenEvent.textId
+                        alarmReminderText = eventScreenEvent.reminderItem.stringResId,
+                        alarmReminderItem = eventScreenEvent.reminderItem
                     )
                 }
             }
@@ -126,16 +128,20 @@ class EventViewModel @Inject constructor(
     }
 
     private fun insertEventDetails() {
+        val startDateTime = AlarmReminderProvider.getCombinedDateTime(eventScreenState.value.startTime, eventScreenState.value.startDate)
+        val endDateTime = AlarmReminderProvider.getCombinedDateTime(eventScreenState.value.endTime, eventScreenState.value.endDate)
+        val remindAt = AlarmReminderProvider.getRemindAt(eventScreenState.value.alarmReminderItem, eventScreenState.value.startTime, eventScreenState.value.startDate)
+
         val event = Event(
             id = UUID.randomUUID().toString(),
             title = eventScreenState.value.eventTitle,
             description = eventScreenState.value.eventDescription,
-            startDateTime = eventScreenState.value.startTime.toEpochSecond(),
-            endDateTime = eventScreenState.value.endTime.toEpochSecond(),
-            remindAt = 3L, /* Calculate from the usecase */
+            startDateTime = startDateTime.toEpochSecond(),
+            endDateTime = endDateTime.toEpochSecond(),
+            remindAt = remindAt.toEpochSecond(),
             eventCreatorId = preferenceRepository.retrieveCurrentUserOrNull()?.userId ?: "",
             isUserEventCreator = false,
-            attendees = "attendee 1",
+            attendees = "attendee 1", /* TODO Add attendees here */
             photos = eventScreenState.value.listOfPhotoUri.toString() /* TODO change this to the be serialized */
         )
 
