@@ -37,9 +37,9 @@ class BusbyTaskyApplication : Application() {
 
     private fun generateChannels(): Map<String, String> {
         return mapOf(
-            "Notifications for EVENTS" to "event",
-            "Notifications for TASKS" to "task",
-            "Notifications for REMINDERS" to "reminders"
+            "event" to "Notifications for EVENTS",
+            "task" to "Notifications for TASKS",
+            "reminders" to "Notifications for REMINDERS"
         )
     }
 }
