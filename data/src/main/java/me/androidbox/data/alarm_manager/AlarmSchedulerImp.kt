@@ -13,30 +13,43 @@ class AlarmSchedulerImp @Inject constructor(
     @ApplicationContext private val context: Context,
 ) : AlarmScheduler {
 
+    companion object {
+        const val EXTRA_ID = "extra_id"
+        const val EXTRA_TITLE = "extra_title"
+        const val EXTRA_DESCRIPTION = "extra_description"
+        const val EXTRA_AGENDA_TYPE = "extra_agenda_type"
+     }
+
     private val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
-    override fun schedule(item: AlarmItem) {
-        val intent = Intent(context, AlarmReceiver::class.java).apply {
-            putExtra("EXTRA_MESSAGE", item.message)
-        }
+    override fun scheduleAlarmReminder(alarmItem: AlarmItem) {
+        /** Only set the alarm when the remindAt time is less than the current time */
+        if (System.currentTimeMillis() < alarmItem.remindAt) {
+            val alarmIntent = Intent(context, AlarmReceiver::class.java).apply {
+                putExtra(EXTRA_ID, alarmItem.agendaId)
+                putExtra(EXTRA_TITLE, alarmItem.title)
+                putExtra(EXTRA_DESCRIPTION, alarmItem.description)
+                putExtra(EXTRA_AGENDA_TYPE, alarmItem.agendaType.name)
+            }
 
-        alarmManager.setExact(
-            AlarmManager.RTC_WAKEUP,
-            item.dateTime.toEpochSecond() * 1000,
-            PendingIntent.getBroadcast(
-                context,
-                item.hashCode(),
-                intent,
-                PendingIntent.FLAG_UPDATE_CURRENT
+            alarmManager.setExact(
+                AlarmManager.RTC_WAKEUP,
+                alarmItem.remindAt,
+                PendingIntent.getBroadcast(
+                    context,
+                    alarmItem.agendaId.hashCode(),
+                    alarmIntent,
+                    PendingIntent.FLAG_UPDATE_CURRENT
+                )
             )
-        )
+        }
     }
 
-    override fun cancel(item: AlarmItem) {
+    override fun cancelAlarmReminder(alarmItem: AlarmItem) {
         alarmManager.cancel(
             PendingIntent.getBroadcast(
                 context,
-                item.hashCode(),
+                alarmItem.agendaId.hashCode(),
                 Intent(context, AlarmReceiver::class.java),
                 PendingIntent.FLAG_UPDATE_CURRENT
             )

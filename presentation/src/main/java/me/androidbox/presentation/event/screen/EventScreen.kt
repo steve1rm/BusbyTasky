@@ -50,7 +50,6 @@ fun EventScreen(
     modifier: Modifier = Modifier) {
 
     val calendarStateTimeDate = rememberUseCaseState()
-    val context = LocalContext.current
 
     Scaffold(
         modifier = modifier,
@@ -63,8 +62,9 @@ fun EventScreen(
                 editModeType = EditModeType.SaveMode(),
                 displayDate = "31 March 2023", /* TODO Get the date from the agenda screen that was selected by the user */
                 onCloseClicked = {  },
-                onEditClicked = {},
+                onEditClicked = {  },
                 onSaveClicked = {
+/* TODO Do this after the insert has completed
                     val photoUrl = eventScreenState.listOfPhotoUri.first()
                     val inputData = workDataOf(
                         "photokey" to photoUrl
@@ -79,6 +79,8 @@ fun EventScreen(
                         ).build()
 
                     WorkManager.getInstance(context).enqueue(uploadEventWorkerRequest)
+*/
+                    eventScreenEvent(EventScreenEvent.OnSaveEventDetails)
                 })
 
         },
@@ -137,7 +139,7 @@ fun EventScreen(
 
                     Spacer(modifier = modifier.height(26.dp))
 
-                    AgendaDropDownMenu(
+                     AgendaDropDownMenu(
                         modifier = Modifier
                             .background(color = MaterialTheme.colorScheme.dropDownMenuBackgroundColor),
                         shouldOpenDropdown = eventScreenState.shouldOpenDropdown,
@@ -149,22 +151,13 @@ fun EventScreen(
                             alarmReminderItem.stringResId
                         },
                         onSelectedOption = { item ->
-                            eventScreenEvent(EventScreenEvent.OnAlarmReminderTextChanged(
-                                AlarmReminderItem.values()[item].stringResId))
-
+                            eventScreenEvent(EventScreenEvent.OnAlarmReminderChanged(AlarmReminderItem.values()[item]))
                             eventScreenEvent(EventScreenEvent.OnShowAlarmReminderDropdown(shouldOpen = false))
-
-                            /** TODO Using mock data to set the Alarm Monitor, here use the eventScreenState start time date */
-                            val alarmItem = AlarmItem(
-                                ZonedDateTime.now().plusSeconds(30L),
-                                "THIS IS THE MESSAGE FROM THE ALARM REMINDER"
-                            )
-                            eventScreenEvent(EventScreenEvent.OnScheduleAlarmReminder(alarmItem))
                         }
                     )
 
                     AlarmReminder(
-                        reminderText = stringResource(id = eventScreenState.alarmReminderText),
+                        reminderText = stringResource(id = eventScreenState.alarmReminderItem.stringResId),
                         modifier = Modifier
                             .fillMaxWidth()
                             .background(color = MaterialTheme.colorScheme.backgroundWhiteColor),
@@ -195,11 +188,11 @@ fun EventScreen(
     DateTimeDialog(
         state = calendarStateTimeDate,
         selection = DateTimeSelection.DateTime(
-            selectedDate = java.time.ZonedDateTime.now().toLocalDate(),
-            selectedTime = java.time.ZonedDateTime.now().toLocalTime(),
+            selectedDate = ZonedDateTime.now().toLocalDate(),
+            selectedTime = ZonedDateTime.now().toLocalTime(),
         ) { localDateTime ->
             val zoneId = ZoneId.systemDefault()
-            val zonedDateTime = java.time.ZonedDateTime.of(localDateTime, zoneId)
+            val zonedDateTime = ZonedDateTime.of(localDateTime, zoneId)
 
             if(eventScreenState.isStartDateTime) {
                 eventScreenEvent(EventScreenEvent.OnStartTimeDuration(zonedDateTime))
