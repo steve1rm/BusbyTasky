@@ -158,41 +158,4 @@ class EventViewModel @Inject constructor(
             alarmScheduler.scheduleAlarmReminder(alarmItem)
         }
     }
-
-    /* TODO Remove this as I am only using this to MOCK data to test inserting and fetching */
-    fun insertEvent() {
-
-        val event3 = Event(
-            id = UUID.randomUUID().toString(),
-            title = "event 3",
-            description = "description 3",
-            startDateTime = 7L,
-            endDateTime = 9L,
-            remindAt = 3L,
-            eventCreatorId = "host 3",
-            isUserEventCreator = false,
-            attendees = listOf(),
-            photos = listOf()
-        )
-
-        viewModelScope.launch {
-            eventRepository.insertEvent(event3)
-
-            eventRepository.getEventsFromTimeStamp(4L, 6L).collect { responseState ->
-                when(responseState) {
-                    is ResponseState.Success -> {
-                        responseState.data.map { event ->
-                            Log.d("EVENT", "[ ${event.id} ] [ ${event.startDateTime} | ${event.endDateTime} ]")
-                        }
-                    }
-                    is ResponseState.Failure -> {
-                        Log.e("EVENT", "ERROR ${responseState.error}")
-                    }
-                    ResponseState.Loading -> {
-
-                    }
-                }
-            }
-        }
-    }
 }
