@@ -123,6 +123,13 @@ class EventViewModel @Inject constructor(
                     )
                 }
             }
+            is EventScreenEvent.OnAttendeeAdded -> {
+                _eventScreenState.update { eventScreenState ->
+                    eventScreenState.copy(
+                        listOfAttendee = eventScreenState.listOfAttendee + eventScreenEvent.attendee
+                    )
+                }
+            }
         }
     }
 

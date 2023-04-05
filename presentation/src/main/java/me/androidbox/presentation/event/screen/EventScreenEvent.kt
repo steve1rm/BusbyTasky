@@ -4,6 +4,7 @@ import me.androidbox.component.agenda.AgendaActionType
 import me.androidbox.component.agenda.AlarmReminderItem
 import me.androidbox.component.agenda.VisitorType
 import me.androidbox.component.event.VisitorInfo
+import me.androidbox.domain.authentication.model.Attendee
 import java.time.ZonedDateTime
 
 sealed interface EventScreenEvent {
@@ -21,4 +22,5 @@ sealed interface EventScreenEvent {
     data class OnStartDateTimeChanged(val isStartDateTime: Boolean): EventScreenEvent
     data class OnShowAlarmReminderDropdown(val shouldOpen: Boolean) : EventScreenEvent
     data class OnAlarmReminderChanged(val reminderItem: AlarmReminderItem): EventScreenEvent
+    data class OnAttendeeAdded(val attendee: Attendee): EventScreenEvent
 }
