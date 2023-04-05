@@ -1,13 +1,27 @@
 package me.androidbox.domain.alarm_manager
 
-import java.time.ZonedDateTime
-
+import me.androidbox.domain.authentication.model.Event
 
 data class AlarmItem(
-    val dateTime: ZonedDateTime,
-    val message: String?
-) {
-    val long = dateTime.toEpochSecond() * 100
+    val agendaId: String,
+    val title: String,
+    val description: String,
+    val remindAt: Long,
+    val agendaType: AgendaType
+)
 
+fun Event.toAlarmItem(agendaType: AgendaType): AlarmItem {
+    return AlarmItem(
+        agendaId = this.id,
+        title = this.title,
+        description = this.description,
+        remindAt = this.remindAt * 1000,
+        agendaType = agendaType
+    )
+}
 
+enum class AgendaType {
+    EVENT,
+    TASK,
+    REMINDER
 }

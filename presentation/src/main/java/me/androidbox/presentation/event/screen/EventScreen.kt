@@ -15,7 +15,6 @@ import androidx.compose.ui.unit.dp
 import com.maxkeppeker.sheets.core.models.base.rememberUseCaseState
 import com.maxkeppeler.sheets.date_time.DateTimeDialog
 import com.maxkeppeler.sheets.date_time.models.DateTimeSelection
-import me.androidbox.component.R
 import me.androidbox.component.agenda.*
 import me.androidbox.component.general.AgendaDropDownMenu
 import me.androidbox.component.general.PhotoPicker
@@ -26,7 +25,6 @@ import me.androidbox.component.ui.theme.dropDownMenuBackgroundColor
 import me.androidbox.domain.DateTimeFormatterProvider.DATE_PATTERN
 import me.androidbox.domain.DateTimeFormatterProvider.TIME_PATTERN
 import me.androidbox.domain.DateTimeFormatterProvider.formatDateTime
-import me.androidbox.domain.alarm_manager.AlarmItem
 import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.util.*
@@ -50,11 +48,13 @@ fun EventScreen(
                     .fillMaxWidth()
                     .background(color = MaterialTheme.colorScheme.backgroundBackColor)
                     .padding(horizontal = 16.dp),
-                editModeType = EditModeType.EditMode(),
+                editModeType = EditModeType.SaveMode(),
                 displayDate = "31 March 2023", /* TODO Get the date from the agenda screen that was selected by the user */
                 onCloseClicked = {  },
                 onEditClicked = {  },
-                onSaveClicked = {  })
+                onSaveClicked = {
+                    eventScreenEvent(EventScreenEvent.OnSaveEventDetails)
+                })
 
         },
         content = {
@@ -112,7 +112,7 @@ fun EventScreen(
 
                     Spacer(modifier = modifier.height(26.dp))
 
-                    AgendaDropDownMenu(
+                     AgendaDropDownMenu(
                         modifier = Modifier
                             .background(color = MaterialTheme.colorScheme.dropDownMenuBackgroundColor),
                         shouldOpenDropdown = eventScreenState.shouldOpenDropdown,
@@ -124,22 +124,13 @@ fun EventScreen(
                             alarmReminderItem.stringResId
                         },
                         onSelectedOption = { item ->
-                            eventScreenEvent(EventScreenEvent.OnAlarmReminderTextChanged(
-                                AlarmReminderItem.values()[item].stringResId))
-
+                            eventScreenEvent(EventScreenEvent.OnAlarmReminderChanged(AlarmReminderItem.values()[item]))
                             eventScreenEvent(EventScreenEvent.OnShowAlarmReminderDropdown(shouldOpen = false))
-
-                            /** TODO Using mock data to set the Alarm Monitor, here use the eventScreenState start time date */
-                            val alarmItem = AlarmItem(
-                                ZonedDateTime.now().plusSeconds(30L),
-                                "THIS IS THE MESSAGE FROM THE ALARM REMINDER"
-                            )
-                            eventScreenEvent(EventScreenEvent.OnScheduleAlarmReminder(alarmItem))
                         }
                     )
 
                     AlarmReminder(
-                        reminderText = stringResource(id = eventScreenState.alarmReminderText),
+                        reminderText = stringResource(id = eventScreenState.alarmReminderItem.stringResId),
                         modifier = Modifier
                             .fillMaxWidth()
                             .background(color = MaterialTheme.colorScheme.backgroundWhiteColor),
@@ -170,11 +161,11 @@ fun EventScreen(
     DateTimeDialog(
         state = calendarStateTimeDate,
         selection = DateTimeSelection.DateTime(
-            selectedDate = java.time.ZonedDateTime.now().toLocalDate(),
-            selectedTime = java.time.ZonedDateTime.now().toLocalTime(),
+            selectedDate = ZonedDateTime.now().toLocalDate(),
+            selectedTime = ZonedDateTime.now().toLocalTime(),
         ) { localDateTime ->
             val zoneId = ZoneId.systemDefault()
-            val zonedDateTime = java.time.ZonedDateTime.of(localDateTime, zoneId)
+            val zonedDateTime = ZonedDateTime.of(localDateTime, zoneId)
 
             if(eventScreenState.isStartDateTime) {
                 eventScreenEvent(EventScreenEvent.OnStartTimeDuration(zonedDateTime))
