@@ -1,7 +1,6 @@
 package me.androidbox.presentation.event.viewmodel
 
 import android.util.Log
-import androidx.compose.ui.unit.Constraints
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,10 +16,10 @@ import me.androidbox.domain.authentication.ResponseState
 import me.androidbox.domain.authentication.model.Event
 import me.androidbox.domain.authentication.preference.PreferenceRepository
 import me.androidbox.domain.authentication.remote.EventRepository
+import me.androidbox.domain.work_manager.UploadEvent
 import me.androidbox.presentation.alarm_manager.AlarmReminderProvider
 import me.androidbox.presentation.event.screen.EventScreenEvent
 import me.androidbox.presentation.event.screen.EventScreenState
-import me.androidbox.presentation.worker.UploadEventWorker
 import java.util.*
 import javax.inject.Inject
 
@@ -29,7 +28,8 @@ class EventViewModel @Inject constructor(
     private val eventRepository: EventRepository,
     private val usersInitialsExtractionUseCase: UsersInitialsExtractionUseCase,
     private val preferenceRepository: PreferenceRepository,
-    private val alarmScheduler: AlarmScheduler
+    private val alarmScheduler: AlarmScheduler,
+    private val uploadEvent: UploadEvent
 ) : ViewModel() {
 
     private val _eventScreenState: MutableStateFlow<EventScreenState> = MutableStateFlow(EventScreenState())
@@ -151,6 +151,7 @@ class EventViewModel @Inject constructor(
 
             val alarmItem = event.toAlarmItem(AgendaType.EVENT)
             alarmScheduler.scheduleAlarmReminder(alarmItem)
+            uploadEvent.upload(event = event, isEditMode = false)
             /* Upload the event via work manager here */
 
             /* TODO Do this after the insert has completed */

@@ -18,10 +18,10 @@ import me.androidbox.data.local.dao.EventDao
 import me.androidbox.data.local.database.BusbyTaskyDatabase
 import me.androidbox.data.local.event.EventRepositoryImp
 import me.androidbox.data.remote.preference.PreferenceRepositoryImp
-import me.androidbox.data.worker_manager.UploadEventWorkerImp
+import me.androidbox.data.worker_manager.UploadEventImp
 import me.androidbox.domain.authentication.preference.PreferenceRepository
 import me.androidbox.domain.authentication.remote.EventRepository
-import me.androidbox.domain.work_manager.UploadEventWorker
+import me.androidbox.domain.work_manager.UploadEvent
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -34,7 +34,7 @@ interface RepositoryModule {
     fun bindsEventRepositoryImp(eventRepositoryImp: EventRepositoryImp): EventRepository
 
     @Binds
-    fun bindsUploadEventWorkerImp(uploadEventWorkerImp: UploadEventWorkerImp): UploadEventWorker
+    fun bindsUploadEventImp(uploadEventImp: UploadEventImp): UploadEvent
 
     companion object {
         private const val SECRET_SHARED_PREFERENCES = "secret_shared_preferences"
