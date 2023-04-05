@@ -50,15 +50,6 @@ class AlarmReceiver : BroadcastReceiver() {
 
     private fun createAndShowNotification(context: Context, agendaId: String, title: String, description: String) {
         val notificationManager = getNotificationManager(context)
-        val notificationIntent = Intent(context, AlarmReceiver::class.java)
-
-        /* TODO Add deeplinks to navigate to the detail agenda screen that the notification was trigger for */
-        val pendingIntent = PendingIntent.getActivity(
-            context,
-            agendaId.hashCode(),
-            notificationIntent,
-            PendingIntent.FLAG_IMMUTABLE
-        )
 
         val notification = NotificationCompat.Builder(context, agendaId)
             .setContentTitle(title)
