@@ -119,7 +119,6 @@ class EventViewModel @Inject constructor(
             is EventScreenEvent.OnAlarmReminderChanged -> {
                 _eventScreenState.update { eventScreenState ->
                     eventScreenState.copy(
-                        alarmReminderText = eventScreenEvent.reminderItem.stringResId,
                         alarmReminderItem = eventScreenEvent.reminderItem
                     )
                 }

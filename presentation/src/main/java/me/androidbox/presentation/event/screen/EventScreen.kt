@@ -130,7 +130,7 @@ fun EventScreen(
                     )
 
                     AlarmReminder(
-                        reminderText = stringResource(id = eventScreenState.alarmReminderText),
+                        reminderText = stringResource(id = eventScreenState.alarmReminderItem.stringResId),
                         modifier = Modifier
                             .fillMaxWidth()
                             .background(color = MaterialTheme.colorScheme.backgroundWhiteColor),

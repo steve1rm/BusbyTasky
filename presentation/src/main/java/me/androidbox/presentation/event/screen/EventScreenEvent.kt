@@ -1,12 +1,9 @@
 package me.androidbox.presentation.event.screen
 
-import android.net.Uri
-import androidx.annotation.StringRes
 import me.androidbox.component.agenda.AgendaActionType
 import me.androidbox.component.agenda.AlarmReminderItem
 import me.androidbox.component.agenda.VisitorType
 import me.androidbox.component.event.VisitorInfo
-import me.androidbox.domain.alarm_manager.AlarmItem
 import java.time.ZonedDateTime
 
 sealed interface EventScreenEvent {
