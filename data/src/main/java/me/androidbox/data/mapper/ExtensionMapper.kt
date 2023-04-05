@@ -6,7 +6,7 @@ import me.androidbox.data.local.converter.AttendeeConverter
 import me.androidbox.data.local.entity.EventEntity
 import me.androidbox.domain.authentication.model.Event
 
-fun List<String>.tojson(): String {
+fun List<String>.toJson(): String {
     val moshi = Moshi.Builder().build()
     val type = Types.newParameterizedType(List::class.java, String::class.java)
     val jsonAdapter = moshi.adapter<List<String>>(type)
@@ -48,6 +48,6 @@ fun Event.toEventEntity(attendeeConverter: AttendeeConverter): EventEntity {
         eventCreatorId = this.eventCreatorId,
         isUserEventCreator = this.isUserEventCreator,
         attendees = attendeeConverter.toJson(this.attendees),
-        photos = this.photos.tojson()
+        photos = this.photos.toJson()
     )
 }
