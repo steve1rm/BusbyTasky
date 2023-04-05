@@ -24,7 +24,7 @@ class AlarmSchedulerImp @Inject constructor(
 
     override fun scheduleAlarmReminder(alarmItem: AlarmItem) {
         /** Only set the alarm when the remindAt time is less than the current time */
-        if (System.currentTimeMillis() < alarmItem.remindAt) {
+        if (System.currentTimeMillis() < alarmItem.remindAtInMilliSecs) {
             val alarmIntent = Intent(context, AlarmReceiver::class.java).apply {
                 putExtra(EXTRA_ID, alarmItem.agendaId)
                 putExtra(EXTRA_TITLE, alarmItem.title)
@@ -34,7 +34,7 @@ class AlarmSchedulerImp @Inject constructor(
 
             alarmManager.setExact(
                 AlarmManager.RTC_WAKEUP,
-                alarmItem.remindAt,
+                alarmItem.remindAtInMilliSecs,
                 PendingIntent.getBroadcast(
                     context,
                     alarmItem.agendaId.hashCode(),
