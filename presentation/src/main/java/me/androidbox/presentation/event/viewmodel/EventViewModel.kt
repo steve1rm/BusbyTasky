@@ -129,7 +129,7 @@ class EventViewModel @Inject constructor(
     private fun insertEventDetails() {
         val startDateTime = AlarmReminderProvider.getCombinedDateTime(eventScreenState.value.startTime, eventScreenState.value.startDate)
         val endDateTime = AlarmReminderProvider.getCombinedDateTime(eventScreenState.value.endTime, eventScreenState.value.endDate)
-        val remindAt = AlarmReminderProvider.getRemindAt(eventScreenState.value.alarmReminderItem, eventScreenState.value.startTime, eventScreenState.value.startDate)
+        val remindAt = AlarmReminderProvider.getRemindAt(eventScreenState.value.alarmReminderItem, startDateTime)
 
         val event = Event(
             id = UUID.randomUUID().toString(),
