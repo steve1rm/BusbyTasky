@@ -1,9 +1,28 @@
 package me.androidbox.data.mapper
 
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.Types
+import me.androidbox.data.local.converter.AttendeeConverter
 import me.androidbox.data.local.entity.EventEntity
 import me.androidbox.domain.authentication.model.Event
 
-fun EventEntity.toEvent(): Event {
+fun List<String>.tojson(): String {
+    val moshi = Moshi.Builder().build()
+    val type = Types.newParameterizedType(List::class.java, String::class.java)
+    val jsonAdapter = moshi.adapter<List<String>>(type)
+
+    return jsonAdapter.toJson(this)
+}
+
+fun String.fromJson(): List<String> {
+    val moshi = Moshi.Builder().build()
+    val type = Types.newParameterizedType(List::class.java, String::class.java)
+    val jsonAdapter = moshi.adapter<List<String>>(type)
+
+    return jsonAdapter.fromJson(this) ?: emptyList()
+}
+
+fun EventEntity.toEvent(attendeeConverter: AttendeeConverter): Event {
     return Event(
         id = this.id,
         title = this.title,
@@ -13,12 +32,12 @@ fun EventEntity.toEvent(): Event {
         remindAt = this.remindAt,
         eventCreatorId = this.eventCreatorId,
         isUserEventCreator = this.isUserEventCreator,
-        attendees = this.attendees,
-        photos = this.photos
+        attendees = attendeeConverter.fromJson(this.attendees),
+        photos = this.photos.fromJson()
     )
 }
 
-fun Event.toEventEntity(): EventEntity {
+fun Event.toEventEntity(attendeeConverter: AttendeeConverter): EventEntity {
     return EventEntity(
         id = this.id,
         title = this.title,
@@ -28,7 +47,7 @@ fun Event.toEventEntity(): EventEntity {
         remindAt = this.remindAt,
         eventCreatorId = this.eventCreatorId,
         isUserEventCreator = this.isUserEventCreator,
-        attendees = this.attendees,
-        photos = this.photos
+        attendees = attendeeConverter.toJson(this.attendees),
+        photos = this.photos.tojson()
     )
 }

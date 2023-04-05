@@ -140,8 +140,8 @@ class EventViewModel @Inject constructor(
             remindAt = remindAt.toEpochSecond(),
             eventCreatorId = preferenceRepository.retrieveCurrentUserOrNull()?.userId ?: "",
             isUserEventCreator = false,
-            attendees = "attendee 1", /* TODO Add attendees here */
-            photos = eventScreenState.value.listOfPhotoUri.toString() /* TODO change this to the be serialized */
+            attendees = listOf(), /* TODO Add attendees here */
+            photos = eventScreenState.value.listOfPhotoUri /* TODO change this to the be serialized */
         )
 
         viewModelScope.launch {
@@ -154,31 +154,6 @@ class EventViewModel @Inject constructor(
 
     /* TODO Remove this as I am only using this to MOCK data to test inserting and fetching */
     fun insertEvent() {
-        val event1 = Event(
-            id = UUID.randomUUID().toString(),
-            title = "event 1",
-            description = "description 1",
-            startDateTime = 1L,
-            endDateTime = 3L,
-            remindAt = 3L,
-            eventCreatorId = "host 1",
-            isUserEventCreator = false,
-            attendees = "attendee 1",
-            photos = "photos 1"
-        )
-
-        val event2 = Event(
-            id = UUID.randomUUID().toString(),
-            title = "event 1",
-            description = "description 2",
-            startDateTime = 4L,
-            endDateTime = 6L,
-            remindAt = 3L,
-            eventCreatorId = "host 1",
-            isUserEventCreator = false,
-            attendees = "attendee 2",
-            photos = "photos 2"
-        )
 
         val event3 = Event(
             id = UUID.randomUUID().toString(),
@@ -189,13 +164,11 @@ class EventViewModel @Inject constructor(
             remindAt = 3L,
             eventCreatorId = "host 3",
             isUserEventCreator = false,
-            attendees = "attendee 3",
-            photos = "photos 3"
+            attendees = listOf(),
+            photos = listOf()
         )
 
         viewModelScope.launch {
-            eventRepository.insertEvent(event1)
-            eventRepository.insertEvent(event2)
             eventRepository.insertEvent(event3)
 
             eventRepository.getEventsFromTimeStamp(4L, 6L).collect { responseState ->

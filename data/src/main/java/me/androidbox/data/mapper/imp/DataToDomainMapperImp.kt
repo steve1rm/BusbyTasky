@@ -19,8 +19,8 @@ class DataToDomainMapperImp @Inject constructor()
                 remindAt = entity.remindAt,
                 eventCreatorId = entity.eventCreatorId,
                 isUserEventCreator = entity.isUserEventCreator,
-                attendees = entity.attendees,
-                photos = entity.photos
+                attendees = listOf(),
+                photos = listOf()
             )
         }
     }

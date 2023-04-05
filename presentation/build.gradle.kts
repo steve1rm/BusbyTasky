@@ -81,6 +81,7 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.hilt.navigation.compose)
     implementation(libs.navigation.compose)
+    implementation(libs.moshi.kotlin)
 
     implementation(libs.core.splashscreen)
     implementation("io.coil-kt:coil-compose:2.1.0")
