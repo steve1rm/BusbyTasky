@@ -1,6 +1,5 @@
 package me.androidbox.presentation.event.screen
 
-import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -10,20 +9,12 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.work.Constraints
-import androidx.work.NetworkType
-import androidx.work.OneTimeWorkRequestBuilder
-import androidx.work.WorkManager
-import androidx.work.workDataOf
 import com.maxkeppeker.sheets.core.models.base.rememberUseCaseState
 import com.maxkeppeler.sheets.date_time.DateTimeDialog
 import com.maxkeppeler.sheets.date_time.models.DateTimeSelection
-import dagger.hilt.android.qualifiers.ApplicationContext
-import me.androidbox.component.R
 import me.androidbox.component.agenda.*
 import me.androidbox.component.general.AgendaDropDownMenu
 import me.androidbox.component.general.PhotoPicker
@@ -34,8 +25,6 @@ import me.androidbox.component.ui.theme.dropDownMenuBackgroundColor
 import me.androidbox.domain.DateTimeFormatterProvider.DATE_PATTERN
 import me.androidbox.domain.DateTimeFormatterProvider.TIME_PATTERN
 import me.androidbox.domain.DateTimeFormatterProvider.formatDateTime
-import me.androidbox.domain.alarm_manager.AlarmItem
-import me.androidbox.presentation.worker.UploadEventWorker
 import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.util.*
@@ -64,22 +53,6 @@ fun EventScreen(
                 onCloseClicked = {  },
                 onEditClicked = {  },
                 onSaveClicked = {
-/* TODO Do this after the insert has completed
-                    val photoUrl = eventScreenState.listOfPhotoUri.first()
-                    val inputData = workDataOf(
-                        "photokey" to photoUrl
-                    )
-
-                    val uploadEventWorkerRequest = OneTimeWorkRequestBuilder<UploadEventWorker>()
-                        .setInputData(inputData)
-                        .setConstraints(
-                            Constraints.Builder()
-                                .setRequiredNetworkType(
-                                    NetworkType.CONNECTED).build()
-                        ).build()
-
-                    WorkManager.getInstance(context).enqueue(uploadEventWorkerRequest)
-*/
                     eventScreenEvent(EventScreenEvent.OnSaveEventDetails)
                 })
 

@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import androidx.room.Room
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
+import androidx.work.WorkManager
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -17,8 +18,10 @@ import me.androidbox.data.local.dao.EventDao
 import me.androidbox.data.local.database.BusbyTaskyDatabase
 import me.androidbox.data.local.event.EventRepositoryImp
 import me.androidbox.data.remote.preference.PreferenceRepositoryImp
+import me.androidbox.data.worker_manager.UploadEventWorkerImp
 import me.androidbox.domain.authentication.preference.PreferenceRepository
 import me.androidbox.domain.authentication.remote.EventRepository
+import me.androidbox.domain.work_manager.UploadEventWorker
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -29,6 +32,9 @@ interface RepositoryModule {
 
     @Binds
     fun bindsEventRepositoryImp(eventRepositoryImp: EventRepositoryImp): EventRepository
+
+    @Binds
+    fun bindsUploadEventWorkerImp(uploadEventWorkerImp: UploadEventWorkerImp): UploadEventWorker
 
     companion object {
         private const val SECRET_SHARED_PREFERENCES = "secret_shared_preferences"
@@ -63,6 +69,11 @@ interface RepositoryModule {
         @Provides
         fun providesEventDao(busbyTaskyDatabase: BusbyTaskyDatabase): EventDao {
             return busbyTaskyDatabase.eventDao()
+        }
+
+        @Provides
+        fun providesWorkManager(@ApplicationContext context: Context): WorkManager {
+            return WorkManager.getInstance(context)
         }
     }
 }

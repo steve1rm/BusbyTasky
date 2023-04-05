@@ -1,6 +1,7 @@
 package me.androidbox.presentation.event.viewmodel
 
 import android.util.Log
+import androidx.compose.ui.unit.Constraints
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -19,6 +20,7 @@ import me.androidbox.domain.authentication.remote.EventRepository
 import me.androidbox.presentation.alarm_manager.AlarmReminderProvider
 import me.androidbox.presentation.event.screen.EventScreenEvent
 import me.androidbox.presentation.event.screen.EventScreenState
+import me.androidbox.presentation.worker.UploadEventWorker
 import java.util.*
 import javax.inject.Inject
 
@@ -149,7 +151,26 @@ class EventViewModel @Inject constructor(
 
             val alarmItem = event.toAlarmItem(AgendaType.EVENT)
             alarmScheduler.scheduleAlarmReminder(alarmItem)
-        }
+            /* Upload the event via work manager here */
+
+            /* TODO Do this after the insert has completed */
+  /*                  val photoUrl = eventScreenState.value.listOfPhotoUri
+                    val inputData = workDataOf(
+                        "photokey" to photoUrl
+                    )
+
+
+
+                    val uploadEventWorkerRequest = OneTimeWorkRequestBuilder<UploadEventWorker>()
+                        .setInputData(inputData)
+                        .setConstraints(
+                            Constraints.Builder()
+                                .setRequiredNetworkType(
+                                    NetworkType.CONNECTED).build()
+                        ).build()
+
+                    WorkManager.getInstance(context).enqueue(uploadEventWorkerRequest)
+ */       }
     }
 
     /* TODO Remove this as I am only using this to MOCK data to test inserting and fetching */
