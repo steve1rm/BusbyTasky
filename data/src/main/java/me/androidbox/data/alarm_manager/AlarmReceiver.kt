@@ -26,19 +26,21 @@ class AlarmReceiver : BroadcastReceiver() {
                 val agendaType = bundle.getString(EXTRA_AGENDA_TYPE) ?: "Agenda"
 
                 if (agendaId.isNotBlank()) {
-                    createNotificationChannel(context, agendaId, agendaType)
+                    createNotificationChannel(context, agendaType)
                     createAndShowNotification(context, agendaId, title, description)
                 }
             }
         }
     }
 
-    private fun createNotificationChannel(context: Context, agendaId: String, agendaName: String) {
+    private fun createNotificationChannel(context: Context, agendaType: String) {
+        val channelName = "Notifications for $agendaType"
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val notificationManager = getNotificationManager(context)
             val notificationChannel = NotificationChannel(
-                agendaId,
-                agendaName,
+                agendaType,
+                channelName,
                 NotificationManager.IMPORTANCE_HIGH
             )
 
