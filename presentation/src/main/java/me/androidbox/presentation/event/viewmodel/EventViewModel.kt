@@ -147,8 +147,8 @@ class EventViewModel @Inject constructor(
             remindAt = remindAt.toEpochSecond(),
             eventCreatorId = preferenceRepository.retrieveCurrentUserOrNull()?.userId ?: "",
             isUserEventCreator = false,
-            attendees = listOf(), /* TODO Add attendees here */
-            photos = eventScreenState.value.listOfPhotoUri /* TODO change this to the be serialized */
+            attendees = eventScreenState.value.listOfAttendee,
+            photos = eventScreenState.value.listOfPhotoUri
         )
 
         viewModelScope.launch {
