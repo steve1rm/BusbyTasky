@@ -6,7 +6,7 @@ data class AlarmItem(
     val agendaId: String,
     val title: String,
     val description: String,
-    val remindAt: Long,
+    val remindAtInMilliSecs: Long,
     val agendaType: AgendaType
 )
 
@@ -15,7 +15,7 @@ fun Event.toAlarmItem(agendaType: AgendaType): AlarmItem {
         agendaId = this.id,
         title = this.title,
         description = this.description,
-        remindAt = this.remindAt * 1000,
+        remindAtInMilliSecs = this.remindAt * 1000,
         agendaType = agendaType
     )
 }
