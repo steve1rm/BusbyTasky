@@ -9,7 +9,6 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
 import me.androidbox.domain.authentication.ResponseState
-import me.androidbox.presentation.event.viewmodel.EventViewModel
 import me.androidbox.presentation.login.viewmodel.HomeViewModel
 import me.androidbox.presentation.navigation.NavigationGraph
 import me.androidbox.presentation.navigation.Screen
@@ -27,10 +26,6 @@ class HomeActivity : ComponentActivity() {
                 homeViewModel.authenticationState.value == null
             }
         }
-
-        /* TODO Just for testing inserting and fetching */
-        val eventViewModel by viewModels<EventViewModel>()
-        eventViewModel.insertEvent()
 
         setContent {
             val authenticatedState = homeViewModel.authenticationState.collectAsState()
