@@ -39,7 +39,7 @@ class AlarmSchedulerImp @Inject constructor(
                     context,
                     alarmItem.agendaId.hashCode(),
                     alarmIntent,
-                    PendingIntent.FLAG_UPDATE_CURRENT
+                    PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
                 )
             )
         }
@@ -51,7 +51,7 @@ class AlarmSchedulerImp @Inject constructor(
                 context,
                 alarmItem.agendaId.hashCode(),
                 Intent(context, AlarmReceiver::class.java),
-                PendingIntent.FLAG_UPDATE_CURRENT
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
             )
         )
     }
