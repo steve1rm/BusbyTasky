@@ -49,6 +49,8 @@ class AlarmReceiver : BroadcastReceiver() {
     private fun createAndShowNotification(context: Context, agendaId: String, title: String, description: String) {
         val notificationManager = getNotificationManager(context)
         val notificationIntent = Intent(context, AlarmReceiver::class.java)
+
+        /* TODO Add deeplinks to navigate to the detail agenda screen that the notification was trigger for */
         val pendingIntent = PendingIntent.getActivity(
             context,
             agendaId.hashCode(),
@@ -61,7 +63,6 @@ class AlarmReceiver : BroadcastReceiver() {
             .setContentText(description)
             .setSmallIcon(R.drawable.bell)
             .setAutoCancel(true)
-            .setContentIntent(pendingIntent)
             .build()
 
         notificationManager.notify(agendaId.hashCode(), notification)
