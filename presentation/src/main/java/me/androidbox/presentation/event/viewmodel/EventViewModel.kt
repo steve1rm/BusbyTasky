@@ -142,7 +142,7 @@ class EventViewModel @Inject constructor(
             remindAt = remindAt.toEpochSecond(),
             eventCreatorId = preferenceRepository.retrieveCurrentUserOrNull()?.userId ?: "",
             isUserEventCreator = false,
-            attendees = "attendee 1", /* TODO Add attendees here */
+            attendees = listOf(),
             photos = eventScreenState.value.listOfPhotoUri.toString() /* TODO change this to the be serialized */
         )
 
@@ -152,26 +152,7 @@ class EventViewModel @Inject constructor(
             val alarmItem = event.toAlarmItem(AgendaType.EVENT)
             alarmScheduler.scheduleAlarmReminder(alarmItem)
             uploadEvent.upload(event = event, isEditMode = false)
-            /* Upload the event via work manager here */
-
-            /* TODO Do this after the insert has completed */
-  /*                  val photoUrl = eventScreenState.value.listOfPhotoUri
-                    val inputData = workDataOf(
-                        "photokey" to photoUrl
-                    )
-
-
-
-                    val uploadEventWorkerRequest = OneTimeWorkRequestBuilder<UploadEventWorker>()
-                        .setInputData(inputData)
-                        .setConstraints(
-                            Constraints.Builder()
-                                .setRequiredNetworkType(
-                                    NetworkType.CONNECTED).build()
-                        ).build()
-
-                    WorkManager.getInstance(context).enqueue(uploadEventWorkerRequest)
- */       }
+       }
     }
 
     /* TODO Remove this as I am only using this to MOCK data to test inserting and fetching */

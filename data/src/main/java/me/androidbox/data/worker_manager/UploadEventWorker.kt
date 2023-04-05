@@ -1,4 +1,4 @@
-package me.androidbox.presentation.worker
+package me.androidbox.data.worker_manager
 
 import android.content.Context
 import android.util.Log
@@ -15,7 +15,7 @@ import me.androidbox.data.local.converter.EventConverter
 import me.androidbox.data.remote.model.request.EventRequestDto
 import me.androidbox.data.remote.network.event.EventService
 import me.androidbox.data.remote.util.CheckResult.checkResult
-import me.androidbox.presentation.util.CreatePhotoMultipart
+import me.androidbox.data.worker_manager.util.CreatePhotoMultipart
 import okhttp3.MultipartBody
 import java.util.*
 import kotlin.random.Random

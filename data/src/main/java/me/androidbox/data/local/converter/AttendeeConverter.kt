@@ -4,7 +4,7 @@ import androidx.room.TypeConverter
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
-import me.androidbox.data.local.entity.Attendee
+import me.androidbox.domain.authentication.model.Attendee
 
 class AttendeeConverter {
     /** TODO Use constructor injection to inject the moshi dependency */

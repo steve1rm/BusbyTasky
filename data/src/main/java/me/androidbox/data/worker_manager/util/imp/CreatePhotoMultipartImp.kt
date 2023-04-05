@@ -1,4 +1,4 @@
-package me.androidbox.presentation.util.imp
+package me.androidbox.data.worker_manager.util.imp
 
 import android.content.Context
 import android.net.Uri
@@ -6,13 +6,14 @@ import android.webkit.MimeTypeMap
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import me.androidbox.presentation.util.CreatePhotoMultipart
+import me.androidbox.data.worker_manager.util.CreatePhotoMultipart
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.util.*
 import javax.inject.Inject
 
-class CreatePhotoMultipartImp @Inject constructor(@ApplicationContext private val context: Context) : CreatePhotoMultipart {
+class CreatePhotoMultipartImp @Inject constructor(@ApplicationContext private val context: Context) :
+    CreatePhotoMultipart {
 
     override suspend fun createMultipartPhotos(listOfPhoto: List<String>): List<MultipartBody.Part> {
 
