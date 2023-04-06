@@ -1,7 +1,5 @@
 package me.androidbox.data.remote.network.event
 
-import me.androidbox.data.remote.model.request.EventRequestDto
-import me.androidbox.data.remote.model.request.EventUpdateRequestDto
 import me.androidbox.data.remote.model.response.EventDto
 import me.androidbox.data.remote.network.EndPointConstant
 import okhttp3.MultipartBody

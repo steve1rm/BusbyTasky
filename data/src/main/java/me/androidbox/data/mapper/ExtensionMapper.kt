@@ -1,7 +1,7 @@
 package me.androidbox.data.mapper
 
 import me.androidbox.data.local.entity.EventEntity
-import me.androidbox.data.remote.model.request.EventRequestDto
+import me.androidbox.data.remote.model.request.EventCreateRequestDto
 import me.androidbox.data.remote.model.request.EventUpdateRequestDto
 import me.androidbox.domain.authentication.model.Event
 import java.util.*
@@ -18,7 +18,7 @@ fun EventEntity.toEvent(): Event {
         isUserEventCreator = this.isUserEventCreator,
         isGoing = true,
         attendees = listOf(), //this.attendees,
-        photos = this.photos
+        photos = listOf() // this.photos
     )
 }
 
@@ -33,12 +33,12 @@ fun Event.toEventEntity(): EventEntity {
         eventCreatorId = this.eventCreatorId,
         isUserEventCreator = this.isUserEventCreator,
         attendees = "", /* this will be the json string return from the db this.attendees */
-        photos = this.photos
+        photos = "" // this.photos json to be saved to DB
     )
 }
 
-fun Event.toCreateEventDto(): EventRequestDto {
-    return EventRequestDto(
+fun Event.toCreateEventDto(): EventCreateRequestDto {
+    return EventCreateRequestDto(
         id = this.id,
         title = this.title,
         description = this.description,

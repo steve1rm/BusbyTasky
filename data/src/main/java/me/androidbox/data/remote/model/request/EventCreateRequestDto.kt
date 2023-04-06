@@ -14,7 +14,7 @@ import com.squareup.moshi.JsonClass
  * */
 
 @JsonClass(generateAdapter = true)
-data class EventRequestDto(
+data class EventCreateRequestDto(
     val id: String,
     val title: String,
     val description: String,

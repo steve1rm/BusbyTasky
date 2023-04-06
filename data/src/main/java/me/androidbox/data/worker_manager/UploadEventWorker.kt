@@ -12,7 +12,7 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import me.androidbox.data.R
 import me.androidbox.data.local.converter.EventConverter
-import me.androidbox.data.remote.model.request.EventRequestDto
+import me.androidbox.data.remote.model.request.EventCreateRequestDto
 import me.androidbox.data.remote.network.event.EventService
 import me.androidbox.data.remote.util.CheckResult.checkResult
 import me.androidbox.data.worker_manager.util.CreatePhotoMultipart
@@ -32,7 +32,7 @@ class UploadEventWorker @AssistedInject constructor(
     override suspend fun doWork(): Result {
 
         /** TODO Remove this mock data - this is just for testing purposes */
-        val eventRequest = EventRequestDto(
+        val eventRequest = EventCreateRequestDto(
             id = UUID.randomUUID().toString(),
             title = "Title",
             description = "description",

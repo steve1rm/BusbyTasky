@@ -5,18 +5,16 @@ import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import com.squareup.moshi.Moshi
-import me.androidbox.data.local.converter.EventConverter
 import me.androidbox.data.mapper.toCreateEventDto
 import me.androidbox.data.mapper.toUpdateEventDto
+import me.androidbox.data.remote.model.request.EventCreateRequestDto
 import me.androidbox.data.remote.model.request.EventUpdateRequestDto
 import me.androidbox.domain.authentication.model.Event
 import me.androidbox.domain.work_manager.UploadEvent
-import java.util.UUID
 import javax.inject.Inject
 
 class UploadEventImp @Inject constructor(
     private val workManager: WorkManager,
-    private val eventConverter: EventConverter,
     private val moshi: Moshi
 ) : UploadEvent {
 
@@ -30,12 +28,14 @@ class UploadEventImp @Inject constructor(
         println("event: ${event.id}")
 
         val eventRequestJson = if(isEditMode) {
-            /* Create update eventRequestDto*/
-            event.toUpdateEventDto()
+            /** Create update eventRequestDto*/
+            val jsonAdapter = moshi.adapter(EventUpdateRequestDto::class.java)
+            jsonAdapter.toJson(event.toUpdateEventDto())
         }
         else {
-            /* Create new request eventRequestDto*/
-            event.toCreateEventDto()
+            /** Create new request eventRequestDto */
+            val jsonAdapter = moshi.adapter(EventCreateRequestDto::class.java)
+            jsonAdapter.toJson(event.toCreateEventDto())
         }
 
         /* TODO Do this after the insert has completed */

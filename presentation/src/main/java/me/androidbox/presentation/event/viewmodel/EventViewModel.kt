@@ -145,7 +145,7 @@ class EventViewModel @Inject constructor(
             isUserEventCreator = false,
             isGoing = true,
             attendees = listOf(),
-            photos = eventScreenState.value.listOfPhotoUri.toString() /* TODO change this to the be serialized */
+            photos = eventScreenState.value.listOfPhotoUri /* TODO change this to the be serialized */
         )
 
         viewModelScope.launch {
@@ -153,6 +153,7 @@ class EventViewModel @Inject constructor(
 
             val alarmItem = event.toAlarmItem(AgendaType.EVENT)
             alarmScheduler.scheduleAlarmReminder(alarmItem)
+            uploadEvent.upload(event, isEditMode = true)
         }
     }
 }
