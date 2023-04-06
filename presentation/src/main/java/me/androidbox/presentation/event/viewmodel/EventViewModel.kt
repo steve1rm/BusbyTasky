@@ -158,9 +158,7 @@ class EventViewModel @Inject constructor(
         )
 
         viewModelScope.launch {
-            val responseState = eventRepository.insertEvent(event)
-
-            when(responseState) {
+            when(val responseState = eventRepository.insertEvent(event)) {
                 ResponseState.Loading -> {
                     /* TODO Show some loading progress */
                 }
