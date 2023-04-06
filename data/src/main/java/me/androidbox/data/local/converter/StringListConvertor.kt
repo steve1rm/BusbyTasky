@@ -5,7 +5,7 @@ import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 
-class GenericListConvertor {
+class StringListConvertor {
     private val moshi = Moshi.Builder()
         .add(KotlinJsonAdapterFactory())
         .build()
