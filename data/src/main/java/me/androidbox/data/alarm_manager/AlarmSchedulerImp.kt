@@ -17,7 +17,6 @@ class AlarmSchedulerImp @Inject constructor(
         const val EXTRA_ID = "extra_id"
         const val EXTRA_TITLE = "extra_title"
         const val EXTRA_DESCRIPTION = "extra_description"
-        const val EXTRA_AGENDA_TYPE = "extra_agenda_type"
      }
 
     private val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
@@ -29,7 +28,6 @@ class AlarmSchedulerImp @Inject constructor(
                 putExtra(EXTRA_ID, alarmItem.agendaId)
                 putExtra(EXTRA_TITLE, alarmItem.title)
                 putExtra(EXTRA_DESCRIPTION, alarmItem.description)
-                putExtra(EXTRA_AGENDA_TYPE, alarmItem.agendaType.name)
             }
 
             alarmManager.setExact(
