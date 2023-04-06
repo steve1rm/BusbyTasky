@@ -19,6 +19,7 @@ class UploadEventImp @Inject constructor(
         const val IS_EDIT_MODE = "isEditMode"
         const val EVENT = "event"
         const val EVENT_PHOTOS = "eventPhotos"
+        const val ERROR = "error"
     }
 
     override suspend fun upload(event: Event, isEditMode: Boolean) {
