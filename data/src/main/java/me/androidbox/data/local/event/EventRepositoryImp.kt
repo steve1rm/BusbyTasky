@@ -3,7 +3,6 @@ package me.androidbox.data.local.event
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
-import me.androidbox.data.local.converter.AttendeeConverter
 import me.androidbox.data.local.dao.EventDao
 import me.androidbox.data.mapper.toEvent
 import me.androidbox.data.mapper.toEventEntity
@@ -14,8 +13,7 @@ import me.androidbox.domain.authentication.remote.EventRepository
 import javax.inject.Inject
 
 class EventRepositoryImp @Inject constructor(
-    private val eventDao: EventDao,
-    private val attendeeConverter: AttendeeConverter
+    private val eventDao: EventDao
 ) : EventRepository {
 
     override fun getEventsFromTimeStamp(
@@ -26,7 +24,7 @@ class EventRepositoryImp @Inject constructor(
         return eventDao.getEventsFromTimeStamp(startTimeStamp, endTimeStamp)
             .map { listOfEventEntity ->
                 val listOfEvent = listOfEventEntity.map { eventEntity ->
-                    eventEntity.toEvent(attendeeConverter)
+                    eventEntity.toEvent()
                 }
 
                 ResponseState.Success(listOfEvent)
@@ -37,7 +35,7 @@ class EventRepositoryImp @Inject constructor(
     }
 
     override suspend fun insertEvent(event: Event): ResponseState<Unit> {
-        val eventEntity = event.toEventEntity(attendeeConverter)
+        val eventEntity = event.toEventEntity()
 
         val result = checkResult {
             eventDao.insertEvent(eventEntity)

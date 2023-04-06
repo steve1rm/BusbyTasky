@@ -13,6 +13,7 @@ import me.androidbox.domain.alarm_manager.AgendaType
 import me.androidbox.domain.alarm_manager.AlarmScheduler
 import me.androidbox.domain.alarm_manager.toAlarmItem
 import me.androidbox.domain.authentication.ResponseState
+import me.androidbox.domain.authentication.model.Attendee
 import me.androidbox.domain.authentication.model.Event
 import me.androidbox.domain.authentication.preference.PreferenceRepository
 import me.androidbox.domain.authentication.remote.EventRepository
@@ -147,8 +148,10 @@ class EventViewModel @Inject constructor(
             remindAt = remindAt.toEpochSecond(),
             eventCreatorId = preferenceRepository.retrieveCurrentUserOrNull()?.userId ?: "",
             isUserEventCreator = false,
-            attendees = eventScreenState.value.listOfAttendee,
-            photos = eventScreenState.value.listOfPhotoUri
+            attendees = listOf(
+                Attendee(1, "email", "job blogs", UUID.randomUUID().toString(), UUID.randomUUID().toString(), true, 4L),
+                Attendee(2, "gmail", "peter rab", UUID.randomUUID().toString(), UUID.randomUUID().toString(), false, 2L)), // eventScreenState.value.listOfAttendee,
+            photos = listOf(UUID.randomUUID().toString(), UUID.randomUUID().toString(), UUID.randomUUID().toString())  //eventScreenState.value.listOfPhotoUri
         )
 
         viewModelScope.launch {

@@ -22,7 +22,7 @@ fun String.fromJson(): List<String> {
     return jsonAdapter.fromJson(this) ?: emptyList()
 }
 
-fun EventEntity.toEvent(attendeeConverter: AttendeeConverter): Event {
+fun EventEntity.toEvent(): Event {
     return Event(
         id = this.id,
         title = this.title,
@@ -32,12 +32,12 @@ fun EventEntity.toEvent(attendeeConverter: AttendeeConverter): Event {
         remindAt = this.remindAt,
         eventCreatorId = this.eventCreatorId,
         isUserEventCreator = this.isUserEventCreator,
-        attendees = attendeeConverter.fromJson(this.attendees),
-        photos = this.photos.fromJson()
+        attendees = this.attendees,
+        photos = this.photos
     )
 }
 
-fun Event.toEventEntity(attendeeConverter: AttendeeConverter): EventEntity {
+fun Event.toEventEntity(): EventEntity {
     return EventEntity(
         id = this.id,
         title = this.title,
@@ -47,7 +47,7 @@ fun Event.toEventEntity(attendeeConverter: AttendeeConverter): EventEntity {
         remindAt = this.remindAt,
         eventCreatorId = this.eventCreatorId,
         isUserEventCreator = this.isUserEventCreator,
-        attendees = attendeeConverter.toJson(this.attendees),
-        photos = this.photos.toJson()
+        attendees = this.attendees,
+        photos = this.photos
     )
 }
