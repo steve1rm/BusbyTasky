@@ -9,6 +9,7 @@ data class Event(
     val remindAt: Long,
     val eventCreatorId: String,
     val isUserEventCreator: Boolean,
-    val attendees: String,
+    val isGoing: Boolean,
+    val attendees: List<Attendee>,
     val photos: String,
 )
