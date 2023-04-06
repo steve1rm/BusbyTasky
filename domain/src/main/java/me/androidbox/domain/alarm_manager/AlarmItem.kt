@@ -15,7 +15,7 @@ fun Event.toAlarmItem(agendaType: AgendaType): AlarmItem {
         agendaId = this.id,
         title = this.title,
         description = this.description,
-        remindAt = this.remindAt * 1000,
+        remindAt = this.remindAt,
         agendaType = agendaType
     )
 }
