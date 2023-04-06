@@ -3,6 +3,7 @@ package me.androidbox.data.local.entity
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import me.androidbox.data.local.DatabaseConstant
+import me.androidbox.domain.authentication.model.Attendee
 
 @Entity(tableName = DatabaseConstant.EVENT_TABLE)
 data class EventEntity(
@@ -15,6 +16,7 @@ data class EventEntity(
     val remindAt: Long,
     val eventCreatorId: String,
     val isUserEventCreator: Boolean,
-    val attendees: String,
-    val photos: String,
+    val isGoing: Boolean,
+    val attendees: List<Attendee>,
+    val photos: List<String>,
 )

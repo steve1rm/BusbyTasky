@@ -126,6 +126,13 @@ class EventViewModel @Inject constructor(
                     )
                 }
             }
+            is EventScreenEvent.OnAttendeeAdded -> {
+                _eventScreenState.update { eventScreenState ->
+                    eventScreenState.copy(
+                        listOfAttendee = eventScreenState.listOfAttendee + eventScreenEvent.attendee
+                    )
+                }
+            }
         }
     }
 
@@ -144,16 +151,29 @@ class EventViewModel @Inject constructor(
             eventCreatorId = preferenceRepository.retrieveCurrentUserOrNull()?.userId ?: "",
             isUserEventCreator = false,
             isGoing = true,
-            attendees = listOf(),
-            photos = eventScreenState.value.listOfPhotoUri /* TODO change this to the be serialized */
+            attendees = listOf( /** TODO Mock data until we have added real attendees */
+                Attendee(1, "email", "job blogs", UUID.randomUUID().toString(), UUID.randomUUID().toString(), true, 4L),
+                Attendee(2, "gmail", "peter rab", UUID.randomUUID().toString(), UUID.randomUUID().toString(), false, 2L)),
+            photos = eventScreenState.value.listOfPhotoUri
         )
 
         viewModelScope.launch {
-            eventRepository.insertEvent(event)
+            val responseState = eventRepository.insertEvent(event)
 
-            val alarmItem = event.toAlarmItem(AgendaType.EVENT)
-            alarmScheduler.scheduleAlarmReminder(alarmItem)
-            uploadEvent.upload(event, isEditMode = false)
+            when(responseState) {
+                ResponseState.Loading -> {
+                    /* TODO Show some loading progress */
+                }
+                is ResponseState.Success -> {
+                    val alarmItem = event.toAlarmItem(AgendaType.EVENT)
+                    alarmScheduler.scheduleAlarmReminder(alarmItem)
+                    uploadEvent.upload(event, isEditMode = false)
+                }
+                is ResponseState.Failure -> {
+                    Log.e("EVENT_INSERT", "${responseState.error.message}")
+                   /* TODO Show some kink of snack bar or toast message */
+                }
+            }
         }
     }
 }

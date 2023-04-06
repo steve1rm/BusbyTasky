@@ -97,8 +97,6 @@ dependencies {
     implementation("io.coil-kt:coil-compose:1.4.0")
     implementation("androidx.work:work-runtime-ktx:2.8.0")
     implementation("androidx.hilt:hilt-work:1.0.0")
-    // When using Kotlin.
-    kapt("androidx.hilt:hilt-compiler:1.0.0")
 
     debugImplementation(tests.ui.tooling)
     debugImplementation(tests.ui.test.manifest)

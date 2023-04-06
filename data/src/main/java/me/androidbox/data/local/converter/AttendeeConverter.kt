@@ -7,7 +7,6 @@ import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import me.androidbox.domain.authentication.model.Attendee
 
 class AttendeeConverter {
-    /** TODO Use constructor injection to inject the moshi dependency */
     private val moshi = Moshi.Builder()
         .add(KotlinJsonAdapterFactory())
         .build()
@@ -18,7 +17,6 @@ class AttendeeConverter {
     fun fromJson(json: String): List<Attendee> {
         return jsonAdapter.fromJson(json) ?: emptyList()
     }
-
     @TypeConverter
     fun toJson(listOfAttendee: List<Attendee>): String {
         return jsonAdapter.toJson(listOfAttendee)

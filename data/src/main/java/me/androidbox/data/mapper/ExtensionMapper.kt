@@ -16,9 +16,9 @@ fun EventEntity.toEvent(): Event {
         remindAt = this.remindAt,
         eventCreatorId = this.eventCreatorId,
         isUserEventCreator = this.isUserEventCreator,
-        isGoing = true,
-        attendees = listOf(), //this.attendees,
-        photos = listOf() // this.photos
+        isGoing = this.isGoing,
+        attendees = this.attendees,
+        photos = this.photos
     )
 }
 
@@ -32,8 +32,9 @@ fun Event.toEventEntity(): EventEntity {
         remindAt = this.remindAt,
         eventCreatorId = this.eventCreatorId,
         isUserEventCreator = this.isUserEventCreator,
-        attendees = "", /* this will be the json string return from the db this.attendees */
-        photos = "" // this.photos json to be saved to DB
+        isGoing = this.isGoing,
+        attendees = this.attendees,
+        photos = this.photos
     )
 }
 
@@ -45,7 +46,7 @@ fun Event.toCreateEventDto(): EventCreateRequestDto {
         from = this.startDateTime,
         to = this.endDateTime,
         remindAt = this.remindAt,
-        attendeeIds = listOf(UUID.randomUUID().toString(), UUID.randomUUID().toString()) /**  event will have a list of Attendee i.e. listOfAttendee.map { it.userId } */
+        attendeeIds = this.attendees.map { attendee -> attendee.userId }
     )
 }
 
@@ -57,8 +58,8 @@ fun Event.toUpdateEventDto(): EventUpdateRequestDto {
         from = this.startDateTime,
         to = this.endDateTime,
         remindAt = this.remindAt,
-        attendeeIds = listOf(UUID.randomUUID().toString(), UUID.randomUUID().toString()), /** TODO event will have a list of Attendee i.e. listOfAttendee.map { it.userId } */
-        deletedPhotoKeys = listOf("key1", "key2", "key3"), /** TODO These keys are obtained when uploading a created event and the BE will return the key and the url */
+        attendeeIds = this.attendees.map { attendee -> attendee.userId },
+        deletedPhotoKeys = listOf(UUID.randomUUID().toString(), UUID.randomUUID().toString(), UUID.randomUUID().toString()), /** TODO These keys are obtained when uploading a created event and the BE will return the key and the url */
         isGoing = this.isGoing
     )
 }
