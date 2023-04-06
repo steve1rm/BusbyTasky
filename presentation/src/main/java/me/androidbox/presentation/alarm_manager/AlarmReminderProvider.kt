@@ -8,25 +8,24 @@ object AlarmReminderProvider {
 
     fun getRemindAt(
         alarmReminderItem: AlarmReminderItem,
-        startTime: ZonedDateTime,
-        startDate: ZonedDateTime
+        startDateTime: ZonedDateTime,
     ): ZonedDateTime {
         /** Based on what alarm reminder the user has selected minus the time/date accordingly */
         return when (alarmReminderItem) {
             AlarmReminderItem.TEN_MINUTES -> {
-                startTime.minusMinutes(10L)
+                startDateTime.minusMinutes(10L)
             }
             AlarmReminderItem.THIRTY_MINUTES -> {
-                startTime.minusMinutes(30L)
+                startDateTime.minusMinutes(30L)
             }
             AlarmReminderItem.ONE_HOUR -> {
-                startTime.minusHours(1L)
+                startDateTime.minusHours(1L)
             }
             AlarmReminderItem.SIX_HOUR -> {
-                startTime.minusHours(6L)
+                startDateTime.minusHours(6L)
             }
             AlarmReminderItem.ONE_DAY -> {
-                startDate.minusDays(1L)
+                startDateTime.minusDays(1L)
             }
         }
     }
