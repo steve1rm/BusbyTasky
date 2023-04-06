@@ -153,7 +153,7 @@ class EventViewModel @Inject constructor(
 
             val alarmItem = event.toAlarmItem(AgendaType.EVENT)
             alarmScheduler.scheduleAlarmReminder(alarmItem)
-            uploadEvent.upload(event, isEditMode = true)
+            uploadEvent.upload(event, isEditMode = false)
         }
     }
 }

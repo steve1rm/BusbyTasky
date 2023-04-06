@@ -25,7 +25,6 @@ class UploadEventWorker @AssistedInject constructor(
     @Assisted private val context: Context,
     @Assisted private val workerParameters: WorkerParameters,
     private val eventService: EventService,
-    private val eventConverter: EventConverter,
     private val createPhotoMultipart: CreatePhotoMultipart
 ) : CoroutineWorker(context, workerParameters)  {
 
@@ -47,7 +46,7 @@ class UploadEventWorker @AssistedInject constructor(
             )
         )
 
-        val eventRequestJson = eventConverter.toJson(eventRequest)
+     //   val eventRequestJson = eventConverter.toJson(eventRequest)
 
         /** TODO FIXME Serialize the event request to json
         val moshi = Moshi.Builder().build()
@@ -62,10 +61,12 @@ class UploadEventWorker @AssistedInject constructor(
         val listOfPhotoMultiPart = createPhotoMultipart.createMultipartPhotos(listOfPhotos)
 
         val responseResult = checkResult {
+/*
             eventService.createEvent(
                 listOfPhoto = listOfPhotoMultiPart,
                 eventBody = MultipartBody.Part.createFormData("create_event_request", eventRequestJson)
             )
+*/
         }
 
         /* Check if the request was successful or not */
@@ -81,18 +82,5 @@ class UploadEventWorker @AssistedInject constructor(
         )
 
         return result
-    }
-
-    private suspend fun startForegroundService() {
-        setForeground(
-            ForegroundInfo(
-                Random.nextInt(),
-                NotificationCompat.Builder(context, "upload_event_channel")
-                    .setSmallIcon(R.drawable.bell)
-                    .setContentText("Uploading event...")
-                    .setContentTitle("Uploading is in progress, please wait...")
-                    .build()
-            )
-        )
     }
 }

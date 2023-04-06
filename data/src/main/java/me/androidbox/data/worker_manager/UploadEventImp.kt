@@ -1,9 +1,6 @@
 package me.androidbox.data.worker_manager
 
-import androidx.work.Constraints
-import androidx.work.NetworkType
-import androidx.work.OneTimeWorkRequestBuilder
-import androidx.work.WorkManager
+import androidx.work.*
 import com.squareup.moshi.Moshi
 import me.androidbox.data.mapper.toCreateEventDto
 import me.androidbox.data.mapper.toUpdateEventDto
@@ -25,34 +22,35 @@ class UploadEventImp @Inject constructor(
     }
 
     override suspend fun upload(event: Event, isEditMode: Boolean) {
-        println("event: ${event.id}")
-
+        /** Serialize the event to json */
         val eventRequestJson = if(isEditMode) {
-            /** Create update eventRequestDto*/
+            /** request for update eventRequestDto */
             val jsonAdapter = moshi.adapter(EventUpdateRequestDto::class.java)
             jsonAdapter.toJson(event.toUpdateEventDto())
         }
         else {
-            /** Create new request eventRequestDto */
+            /** request for Create eventRequestDto */
             val jsonAdapter = moshi.adapter(EventCreateRequestDto::class.java)
             jsonAdapter.toJson(event.toCreateEventDto())
         }
 
-        /* TODO Do this after the insert has completed */
-        /*                  val photoUrl = eventScreenState.value.listOfPhotoUri
-                          val inputData = workDataOf(
-                              "photokey" to photoUrl
-                          ) */
-
-        /* Serialize the event to json */
-
+        /** Create input data to send to the work that will be retrieved */
+        val eventInputData = if(event.photos.isNotEmpty()) {
+            workDataOf(
+                IS_EDIT_MODE to isEditMode,
+                EVENT to eventRequestJson,
+                EVENT_PHOTOS to event.photos.toList()
+            )
+        }
+        else {
+            workDataOf(
+                IS_EDIT_MODE to isEditMode,
+                EVENT to eventRequestJson)
+        }
 
         val uploadWorkerRequest  = OneTimeWorkRequestBuilder<UploadEventWorker>()
-            .setConstraints(
-                Constraints(Constraints.Builder()
-                    .setRequiredNetworkType(NetworkType.CONNECTED)
-                    .build())
-            ).build()
+            .setConstraints(Constraints(Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build()))
+            .setInputData(inputData = eventInputData).build()
 
         workManager.enqueue(uploadWorkerRequest)
     }
