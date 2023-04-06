@@ -34,23 +34,6 @@ fun Event.toEventEntity(): EventEntity {
     )
 }
 
-/*
-val eventRequest = EventRequestDto(
-    id = UUID.randomUUID().toString(),
-    title = "Title",
-    description = "description",
-    from = 3L,
-    to = 6L,
-    remindAt = 4L,
-    attendeeIds = listOf(
-        UUID.randomUUID().toString(),
-        UUID.randomUUID().toString(),
-        UUID.randomUUID().toString(),
-        UUID.randomUUID().toString()
-    )
-)
-*/
-
 fun Event.toCreateEventDto(): EventRequestDto {
     return EventRequestDto(
         id = this.id,
