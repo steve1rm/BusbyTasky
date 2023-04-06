@@ -5,8 +5,13 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import me.androidbox.data.local.converter.AttendeeConverter
 import me.androidbox.data.local.converter.PhotoConverter
-import me.androidbox.data.local.dao.*
-import me.androidbox.data.local.entity.*
+import me.androidbox.data.local.converter.StringListConvertor
+import me.androidbox.data.local.dao.EventDao
+import me.androidbox.data.local.dao.ReminderDao
+import me.androidbox.data.local.dao.TaskDao
+import me.androidbox.data.local.entity.EventEntity
+import me.androidbox.data.local.entity.ReminderEntity
+import me.androidbox.data.local.entity.TaskEntity
 
 @Database(entities = [
     EventEntity::class,
@@ -14,7 +19,7 @@ import me.androidbox.data.local.entity.*
     TaskEntity::class],
     version = 1
 )
-@TypeConverters(AttendeeConverter::class, PhotoConverter::class)
+@TypeConverters(AttendeeConverter::class, PhotoConverter::class, StringListConvertor::class)
 abstract class BusbyTaskyDatabase : RoomDatabase() {
 
     abstract fun taskDao(): TaskDao

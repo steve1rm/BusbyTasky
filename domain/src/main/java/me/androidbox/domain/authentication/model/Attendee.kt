@@ -1,4 +1,4 @@
-package me.androidbox.data.local.entity
+package me.androidbox.domain.authentication.model
 
 data class Attendee(
     val id: Int,

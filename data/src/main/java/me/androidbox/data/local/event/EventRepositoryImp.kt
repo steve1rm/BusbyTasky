@@ -13,7 +13,7 @@ import me.androidbox.domain.authentication.remote.EventRepository
 import javax.inject.Inject
 
 class EventRepositoryImp @Inject constructor(
-    private val eventDao: EventDao,
+    private val eventDao: EventDao
 ) : EventRepository {
 
     override fun getEventsFromTimeStamp(
