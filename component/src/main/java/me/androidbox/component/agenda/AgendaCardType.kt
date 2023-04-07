@@ -11,6 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -36,7 +37,8 @@ fun AgendaCard(
     isAgendaCompleted: Boolean = false,
     onMenuOptionClicked: () -> Unit
 ) {
-    Box(modifier = modifier) {
+    Box(modifier = modifier
+        .background(color = agendaCardType.backgroundColor())) {
         Column {
             Box(modifier = Modifier
                 .fillMaxWidth()) {
@@ -126,7 +128,8 @@ fun PreviewTaskCardIsCompleted() {
         AgendaCard(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(120.dp).background(color = AgendaCardType.TASK.backgroundColor(), shape = RoundedCornerShape(22.dp)),
+                .height(120.dp)
+                .clip(shape = RoundedCornerShape(22.dp)),
             agendaCardType = AgendaCardType.TASK,
             title = "Develop UI",
             subtitle = "Implement all agenda cards",
@@ -144,7 +147,8 @@ fun PreviewEventCardNotCompleted() {
         AgendaCard(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(120.dp).background(color = AgendaCardType.EVENT.backgroundColor(), shape = RoundedCornerShape(22.dp)),
+                .height(120.dp)
+                .clip(shape = RoundedCornerShape(22.dp)),
             agendaCardType = AgendaCardType.EVENT,
             title = "Meeting",
             subtitle = "Adjust timeline and goals of project",
@@ -162,7 +166,8 @@ fun PreviewReminderCardCompleted() {
         AgendaCard(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(120.dp).background(color = AgendaCardType.REMINDER.backgroundColor(), shape = RoundedCornerShape(22.dp)),
+                .height(120.dp)
+                .clip(shape = RoundedCornerShape(22.dp)),
             agendaCardType = AgendaCardType.REMINDER,
             title = "Lunch break",
             subtitle = "Continue to work during your lunch period",
