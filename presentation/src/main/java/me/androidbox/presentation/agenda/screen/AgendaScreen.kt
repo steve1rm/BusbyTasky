@@ -4,6 +4,8 @@ import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -20,6 +22,8 @@ import com.maxkeppeler.sheets.calendar.models.CalendarConfig
 import com.maxkeppeler.sheets.calendar.models.CalendarSelection
 import com.maxkeppeler.sheets.calendar.models.CalendarStyle
 import me.androidbox.component.R
+import me.androidbox.component.agenda.AgendaCard
+import me.androidbox.component.agenda.AgendaCardType
 import me.androidbox.component.agenda.AgendaTopBar
 import me.androidbox.component.general.AgendaDropDownMenu
 import me.androidbox.component.general.TaskActionButton
@@ -82,7 +86,6 @@ fun AgendaScreen(
                     },
                     listOfMenuItemId = listOf(R.string.event, R.string.task, R.string.reminder),
                     onSelectedOption = { item ->
-                        Log.d("AGENDA", "ITEM [ $item ]")
                         onSelectedAgendaItem(item)
                         agendaScreenEvent(AgendaScreenEvent.OnShowDropdown(shouldOpen = false))
                     }
@@ -102,6 +105,18 @@ fun AgendaScreen(
             *  i.e. Event, Reminders, and Tasks
             *
             * */
+                items(agendaScreenState.listOfEventDetail) { event ->
+                    AgendaCard(
+                        modifier = Modifier.fillMaxWidth(),
+                        title = event.title,
+                        subtitle = event.description,
+                        dateTimeInfo = "${event.startDateTime} : ${event.endDateTime}",
+                        agendaCardType = AgendaCardType.EVENT,
+                        isAgendaCompleted = true
+                    ) {
+                        println("Event ${event.id} has been clicked")
+                    }
+                }
             }
         }
     }

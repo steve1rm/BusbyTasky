@@ -1,17 +1,18 @@
 package me.androidbox.presentation.agenda.viewmodel
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import me.androidbox.domain.agenda.usecase.UsersInitialsExtractionUseCase
+import me.androidbox.domain.authentication.ResponseState
 import me.androidbox.domain.authentication.preference.PreferenceRepository
 import me.androidbox.domain.authentication.remote.EventRepository
 import me.androidbox.presentation.agenda.screen.AgendaScreenEvent
 import me.androidbox.presentation.agenda.screen.AgendaScreenState
+import java.time.ZoneId
 import java.time.ZonedDateTime
 import javax.inject.Inject
 
@@ -27,8 +28,45 @@ class AgendaViewModel @Inject constructor(
 
     init {
         getAuthenticatedUser()
-        val listOfEvents = eventRepository.getEventsFromTimeStamp(ZonedDateTime.now().toEpochSecond(), ZonedDateTime.now().toEpochSecond())
-        println("INIT BLOCK ")
+        listenForAgendaUpdates()
+    }
+
+    private fun getStartOffCurrentDay(): ZonedDateTime {
+        return ZonedDateTime
+            .now()
+            .toLocalDate()
+            .atStartOfDay(ZoneId.systemDefault())
+    }
+
+    private fun getEndOfCurrentDay(): ZonedDateTime {
+        return getStartOffCurrentDay()
+            .plusDays(1L)
+            .minusSeconds(1L)
+    }
+
+    fun listenForAgendaUpdates() {
+        viewModelScope.launch {
+            eventRepository.getEventsFromTimeStamp(getStartOffCurrentDay().toEpochSecond(), getEndOfCurrentDay().toEpochSecond())
+                .collectLatest { responseState ->
+                    when(responseState) {
+                        ResponseState.Loading -> {
+                            /* TODO Show some form of loading */
+                        }
+                        is ResponseState.Failure -> {
+                            /* TODO Show a toast or a snack bar message */
+                        }
+
+                        is ResponseState.Success -> {
+                            /* TODO Update the state */
+                            _agendaScreenState.update { agendaScreenState ->
+                                agendaScreenState.copy(
+                                    listOfEventDetail = responseState.data
+                                )
+                            }
+                        }
+                    }
+                }
+        }
     }
 
     fun onAgendaScreenEvent(agendaScreenEvent: AgendaScreenEvent) {
