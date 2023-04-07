@@ -25,6 +25,6 @@ sealed interface EventScreenEvent {
     data class OnAttendeeAdded(val attendee: Attendee): EventScreenEvent
 
     /* TODO An event to update the boolean once the insert has completed after clicking the save button
-    *   so we can listen to changes in the navigation graph and go back to the agenda screen */
+    *   and only after that navigate back to the agenda screen to show that event item */
     data class OnSavedEventClicked(val hasInsertedCompleted: Boolean) : EventScreenEvent
 }
