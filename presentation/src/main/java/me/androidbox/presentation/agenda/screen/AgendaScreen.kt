@@ -84,6 +84,7 @@ fun AgendaScreen(
                     onSelectedOption = { item ->
                         Log.d("AGENDA", "ITEM [ $item ]")
                         onSelectedAgendaItem(item)
+                        agendaScreenEvent(AgendaScreenEvent.OnShowDropdown(shouldOpen = false))
                     }
                 )
             }
