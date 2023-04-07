@@ -130,6 +130,9 @@ fun NavigationGraph(
                 onEditDescriptionClicked = { description ->
                     /** Navigate to the edit screen with the title of the agenda item */
                     navHostController.navigate("${Screen.EditScreen.EDIT_SCREEN}/$description/${ContentType.DESCRIPTION}")
+                },
+                onCloseClicked = {
+                    navHostController.popBackStack()
                 }
             )
         }
