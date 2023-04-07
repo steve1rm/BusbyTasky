@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -13,6 +14,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -21,6 +23,7 @@ import com.maxkeppeler.sheets.calendar.CalendarDialog
 import com.maxkeppeler.sheets.calendar.models.CalendarConfig
 import com.maxkeppeler.sheets.calendar.models.CalendarSelection
 import com.maxkeppeler.sheets.calendar.models.CalendarStyle
+import kotlinx.coroutines.delay
 import me.androidbox.component.R
 import me.androidbox.component.agenda.AgendaCard
 import me.androidbox.component.agenda.AgendaCardType
@@ -41,6 +44,12 @@ fun AgendaScreen(
     modifier: Modifier = Modifier) {
 
     val calendarState = rememberUseCaseState()
+
+    val scrollToItemState = rememberLazyListState()
+    LaunchedEffect(key1 = agendaScreenState.listOfEventDetail) {
+        delay(100)
+        scrollToItemState.scrollToItem(index = agendaScreenState.listOfEventDetail.count() - 1)
+    }
 
     Scaffold(
         modifier = modifier,
@@ -98,16 +107,24 @@ fun AgendaScreen(
             .fillMaxSize()
             .padding(paddingValues)) {
 
-            LazyColumn(Modifier.fillMaxWidth()) {
-            /*
-            *
-            * TODO Add content here for each of the agenda items
-            *  i.e. Event, Reminders, and Tasks
-            *
-            * */
+            LazyColumn(
+                Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 8.dp),
+                state = scrollToItemState,
+                verticalArrangement = Arrangement.spacedBy(16.dp)) {
+                /*
+                *
+                * TODO Add content here for each of the agenda items
+                *  i.e. Event, Reminders, and Tasks
+                *
+                * */
                 items(agendaScreenState.listOfEventDetail) { event ->
                     AgendaCard(
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(120.dp)
+                            .clip(shape = RoundedCornerShape(22.dp)),
                         title = event.title,
                         subtitle = event.description,
                         dateTimeInfo = "${event.startDateTime} : ${event.endDateTime}",
