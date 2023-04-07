@@ -33,6 +33,9 @@ import me.androidbox.component.general.TaskActionButton
 import me.androidbox.component.ui.theme.agendaBackgroundColor
 import me.androidbox.component.ui.theme.backgroundBackColor
 import me.androidbox.component.ui.theme.dropDownMenuBackgroundColor
+import me.androidbox.domain.DateTimeFormatterProvider.DATE_PATTERN
+import me.androidbox.domain.DateTimeFormatterProvider.formatDateTime
+import me.androidbox.domain.DateTimeFormatterProvider.toZoneDateTime
 import me.androidbox.presentation.ui.theme.BusbyTaskyTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -44,12 +47,6 @@ fun AgendaScreen(
     modifier: Modifier = Modifier) {
 
     val calendarState = rememberUseCaseState()
-
-    val scrollToItemState = rememberLazyListState()
-    LaunchedEffect(key1 = agendaScreenState.listOfEventDetail) {
-        delay(100)
-        scrollToItemState.scrollToItem(index = agendaScreenState.listOfEventDetail.count() - 1)
-    }
 
     Scaffold(
         modifier = modifier,
@@ -111,7 +108,6 @@ fun AgendaScreen(
                 Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 8.dp),
-                state = scrollToItemState,
                 verticalArrangement = Arrangement.spacedBy(16.dp)) {
                 /*
                 *
@@ -127,7 +123,8 @@ fun AgendaScreen(
                             .clip(shape = RoundedCornerShape(22.dp)),
                         title = event.title,
                         subtitle = event.description,
-                        dateTimeInfo = "${event.startDateTime} : ${event.endDateTime}",
+                        dateTimeInfo = "${event.startDateTime.toZoneDateTime().formatDateTime(DATE_PATTERN)} - ${event.endDateTime.toZoneDateTime().formatDateTime(
+                            DATE_PATTERN)}",
                         agendaCardType = AgendaCardType.EVENT,
                         isAgendaCompleted = true
                     ) {
