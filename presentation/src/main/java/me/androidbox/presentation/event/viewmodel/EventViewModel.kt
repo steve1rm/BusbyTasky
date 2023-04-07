@@ -129,6 +129,13 @@ class EventViewModel @Inject constructor(
                     )
                 }
             }
+            is EventScreenEvent.OnSavedEventClicked -> {
+                _eventScreenState.update { eventScreenState ->
+                    eventScreenState.copy(
+                        hasInsertedCompleted = eventScreenEvent.hasInsertedCompleted
+                    )
+                }
+            }
         }
     }
 
@@ -157,6 +164,9 @@ class EventViewModel @Inject constructor(
 
             val alarmItem = event.toAlarmItem(AgendaType.EVENT)
             alarmScheduler.scheduleAlarmReminder(alarmItem)
+
+            /** I want to only close the event details screen once the insertion has fully completed */
+            onEventScreenEvent(EventScreenEvent.OnSavedEventClicked(hasInsertedCompleted = true))
         }
     }
 }

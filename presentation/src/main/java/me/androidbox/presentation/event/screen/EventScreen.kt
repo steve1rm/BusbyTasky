@@ -56,7 +56,9 @@ fun EventScreen(
 
                 },
                 onSaveClicked = {
+                    println("SAVE HAS BEEN CLICKED")
                     eventScreenEvent(EventScreenEvent.OnSaveEventDetails)
+                    println("SAVE EVENT SCREEN EVENT FINISHED")
                 })
 
         },

@@ -23,5 +23,7 @@ data class EventScreenState(
     val isStartDateTime: Boolean = false,
     val shouldOpenDropdown: Boolean = false,
     val alarmReminderItem: AlarmReminderItem = AlarmReminderItem.TEN_MINUTES,
-    val listOfAttendee: List<Attendee> = listOf()
+    val listOfAttendee: List<Attendee> = listOf(),
+    /** TODO I want to have an state that will update once the insertion has completed */
+    val hasInsertedCompleted: Boolean = false
 )
