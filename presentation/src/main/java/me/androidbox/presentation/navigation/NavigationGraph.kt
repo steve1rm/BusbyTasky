@@ -23,6 +23,7 @@ import me.androidbox.presentation.login.screen.LoginScreen
 import me.androidbox.presentation.login.screen.RegisterScreen
 import me.androidbox.presentation.login.viewmodel.LoginViewModel
 import me.androidbox.presentation.login.viewmodel.RegisterViewModel
+import java.time.ZonedDateTime
 
 @Composable
 fun NavigationGraph(
@@ -88,10 +89,6 @@ fun NavigationGraph(
         ) {
             val agendaViewModel: AgendaViewModel = hiltViewModel()
             val agendaScreenState by agendaViewModel.agendaScreenState.collectAsStateWithLifecycle()
-
-            LaunchedEffect(key1 = agendaScreenState.listOfEventDetail) {
-                agendaViewModel.listenForAgendaUpdates()
-            }
 
             AgendaScreen(
                 agendaScreenState = agendaScreenState,

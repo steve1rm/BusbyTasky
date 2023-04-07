@@ -4,9 +4,7 @@ import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -23,7 +21,6 @@ import com.maxkeppeler.sheets.calendar.CalendarDialog
 import com.maxkeppeler.sheets.calendar.models.CalendarConfig
 import com.maxkeppeler.sheets.calendar.models.CalendarSelection
 import com.maxkeppeler.sheets.calendar.models.CalendarStyle
-import kotlinx.coroutines.delay
 import me.androidbox.component.R
 import me.androidbox.component.agenda.AgendaCard
 import me.androidbox.component.agenda.AgendaCardType
@@ -126,7 +123,7 @@ fun AgendaScreen(
                         dateTimeInfo = "${event.startDateTime.toZoneDateTime().formatDateTime(DATE_PATTERN)} - ${event.endDateTime.toZoneDateTime().formatDateTime(
                             DATE_PATTERN)}",
                         agendaCardType = AgendaCardType.EVENT,
-                        isAgendaCompleted = true
+                        isAgendaCompleted = false
                     ) {
                         println("Event ${event.id} has been clicked")
                     }
@@ -143,7 +140,8 @@ fun AgendaScreen(
             yearSelection = true
         ),
         selection = CalendarSelection.Date { localDate ->
-            agendaScreenEvent(AgendaScreenEvent.OnDateChanged(localDate))
+
+            agendaScreenEvent(AgendaScreenEvent.OnDateChanged(localDate.toZoneDateTime()))
         }
     )
 }

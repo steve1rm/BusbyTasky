@@ -1,9 +1,12 @@
 package me.androidbox.domain
 
+import me.androidbox.domain.DateTimeFormatterProvider.toZoneDateTime
 import java.time.Instant
+import java.time.LocalDate
 import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
+import java.time.temporal.TemporalAccessor
 import java.util.*
 
 object DateTimeFormatterProvider {
@@ -19,5 +22,9 @@ object DateTimeFormatterProvider {
         val instant = Instant.ofEpochSecond(this)
 
         return ZonedDateTime.ofInstant(instant, ZoneId.systemDefault())
+    }
+
+    fun LocalDate.toZoneDateTime(): ZonedDateTime {
+        return this.atStartOfDay(ZoneId.systemDefault())
     }
 }

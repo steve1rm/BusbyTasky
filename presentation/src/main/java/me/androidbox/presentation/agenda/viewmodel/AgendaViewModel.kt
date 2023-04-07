@@ -1,7 +1,6 @@
 package me.androidbox.presentation.agenda.viewmodel
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
@@ -28,25 +27,24 @@ class AgendaViewModel @Inject constructor(
 
     init {
         getAuthenticatedUser()
-        listenForAgendaUpdates()
+        fetchAgendaItems(ZonedDateTime.now())
     }
 
-    private fun getStartOffCurrentDay(): ZonedDateTime {
-        return ZonedDateTime
-            .now()
+    private fun getStartOffCurrentDay(agendaDate: ZonedDateTime = ZonedDateTime.now(ZoneId.systemDefault())): ZonedDateTime {
+        return agendaDate
             .toLocalDate()
             .atStartOfDay(ZoneId.systemDefault())
     }
 
-    private fun getEndOfCurrentDay(): ZonedDateTime {
-        return getStartOffCurrentDay()
+    private fun getEndOfCurrentDay(agendaDate: ZonedDateTime): ZonedDateTime {
+        return agendaDate
             .plusDays(1L)
             .minusSeconds(1L)
     }
 
-    fun listenForAgendaUpdates() {
+    fun fetchAgendaItems(agendaDate: ZonedDateTime = ZonedDateTime.now(ZoneId.systemDefault())) {
         viewModelScope.launch {
-            eventRepository.getEventsFromTimeStamp(getStartOffCurrentDay().toEpochSecond(), getEndOfCurrentDay().toEpochSecond())
+            eventRepository.getEventsFromTimeStamp(getStartOffCurrentDay(agendaDate).toEpochSecond(), getEndOfCurrentDay(agendaDate).toEpochSecond())
                 .collectLatest { responseState ->
                     when(responseState) {
                         ResponseState.Loading -> {
@@ -77,6 +75,7 @@ class AgendaViewModel @Inject constructor(
                         displayMonth = agendaScreenEvent.date.month.toString()
                     )
                 }
+                fetchAgendaItems(agendaScreenEvent.date)
             }
             is AgendaScreenEvent.OnShowDropdown -> {
                 _agendaScreenState.update { agendaScreenState ->
