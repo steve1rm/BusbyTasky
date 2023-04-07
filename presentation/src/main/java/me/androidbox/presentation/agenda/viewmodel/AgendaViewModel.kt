@@ -9,14 +9,17 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import me.androidbox.domain.agenda.usecase.UsersInitialsExtractionUseCase
 import me.androidbox.domain.authentication.preference.PreferenceRepository
+import me.androidbox.domain.authentication.remote.EventRepository
 import me.androidbox.presentation.agenda.screen.AgendaScreenEvent
 import me.androidbox.presentation.agenda.screen.AgendaScreenState
+import java.time.ZonedDateTime
 import javax.inject.Inject
 
 @HiltViewModel
 class AgendaViewModel @Inject constructor(
     private val preferenceRepository: PreferenceRepository,
-    private val usersInitialsExtractionUseCase: UsersInitialsExtractionUseCase
+    private val usersInitialsExtractionUseCase: UsersInitialsExtractionUseCase,
+    private val eventRepository: EventRepository
 ) : ViewModel() {
 
     private val _agendaScreenState = MutableStateFlow(AgendaScreenState())
@@ -24,6 +27,8 @@ class AgendaViewModel @Inject constructor(
 
     init {
         getAuthenticatedUser()
+        val listOfEvents = eventRepository.getEventsFromTimeStamp(ZonedDateTime.now().toEpochSecond(), ZonedDateTime.now().toEpochSecond())
+        println("INIT BLOCK ")
     }
 
     fun onAgendaScreenEvent(agendaScreenEvent: AgendaScreenEvent) {

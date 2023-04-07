@@ -23,7 +23,7 @@ sealed interface EventScreenEvent {
     data class OnShowAlarmReminderDropdown(val shouldOpen: Boolean) : EventScreenEvent
     data class OnAlarmReminderChanged(val reminderItem: AlarmReminderItem): EventScreenEvent
     data class OnAttendeeAdded(val attendee: Attendee): EventScreenEvent
-    
+
     /* TODO An event to update the boolean once the insert has completed after clicking the save button
     *   so we can listen to changes in the navigation graph and go back to the agenda screen */
     data class OnSavedEventClicked(val hasInsertedCompleted: Boolean) : EventScreenEvent
