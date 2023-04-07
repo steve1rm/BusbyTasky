@@ -36,18 +36,10 @@ class UploadEventImp @Inject constructor(
         }
 
         /** Create input data to send to the work that will be retrieved */
-        val eventInputData = if(event.photos.isNotEmpty()) {
-            workDataOf(
-                IS_EDIT_MODE to isEditMode,
-                EVENT to eventRequestJson,
-                EVENT_PHOTOS to event.photos.toList()
-            )
-        }
-        else {
-            workDataOf(
-                IS_EDIT_MODE to isEditMode,
-                EVENT to eventRequestJson)
-        }
+        val eventInputData = workDataOf(
+            IS_EDIT_MODE to isEditMode,
+            EVENT to eventRequestJson,
+            EVENT_PHOTOS to event.photos.toTypedArray())
 
         val uploadWorkerRequest  = OneTimeWorkRequestBuilder<UploadEventWorker>()
             .setConstraints(Constraints(Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build()))

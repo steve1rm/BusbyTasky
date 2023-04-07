@@ -30,7 +30,7 @@ class UploadEventWorker @AssistedInject constructor(
 ) : CoroutineWorker(context, workerParameters)  {
 
     override suspend fun doWork(): Result {
-        val listOfPhoto = inputData.getStringArray(UploadEventImp.EVENT_PHOTOS)?.toList()
+        val listOfPhoto = inputData.getStringArray(EVENT_PHOTOS)
         val eventRequestJson = inputData.getString(UploadEventImp.EVENT)
         val isEditMode = inputData.getBoolean(UploadEventImp.IS_EDIT_MODE, false)
 
@@ -39,7 +39,7 @@ class UploadEventWorker @AssistedInject constructor(
         if(!eventRequestJson.isNullOrEmpty()) {
             val listOfPhotoMultiPart = listOfPhoto?.let {
                 /* Create the multipart for the list of photos */
-                createPhotoMultipart.createMultipartPhotos(listOfPhoto)
+                createPhotoMultipart.createMultipartPhotos(listOfPhoto.toList())
             } ?: listOf()
 
             val responseResult = checkResult {
