@@ -1,14 +1,20 @@
 package me.androidbox.domain.agenda.model
 
 data class Event(
-    val id: String,
-    val title: String,
-    val description: String,
-    val startDateTime: Long,
+    override val id: String,
+    override val title: String,
+    override val description: String,
+    override val startDateTime: Long,
+    override val remindAt: Long,
     val endDateTime: Long,
-    val remindAt: Long,
     val eventCreatorId: String,
     val isUserEventCreator: Boolean,
     val attendees: List<Attendee>,
     val photos: List<String>,
+) : AgendaItem(
+    id = id,
+    title = title,
+    description = description,
+    startDateTime = startDateTime,
+    remindAt = remindAt
 )
