@@ -75,7 +75,7 @@ fun AgendaScreen(
                         ),
                     iconResource = R.drawable.add_white,
                     onActionClicked = {
-                        agendaScreenEvent(AgendaScreenEvent.OnShowDropdown(shouldOpen = true))
+                        agendaScreenEvent(AgendaScreenEvent.OnChangedShowDropdownStatus(shouldOpen = true))
                     })
 
                 AgendaDropDownMenu(
@@ -85,12 +85,12 @@ fun AgendaScreen(
                     shouldOpenDropdown = agendaScreenState.shouldOpenDropdown,
                     onCloseDropdown = {
                         agendaScreenEvent(
-                            AgendaScreenEvent.OnShowDropdown(shouldOpen = false))
+                            AgendaScreenEvent.OnChangedShowDropdownStatus(shouldOpen = false))
                     },
                     listOfMenuItemId = listOf(R.string.event, R.string.task, R.string.reminder),
                     onSelectedOption = { item ->
                         onSelectedAgendaItem(item)
-                        agendaScreenEvent(AgendaScreenEvent.OnShowDropdown(shouldOpen = false))
+                        agendaScreenEvent(AgendaScreenEvent.OnChangedShowDropdownStatus(shouldOpen = false))
                     }
                 )
             }

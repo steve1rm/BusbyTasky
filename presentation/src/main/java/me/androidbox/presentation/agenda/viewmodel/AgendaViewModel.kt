@@ -77,7 +77,7 @@ class AgendaViewModel @Inject constructor(
                 }
                 fetchAgendaItems(agendaScreenEvent.date)
             }
-            is AgendaScreenEvent.OnShowDropdown -> {
+            is AgendaScreenEvent.OnChangedShowDropdownStatus -> {
                 _agendaScreenState.update { agendaScreenState ->
                     agendaScreenState.copy(
                         shouldOpenDropdown = agendaScreenEvent.shouldOpen
