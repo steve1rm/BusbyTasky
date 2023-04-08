@@ -72,7 +72,7 @@ class AgendaViewModel @Inject constructor(
             is AgendaScreenEvent.OnDateChanged -> {
                 _agendaScreenState.update { agendaScreenState ->
                     agendaScreenState.copy(
-                        displayMonth = agendaScreenEvent.date.month.toString()
+                        selectedDate = agendaScreenEvent.date // ZonedDateTime.now(ZoneId.systemDefault()).month.toString() // agendaScreenEvent.date.month.toString()
                     )
                 }
                 fetchAgendaItems(agendaScreenEvent.date)

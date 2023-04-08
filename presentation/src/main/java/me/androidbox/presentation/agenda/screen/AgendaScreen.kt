@@ -54,7 +54,7 @@ fun AgendaScreen(
                     .background(color = MaterialTheme.colorScheme.backgroundBackColor)
                     .padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 8.dp),
                 initials = agendaScreenState.usersInitials,
-                displayMonth = agendaScreenState.displayMonth,
+                displayMonth = agendaScreenState.selectedDate.month.toString(),
                 onProfileButtonClicked = {
                     /** TODO Open dropdown menu here */
                     Log.d("AGENDA_SCREEN", "Profile button clicked")
