@@ -125,8 +125,8 @@ fun NavigationGraph(
             /** TODO Once the insertion has completed the state will change to true then
              *  we will know that the insertion has completed and we can popbackstack
              *  to go back to the agenda screen */
-            LaunchedEffect(key1 = eventScreenState.hasInsertedCompleted) {
-                if(eventScreenState.hasInsertedCompleted) {
+            LaunchedEffect(key1 = eventScreenState.isSaved) {
+                if(eventScreenState.isSaved) {
                     navHostController.popBackStack()
                 }
             }

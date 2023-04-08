@@ -125,14 +125,14 @@ class EventViewModel @Inject constructor(
             is EventScreenEvent.OnAttendeeAdded -> {
                 _eventScreenState.update { eventScreenState ->
                     eventScreenState.copy(
-                        listOfAttendee = eventScreenState.listOfAttendee + eventScreenEvent.attendee
+                        attendees = eventScreenState.attendees + eventScreenEvent.attendee
                     )
                 }
             }
             is EventScreenEvent.OnSavedEventClicked -> {
                 _eventScreenState.update { eventScreenState ->
                     eventScreenState.copy(
-                        hasInsertedCompleted = eventScreenEvent.hasInsertedCompleted
+                        isSaved = eventScreenEvent.hasInsertedCompleted
                     )
                 }
             }
@@ -167,7 +167,7 @@ class EventViewModel @Inject constructor(
 
             /** I want to only close the event details screen once the insertion has fully completed */
             _eventScreenState.update { eventScreenState ->
-                eventScreenState.copy(hasInsertedCompleted = true)
+                eventScreenState.copy(isSaved = true)
             }
         }
     }
