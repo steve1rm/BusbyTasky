@@ -32,7 +32,12 @@ import me.androidbox.component.ui.theme.backgroundBackColor
 import me.androidbox.component.ui.theme.dropDownMenuBackgroundColor
 import me.androidbox.domain.DateTimeFormatterProvider.DATE_PATTERN
 import me.androidbox.domain.DateTimeFormatterProvider.formatDateTime
+import me.androidbox.domain.DateTimeFormatterProvider.toDisplayDateTime
 import me.androidbox.domain.DateTimeFormatterProvider.toZoneDateTime
+import me.androidbox.domain.agenda.model.Event
+import me.androidbox.domain.agenda.model.Reminder
+import me.androidbox.domain.agenda.model.Task
+import me.androidbox.domain.alarm_manager.AgendaType
 import me.androidbox.presentation.ui.theme.BusbyTaskyTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -112,20 +117,23 @@ fun AgendaScreen(
                 *  i.e. Event, Reminders, and Tasks
                 *
                 * */
-                items(agendaScreenState.eventDetails) { event ->
+                items(agendaScreenState.agendaItems) { agendaItem ->
                     AgendaCard(
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(120.dp)
                             .clip(shape = RoundedCornerShape(22.dp)),
-                        title = event.title,
-                        subtitle = event.description,
-                        dateTimeInfo = "${event.startDateTime.toZoneDateTime().formatDateTime(DATE_PATTERN)} - ${event.endDateTime.toZoneDateTime().formatDateTime(
-                            DATE_PATTERN)}",
-                        agendaCardType = AgendaCardType.EVENT,
+                        title = agendaItem.title,
+                        subtitle = agendaItem.description,
+                        dateTimeInfo = agendaItem.toDisplayDateTime(),
+                        agendaCardType = when(agendaItem.agendaType) {
+                            AgendaType.EVENT -> AgendaCardType.EVENT
+                            AgendaType.TASK -> AgendaCardType.TASK
+                            AgendaType.REMINDER -> AgendaCardType.REMINDER
+                        },
                         isAgendaCompleted = false
                     ) {
-                        println("Event ${event.id} has been clicked")
+                        println("Event ${agendaItem.id} has been clicked")
                     }
                 }
             }

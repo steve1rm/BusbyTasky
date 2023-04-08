@@ -1,6 +1,10 @@
 package me.androidbox.domain
 
 import me.androidbox.domain.DateTimeFormatterProvider.toZoneDateTime
+import me.androidbox.domain.agenda.model.AgendaItem
+import me.androidbox.domain.agenda.model.Event
+import me.androidbox.domain.agenda.model.Reminder
+import me.androidbox.domain.agenda.model.Task
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
@@ -26,5 +30,19 @@ object DateTimeFormatterProvider {
 
     fun LocalDate.toZoneDateTime(): ZonedDateTime {
         return this.atStartOfDay(ZoneId.systemDefault())
+    }
+
+    fun AgendaItem.toDisplayDateTime(): String {
+        return when(this) {
+            is Event -> {
+                "${this.startDateTime.toZoneDateTime().formatDateTime(DATE_PATTERN)} - ${this.endDateTime.toZoneDateTime().formatDateTime(DATE_PATTERN)}"
+            }
+            is Task -> {
+                "${this.startDateTime.toZoneDateTime().formatDateTime(DATE_PATTERN)}"
+            }
+            is Reminder -> {
+                "${this.startDateTime.toZoneDateTime().formatDateTime(DATE_PATTERN)}"
+            }
+        }
     }
 }
