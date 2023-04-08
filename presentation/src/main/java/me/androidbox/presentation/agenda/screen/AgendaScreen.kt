@@ -112,7 +112,7 @@ fun AgendaScreen(
                 *  i.e. Event, Reminders, and Tasks
                 *
                 * */
-                items(agendaScreenState.listOfEventDetail) { event ->
+                items(agendaScreenState.eventDetails) { event ->
                     AgendaCard(
                         modifier = Modifier
                             .fillMaxWidth()

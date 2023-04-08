@@ -8,5 +8,5 @@ data class AgendaScreenState(
     val displayMonth: String = ZonedDateTime.now(ZoneId.systemDefault()).month.toString(),
     val usersInitials: String = "",
     val shouldOpenDropdown: Boolean = false,
-    val listOfEventDetail: List<Event> = emptyList()
+    val eventDetails: List<Event> = emptyList()
 )

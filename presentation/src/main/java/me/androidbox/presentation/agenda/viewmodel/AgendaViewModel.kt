@@ -58,7 +58,7 @@ class AgendaViewModel @Inject constructor(
                             /* TODO Update the state */
                             _agendaScreenState.update { agendaScreenState ->
                                 agendaScreenState.copy(
-                                    listOfEventDetail = responseState.data
+                                    eventDetails = responseState.data
                                 )
                             }
                         }
