@@ -111,12 +111,7 @@ fun AgendaScreen(
                     .fillMaxWidth()
                     .padding(horizontal = 8.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp)) {
-                /*
-                *
-                * TODO Add content here for each of the agenda items
-                *  i.e. Event, Reminders, and Tasks
-                *
-                * */
+
                 items(agendaScreenState.agendaItems) { agendaItem ->
                     AgendaCard(
                         modifier = Modifier
