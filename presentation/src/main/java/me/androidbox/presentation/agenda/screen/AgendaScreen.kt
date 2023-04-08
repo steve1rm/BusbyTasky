@@ -30,13 +30,8 @@ import me.androidbox.component.general.TaskActionButton
 import me.androidbox.component.ui.theme.agendaBackgroundColor
 import me.androidbox.component.ui.theme.backgroundBackColor
 import me.androidbox.component.ui.theme.dropDownMenuBackgroundColor
-import me.androidbox.domain.DateTimeFormatterProvider.DATE_PATTERN
-import me.androidbox.domain.DateTimeFormatterProvider.formatDateTime
 import me.androidbox.domain.DateTimeFormatterProvider.toDisplayDateTime
 import me.androidbox.domain.DateTimeFormatterProvider.toZoneDateTime
-import me.androidbox.domain.agenda.model.Event
-import me.androidbox.domain.agenda.model.Reminder
-import me.androidbox.domain.agenda.model.Task
 import me.androidbox.domain.alarm_manager.AgendaType
 import me.androidbox.presentation.ui.theme.BusbyTaskyTheme
 

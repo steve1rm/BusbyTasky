@@ -1,6 +1,5 @@
 package me.androidbox.domain
 
-import me.androidbox.domain.DateTimeFormatterProvider.toZoneDateTime
 import me.androidbox.domain.agenda.model.AgendaItem
 import me.androidbox.domain.agenda.model.Event
 import me.androidbox.domain.agenda.model.Reminder
@@ -10,7 +9,6 @@ import java.time.LocalDate
 import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
-import java.time.temporal.TemporalAccessor
 import java.util.*
 
 object DateTimeFormatterProvider {
