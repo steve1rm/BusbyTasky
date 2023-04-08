@@ -1,6 +1,6 @@
 package me.androidbox.domain.alarm_manager
 
-import me.androidbox.domain.authentication.model.Event
+import me.androidbox.domain.agenda.model.Event
 
 data class AlarmItem(
     val agendaId: String,

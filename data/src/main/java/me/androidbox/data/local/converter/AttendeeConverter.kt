@@ -4,7 +4,7 @@ import androidx.room.TypeConverter
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
-import me.androidbox.domain.authentication.model.Attendee
+import me.androidbox.domain.agenda.model.Attendee
 
 class AttendeeConverter {
     private val moshi = Moshi.Builder()

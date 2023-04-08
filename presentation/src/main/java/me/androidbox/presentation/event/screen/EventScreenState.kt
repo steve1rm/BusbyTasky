@@ -5,7 +5,7 @@ import me.androidbox.component.agenda.AgendaActionType
 import me.androidbox.component.agenda.AlarmReminderItem
 import me.androidbox.component.agenda.VisitorType
 import me.androidbox.component.event.VisitorInfo
-import me.androidbox.domain.authentication.model.Attendee
+import me.androidbox.domain.agenda.model.Attendee
 import java.time.ZoneId
 import java.time.ZonedDateTime
 

@@ -8,7 +8,7 @@ import me.androidbox.data.mapper.toEvent
 import me.androidbox.data.mapper.toEventEntity
 import me.androidbox.data.remote.util.CheckResult.checkResult
 import me.androidbox.domain.authentication.ResponseState
-import me.androidbox.domain.authentication.model.Event
+import me.androidbox.domain.agenda.model.Event
 import me.androidbox.domain.authentication.remote.EventRepository
 import javax.inject.Inject
 

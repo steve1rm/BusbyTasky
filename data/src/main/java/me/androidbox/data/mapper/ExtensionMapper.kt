@@ -1,7 +1,7 @@
 package me.androidbox.data.mapper
 
 import me.androidbox.data.local.entity.EventEntity
-import me.androidbox.domain.authentication.model.Event
+import me.androidbox.domain.agenda.model.Event
 
 fun EventEntity.toEvent(): Event {
     return Event(

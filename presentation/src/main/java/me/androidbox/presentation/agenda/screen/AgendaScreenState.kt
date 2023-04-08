@@ -1,6 +1,6 @@
 package me.androidbox.presentation.agenda.screen
 
-import me.androidbox.domain.authentication.model.Event
+import me.androidbox.domain.agenda.model.Event
 import java.time.ZoneId
 import java.time.ZonedDateTime
 

@@ -3,7 +3,7 @@ package me.androidbox.data.local.entity
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import me.androidbox.data.local.DatabaseConstant
-import me.androidbox.domain.authentication.model.Attendee
+import me.androidbox.domain.agenda.model.Attendee
 
 @Entity(tableName = DatabaseConstant.EVENT_TABLE)
 data class EventEntity(

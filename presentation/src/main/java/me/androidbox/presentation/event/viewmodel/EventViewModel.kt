@@ -11,8 +11,8 @@ import me.androidbox.domain.agenda.usecase.UsersInitialsExtractionUseCase
 import me.androidbox.domain.alarm_manager.AgendaType
 import me.androidbox.domain.alarm_manager.AlarmScheduler
 import me.androidbox.domain.alarm_manager.toAlarmItem
-import me.androidbox.domain.authentication.model.Attendee
-import me.androidbox.domain.authentication.model.Event
+import me.androidbox.domain.agenda.model.Attendee
+import me.androidbox.domain.agenda.model.Event
 import me.androidbox.domain.authentication.preference.PreferenceRepository
 import me.androidbox.domain.authentication.remote.EventRepository
 import me.androidbox.presentation.alarm_manager.AlarmReminderProvider
@@ -129,13 +129,6 @@ class EventViewModel @Inject constructor(
                     )
                 }
             }
-            is EventScreenEvent.OnSavedEventClicked -> {
-                _eventScreenState.update { eventScreenState ->
-                    eventScreenState.copy(
-                        isSaved = eventScreenEvent.hasInsertedCompleted
-                    )
-                }
-            }
         }
     }
 
@@ -153,9 +146,11 @@ class EventViewModel @Inject constructor(
             remindAt = remindAt.toEpochSecond(),
             eventCreatorId = preferenceRepository.retrieveCurrentUserOrNull()?.userId ?: "",
             isUserEventCreator = false,
-            attendees = listOf( /** TODO Mock data until we have added real attendees */
+            attendees = listOf(
+                /** TODO Mock data until we have added real attendees */ /** TODO Mock data until we have added real attendees */
                 Attendee(1, "email", "job blogs", UUID.randomUUID().toString(), UUID.randomUUID().toString(), true, 4L),
-                Attendee(2, "gmail", "peter rab", UUID.randomUUID().toString(), UUID.randomUUID().toString(), false, 2L)),
+                Attendee(2, "gmail", "peter rab", UUID.randomUUID().toString(), UUID.randomUUID().toString(), false, 2L)
+            ),
             photos = eventScreenState.value.listOfPhotoUri
         )
 

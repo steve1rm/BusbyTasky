@@ -1,4 +1,4 @@
-package me.androidbox.domain.authentication.model
+package me.androidbox.domain.agenda.model
 
 data class Attendee(
     val id: Int,
