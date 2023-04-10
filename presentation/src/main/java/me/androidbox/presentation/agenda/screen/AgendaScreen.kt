@@ -103,8 +103,8 @@ fun AgendaScreen(
 
             LazyColumn(
                 Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 8.dp),
+                    .fillMaxWidth(),
+                contentPadding = PaddingValues(horizontal = 8.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp)) {
 
                 items(agendaScreenState.agendaItems) { agendaItem ->
