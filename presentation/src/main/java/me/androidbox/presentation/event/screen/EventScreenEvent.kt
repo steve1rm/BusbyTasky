@@ -15,6 +15,7 @@ sealed interface EventScreenEvent {
     data class OnDeleteVisitor(val visitorInfo: VisitorInfo): EventScreenEvent
     data class OnVisitorEmailChanged(val visitorEmail: String): EventScreenEvent
     data class OnShowVisitorDialog(val shouldShowVisitorDialog: Boolean): EventScreenEvent
+    data class CheckVisitorExists(val visitorEmail: String): EventScreenEvent
     data class OnSelectedAgendaAction(val agendaActionType: AgendaActionType): EventScreenEvent
     object OnSaveEventDetails: EventScreenEvent
     data class OnStartTimeDuration(val startTime: ZonedDateTime): EventScreenEvent

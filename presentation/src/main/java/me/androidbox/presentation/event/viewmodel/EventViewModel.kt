@@ -147,7 +147,14 @@ class EventViewModel @Inject constructor(
                     )
                 }
             }
+            is EventScreenEvent.CheckVisitorExists -> {
+                verifyVisitorEmail(eventScreenEvent.visitorEmail)
+            }
         }
+    }
+
+    private fun verifyVisitorEmail(visitorEmail: String) {
+
     }
 
     private fun insertEventDetails() {
