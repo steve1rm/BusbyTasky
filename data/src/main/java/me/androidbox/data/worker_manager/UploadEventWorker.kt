@@ -29,6 +29,9 @@ class UploadEventWorker @AssistedInject constructor(
     private val moshi: Moshi
 ) : CoroutineWorker(context, workerParameters)  {
 
+    companion object {
+        private const val RETRY_COUNT = 3
+    }
     override suspend fun doWork(): Result {
         val listOfPhoto = inputData.getStringArray(EVENT_PHOTOS)
         val eventRequestJson = inputData.getString(UploadEventImp.EVENT)
@@ -41,6 +44,10 @@ class UploadEventWorker @AssistedInject constructor(
                 /* Create the multipart for the list of photos */
                 createPhotoMultipart.createMultipartPhotos(listOfPhoto.toList())
             } ?: listOf()
+
+            if(runAttemptCount > RETRY_COUNT) {
+                Result.failure()
+            }
 
             val responseResult = checkResult {
                 eventService.createEvent(
@@ -60,9 +67,8 @@ class UploadEventWorker @AssistedInject constructor(
                         Result.success()
                     }
                 },
-                onFailure = { throwable ->
-                    val errorDate = workDataOf(ERROR to throwable)
-                    Result.failure(errorDate)
+                onFailure = { _ ->
+                    Result.retry()
                 }
             )
 
