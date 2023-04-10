@@ -6,7 +6,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -26,7 +26,7 @@ fun VisitorFilter(
     modifier: Modifier = Modifier,
     selectedVisitorType: VisitorType,
     onSelectedTypeClicked: (VisitorType) -> Unit,
-    onAddVistorClicked: () -> Unit) {
+    onAddVisitorClicked: () -> Unit) {
 
     Column(modifier = modifier) {
         Row(modifier = Modifier.fillMaxWidth(),
@@ -40,7 +40,7 @@ fun VisitorFilter(
             Spacer(modifier = Modifier.width(18.dp))
 
             IconButton(onClick = {
-                onAddVistorClicked()
+                onAddVisitorClicked()
             }) {
                 Image(
                     painter = painterResource(id = R.drawable.add_photo),
@@ -110,12 +110,19 @@ enum class VisitorType(@StringRes val titleRes: Int) {
 @Composable
 @Preview(showBackground = true)
 fun PreviewVisitorFilter() {
+
+    var rememberVisitorType by remember {
+        mutableStateOf(VisitorType.ALL)
+    }
+
     BusbyTaskyTheme {
         VisitorFilter(
             modifier = Modifier.fillMaxWidth(),
-            selectedVisitorType = VisitorType.ALL,
-            onAddVistorClicked = {},
-            onSelectedTypeClicked = {}
+            selectedVisitorType = rememberVisitorType,
+            onAddVisitorClicked = {},
+            onSelectedTypeClicked = { visitorType ->
+               rememberVisitorType = visitorType
+            }
         )
     }
 }

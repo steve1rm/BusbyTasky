@@ -147,7 +147,7 @@ fun EventScreen(
                         modifier = Modifier.fillMaxWidth(),
                         selectedVisitorType = VisitorType.ALL,
                         onSelectedTypeClicked = {},
-                        onAddVistorClicked = {}
+                        onAddVisitorClicked = {}
                     )
 
                     Spacer(modifier = modifier.height(26.dp))
