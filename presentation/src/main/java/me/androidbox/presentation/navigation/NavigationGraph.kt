@@ -88,7 +88,6 @@ fun NavigationGraph(
         ) {
             val agendaViewModel: AgendaViewModel = hiltViewModel()
             val agendaScreenState by agendaViewModel.agendaScreenState.collectAsStateWithLifecycle()
-
             
             LaunchedEffect(key1 = agendaScreenState.agendaItems) {
                 agendaViewModel.fetchAgendaItems(agendaScreenState.selectedDate)

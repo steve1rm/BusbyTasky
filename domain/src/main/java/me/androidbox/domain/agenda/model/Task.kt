@@ -9,6 +9,7 @@ data class Task(
     override val startDateTime: Long,
     override val remindAt: Long,
     override val agendaType: AgendaType = AgendaType.TASK,
+    val isDone: Boolean
 ) : AgendaItem(
     id = id,
     title = title,
