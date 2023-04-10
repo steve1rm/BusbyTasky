@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="notification_title">Event Reminder</string>
+    <string name="create_event_request">create_event_request</string>
+    <string name="update_event_request">update_event_request</string>
+    <string name="request_json_error">Failed to get request json</string>
 </resources>
