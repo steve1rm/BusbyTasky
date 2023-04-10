@@ -47,7 +47,7 @@ class UploadEventImp @Inject constructor(
             .setBackoffCriteria(
                 BackoffPolicy.EXPONENTIAL,
                 WorkRequest.MIN_BACKOFF_MILLIS,
-                TimeUnit.SECONDS)
+                TimeUnit.MILLISECONDS)
             .setInputData(inputData = eventInputData).build()
 
         workManager.enqueue(uploadWorkerRequest)
