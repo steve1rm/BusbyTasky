@@ -148,7 +148,7 @@ fun EventScreen(
                         selectedVisitorType = VisitorType.ALL,
                         onSelectedTypeClicked = {},
                         onAddVisitorClicked = {
-
+                            eventScreenEvent(EventScreenEvent.OnShowVisitorDialog(shouldShowVisitorDialog = true))
                         }
                     )
 
@@ -163,23 +163,29 @@ fun EventScreen(
         }
     )
 
-    Box(modifier = Modifier.fillMaxSize()) {
-        AddVisitorDialog(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(
-                    color = MaterialTheme.colorScheme.backgroundWhiteColor,
-                    shape = RoundedCornerShape(16.dp)
-                )
-                .padding(20.dp),
-            email = eventScreenState.visitorEmail,
-            onEmailChanged = { visitorEmail ->
-                eventScreenEvent(EventScreenEvent.OnVisitorEmailChanged(visitorEmail))
-            },
-            onDialogClose = {  },
-            isValidInput = false,
-            onAddButtonClicked = {}
-        )
+    if(eventScreenState.shouldShowVisitorDialog) {
+        Box(modifier = Modifier.fillMaxSize()) {
+            AddVisitorDialog(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(
+                        color = MaterialTheme.colorScheme.backgroundWhiteColor,
+                        shape = RoundedCornerShape(16.dp)
+                    )
+                    .padding(20.dp),
+                email = eventScreenState.visitorEmail,
+                onEmailChanged = { visitorEmail ->
+                    eventScreenEvent(EventScreenEvent.OnVisitorEmailChanged(visitorEmail))
+                },
+                onDialogClose = {
+                    eventScreenEvent(EventScreenEvent.OnShowVisitorDialog(shouldShowVisitorDialog = false))
+                },
+                isValidInput = false,
+                onAddButtonClicked = {
+
+                }
+            )
+        }
     }
     DateTimeDialog(
         state = calendarStateTimeDate,

@@ -140,6 +140,13 @@ class EventViewModel @Inject constructor(
                     )
                 }
             }
+            is EventScreenEvent.OnShowVisitorDialog -> {
+                _eventScreenState.update { eventScreenState ->
+                    eventScreenState.copy(
+                        shouldShowVisitorDialog = eventScreenEvent.shouldShowVisitorDialog
+                    )
+                }
+            }
         }
     }
 

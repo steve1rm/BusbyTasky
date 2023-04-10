@@ -14,6 +14,7 @@ data class EventScreenState(
     val selectedVisitorType: VisitorType = VisitorType.ALL,
     val selectedVisitor: VisitorInfo? = null,
     val visitorEmail: String = "",
+    val shouldShowVisitorDialog: Boolean = false,
     val eventTitle: String = "New Event",
     val eventDescription: String = "Description",
     val selectedAgendaActionType: AgendaActionType = AgendaActionType.DELETE_EVENT,
