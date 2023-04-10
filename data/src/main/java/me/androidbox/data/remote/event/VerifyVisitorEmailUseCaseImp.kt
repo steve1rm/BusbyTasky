@@ -5,8 +5,9 @@ import me.androidbox.data.remote.network.event.EventService
 import me.androidbox.data.remote.util.CheckResult.checkResult
 import me.androidbox.domain.authentication.ResponseState
 import me.androidbox.domain.event.usecase.VerifyVisitorEmailUseCase
+import javax.inject.Inject
 
-class VerifyVisitorEmailUseCaseImp(
+class VerifyVisitorEmailUseCaseImp @Inject constructor(
     private val eventService: EventService
 ) : VerifyVisitorEmailUseCase {
     override suspend fun execute(email: String): ResponseState<Boolean> {

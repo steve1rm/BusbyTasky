@@ -17,6 +17,7 @@ import me.androidbox.domain.authentication.model.Attendee
 import me.androidbox.domain.authentication.model.Event
 import me.androidbox.domain.authentication.preference.PreferenceRepository
 import me.androidbox.domain.authentication.remote.EventRepository
+import me.androidbox.domain.event.usecase.VerifyVisitorEmailUseCase
 import me.androidbox.domain.work_manager.UploadEvent
 import me.androidbox.presentation.alarm_manager.AlarmReminderProvider
 import me.androidbox.presentation.event.screen.EventScreenEvent
@@ -28,6 +29,7 @@ import javax.inject.Inject
 class EventViewModel @Inject constructor(
     private val eventRepository: EventRepository,
     private val usersInitialsExtractionUseCase: UsersInitialsExtractionUseCase,
+    private val verifyVisitorEmailUseCase: VerifyVisitorEmailUseCase,
     private val preferenceRepository: PreferenceRepository,
     private val alarmScheduler: AlarmScheduler,
     private val uploadEvent: UploadEvent
@@ -154,7 +156,10 @@ class EventViewModel @Inject constructor(
     }
 
     private fun verifyVisitorEmail(visitorEmail: String) {
-
+        viewModelScope.launch {
+            val result = verifyVisitorEmailUseCase.execute("peter@mail.com")
+            println(result)
+        }
     }
 
     private fun insertEventDetails() {
