@@ -1,5 +1,6 @@
 package me.androidbox.presentation.agenda.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -52,6 +53,7 @@ class AgendaViewModel @Inject constructor(
                         }
                         is ResponseState.Failure -> {
                             /* TODO Show a toast or a snack bar message */
+                            Log.e("AGENDA_VIEWMODEL", responseState.error.toString())
                         }
 
                         is ResponseState.Success -> {
