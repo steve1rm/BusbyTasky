@@ -1,12 +1,16 @@
 package me.androidbox.component.agenda
 
 import androidx.annotation.StringRes
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -21,14 +25,30 @@ import java.util.*
 fun VisitorFilter(
     modifier: Modifier = Modifier,
     selectedVisitorType: VisitorType,
-    onSelectedTypeClicked: (VisitorType) -> Unit) {
+    onSelectedTypeClicked: (VisitorType) -> Unit,
+    onAddVistorClicked: () -> Unit) {
 
     Column(modifier = modifier) {
-        Text(
-            text = stringResource(R.string.visitors),
-            fontWeight = FontWeight.Bold,
-            fontSize = 20.sp,
-            color = MaterialTheme.colorScheme.agendaBodyTextColor)
+        Row(modifier = Modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically) {
+            Text(
+                text = stringResource(R.string.visitors),
+                fontWeight = FontWeight.Bold,
+                fontSize = 20.sp,
+                color = MaterialTheme.colorScheme.agendaBodyTextColor)
+
+            Spacer(modifier = Modifier.width(18.dp))
+
+            IconButton(onClick = {
+                onAddVistorClicked()
+            }) {
+                Image(
+                    painter = painterResource(id = R.drawable.add_photo),
+                    contentDescription = stringResource(id = R.string.add_photos)
+                )
+            }
+
+        }
 
         Spacer(modifier = Modifier.height(36.dp))
 
@@ -94,6 +114,7 @@ fun PreviewVisitorFilter() {
         VisitorFilter(
             modifier = Modifier.fillMaxWidth(),
             selectedVisitorType = VisitorType.ALL,
+            onAddVistorClicked = {},
             onSelectedTypeClicked = {}
         )
     }
