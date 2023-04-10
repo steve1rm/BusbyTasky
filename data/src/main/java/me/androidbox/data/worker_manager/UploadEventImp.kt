@@ -8,6 +8,7 @@ import me.androidbox.data.remote.model.request.EventCreateRequestDto
 import me.androidbox.data.remote.model.request.EventUpdateRequestDto
 import me.androidbox.domain.authentication.model.Event
 import me.androidbox.domain.work_manager.UploadEvent
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class UploadEventImp @Inject constructor(
@@ -43,6 +44,10 @@ class UploadEventImp @Inject constructor(
 
         val uploadWorkerRequest  = OneTimeWorkRequestBuilder<UploadEventWorker>()
             .setConstraints(Constraints(Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build()))
+            .setBackoffCriteria(
+                BackoffPolicy.EXPONENTIAL,
+                WorkRequest.MIN_BACKOFF_MILLIS,
+                TimeUnit.SECONDS)
             .setInputData(inputData = eventInputData).build()
 
         workManager.enqueue(uploadWorkerRequest)
