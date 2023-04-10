@@ -147,7 +147,9 @@ fun EventScreen(
                         modifier = Modifier.fillMaxWidth(),
                         selectedVisitorType = VisitorType.ALL,
                         onSelectedTypeClicked = {},
-                        onAddVisitorClicked = {}
+                        onAddVisitorClicked = {
+
+                        }
                     )
 
                     Spacer(modifier = modifier.height(26.dp))
@@ -161,6 +163,24 @@ fun EventScreen(
         }
     )
 
+    Box(modifier = Modifier.fillMaxSize()) {
+        AddVisitorDialog(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(
+                    color = MaterialTheme.colorScheme.backgroundWhiteColor,
+                    shape = RoundedCornerShape(16.dp)
+                )
+                .padding(20.dp),
+            email = eventScreenState.visitorEmail,
+            onEmailChanged = { visitorEmail ->
+                eventScreenEvent(EventScreenEvent.OnVisitorEmailChanged(visitorEmail))
+            },
+            onDialogClose = {  },
+            isValidInput = false,
+            onAddButtonClicked = {}
+        )
+    }
     DateTimeDialog(
         state = calendarStateTimeDate,
         selection = DateTimeSelection.DateTime(

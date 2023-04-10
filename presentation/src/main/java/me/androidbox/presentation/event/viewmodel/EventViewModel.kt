@@ -133,6 +133,13 @@ class EventViewModel @Inject constructor(
                     )
                 }
             }
+            is EventScreenEvent.OnVisitorEmailChanged -> {
+                _eventScreenState.update { eventScreenState ->
+                    eventScreenState.copy(
+                        visitorEmail = eventScreenEvent.visitorEmail
+                    )
+                }
+            }
         }
     }
 

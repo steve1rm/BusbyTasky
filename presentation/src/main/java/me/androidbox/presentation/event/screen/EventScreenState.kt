@@ -13,6 +13,7 @@ data class EventScreenState(
     val listOfPhotoUri: List<String> = mutableStateListOf<String>(),
     val selectedVisitorType: VisitorType = VisitorType.ALL,
     val selectedVisitor: VisitorInfo? = null,
+    val visitorEmail: String = "",
     val eventTitle: String = "New Event",
     val eventDescription: String = "Description",
     val selectedAgendaActionType: AgendaActionType = AgendaActionType.DELETE_EVENT,

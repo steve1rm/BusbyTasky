@@ -13,6 +13,7 @@ sealed interface EventScreenEvent {
     data class OnSelectedVisitorType(val visitorType: VisitorType): EventScreenEvent
     data class OnSaveTitleOrDescription(val title: String, val description: String): EventScreenEvent
     data class OnDeleteVisitor(val visitorInfo: VisitorInfo): EventScreenEvent
+    data class OnVisitorEmailChanged(val visitorEmail: String): EventScreenEvent
     data class OnSelectedAgendaAction(val agendaActionType: AgendaActionType): EventScreenEvent
     object OnSaveEventDetails: EventScreenEvent
     data class OnStartTimeDuration(val startTime: ZonedDateTime): EventScreenEvent
