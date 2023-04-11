@@ -183,7 +183,8 @@ fun EventScreen(
                 isValidInput = false,
                 onAddButtonClicked = { visitorEmail ->
                     eventScreenEvent(EventScreenEvent.CheckVisitorExists(visitorEmail))
-                }
+                },
+                hasEmailVerifiedFailed = eventScreenState.hasEmailVerifiedFailed
             )
         }
     }

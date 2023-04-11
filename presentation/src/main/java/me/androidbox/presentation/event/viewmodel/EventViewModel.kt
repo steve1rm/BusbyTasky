@@ -145,7 +145,8 @@ class EventViewModel @Inject constructor(
             is EventScreenEvent.OnShowVisitorDialog -> {
                 _eventScreenState.update { eventScreenState ->
                     eventScreenState.copy(
-                        shouldShowVisitorDialog = eventScreenEvent.shouldShowVisitorDialog
+                        shouldShowVisitorDialog = eventScreenEvent.shouldShowVisitorDialog,
+                        hasEmailVerifiedFailed = false
                     )
                 }
             }
@@ -159,15 +160,33 @@ class EventViewModel @Inject constructor(
         viewModelScope.launch {
             val responseState = verifyVisitorEmailUseCase.execute("peter@mail.com")
 
-            when(val state = responseState) {
+            when(responseState) {
                 is ResponseState.Loading -> {
-
+                    /* TODO Show loading */
                 }
                 is ResponseState.Success -> {
-
+                    if(responseState.data == null) {
+                        _eventScreenState.update { eventScreenState ->
+                            eventScreenState.copy(
+                                hasEmailVerifiedFailed = true
+                            )
+                        }
+                    }
+                    else {
+                        /* TODO Add this attendee to the event and insert into the db */
+                        _eventScreenState.update { eventScreenState ->
+                            eventScreenState.copy(
+                                hasEmailVerifiedFailed = false
+                            )
+                        }
+                    }
                 }
                 is ResponseState.Failure -> {
-
+                    _eventScreenState.update { eventScreenState ->
+                        eventScreenState.copy(
+                            hasEmailVerifiedFailed = true
+                        )
+                    }
                 }
             }
         }
