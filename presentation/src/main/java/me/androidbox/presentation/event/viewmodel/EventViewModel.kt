@@ -164,7 +164,7 @@ class EventViewModel @Inject constructor(
 
     private fun verifyVisitorEmail(visitorEmail: String) {
         viewModelScope.launch {
-            val responseState = verifyVisitorEmailUseCase.execute(visitorEmail)
+            val responseState = verifyVisitorEmailUseCase.execute("peter@mail.com")
 
             when(responseState) {
                 is ResponseState.Loading -> {
@@ -187,9 +187,6 @@ class EventViewModel @Inject constructor(
                                 listOfAttendee = eventScreenState.listOfAttendee + attendee
                             )
                         }
-
-                        /* TODO Add this attendee to the event and update this event in db */
-
                     } ?: run {
                         _eventScreenState.update { eventScreenState ->
                             eventScreenState.copy(
@@ -224,9 +221,7 @@ class EventViewModel @Inject constructor(
             eventCreatorId = preferenceRepository.retrieveCurrentUserOrNull()?.userId ?: "",
             isUserEventCreator = false,
             isGoing = true,
-            attendees = listOf( /** TODO Mock data until we have added real attendees */
-                Attendee("email", "job blogs", UUID.randomUUID().toString(), UUID.randomUUID().toString(), true, 4L),
-                Attendee( "gmail", "peter rab", UUID.randomUUID().toString(), UUID.randomUUID().toString(), false, 2L)),
+            attendees = eventScreenState.value.listOfAttendee,
             photos = eventScreenState.value.listOfPhotoUri
         )
 

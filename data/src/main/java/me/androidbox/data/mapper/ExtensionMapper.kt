@@ -71,7 +71,7 @@ fun AttendeeDto.toAttendee(): Attendee {
         email = this.email,
         fullName = this.fullName,
         userId = this.userId,
-        eventId = this.eventId,
-        isGoing = this.isGoing,
-        remindAt = this.remindAt)
+        eventId = "",
+        isGoing = false,
+        remindAt = 0L)
 }
