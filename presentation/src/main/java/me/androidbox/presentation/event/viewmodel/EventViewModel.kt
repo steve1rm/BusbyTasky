@@ -77,6 +77,11 @@ class EventViewModel @Inject constructor(
                 }
             }
             is EventScreenEvent.OnSaveEventDetails -> {
+                _eventScreenState.update { eventScreenState ->
+                    eventScreenState.copy(
+                        eventId = UUID.randomUUID().toString()
+                    )
+                }
                 insertEventDetails()
             }
             is EventScreenEvent.OnStartTimeDuration -> {
@@ -146,7 +151,7 @@ class EventViewModel @Inject constructor(
                 _eventScreenState.update { eventScreenState ->
                     eventScreenState.copy(
                         shouldShowVisitorDialog = eventScreenEvent.shouldShowVisitorDialog,
-                        hasEmailVerifiedFailed = false,
+                        isEmailVerifiedSuccess = false,
                         visitorEmail = ""
                     )
                 }
@@ -159,25 +164,36 @@ class EventViewModel @Inject constructor(
 
     private fun verifyVisitorEmail(visitorEmail: String) {
         viewModelScope.launch {
-            val responseState = verifyVisitorEmailUseCase.execute("peter@mail.com")
+            val responseState = verifyVisitorEmailUseCase.execute(visitorEmail)
 
             when(responseState) {
                 is ResponseState.Loading -> {
                     /* TODO Show loading */
                 }
                 is ResponseState.Success -> {
-                    if(responseState.data == null) {
+                    responseState.data?.let { _attendee ->
+                        val attendee = _attendee.copy(
+                            email = _attendee.email,
+                            fullName = _attendee.fullName,
+                            userId = _attendee.userId,
+                            remindAt = _attendee.remindAt,
+                            eventId = eventScreenState.value.eventId,
+                            isGoing = _attendee.isGoing
+                        )
+
                         _eventScreenState.update { eventScreenState ->
                             eventScreenState.copy(
-                                hasEmailVerifiedFailed = true
+                                isEmailVerifiedSuccess = true,
+                                listOfAttendee = eventScreenState.listOfAttendee + attendee
                             )
                         }
-                    }
-                    else {
-                        /* TODO Add this attendee to the event and insert into the db */
+
+                        /* TODO Add this attendee to the event and update this event in db */
+
+                    } ?: run {
                         _eventScreenState.update { eventScreenState ->
                             eventScreenState.copy(
-                                hasEmailVerifiedFailed = false
+                                isEmailVerifiedSuccess = false
                             )
                         }
                     }
@@ -185,7 +201,7 @@ class EventViewModel @Inject constructor(
                 is ResponseState.Failure -> {
                     _eventScreenState.update { eventScreenState ->
                         eventScreenState.copy(
-                            hasEmailVerifiedFailed = true
+                            isEmailVerifiedSuccess = true
                         )
                     }
                 }
@@ -199,7 +215,7 @@ class EventViewModel @Inject constructor(
         val remindAt = AlarmReminderProvider.getRemindAt(eventScreenState.value.alarmReminderItem, startDateTime)
 
         val event = Event(
-            id = UUID.randomUUID().toString(),
+            id = eventScreenState.value.eventId,
             title = eventScreenState.value.eventTitle,
             description = eventScreenState.value.eventDescription,
             startDateTime = startDateTime.toEpochSecond(),

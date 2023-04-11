@@ -184,7 +184,7 @@ fun EventScreen(
                 onAddButtonClicked = { visitorEmail ->
                     eventScreenEvent(EventScreenEvent.CheckVisitorExists(visitorEmail))
                 },
-                hasEmailVerifiedFailed = eventScreenState.hasEmailVerifiedFailed
+                isEmailVerifiedSuccess = eventScreenState.isEmailVerifiedSuccess
             )
         }
     }

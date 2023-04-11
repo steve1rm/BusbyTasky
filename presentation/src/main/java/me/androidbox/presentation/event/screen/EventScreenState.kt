@@ -8,6 +8,7 @@ import me.androidbox.component.event.VisitorInfo
 import me.androidbox.domain.authentication.model.Attendee
 import java.time.ZoneId
 import java.time.ZonedDateTime
+import java.util.UUID
 
 data class EventScreenState(
     val listOfPhotoUri: List<String> = mutableStateListOf<String>(),
@@ -15,9 +16,10 @@ data class EventScreenState(
     val selectedVisitor: VisitorInfo? = null,
     val visitorEmail: String = "",
     val shouldShowVisitorDialog: Boolean = false,
-    val hasEmailVerifiedFailed: Boolean = false,
+    val isEmailVerifiedSuccess: Boolean = true,
     val eventTitle: String = "New Event",
     val eventDescription: String = "Description",
+    val eventId: String = UUID.randomUUID().toString(),
     val selectedAgendaActionType: AgendaActionType = AgendaActionType.DELETE_EVENT,
     val startTime: ZonedDateTime = ZonedDateTime.now(ZoneId.systemDefault()),
     val endTime: ZonedDateTime = ZonedDateTime.now(ZoneId.systemDefault()),
