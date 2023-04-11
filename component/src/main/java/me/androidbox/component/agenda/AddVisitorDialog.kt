@@ -80,7 +80,7 @@ fun AddVisitorDialog(
                     text = stringResource(R.string.email_verify_failed),
                     fontWeight = FontWeight.Normal,
                     fontSize = 16.sp,
-                    color = MaterialTheme.colorScheme.agendaSubTitleHeaderColor
+                    color = MaterialTheme.colorScheme.error
                 )
             }
 
