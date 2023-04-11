@@ -27,7 +27,7 @@ import me.androidbox.component.ui.theme.backgroundWhiteColor
 @Composable
 fun AddVisitorDialog(
     email: String,
-    errorMessage: String?,
+    hasEmailVerifiedFailed: Boolean,
     onEmailChanged: (email: String) -> Unit,
     onDialogClose: () -> Unit,
     isValidInput: Boolean,
@@ -72,9 +72,9 @@ fun AddVisitorDialog(
 
             Spacer(modifier = Modifier.height(30.dp))
 
-            if(!errorMessage.isNullOrEmpty()) {
+            if(hasEmailVerifiedFailed) {
                 Text(
-                    text = errorMessage,
+                    text = stringResource(R.string.email_verify_failed),
                     fontWeight = FontWeight.Normal,
                     fontSize = 16.sp,
                     color = MaterialTheme.colorScheme.agendaSubTitleHeaderColor
@@ -107,7 +107,7 @@ fun PreviewAddVisitorDialog() {
                 )
                 .padding(20.dp),
             email = "joeblogs@gmail.com",
-            errorMessage = null,
+            hasEmailVerifiedFailed = false,
             isValidInput = true,
             onEmailChanged = {},
             onDialogClose = {},
@@ -129,7 +129,7 @@ fun PreviewAddVisitorDialogErrorMessage() {
                 )
                 .padding(20.dp),
             email = "joeblogs@gmail.com",
-            errorMessage = "Email does not exist",
+            hasEmailVerifiedFailed = true,
             isValidInput = true,
             onEmailChanged = {},
             onDialogClose = {},
