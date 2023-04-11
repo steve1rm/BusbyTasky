@@ -23,8 +23,8 @@ import java.util.*
 
 @Composable
 fun VisitorFilter(
-    modifier: Modifier = Modifier,
     selectedVisitorType: VisitorType,
+    modifier: Modifier = Modifier,
     onSelectedTypeClicked: (VisitorType) -> Unit,
     onAddVisitorClicked: () -> Unit) {
 
