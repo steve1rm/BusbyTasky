@@ -178,8 +178,8 @@ class EventViewModel @Inject constructor(
             isUserEventCreator = false,
             isGoing = true,
             attendees = listOf( /** TODO Mock data until we have added real attendees */
-                Attendee(1, "email", "job blogs", UUID.randomUUID().toString(), UUID.randomUUID().toString(), true, 4L),
-                Attendee(2, "gmail", "peter rab", UUID.randomUUID().toString(), UUID.randomUUID().toString(), false, 2L)),
+                Attendee("email", "job blogs", UUID.randomUUID().toString(), UUID.randomUUID().toString(), true, 4L),
+                Attendee( "gmail", "peter rab", UUID.randomUUID().toString(), UUID.randomUUID().toString(), false, 2L)),
             photos = eventScreenState.value.listOfPhotoUri
         )
 

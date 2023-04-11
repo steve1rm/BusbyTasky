@@ -182,7 +182,6 @@ fun EventScreen(
                 },
                 isValidInput = false,
                 onAddButtonClicked = { visitorEmail ->
-                    /* TODO check that the email exists on the BE */
                     eventScreenEvent(EventScreenEvent.CheckVisitorExists(visitorEmail))
                 }
             )
