@@ -27,6 +27,7 @@ import me.androidbox.component.ui.theme.backgroundWhiteColor
 @Composable
 fun AddVisitorDialog(
     email: String,
+    errorMessage: String?,
     onEmailChanged: (email: String) -> Unit,
     onDialogClose: () -> Unit,
     isValidInput: Boolean,
@@ -71,6 +72,17 @@ fun AddVisitorDialog(
 
             Spacer(modifier = Modifier.height(30.dp))
 
+            if(!errorMessage.isNullOrEmpty()) {
+                Text(
+                    text = errorMessage,
+                    fontWeight = FontWeight.Normal,
+                    fontSize = 16.sp,
+                    color = MaterialTheme.colorScheme.agendaSubTitleHeaderColor
+                )
+
+                Spacer(modifier = Modifier.height(30.dp))
+            }
+
             TaskButton(
                 modifier = Modifier.fillMaxWidth(),
                 buttonText = stringResource(R.string.add),
@@ -95,6 +107,29 @@ fun PreviewAddVisitorDialog() {
                 )
                 .padding(20.dp),
             email = "joeblogs@gmail.com",
+            errorMessage = null,
+            isValidInput = true,
+            onEmailChanged = {},
+            onDialogClose = {},
+            onAddButtonClicked = {}
+        )
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+fun PreviewAddVisitorDialogErrorMessage() {
+    BusbyTaskyTheme {
+        AddVisitorDialog(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(
+                    color = MaterialTheme.colorScheme.backgroundWhiteColor,
+                    shape = RoundedCornerShape(16.dp)
+                )
+                .padding(20.dp),
+            email = "joeblogs@gmail.com",
+            errorMessage = "Email does not exist",
             isValidInput = true,
             onEmailChanged = {},
             onDialogClose = {},
