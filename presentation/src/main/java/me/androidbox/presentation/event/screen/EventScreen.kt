@@ -164,30 +164,29 @@ fun EventScreen(
     )
 
     if(eventScreenState.shouldShowVisitorDialog) {
-        Box(modifier = Modifier.fillMaxSize()) {
-            AddVisitorDialog(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(
-                        color = MaterialTheme.colorScheme.backgroundWhiteColor,
-                        shape = RoundedCornerShape(16.dp)
-                    )
-                    .padding(20.dp),
-                email = eventScreenState.visitorEmail,
-                onEmailChanged = { visitorEmail ->
-                    eventScreenEvent(EventScreenEvent.OnVisitorEmailChanged(visitorEmail))
-                },
-                onDialogClose = {
-                    eventScreenEvent(EventScreenEvent.OnShowVisitorDialog(shouldShowVisitorDialog = false))
-                },
-                isValidInput = false,
-                onAddButtonClicked = { visitorEmail ->
-                    eventScreenEvent(EventScreenEvent.CheckVisitorExists(visitorEmail))
-                },
-                isEmailVerifiedSuccess = eventScreenState.isEmailVerifiedSuccess
-            )
-        }
+        AddVisitorDialog(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(
+                    color = MaterialTheme.colorScheme.backgroundWhiteColor,
+                    shape = RoundedCornerShape(16.dp)
+                )
+                .padding(20.dp),
+            email = eventScreenState.visitorEmail,
+            onEmailChanged = { visitorEmail ->
+                eventScreenEvent(EventScreenEvent.OnVisitorEmailChanged(visitorEmail))
+            },
+            onDialogClose = {
+                eventScreenEvent(EventScreenEvent.OnShowVisitorDialog(shouldShowVisitorDialog = false))
+            },
+            isValidInput = false,
+            onAddButtonClicked = { visitorEmail ->
+                eventScreenEvent(EventScreenEvent.CheckVisitorExists(visitorEmail))
+            },
+            isEmailVerified = eventScreenState.isEmailVerified
+        )
     }
+
     DateTimeDialog(
         state = calendarStateTimeDate,
         selection = DateTimeSelection.DateTime(

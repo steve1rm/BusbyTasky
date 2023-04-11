@@ -16,7 +16,7 @@ data class EventScreenState(
     val selectedVisitor: VisitorInfo? = null,
     val visitorEmail: String = "",
     val shouldShowVisitorDialog: Boolean = false,
-    val isEmailVerifiedSuccess: Boolean = true,
+    val isEmailVerified: Boolean = true,
     val eventTitle: String = "New Event",
     val eventDescription: String = "Description",
     val eventId: String = UUID.randomUUID().toString(),
