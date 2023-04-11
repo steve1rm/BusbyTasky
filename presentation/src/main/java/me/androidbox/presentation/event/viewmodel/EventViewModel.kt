@@ -151,7 +151,7 @@ class EventViewModel @Inject constructor(
                 _eventScreenState.update { eventScreenState ->
                     eventScreenState.copy(
                         shouldShowVisitorDialog = eventScreenEvent.shouldShowVisitorDialog,
-                        isEmailVerifiedSuccess = false,
+                        isEmailVerifiedSuccess = true,
                         visitorEmail = ""
                     )
                 }
@@ -201,7 +201,7 @@ class EventViewModel @Inject constructor(
                 is ResponseState.Failure -> {
                     _eventScreenState.update { eventScreenState ->
                         eventScreenState.copy(
-                            isEmailVerifiedSuccess = true
+                            isEmailVerifiedSuccess = false
                         )
                     }
                 }
