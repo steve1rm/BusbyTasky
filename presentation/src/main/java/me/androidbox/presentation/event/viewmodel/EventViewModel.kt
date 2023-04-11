@@ -146,7 +146,8 @@ class EventViewModel @Inject constructor(
                 _eventScreenState.update { eventScreenState ->
                     eventScreenState.copy(
                         shouldShowVisitorDialog = eventScreenEvent.shouldShowVisitorDialog,
-                        hasEmailVerifiedFailed = false
+                        hasEmailVerifiedFailed = false,
+                        visitorEmail = ""
                     )
                 }
             }
