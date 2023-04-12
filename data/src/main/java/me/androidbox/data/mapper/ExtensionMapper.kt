@@ -3,6 +3,8 @@ package me.androidbox.data.mapper
 import me.androidbox.data.local.entity.EventEntity
 import me.androidbox.data.remote.model.request.EventCreateRequestDto
 import me.androidbox.data.remote.model.request.EventUpdateRequestDto
+import me.androidbox.data.remote.model.response.AttendeeDto
+import me.androidbox.domain.authentication.model.Attendee
 import me.androidbox.domain.authentication.model.Event
 import java.util.*
 
@@ -62,4 +64,14 @@ fun Event.toUpdateEventDto(): EventUpdateRequestDto {
         deletedPhotoKeys = listOf(UUID.randomUUID().toString(), UUID.randomUUID().toString(), UUID.randomUUID().toString()), /** TODO These keys are obtained when uploading a created event and the BE will return the key and the url */
         isGoing = this.isGoing
     )
+}
+
+fun AttendeeDto.toAttendee(): Attendee {
+    return Attendee(
+        email = this.email,
+        fullName = this.fullName,
+        userId = this.userId,
+        eventId = "",
+        isGoing = false,
+        remindAt = 0L)
 }

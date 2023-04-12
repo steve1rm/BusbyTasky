@@ -1,5 +1,6 @@
 package me.androidbox.data.remote.network.event
 
+import me.androidbox.data.remote.model.response.AttendeeEmailVerifyResponseDto
 import me.androidbox.data.remote.model.response.EventDto
 import me.androidbox.data.remote.network.EndPointConstant
 import okhttp3.MultipartBody
@@ -29,4 +30,9 @@ interface EventService {
         @Part listOfPhoto: List<MultipartBody.Part>,
         @Part eventBody: MultipartBody.Part
     ): EventDto
+
+    @GET("/attendee")
+    suspend fun verifyAttendee(
+        @Query("email") email: String
+    ): AttendeeEmailVerifyResponseDto
 }

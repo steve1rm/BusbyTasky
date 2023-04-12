@@ -17,6 +17,7 @@ import me.androidbox.domain.authentication.model.Attendee
 import me.androidbox.domain.authentication.model.Event
 import me.androidbox.domain.authentication.preference.PreferenceRepository
 import me.androidbox.domain.authentication.remote.EventRepository
+import me.androidbox.domain.event.usecase.VerifyVisitorEmailUseCase
 import me.androidbox.domain.work_manager.UploadEvent
 import me.androidbox.presentation.alarm_manager.AlarmReminderProvider
 import me.androidbox.presentation.event.screen.EventScreenEvent
@@ -28,6 +29,7 @@ import javax.inject.Inject
 class EventViewModel @Inject constructor(
     private val eventRepository: EventRepository,
     private val usersInitialsExtractionUseCase: UsersInitialsExtractionUseCase,
+    private val verifyVisitorEmailUseCase: VerifyVisitorEmailUseCase,
     private val preferenceRepository: PreferenceRepository,
     private val alarmScheduler: AlarmScheduler,
     private val uploadEvent: UploadEvent
@@ -75,6 +77,11 @@ class EventViewModel @Inject constructor(
                 }
             }
             is EventScreenEvent.OnSaveEventDetails -> {
+                _eventScreenState.update { eventScreenState ->
+                    eventScreenState.copy(
+                        eventId = UUID.randomUUID().toString()
+                    )
+                }
                 insertEventDetails()
             }
             is EventScreenEvent.OnStartTimeDuration -> {
@@ -133,6 +140,69 @@ class EventViewModel @Inject constructor(
                     )
                 }
             }
+            is EventScreenEvent.OnVisitorEmailChanged -> {
+                _eventScreenState.update { eventScreenState ->
+                    eventScreenState.copy(
+                        visitorEmail = eventScreenEvent.visitorEmail
+                    )
+                }
+            }
+            is EventScreenEvent.OnShowVisitorDialog -> {
+                _eventScreenState.update { eventScreenState ->
+                    eventScreenState.copy(
+                        shouldShowVisitorDialog = eventScreenEvent.shouldShowVisitorDialog,
+                        isEmailVerified = true,
+                        visitorEmail = ""
+                    )
+                }
+            }
+            is EventScreenEvent.CheckVisitorExists -> {
+                verifyVisitorEmail(eventScreenEvent.visitorEmail)
+            }
+        }
+    }
+
+    private fun verifyVisitorEmail(visitorEmail: String) {
+        viewModelScope.launch {
+            val responseState = verifyVisitorEmailUseCase.execute("peter@mail.com")
+
+            when(responseState) {
+                is ResponseState.Loading -> {
+                    /* TODO Show loading */
+                }
+                is ResponseState.Success -> {
+                    responseState.data?.let { _attendee ->
+                        val attendee = _attendee.copy(
+                            email = _attendee.email,
+                            fullName = _attendee.fullName,
+                            userId = _attendee.userId,
+                            remindAt = _attendee.remindAt,
+                            eventId = eventScreenState.value.eventId,
+                            isGoing = _attendee.isGoing
+                        )
+
+                        _eventScreenState.update { eventScreenState ->
+                            eventScreenState.copy(
+                                isEmailVerified = true,
+                                listOfAttendee = eventScreenState.listOfAttendee + attendee
+                            )
+                        }
+                    } ?: run {
+                        _eventScreenState.update { eventScreenState ->
+                            eventScreenState.copy(
+                                isEmailVerified = false
+                            )
+                        }
+                    }
+                }
+                is ResponseState.Failure -> {
+                    _eventScreenState.update { eventScreenState ->
+                        eventScreenState.copy(
+                            isEmailVerified = false
+                        )
+                    }
+                }
+            }
         }
     }
 
@@ -142,7 +212,7 @@ class EventViewModel @Inject constructor(
         val remindAt = AlarmReminderProvider.getRemindAt(eventScreenState.value.alarmReminderItem, startDateTime)
 
         val event = Event(
-            id = UUID.randomUUID().toString(),
+            id = eventScreenState.value.eventId,
             title = eventScreenState.value.eventTitle,
             description = eventScreenState.value.eventDescription,
             startDateTime = startDateTime.toEpochSecond(),
@@ -151,9 +221,7 @@ class EventViewModel @Inject constructor(
             eventCreatorId = preferenceRepository.retrieveCurrentUserOrNull()?.userId ?: "",
             isUserEventCreator = false,
             isGoing = true,
-            attendees = listOf( /** TODO Mock data until we have added real attendees */
-                Attendee(1, "email", "job blogs", UUID.randomUUID().toString(), UUID.randomUUID().toString(), true, 4L),
-                Attendee(2, "gmail", "peter rab", UUID.randomUUID().toString(), UUID.randomUUID().toString(), false, 2L)),
+            attendees = eventScreenState.value.listOfAttendee,
             photos = eventScreenState.value.listOfPhotoUri
         )
 
