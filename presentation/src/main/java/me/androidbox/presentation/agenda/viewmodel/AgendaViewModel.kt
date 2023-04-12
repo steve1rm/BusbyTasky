@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import me.androidbox.domain.agenda.usecase.UsersInitialsExtractionUseCase
@@ -22,6 +23,7 @@ class AgendaViewModel @Inject constructor(
     private val usersInitialsExtractionUseCase: UsersInitialsExtractionUseCase,
     private val eventRepository: EventRepository
 ) : ViewModel() {
+    private var agendaJob: Job? = null
 
     private val _agendaScreenState = MutableStateFlow(AgendaScreenState())
     val agendaScreenState = _agendaScreenState.asStateFlow()
@@ -44,7 +46,9 @@ class AgendaViewModel @Inject constructor(
     }
 
     fun fetchAgendaItems(agendaDate: ZonedDateTime = ZonedDateTime.now(ZoneId.systemDefault())) {
-        viewModelScope.launch {
+        agendaJob?.cancel()
+
+        agendaJob = viewModelScope.launch {
             eventRepository.getEventsFromTimeStamp(getStartOffCurrentDay(agendaDate).toEpochSecond(), getEndOfCurrentDay(agendaDate).toEpochSecond())
                 .collectLatest { responseState ->
                     when(responseState) {
