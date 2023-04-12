@@ -1,19 +1,27 @@
 package me.androidbox.data.local.event
 
+import android.util.Log
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 import me.androidbox.data.local.dao.EventDao
+import me.androidbox.data.local.dao.ReminderDao
+import me.androidbox.data.local.dao.TaskDao
 import me.androidbox.data.mapper.toEvent
 import me.androidbox.data.mapper.toEventEntity
 import me.androidbox.data.remote.util.CheckResult.checkResult
 import me.androidbox.domain.authentication.ResponseState
 import me.androidbox.domain.agenda.model.Event
 import me.androidbox.domain.authentication.remote.EventRepository
+import me.androidbox.domain.repository.AgendaRepository
+import java.time.ZoneId
 import javax.inject.Inject
 
 class EventRepositoryImp @Inject constructor(
-    private val eventDao: EventDao
+    private val eventDao: EventDao,
+    private val taskDao: TaskDao,
+    private val reminderDao: ReminderDao,
+    private val agendaRepository: AgendaRepository
 ) : EventRepository {
 
     override fun getEventsFromTimeStamp(
@@ -26,6 +34,9 @@ class EventRepositoryImp @Inject constructor(
                 val listOfEvent = listOfEventEntity.map { eventEntity ->
                     eventEntity.toEvent()
                 }
+
+                val agenda = agendaRepository.fetchAgendaForDay(ZoneId.systemDefault(), System.currentTimeMillis())
+                Log.d("EVENT_REPOSITORY", "EVENT_REPOSITORY ${agenda.events.count()}")
 
                 ResponseState.Success(listOfEvent)
             }

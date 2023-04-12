@@ -16,6 +16,8 @@ import dagger.hilt.components.SingletonComponent
 import me.androidbox.data.local.DatabaseConstant.DATABASE_NAME
 import me.androidbox.data.local.converter.EventConverter
 import me.androidbox.data.local.dao.EventDao
+import me.androidbox.data.local.dao.ReminderDao
+import me.androidbox.data.local.dao.TaskDao
 import me.androidbox.data.local.database.BusbyTaskyDatabase
 import me.androidbox.data.local.event.EventRepositoryImp
 import me.androidbox.data.remote.agenda.AgendaRepositoryImp
@@ -81,6 +83,16 @@ interface RepositoryModule {
         @Provides
         fun providesEventDao(busbyTaskyDatabase: BusbyTaskyDatabase): EventDao {
             return busbyTaskyDatabase.eventDao()
+        }
+
+        @Provides
+        fun providesTaskDao(busbyTaskyDatabase: BusbyTaskyDatabase): TaskDao {
+            return busbyTaskyDatabase.taskDao()
+        }
+
+        @Provides
+        fun providesReminderDao(busbyTaskyDatabase: BusbyTaskyDatabase): ReminderDao {
+            return busbyTaskyDatabase.reminderDao()
         }
 
         @Provides
