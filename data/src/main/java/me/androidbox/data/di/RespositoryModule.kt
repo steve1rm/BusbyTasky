@@ -14,17 +14,19 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import me.androidbox.data.local.DatabaseConstant.DATABASE_NAME
+import me.androidbox.data.local.agenda.AgendaRepositoryImp
 import me.androidbox.data.local.converter.EventConverter
 import me.androidbox.data.local.dao.EventDao
 import me.androidbox.data.local.dao.ReminderDao
 import me.androidbox.data.local.dao.TaskDao
 import me.androidbox.data.local.database.BusbyTaskyDatabase
 import me.androidbox.data.local.event.EventRepositoryImp
-import me.androidbox.data.remote.agenda.AgendaRepositoryImp
+import me.androidbox.data.remote.agenda.AgendaRemoteRepositoryImp
 import me.androidbox.data.remote.event.VerifyVisitorEmailUseCaseImp
 import me.androidbox.data.remote.preference.PreferenceRepositoryImp
 import me.androidbox.data.worker_manager.UploadEventImp
 import me.androidbox.domain.authentication.preference.PreferenceRepository
+import me.androidbox.domain.authentication.remote.AgendaRepository
 import me.androidbox.domain.authentication.remote.EventRepository
 import me.androidbox.domain.event.usecase.VerifyVisitorEmailUseCase
 import me.androidbox.domain.repository.AgendaRemoteRepository
@@ -41,7 +43,7 @@ interface RepositoryModule {
     fun bindsEventRepositoryImp(eventRepositoryImp: EventRepositoryImp): EventRepository
 
     @Binds
-    fun bindsAgendaRemoteRepositoryImp(agendaRemoteRepositoryImp: AgendaRemoteRepositoryImp)
+    fun bindsAgendaRemoteRepositoryImp(agendaRemoteRepositoryImp: AgendaRemoteRepositoryImp): AgendaRemoteRepository
 
     @Binds
     fun bindsUploadEventImp(uploadEventImp: UploadEventImp): UploadEvent
@@ -51,7 +53,7 @@ interface RepositoryModule {
 
     @Reusable
     @Binds
-    fun bindsAgendaRepositoryImp(agendaRepositoryImp: AgendaRepositoryImp): AgendaRemoteRepository
+    fun bindsAgendaRepositoryImp(agendaRepositoryImp: AgendaRepositoryImp): AgendaRepository
 
     companion object {
         private const val SECRET_SHARED_PREFERENCES = "secret_shared_preferences"

@@ -9,7 +9,7 @@ import me.androidbox.domain.repository.AgendaRemoteRepository
 import java.time.ZoneId
 import javax.inject.Inject
 
-class AgendaRepositoryImp @Inject constructor(
+class AgendaRemoteRepositoryImp @Inject constructor(
     private val agendaService: AgendaService
 ) : AgendaRemoteRepository {
 
