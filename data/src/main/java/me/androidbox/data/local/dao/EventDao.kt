@@ -10,6 +10,9 @@ interface EventDao {
     @Query("SELECT * FROM ${DatabaseConstant.EVENT_TABLE} WHERE `startDateTime` >= :startTimeStamp AND `startDateTime` <= :endTimeStamp")
     fun getEventsFromTimeStamp(startTimeStamp: Long, endTimeStamp: Long): Flow<List<EventEntity>>
 
+    @Query("SELECT * FROM ${DatabaseConstant.EVENT_TABLE} WHERE id = :id")
+    fun getEventById(id: String): Flow<EventEntity>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertEvent(eventEntity: EventEntity)
 

@@ -164,7 +164,7 @@ class EventViewModel @Inject constructor(
 
     private fun verifyVisitorEmail(visitorEmail: String) {
         viewModelScope.launch {
-            val responseState = verifyVisitorEmailUseCase.execute("peter@mail.com")
+            val responseState = verifyVisitorEmailUseCase.execute(visitorEmail)
 
             when(responseState) {
                 is ResponseState.Loading -> {
@@ -204,6 +204,10 @@ class EventViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    fun fetchEventById(eventId: String) {
+
     }
 
     private fun insertEventDetails() {
