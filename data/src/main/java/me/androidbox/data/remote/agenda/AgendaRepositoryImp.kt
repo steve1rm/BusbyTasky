@@ -5,13 +5,13 @@ import me.androidbox.data.mapper.toReminder
 import me.androidbox.data.mapper.toTask
 import me.androidbox.data.remote.network.agenda.AgendaService
 import me.androidbox.domain.agenda.model.Agenda
-import me.androidbox.domain.repository.AgendaRepository
+import me.androidbox.domain.repository.AgendaRemoteRepository
 import java.time.ZoneId
 import javax.inject.Inject
 
 class AgendaRepositoryImp @Inject constructor(
     private val agendaService: AgendaService
-) : AgendaRepository {
+) : AgendaRemoteRepository {
 
     override suspend fun fetchAgendaForDay(zoneId: ZoneId, time: Long): Agenda {
         val agendaDto = agendaService.getAgendaForDay(zoneId, time)

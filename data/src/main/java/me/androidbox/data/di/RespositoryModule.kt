@@ -27,7 +27,7 @@ import me.androidbox.data.worker_manager.UploadEventImp
 import me.androidbox.domain.authentication.preference.PreferenceRepository
 import me.androidbox.domain.authentication.remote.EventRepository
 import me.androidbox.domain.event.usecase.VerifyVisitorEmailUseCase
-import me.androidbox.domain.repository.AgendaRepository
+import me.androidbox.domain.repository.AgendaRemoteRepository
 import me.androidbox.domain.work_manager.UploadEvent
 
 @Module
@@ -41,6 +41,9 @@ interface RepositoryModule {
     fun bindsEventRepositoryImp(eventRepositoryImp: EventRepositoryImp): EventRepository
 
     @Binds
+    fun bindsAgendaRemoteRepositoryImp(agendaRemoteRepositoryImp: AgendaRemoteRepositoryImp)
+
+    @Binds
     fun bindsUploadEventImp(uploadEventImp: UploadEventImp): UploadEvent
 
     @Binds
@@ -48,7 +51,7 @@ interface RepositoryModule {
 
     @Reusable
     @Binds
-    fun bindsAgendaRepositoryImp(agendaRepositoryImp: AgendaRepositoryImp): AgendaRepository
+    fun bindsAgendaRepositoryImp(agendaRepositoryImp: AgendaRepositoryImp): AgendaRemoteRepository
 
     companion object {
         private const val SECRET_SHARED_PREFERENCES = "secret_shared_preferences"
