@@ -32,6 +32,7 @@ import me.androidbox.component.ui.theme.backgroundBackColor
 import me.androidbox.component.ui.theme.dropDownMenuBackgroundColor
 import me.androidbox.domain.DateTimeFormatterProvider.toDisplayDateTime
 import me.androidbox.domain.DateTimeFormatterProvider.toZoneDateTime
+import me.androidbox.domain.agenda.model.AgendaMenuActionType
 import me.androidbox.domain.alarm_manager.AgendaType
 import me.androidbox.presentation.ui.theme.BusbyTaskyTheme
 
@@ -40,7 +41,7 @@ import me.androidbox.presentation.ui.theme.BusbyTaskyTheme
 fun AgendaScreen(
     agendaScreenState: AgendaScreenState,
     agendaScreenEvent: (AgendaScreenEvent) -> Unit,
-    onSelectedEditAgendaItemClicked: (id: String, AgendaType) -> Unit,
+    onSelectedEditAgendaItemClicked: (id: String, AgendaType, agendaMenuActionType: AgendaMenuActionType) -> Unit,
     onSelectedAgendaItem: (agendaType: Int) -> Unit, /* TODO Check where this is being used */
     modifier: Modifier = Modifier) {
 
@@ -141,7 +142,7 @@ fun AgendaScreen(
                         listOfMenuItemId = listOf(R.string.open, R.string.edit, R.string.delete),
                         onSelectedOption = { item ->
                             agendaScreenState.agendaItemClicked?.let { agendaItem ->
-                                onSelectedEditAgendaItemClicked(agendaItem.id, agendaItem.agendaType)
+                                onSelectedEditAgendaItemClicked(agendaItem.id, agendaItem.agendaType, AgendaMenuActionType.values()[item])
                                 agendaScreenEvent(AgendaScreenEvent.OnChangeShowEditAgendaItemDropdownStatus(shouldOpen = false))
                             }
                         }
@@ -175,7 +176,7 @@ fun PreviewAgendaScreen() {
                 .background(
                     color = MaterialTheme.colorScheme.agendaBackgroundColor),
             agendaScreenEvent = {},
-            onSelectedEditAgendaItemClicked = { _, _ -> },
+            onSelectedEditAgendaItemClicked = { _, _, _ -> },
             onSelectedAgendaItem = {}
         )
     }

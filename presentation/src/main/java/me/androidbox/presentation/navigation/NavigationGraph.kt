@@ -10,6 +10,8 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import me.androidbox.domain.agenda.model.AgendaMenuActionType
+import me.androidbox.domain.alarm_manager.AgendaType
 import me.androidbox.presentation.agenda.screen.AgendaScreen
 import me.androidbox.presentation.agenda.viewmodel.AgendaViewModel
 import me.androidbox.presentation.edit.screen.ContentType
@@ -99,11 +101,28 @@ fun NavigationGraph(
                     agendaViewModel.onAgendaScreenEvent(agendaScreenEvent)
                 },
             onSelectedAgendaItem = {
-                /* TODO The item in the dropdown menu should be an enum or a sealed class that will determine which item was clicked */
+                /* TODO The item in the dropdown menu should be an enum or a sealed class that will determine which item was clicked
+                *   i.e navHostController.navigate(Screen.TaskScreen.route) */
                 navHostController.navigate(Screen.EventScreen.route)
             },
-            onSelectedEditAgendaItemClicked = { _, _, ->
-
+            onSelectedEditAgendaItemClicked = { id, agendaType, agendaMenuActionType ->
+                when(agendaType) {
+                    AgendaType.EVENT -> {
+                        when(agendaMenuActionType) {
+                            AgendaMenuActionType.OPEN -> {
+                                navHostController.navigate(Screen.EventScreen.route)
+                            }
+                            AgendaMenuActionType.EDIT -> {
+                                navHostController.navigate(Screen.EventScreen.route)
+                            }
+                            AgendaMenuActionType.DELETE -> {
+                                agendaViewModel.deleteEventById(id)
+                            }
+                        }
+                    }
+                    AgendaType.TASK -> TODO()
+                    AgendaType.REMINDER -> TODO()
+                }
             })
         }
 

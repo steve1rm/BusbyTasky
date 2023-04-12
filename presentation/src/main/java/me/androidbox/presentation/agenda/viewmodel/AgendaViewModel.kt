@@ -73,6 +73,12 @@ class AgendaViewModel @Inject constructor(
         }
     }
 
+    fun deleteEventById(eventId: String) {
+        viewModelScope.launch {
+            eventRepository.deleteEventById(eventId)
+        }
+    }
+
     fun onAgendaScreenEvent(agendaScreenEvent: AgendaScreenEvent) {
         when(agendaScreenEvent) {
             is AgendaScreenEvent.OnDateChanged -> {
