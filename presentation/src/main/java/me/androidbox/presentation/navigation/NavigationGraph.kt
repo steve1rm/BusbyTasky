@@ -154,7 +154,8 @@ fun NavigationGraph(
             }
 
             /* FIXME: Issue when landing back from the Edit Screen this will run
-            *         and overwrite the state that was input in the Edit Screen */
+            *         and overwrite the state that was input in the Edit Screen
+            *         and it will fetch from the DB and restore the state from there */
             it.arguments?.getString(Screen.EventScreen.EVENT_ID)?.let { eventId ->
                 LaunchedEffect(key1 = true) {
                     eventViewModel.fetchEventById(eventId)
