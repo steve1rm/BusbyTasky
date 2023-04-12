@@ -40,6 +40,7 @@ import me.androidbox.presentation.ui.theme.BusbyTaskyTheme
 fun AgendaScreen(
     agendaScreenState: AgendaScreenState,
     agendaScreenEvent: (AgendaScreenEvent) -> Unit,
+    onSelectedEditAgendaItemClicked: (id: String, AgendaType) -> Unit,
     onSelectedAgendaItem: (agendaType: Int) -> Unit, /* TODO Check where this is being used */
     modifier: Modifier = Modifier) {
 
@@ -124,7 +125,27 @@ fun AgendaScreen(
                         isAgendaCompleted = false
                     ) {
                         println("Event ${agendaItem.id} has been clicked")
+                        agendaScreenEvent(AgendaScreenEvent.OnAgendaItemClicked(agendaItem))
+                        agendaScreenEvent(AgendaScreenEvent.OnChangeShowEditAgendaItemDropdownStatus(shouldOpen = true))
                     }
+
+                    AgendaDropDownMenu(
+                        modifier = Modifier
+                            .background(color = MaterialTheme.colorScheme.dropDownMenuBackgroundColor)
+                            .align(Alignment.BottomEnd),
+                        shouldOpenDropdown = agendaScreenState.shouldOpenEditAgendaDropdown,
+                        onCloseDropdown = {
+                            agendaScreenEvent(
+                                AgendaScreenEvent.OnChangeShowEditAgendaItemDropdownStatus(shouldOpen = false))
+                        },
+                        listOfMenuItemId = listOf(R.string.open, R.string.edit, R.string.delete),
+                        onSelectedOption = { item ->
+                            agendaScreenState.agendaItemClicked?.let { agendaItem ->
+                                onSelectedEditAgendaItemClicked(agendaItem.id, agendaItem.agendaType)
+                                agendaScreenEvent(AgendaScreenEvent.OnChangeShowEditAgendaItemDropdownStatus(shouldOpen = false))
+                            }
+                        }
+                    )
                 }
             }
         }
@@ -154,6 +175,7 @@ fun PreviewAgendaScreen() {
                 .background(
                     color = MaterialTheme.colorScheme.agendaBackgroundColor),
             agendaScreenEvent = {},
+            onSelectedEditAgendaItemClicked = { _, _ -> },
             onSelectedAgendaItem = {}
         )
     }

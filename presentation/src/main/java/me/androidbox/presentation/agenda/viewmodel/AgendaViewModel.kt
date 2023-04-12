@@ -90,6 +90,20 @@ class AgendaViewModel @Inject constructor(
                     )
                 }
             }
+            is AgendaScreenEvent.OnChangeShowEditAgendaItemDropdownStatus -> {
+                _agendaScreenState.update { agendaScreenState ->
+                    agendaScreenState.copy(
+                        shouldOpenEditAgendaDropdown = agendaScreenEvent.shouldOpen
+                    )
+                }
+            }
+            is AgendaScreenEvent.OnAgendaItemClicked -> {
+                _agendaScreenState.update { agendaScreenState ->
+                    agendaScreenState.copy(
+                        agendaItemClicked = agendaScreenEvent.agendaItem
+                    )
+                }
+            }
         }
     }
 

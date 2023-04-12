@@ -8,5 +8,7 @@ data class AgendaScreenState(
     val selectedDate: ZonedDateTime = ZonedDateTime.now(ZoneId.systemDefault()),
     val usersInitials: String = "",
     val shouldOpenDropdown: Boolean = false,
-    val agendaItems: List<AgendaItem> = emptyList()
+    val shouldOpenEditAgendaDropdown: Boolean = false,
+    val agendaItems: List<AgendaItem> = emptyList(),
+    val agendaItemClicked: AgendaItem? = null
 )
