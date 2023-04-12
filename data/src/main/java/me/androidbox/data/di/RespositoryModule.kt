@@ -9,6 +9,7 @@ import androidx.work.WorkManager
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
+import dagger.Reusable
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
@@ -17,12 +18,14 @@ import me.androidbox.data.local.converter.EventConverter
 import me.androidbox.data.local.dao.EventDao
 import me.androidbox.data.local.database.BusbyTaskyDatabase
 import me.androidbox.data.local.event.EventRepositoryImp
+import me.androidbox.data.remote.agenda.AgendaRepositoryImp
 import me.androidbox.data.remote.event.VerifyVisitorEmailUseCaseImp
 import me.androidbox.data.remote.preference.PreferenceRepositoryImp
 import me.androidbox.data.worker_manager.UploadEventImp
 import me.androidbox.domain.authentication.preference.PreferenceRepository
 import me.androidbox.domain.authentication.remote.EventRepository
 import me.androidbox.domain.event.usecase.VerifyVisitorEmailUseCase
+import me.androidbox.domain.repository.AgendaRepository
 import me.androidbox.domain.work_manager.UploadEvent
 
 @Module
@@ -40,6 +43,10 @@ interface RepositoryModule {
 
     @Binds
     fun bindsVerifyVisitorEmailUseCaseImp(verifyVisitorEmailUseCaseImp: VerifyVisitorEmailUseCaseImp): VerifyVisitorEmailUseCase
+
+    @Reusable
+    @Binds
+    fun bindsAgendaRepositoryImp(agendaRepositoryImp: AgendaRepositoryImp): AgendaRepository
 
     companion object {
         private const val SECRET_SHARED_PREFERENCES = "secret_shared_preferences"
