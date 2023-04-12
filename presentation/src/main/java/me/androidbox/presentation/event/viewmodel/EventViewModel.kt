@@ -8,13 +8,13 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import me.androidbox.domain.agenda.model.Attendee
+import me.androidbox.domain.agenda.model.Event
 import me.androidbox.domain.agenda.usecase.UsersInitialsExtractionUseCase
 import me.androidbox.domain.alarm_manager.AgendaType
 import me.androidbox.domain.alarm_manager.AlarmScheduler
 import me.androidbox.domain.alarm_manager.toAlarmItem
 import me.androidbox.domain.authentication.ResponseState
-import me.androidbox.domain.authentication.model.Attendee
-import me.androidbox.domain.authentication.model.Event
 import me.androidbox.domain.authentication.preference.PreferenceRepository
 import me.androidbox.domain.authentication.remote.EventRepository
 import me.androidbox.domain.event.usecase.VerifyVisitorEmailUseCase
@@ -136,7 +136,7 @@ class EventViewModel @Inject constructor(
             is EventScreenEvent.OnAttendeeAdded -> {
                 _eventScreenState.update { eventScreenState ->
                     eventScreenState.copy(
-                        listOfAttendee = eventScreenState.listOfAttendee + eventScreenEvent.attendee
+                        attendees = eventScreenState.attendees + eventScreenEvent.attendee
                     )
                 }
             }
@@ -171,7 +171,7 @@ class EventViewModel @Inject constructor(
                     /* TODO Show loading */
                 }
                 is ResponseState.Success -> {
-                    responseState.data?.let { _attendee ->
+                    responseState.data?.let { _attendee: Attendee ->
                         val attendee = _attendee.copy(
                             email = _attendee.email,
                             fullName = _attendee.fullName,
@@ -184,7 +184,7 @@ class EventViewModel @Inject constructor(
                         _eventScreenState.update { eventScreenState ->
                             eventScreenState.copy(
                                 isEmailVerified = true,
-                                listOfAttendee = eventScreenState.listOfAttendee + attendee
+                                attendees = eventScreenState.attendees + attendee
                             )
                         }
                     } ?: run {
@@ -221,7 +221,7 @@ class EventViewModel @Inject constructor(
             eventCreatorId = preferenceRepository.retrieveCurrentUserOrNull()?.userId ?: "",
             isUserEventCreator = false,
             isGoing = true,
-            attendees = eventScreenState.value.listOfAttendee,
+            attendees = eventScreenState.value.attendees,
             photos = eventScreenState.value.listOfPhotoUri
         )
 
@@ -234,6 +234,10 @@ class EventViewModel @Inject constructor(
                     val alarmItem = event.toAlarmItem(AgendaType.EVENT)
                     alarmScheduler.scheduleAlarmReminder(alarmItem)
                     uploadEvent.upload(event, isEditMode = false)
+
+                    _eventScreenState.update { eventScreenState ->
+                        eventScreenState.copy(isSaved = true)
+                    }
                 }
                 is ResponseState.Failure -> {
                     Log.e("EVENT_INSERT", "${responseState.error.message}")

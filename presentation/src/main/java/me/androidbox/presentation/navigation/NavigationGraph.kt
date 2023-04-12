@@ -89,6 +89,10 @@ fun NavigationGraph(
             val agendaViewModel: AgendaViewModel = hiltViewModel()
             val agendaScreenState by agendaViewModel.agendaScreenState.collectAsStateWithLifecycle()
 
+            LaunchedEffect(key1 = agendaScreenState.selectedDate) {
+                agendaViewModel.fetchAgendaItems(agendaScreenState.selectedDate)
+            }
+
             AgendaScreen(
                 agendaScreenState = agendaScreenState,
                 agendaScreenEvent = { agendaScreenEvent ->
@@ -118,6 +122,15 @@ fun NavigationGraph(
                 )
             }
 
+            /** TODO Once the insertion has completed the state will change to true then
+             *  we will know that the insertion has completed and we can popbackstack
+             *  to go back to the agenda screen */
+            LaunchedEffect(key1 = eventScreenState.isSaved) {
+                if(eventScreenState.isSaved) {
+                    navHostController.popBackStack()
+                }
+            }
+
             EventScreen(
                 eventScreenState = eventScreenState,
                 eventScreenEvent = { eventScreenEvent ->
@@ -130,7 +143,10 @@ fun NavigationGraph(
                 onEditDescriptionClicked = { description ->
                     /** Navigate to the edit screen with the title of the agenda item */
                     navHostController.navigate("${Screen.EditScreen.EDIT_SCREEN}/$description/${ContentType.DESCRIPTION}")
-                }
+                },
+                onCloseClicked = {
+                    navHostController.popBackStack()
+                },
             )
         }
         

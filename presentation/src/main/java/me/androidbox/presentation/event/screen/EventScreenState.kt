@@ -5,7 +5,7 @@ import me.androidbox.component.agenda.AgendaActionType
 import me.androidbox.component.agenda.AlarmReminderItem
 import me.androidbox.component.agenda.VisitorType
 import me.androidbox.component.event.VisitorInfo
-import me.androidbox.domain.authentication.model.Attendee
+import me.androidbox.domain.agenda.model.Attendee
 import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.util.UUID
@@ -28,5 +28,6 @@ data class EventScreenState(
     val isStartDateTime: Boolean = false,
     val shouldOpenDropdown: Boolean = false,
     val alarmReminderItem: AlarmReminderItem = AlarmReminderItem.TEN_MINUTES,
-    val listOfAttendee: List<Attendee> = listOf()
+    val attendees: List<Attendee> = listOf(),
+    val isSaved: Boolean = false
 )

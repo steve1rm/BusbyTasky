@@ -1,8 +1,8 @@
 package me.androidbox.presentation.agenda.screen
 
-import java.time.LocalDate
+import java.time.ZonedDateTime
 
 sealed interface AgendaScreenEvent {
-    data class OnDateChanged(val date: LocalDate) : AgendaScreenEvent
-    data class OnShowDropdown(val shouldOpen: Boolean) : AgendaScreenEvent
+    data class OnDateChanged(val date: ZonedDateTime) : AgendaScreenEvent
+    data class OnChangedShowDropdownStatus(val shouldOpen: Boolean) : AgendaScreenEvent
 }

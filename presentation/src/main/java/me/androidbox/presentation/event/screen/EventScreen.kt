@@ -1,6 +1,7 @@
 package me.androidbox.presentation.event.screen
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -38,6 +39,7 @@ fun EventScreen(
     eventScreenEvent: (EventScreenEvent) -> Unit,
     onEditTitleClicked: (title: String) -> Unit,
     onEditDescriptionClicked: (description: String) -> Unit,
+    onCloseClicked: () -> Unit,
     modifier: Modifier = Modifier) {
 
     val calendarStateTimeDate = rememberUseCaseState()
@@ -52,8 +54,10 @@ fun EventScreen(
                     .padding(horizontal = 16.dp),
                 editModeType = EditModeType.SaveMode(),
                 displayDate = "31 March 2023", /* TODO Get the date from the agenda screen that was selected by the user */
-                onCloseClicked = {  },
-                onEditClicked = {  },
+                onCloseClicked = onCloseClicked,
+                onEditClicked = {
+
+                },
                 onSaveClicked = {
                     eventScreenEvent(EventScreenEvent.OnSaveEventDetails)
                 })
@@ -218,6 +222,7 @@ fun PreviewEventScreen() {
             modifier = Modifier.fillMaxWidth(),
             onEditDescriptionClicked = {},
             onEditTitleClicked = {},
+            onCloseClicked = {}
         )
     }
 }

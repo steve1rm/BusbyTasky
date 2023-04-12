@@ -6,7 +6,7 @@ import me.androidbox.data.mapper.toCreateEventDto
 import me.androidbox.data.mapper.toUpdateEventDto
 import me.androidbox.data.remote.model.request.EventCreateRequestDto
 import me.androidbox.data.remote.model.request.EventUpdateRequestDto
-import me.androidbox.domain.authentication.model.Event
+import me.androidbox.domain.agenda.model.Event
 import me.androidbox.domain.work_manager.UploadEvent
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject

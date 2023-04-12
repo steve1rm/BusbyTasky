@@ -4,8 +4,8 @@ import me.androidbox.data.mapper.toAttendee
 import me.androidbox.data.remote.model.response.AttendeeEmailVerifyResponseDto
 import me.androidbox.data.remote.network.event.EventService
 import me.androidbox.data.remote.util.CheckResult.checkResult
+import me.androidbox.domain.agenda.model.Attendee
 import me.androidbox.domain.authentication.ResponseState
-import me.androidbox.domain.authentication.model.Attendee
 import me.androidbox.domain.event.usecase.VerifyVisitorEmailUseCase
 import javax.inject.Inject
 

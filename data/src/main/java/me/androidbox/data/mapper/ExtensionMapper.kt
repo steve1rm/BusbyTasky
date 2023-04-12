@@ -4,8 +4,8 @@ import me.androidbox.data.local.entity.EventEntity
 import me.androidbox.data.remote.model.request.EventCreateRequestDto
 import me.androidbox.data.remote.model.request.EventUpdateRequestDto
 import me.androidbox.data.remote.model.response.AttendeeDto
-import me.androidbox.domain.authentication.model.Attendee
-import me.androidbox.domain.authentication.model.Event
+import me.androidbox.domain.agenda.model.Attendee
+import me.androidbox.domain.agenda.model.Event
 import java.util.*
 
 fun EventEntity.toEvent(): Event {
