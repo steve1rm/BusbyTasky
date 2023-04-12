@@ -4,6 +4,8 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import me.androidbox.data.worker_manager.util.CreatePhotoMultipart
+import me.androidbox.data.worker_manager.util.imp.CreatePhotoMultipartImp
 import me.androidbox.data.alarm_manager.AlarmSchedulerImp
 import me.androidbox.domain.alarm_manager.AlarmScheduler
 import javax.inject.Singleton
@@ -11,6 +13,9 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 @Module
 interface AppModule {
+
+    @Binds
+    fun bindsCreatePhotoMultipartImp(createPhotoMultipartImp: CreatePhotoMultipartImp): CreatePhotoMultipart
 
     @Singleton
     @Binds

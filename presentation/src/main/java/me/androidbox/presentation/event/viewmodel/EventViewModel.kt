@@ -1,5 +1,6 @@
 package me.androidbox.presentation.event.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -13,8 +14,11 @@ import me.androidbox.domain.agenda.usecase.UsersInitialsExtractionUseCase
 import me.androidbox.domain.alarm_manager.AgendaType
 import me.androidbox.domain.alarm_manager.AlarmScheduler
 import me.androidbox.domain.alarm_manager.toAlarmItem
+import me.androidbox.domain.authentication.ResponseState
 import me.androidbox.domain.authentication.preference.PreferenceRepository
 import me.androidbox.domain.authentication.remote.EventRepository
+import me.androidbox.domain.event.usecase.VerifyVisitorEmailUseCase
+import me.androidbox.domain.work_manager.UploadEvent
 import me.androidbox.presentation.alarm_manager.AlarmReminderProvider
 import me.androidbox.presentation.event.screen.EventScreenEvent
 import me.androidbox.presentation.event.screen.EventScreenState
@@ -25,8 +29,10 @@ import javax.inject.Inject
 class EventViewModel @Inject constructor(
     private val eventRepository: EventRepository,
     private val usersInitialsExtractionUseCase: UsersInitialsExtractionUseCase,
+    private val verifyVisitorEmailUseCase: VerifyVisitorEmailUseCase,
     private val preferenceRepository: PreferenceRepository,
-    private val alarmScheduler: AlarmScheduler
+    private val alarmScheduler: AlarmScheduler,
+    private val uploadEvent: UploadEvent
 ) : ViewModel() {
 
     private val _eventScreenState: MutableStateFlow<EventScreenState> = MutableStateFlow(EventScreenState())
@@ -71,6 +77,11 @@ class EventViewModel @Inject constructor(
                 }
             }
             is EventScreenEvent.OnSaveEventDetails -> {
+                _eventScreenState.update { eventScreenState ->
+                    eventScreenState.copy(
+                        eventId = UUID.randomUUID().toString()
+                    )
+                }
                 insertEventDetails()
             }
             is EventScreenEvent.OnStartTimeDuration -> {
@@ -129,6 +140,69 @@ class EventViewModel @Inject constructor(
                     )
                 }
             }
+            is EventScreenEvent.OnVisitorEmailChanged -> {
+                _eventScreenState.update { eventScreenState ->
+                    eventScreenState.copy(
+                        visitorEmail = eventScreenEvent.visitorEmail
+                    )
+                }
+            }
+            is EventScreenEvent.OnShowVisitorDialog -> {
+                _eventScreenState.update { eventScreenState ->
+                    eventScreenState.copy(
+                        shouldShowVisitorDialog = eventScreenEvent.shouldShowVisitorDialog,
+                        isEmailVerified = true,
+                        visitorEmail = ""
+                    )
+                }
+            }
+            is EventScreenEvent.CheckVisitorExists -> {
+                verifyVisitorEmail(eventScreenEvent.visitorEmail)
+            }
+        }
+    }
+
+    private fun verifyVisitorEmail(visitorEmail: String) {
+        viewModelScope.launch {
+            val responseState = verifyVisitorEmailUseCase.execute("peter@mail.com")
+
+            when(responseState) {
+                is ResponseState.Loading -> {
+                    /* TODO Show loading */
+                }
+                is ResponseState.Success -> {
+                    responseState.data?.let { _attendee: Attendee ->
+                        val attendee = _attendee.copy(
+                            email = _attendee.email,
+                            fullName = _attendee.fullName,
+                            userId = _attendee.userId,
+                            remindAt = _attendee.remindAt,
+                            eventId = eventScreenState.value.eventId,
+                            isGoing = _attendee.isGoing
+                        )
+
+                        _eventScreenState.update { eventScreenState ->
+                            eventScreenState.copy(
+                                isEmailVerified = true,
+                                attendees = eventScreenState.attendees + attendee
+                            )
+                        }
+                    } ?: run {
+                        _eventScreenState.update { eventScreenState ->
+                            eventScreenState.copy(
+                                isEmailVerified = false
+                            )
+                        }
+                    }
+                }
+                is ResponseState.Failure -> {
+                    _eventScreenState.update { eventScreenState ->
+                        eventScreenState.copy(
+                            isEmailVerified = false
+                        )
+                    }
+                }
+            }
         }
     }
 
@@ -138,7 +212,7 @@ class EventViewModel @Inject constructor(
         val remindAt = AlarmReminderProvider.getRemindAt(eventScreenState.value.alarmReminderItem, startDateTime)
 
         val event = Event(
-            id = UUID.randomUUID().toString(),
+            id = eventScreenState.value.eventId,
             title = eventScreenState.value.eventTitle,
             description = eventScreenState.value.eventDescription,
             startDateTime = startDateTime.toEpochSecond(),
@@ -146,23 +220,29 @@ class EventViewModel @Inject constructor(
             remindAt = remindAt.toEpochSecond(),
             eventCreatorId = preferenceRepository.retrieveCurrentUserOrNull()?.userId ?: "",
             isUserEventCreator = false,
-            attendees = listOf(
-                /** TODO Mock data until we have added real attendees */ /** TODO Mock data until we have added real attendees */
-                Attendee(1, "email", "job blogs", UUID.randomUUID().toString(), UUID.randomUUID().toString(), true, 4L),
-                Attendee(2, "gmail", "peter rab", UUID.randomUUID().toString(), UUID.randomUUID().toString(), false, 2L)
-            ),
+            isGoing = true,
+            attendees = eventScreenState.value.attendees,
             photos = eventScreenState.value.listOfPhotoUri
         )
 
         viewModelScope.launch {
-            eventRepository.insertEvent(event)
+            when(val responseState = eventRepository.insertEvent(event)) {
+                ResponseState.Loading -> {
+                    /* TODO Show some loading progress */
+                }
+                is ResponseState.Success -> {
+                    val alarmItem = event.toAlarmItem(AgendaType.EVENT)
+                    alarmScheduler.scheduleAlarmReminder(alarmItem)
+                    uploadEvent.upload(event, isEditMode = false)
 
-            val alarmItem = event.toAlarmItem(AgendaType.EVENT)
-            alarmScheduler.scheduleAlarmReminder(alarmItem)
-
-            /** I want to only close the event details screen once the insertion has fully completed */
-            _eventScreenState.update { eventScreenState ->
-                eventScreenState.copy(isSaved = true)
+                    _eventScreenState.update { eventScreenState ->
+                        eventScreenState.copy(isSaved = true)
+                    }
+                }
+                is ResponseState.Failure -> {
+                    Log.e("EVENT_INSERT", "${responseState.error.message}")
+                   /* TODO Show some kink of snack bar or toast message */
+                }
             }
         }
     }

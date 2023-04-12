@@ -1,7 +1,7 @@
 package me.androidbox.data.local.converter
 
 import com.google.common.truth.Truth.assertThat
-import me.androidbox.data.local.entity.Attendee
+import me.androidbox.domain.authentication.model.Attendee
 import org.junit.Test
 import java.util.*
 import kotlin.math.absoluteValue

@@ -81,8 +81,7 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.hilt.navigation.compose)
     implementation(libs.navigation.compose)
-    implementation(libs.moshi.kotlin)
-
+    implementation(libs.bundles.retrofit)
     implementation(libs.core.splashscreen)
     implementation("io.coil-kt:coil-compose:2.1.0")
 
@@ -92,6 +91,12 @@ dependencies {
     implementation("com.maxkeppeler.sheets-compose-dialogs:date-time:1.1.1")
     implementation("androidx.lifecycle:lifecycle-runtime-compose:2.6.0")
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:1.1.5")
+
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.0")
+    implementation("androidx.compose.runtime:runtime-livedata:1.3.3")
+    implementation("io.coil-kt:coil-compose:1.4.0")
+    implementation("androidx.work:work-runtime-ktx:2.8.0")
+    implementation("androidx.hilt:hilt-work:1.0.0")
 
     debugImplementation(tests.ui.tooling)
     debugImplementation(tests.ui.test.manifest)

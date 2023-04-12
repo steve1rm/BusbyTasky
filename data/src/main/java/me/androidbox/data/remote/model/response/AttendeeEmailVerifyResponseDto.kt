@@ -8,7 +8,7 @@ package me.androidbox.data.remote.model.response
  * Query parameters: email
  * Response: GetAttendeeDto
  * */
-data class GetAttendeeDto(
+data class AttendeeEmailVerifyResponseDto(
     val doesUserExist: Boolean,
     val attendee: AttendeeDto
 )

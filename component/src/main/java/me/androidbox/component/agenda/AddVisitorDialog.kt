@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -27,6 +28,7 @@ import me.androidbox.component.ui.theme.backgroundWhiteColor
 @Composable
 fun AddVisitorDialog(
     email: String,
+    isEmailVerified: Boolean,
     onEmailChanged: (email: String) -> Unit,
     onDialogClose: () -> Unit,
     isValidInput: Boolean,
@@ -51,6 +53,8 @@ fun AddVisitorDialog(
             }
 
             Text(
+                modifier = Modifier.fillMaxWidth(),
+                textAlign = TextAlign.Center,
                 text = stringResource(R.string.add_visitor),
                 fontWeight = FontWeight.Bold,
                 fontSize = 20.sp,
@@ -68,6 +72,17 @@ fun AddVisitorDialog(
                     onEmailChanged(newEmail)
                 }
             )
+
+            if(!isEmailVerified) {
+                Text(
+                    modifier = Modifier.fillMaxWidth(),
+                    textAlign = TextAlign.Center,
+                    text = stringResource(R.string.email_verify_failed),
+                    fontWeight = FontWeight.Normal,
+                    fontSize = 16.sp,
+                    color = MaterialTheme.colorScheme.error
+                )
+            }
 
             Spacer(modifier = Modifier.height(30.dp))
 
@@ -95,6 +110,29 @@ fun PreviewAddVisitorDialog() {
                 )
                 .padding(20.dp),
             email = "joeblogs@gmail.com",
+            isEmailVerified = true,
+            isValidInput = true,
+            onEmailChanged = {},
+            onDialogClose = {},
+            onAddButtonClicked = {}
+        )
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+fun PreviewAddVisitorDialogErrorMessage() {
+    BusbyTaskyTheme {
+        AddVisitorDialog(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(
+                    color = MaterialTheme.colorScheme.backgroundWhiteColor,
+                    shape = RoundedCornerShape(16.dp)
+                )
+                .padding(20.dp),
+            email = "joeblogs@gmail.com",
+            isEmailVerified = false,
             isValidInput = true,
             onEmailChanged = {},
             onDialogClose = {},

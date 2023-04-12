@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import androidx.room.Room
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
+import androidx.work.WorkManager
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -12,12 +13,17 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import me.androidbox.data.local.DatabaseConstant.DATABASE_NAME
+import me.androidbox.data.local.converter.EventConverter
 import me.androidbox.data.local.dao.EventDao
 import me.androidbox.data.local.database.BusbyTaskyDatabase
 import me.androidbox.data.local.event.EventRepositoryImp
+import me.androidbox.data.remote.event.VerifyVisitorEmailUseCaseImp
 import me.androidbox.data.remote.preference.PreferenceRepositoryImp
+import me.androidbox.data.worker_manager.UploadEventImp
 import me.androidbox.domain.authentication.preference.PreferenceRepository
 import me.androidbox.domain.authentication.remote.EventRepository
+import me.androidbox.domain.event.usecase.VerifyVisitorEmailUseCase
+import me.androidbox.domain.work_manager.UploadEvent
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -28,6 +34,12 @@ interface RepositoryModule {
 
     @Binds
     fun bindsEventRepositoryImp(eventRepositoryImp: EventRepositoryImp): EventRepository
+
+    @Binds
+    fun bindsUploadEventImp(uploadEventImp: UploadEventImp): UploadEvent
+
+    @Binds
+    fun bindsVerifyVisitorEmailUseCaseImp(verifyVisitorEmailUseCaseImp: VerifyVisitorEmailUseCaseImp): VerifyVisitorEmailUseCase
 
     companion object {
         private const val SECRET_SHARED_PREFERENCES = "secret_shared_preferences"
@@ -49,6 +61,11 @@ interface RepositoryModule {
         }
 
         @Provides
+        fun providesEventConverter(): EventConverter {
+            return EventConverter()
+        }
+
+        @Provides
         fun providesRoomDatabase(@ApplicationContext context: Context): BusbyTaskyDatabase {
             return Room.databaseBuilder(context, BusbyTaskyDatabase::class.java, DATABASE_NAME)
                 .build()
@@ -57,6 +74,11 @@ interface RepositoryModule {
         @Provides
         fun providesEventDao(busbyTaskyDatabase: BusbyTaskyDatabase): EventDao {
             return busbyTaskyDatabase.eventDao()
+        }
+
+        @Provides
+        fun providesWorkManager(@ApplicationContext context: Context): WorkManager {
+            return WorkManager.getInstance(context)
         }
     }
 }

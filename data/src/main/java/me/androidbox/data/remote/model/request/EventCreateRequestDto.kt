@@ -1,5 +1,7 @@
 package me.androidbox.data.remote.model.request
 
+import com.squareup.moshi.JsonClass
+
 
 /**
  * /event
@@ -10,7 +12,9 @@ package me.androidbox.data.remote.model.request
  *
  * Response body: EventDto
  * */
-data class EventRequestDto(
+
+@JsonClass(generateAdapter = true)
+data class EventCreateRequestDto(
     val id: String,
     val title: String,
     val description: String,

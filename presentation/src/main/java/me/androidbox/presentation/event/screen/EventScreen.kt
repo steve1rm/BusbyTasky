@@ -150,9 +150,11 @@ fun EventScreen(
                     VisitorFilter(
                         modifier = Modifier.fillMaxWidth(),
                         selectedVisitorType = VisitorType.ALL,
-                        onSelectedTypeClicked = {}
+                        onSelectedTypeClicked = {},
+                        onAddVisitorClicked = {
+                            eventScreenEvent(EventScreenEvent.OnShowVisitorDialog(shouldShowVisitorDialog = true))
+                        }
                     )
-
 
                     Spacer(modifier = modifier.height(26.dp))
 
@@ -164,6 +166,30 @@ fun EventScreen(
             }
         }
     )
+
+    if(eventScreenState.shouldShowVisitorDialog) {
+        AddVisitorDialog(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(
+                    color = MaterialTheme.colorScheme.backgroundWhiteColor,
+                    shape = RoundedCornerShape(16.dp)
+                )
+                .padding(20.dp),
+            email = eventScreenState.visitorEmail,
+            onEmailChanged = { visitorEmail ->
+                eventScreenEvent(EventScreenEvent.OnVisitorEmailChanged(visitorEmail))
+            },
+            onDialogClose = {
+                eventScreenEvent(EventScreenEvent.OnShowVisitorDialog(shouldShowVisitorDialog = false))
+            },
+            isValidInput = false,
+            onAddButtonClicked = { visitorEmail ->
+                eventScreenEvent(EventScreenEvent.CheckVisitorExists(visitorEmail))
+            },
+            isEmailVerified = eventScreenState.isEmailVerified
+        )
+    }
 
     DateTimeDialog(
         state = calendarStateTimeDate,
