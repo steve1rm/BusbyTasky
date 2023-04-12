@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import me.androidbox.domain.agenda.model.Attendee
@@ -207,7 +208,29 @@ class EventViewModel @Inject constructor(
     }
 
     fun fetchEventById(eventId: String) {
-
+        viewModelScope.launch {
+            eventRepository.getEventById(eventId).collectLatest { responseState ->
+                when(responseState) {
+                    ResponseState.Loading -> {
+                        /** TODO Show loading */
+                    }
+                    is ResponseState.Success -> {
+                        /* Update the state */
+                        val event = responseState.data
+                        _eventScreenState.update { eventScreenState ->
+                            eventScreenState.copy(
+                                eventId = event.id,
+                                eventTitle = event.title,
+                                eventDescription = event.description,
+                            )
+                        }
+                    }
+                    is ResponseState.Failure -> {
+                        Log.d("EVENT_DETAIL", "${responseState.error.message}")
+                    }
+                }
+            }
+        }
     }
 
     private fun insertEventDetails() {

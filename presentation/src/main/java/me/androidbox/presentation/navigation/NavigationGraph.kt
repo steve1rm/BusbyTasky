@@ -110,7 +110,7 @@ fun NavigationGraph(
                     AgendaType.EVENT -> {
                         when(agendaMenuActionType) {
                             AgendaMenuActionType.OPEN -> {
-                                navHostController.navigate(Screen.EventScreen.route)
+                                navHostController.navigate(route = "${Screen.EventScreen.EVENT_SCREEN}/$id")
                             }
                             AgendaMenuActionType.EDIT -> {
                                 navHostController.navigate(Screen.EventScreen.route)
@@ -150,6 +150,12 @@ fun NavigationGraph(
             LaunchedEffect(key1 = eventScreenState.isSaved) {
                 if(eventScreenState.isSaved) {
                     navHostController.popBackStack()
+                }
+            }
+
+            it.arguments?.getString(Screen.EventScreen.EVENT_ID)?.let { eventId ->
+                LaunchedEffect(key1 = true) {
+                    eventViewModel.fetchEventById(eventId)
                 }
             }
 
