@@ -11,15 +11,15 @@ interface TaskDao {
     fun getTasksFromTimeStamp(startTimeStamp: Long, endTimeStamp: Long): Flow<List<TaskEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertTask(taskEntity: TaskEntity)
+    suspend fun insertTask(taskEntity: TaskEntity)
 
     /** TODO
      * Delete only a single task
      * */
     @Query("DELETE FROM ${DatabaseConstant.TASK_TABLE} WHERE id = :id")
-    fun deleteTaskById(id: String)
+    suspend fun deleteTaskById(id: String)
 
     /* TODO Maybe there is a use case when the user want to clear all tasks */
     @Query("DELETE FROM ${DatabaseConstant.TASK_TABLE}")
-    fun deleteAllTask()
+    suspend fun deleteAllTask()
 }
