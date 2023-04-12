@@ -14,7 +14,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import me.androidbox.data.local.DatabaseConstant.DATABASE_NAME
-import me.androidbox.data.local.agenda.AgendaRepositoryImp
+import me.androidbox.data.local.agenda.AgendaLocalRepositoryImp
 import me.androidbox.data.local.converter.EventConverter
 import me.androidbox.data.local.dao.EventDao
 import me.androidbox.data.local.dao.ReminderDao
@@ -26,7 +26,7 @@ import me.androidbox.data.remote.event.VerifyVisitorEmailUseCaseImp
 import me.androidbox.data.remote.preference.PreferenceRepositoryImp
 import me.androidbox.data.worker_manager.UploadEventImp
 import me.androidbox.domain.authentication.preference.PreferenceRepository
-import me.androidbox.domain.authentication.remote.AgendaRepository
+import me.androidbox.domain.authentication.remote.AgendaLocalRepository
 import me.androidbox.domain.authentication.remote.EventRepository
 import me.androidbox.domain.event.usecase.VerifyVisitorEmailUseCase
 import me.androidbox.domain.repository.AgendaRemoteRepository
@@ -53,7 +53,7 @@ interface RepositoryModule {
 
     @Reusable
     @Binds
-    fun bindsAgendaRepositoryImp(agendaRepositoryImp: AgendaRepositoryImp): AgendaRepository
+    fun bindsAgendaRepositoryImp(agendaLocalRepositoryImp: AgendaLocalRepositoryImp): AgendaLocalRepository
 
     companion object {
         private const val SECRET_SHARED_PREFERENCES = "secret_shared_preferences"
