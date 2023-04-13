@@ -7,6 +7,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import me.androidbox.domain.agenda.model.AgendaItem
 import me.androidbox.domain.agenda.usecase.UsersInitialsExtractionUseCase
 import me.androidbox.domain.authentication.ResponseState
 import me.androidbox.domain.authentication.preference.PreferenceRepository
@@ -61,13 +62,12 @@ class AgendaViewModel @Inject constructor(
                             /* TODO Show a toast or a snack bar message */
                             Log.e("AGENDA_VIEWMODEL", responseState.error.toString())
                         }
-
                         is ResponseState.Success -> {
                             /* TODO Update the state */
                             Log.d("AGENDA_VIEW", "${responseState.data}")
                             _agendaScreenState.update { agendaScreenState ->
                                 agendaScreenState.copy(
-                                    agendaItems = responseState.data
+                                    agendaItems = responseState.data.events + responseState.data.tasks + responseState.data.reminders
                                 )
                             }
                         }
