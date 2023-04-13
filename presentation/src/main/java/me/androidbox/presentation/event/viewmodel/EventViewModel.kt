@@ -168,9 +168,6 @@ class EventViewModel @Inject constructor(
             is EventScreenEvent.CheckVisitorExists -> {
                 verifyVisitorEmail(eventScreenEvent.visitorEmail)
             }
-            is EventScreenEvent.OnSaveEventID -> {
-                fetchEventById(eventScreenEvent.eventId)
-            }
         }
     }
     private fun verifyVisitorEmail(visitorEmail: String) {
