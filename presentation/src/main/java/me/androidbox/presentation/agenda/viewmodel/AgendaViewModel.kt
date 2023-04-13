@@ -67,7 +67,7 @@ class AgendaViewModel @Inject constructor(
                             Log.d("AGENDA_VIEW", "${responseState.data}")
                             _agendaScreenState.update { agendaScreenState ->
                                 agendaScreenState.copy(
-                       //             agendaItems = responseState.data
+                                    agendaItems = responseState.data
                                 )
                             }
                         }

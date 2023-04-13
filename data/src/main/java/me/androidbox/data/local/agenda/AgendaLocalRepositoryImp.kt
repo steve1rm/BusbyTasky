@@ -9,6 +9,9 @@ import me.androidbox.data.local.dao.ReminderDao
 import me.androidbox.data.local.dao.TaskDao
 import me.androidbox.data.mapper.*
 import me.androidbox.domain.agenda.model.Agenda
+import me.androidbox.domain.agenda.model.Event
+import me.androidbox.domain.agenda.model.Reminder
+import me.androidbox.domain.agenda.model.Task
 import me.androidbox.domain.authentication.ResponseState
 import me.androidbox.domain.authentication.remote.AgendaLocalRepository
 import me.androidbox.domain.repository.AgendaRemoteRepository
@@ -24,6 +27,19 @@ class AgendaLocalRepositoryImp @Inject constructor(
 
     override fun fetchAgenda(startTimeStamp: Long, endTimeStamp: Long): Flow<ResponseState<Agenda>> {
         return flow<ResponseState<Agenda>> {
+
+            /* Fetch all the events, tasks, and reminders from the DB and return to populate the agenda screen */
+            val events = fetchEventsFromLocal(startTimeStamp, endTimeStamp)
+            val tasks = fetchTasksFromLocal(startTimeStamp, endTimeStamp)
+            val reminders = fetchRemindersFromLocal(startTimeStamp, endTimeStamp)
+
+            /* Emit after fetching from the DB */
+            emit(ResponseState.Success(Agenda(
+                events = events,
+                tasks = tasks,
+                reminders = reminders
+            )))
+
             /* Fetch all agenda for the current day and time zone */
             val agenda = agendaRemoteRepository.fetchAgendaForDay(
                 ZoneId.systemDefault(),
@@ -56,37 +72,53 @@ class AgendaLocalRepositoryImp @Inject constructor(
             }
 
             /* Fetch all the events, tasks, and reminders from the DB and return to populate the agenda screen */
-            val events = eventDao.getEventsFromTimeStamp(startTimeStamp, endTimeStamp)
-                .map { listOfEventEntity ->
-                    listOfEventEntity.map { eventEntity ->
-                        eventEntity.toEvent()
-                    }
-                }
+            val updatedEvents = fetchEventsFromLocal(startTimeStamp, endTimeStamp)
+            val updatedTasks = fetchTasksFromLocal(startTimeStamp, endTimeStamp)
+            val updatedReminders = fetchRemindersFromLocal(startTimeStamp, endTimeStamp)
 
-            val tasks = taskDao.getTasksFromTimeStamp(startTimeStamp, endTimeStamp)
-                .map { listOfTaskEntity ->
-                    listOfTaskEntity.map { taskEntity ->
-                        taskEntity.toTask()
-                    }
-                }
-
-            val reminders = reminderDao.getRemindersFromTimeStamp(startTimeStamp, endTimeStamp)
-                .map { listOfReminderEntity ->
-                    listOfReminderEntity.map { reminderEntity ->
-                        reminderEntity.toReminder()
-                    }
-                }
-
-            val fullAgenda = Agenda(
-                events = events.single(),
-                tasks = tasks.single(),
-                reminders = reminders.single()
-            )
-
-            emit(ResponseState.Success(fullAgenda))
+            /* Emit after fetching from the DB and insertion from the Endpoint */
+            emit(ResponseState.Success(Agenda(
+                events = updatedEvents,
+                tasks = updatedTasks,
+                reminders = updatedReminders
+            )))
         }
             .catch { throwable ->
                 emit(ResponseState.Failure(throwable))
             }
+    }
+
+    private suspend fun fetchRemindersFromLocal(
+        startTimeStamp: Long,
+        endTimeStamp: Long
+    ): List<Reminder> {
+        val reminders =
+            reminderDao.getRemindersFromTimeStampFullAgenda(startTimeStamp, endTimeStamp)
+                .map { reminderEntity ->
+                    reminderEntity.toReminder()
+                }
+        return reminders
+    }
+
+    private suspend fun fetchTasksFromLocal(
+        startTimeStamp: Long,
+        endTimeStamp: Long
+    ): List<Task> {
+        val tasks = taskDao.getTasksFromTimeStampFullAgenda(startTimeStamp, endTimeStamp)
+            .map { taskEntity ->
+                taskEntity.toTask()
+            }
+        return tasks
+    }
+
+    private suspend fun fetchEventsFromLocal(
+        startTimeStamp: Long,
+        endTimeStamp: Long
+    ): List<Event> {
+        val events = eventDao.getEventsFromTimeStampFullAgenda(startTimeStamp, endTimeStamp)
+            .map { eventEntity ->
+                eventEntity.toEvent()
+            }
+        return events
     }
 }
