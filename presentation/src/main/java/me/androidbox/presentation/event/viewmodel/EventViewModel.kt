@@ -229,6 +229,7 @@ class EventViewModel @Inject constructor(
                                 eventId = event.id,
                                 eventTitle = event.title,
                                 eventDescription = event.description,
+                                /** TODO Adding the rest */
                             )
                         }
                     }
