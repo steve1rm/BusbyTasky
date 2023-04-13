@@ -129,7 +129,7 @@ fun NavigationGraph(
         /* Event Detail Screen */
         composable(
             route = Screen.EventScreen.route,
-            arguments = listOf(navArgument("event_id") {
+            arguments = listOf(navArgument("eventId") {
                 type = NavType.StringType
                 nullable = true
                 defaultValue = null
@@ -157,7 +157,7 @@ fun NavigationGraph(
                     navHostController.popBackStack()
                 }
             }
-            
+
             EventScreen(
                 eventScreenState = eventScreenState,
                 eventScreenEvent = { eventScreenEvent ->
