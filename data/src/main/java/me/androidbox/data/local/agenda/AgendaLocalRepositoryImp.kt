@@ -1,5 +1,6 @@
 package me.androidbox.data.local.agenda
 
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.supervisorScope
@@ -26,7 +27,7 @@ class AgendaLocalRepositoryImp @Inject constructor(
             /* Fetch all agenda for the current day and time zone */
             val agenda = agendaRemoteRepository.fetchAgendaForDay(
                 ZoneId.systemDefault(),
-                System.currentTimeMillis()
+                startTimeStamp * 1000
             )
 
             /* Insert events tasks and reminders into the DB */
@@ -57,26 +58,23 @@ class AgendaLocalRepositoryImp @Inject constructor(
             /* Fetch all the events, tasks, and reminders from the DB and return to populate the agenda screen */
             val events = eventDao.getEventsFromTimeStamp(startTimeStamp, endTimeStamp)
                 .map { listOfEventEntity ->
-                    val listOfEvent = listOfEventEntity.map { eventEntity ->
+                    listOfEventEntity.map { eventEntity ->
                         eventEntity.toEvent()
                     }
-                    listOfEvent
                 }
 
             val tasks = taskDao.getTasksFromTimeStamp(startTimeStamp, endTimeStamp)
                 .map { listOfTaskEntity ->
-                    val listOfTask = listOfTaskEntity.map { taskEntity ->
+                    listOfTaskEntity.map { taskEntity ->
                         taskEntity.toTask()
                     }
-                    listOfTask
                 }
 
             val reminders = reminderDao.getRemindersFromTimeStamp(startTimeStamp, endTimeStamp)
                 .map { listOfReminderEntity ->
-                    val listOfReminder = listOfReminderEntity.map { reminderEntity ->
+                    listOfReminderEntity.map { reminderEntity ->
                         reminderEntity.toReminder()
                     }
-                    listOfReminder
                 }
 
             val fullAgenda = Agenda(
