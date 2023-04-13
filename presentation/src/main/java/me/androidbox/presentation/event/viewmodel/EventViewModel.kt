@@ -39,6 +39,10 @@ class EventViewModel @Inject constructor(
     private val _eventScreenState: MutableStateFlow<EventScreenState> = MutableStateFlow(EventScreenState())
     val eventScreenState = _eventScreenState.asStateFlow()
 
+    init {
+        Log.d("EVENT_VIEWMODEL", "THIS IS IN THE EVENT_VIEW_MODEL")
+        eventScreenState.value.eventId
+    }
     fun onEventScreenEvent(eventScreenEvent: EventScreenEvent) {
         when(eventScreenEvent) {
             is EventScreenEvent.OnPhotoUriAdded -> {
@@ -160,9 +164,11 @@ class EventViewModel @Inject constructor(
             is EventScreenEvent.CheckVisitorExists -> {
                 verifyVisitorEmail(eventScreenEvent.visitorEmail)
             }
+            is EventScreenEvent.OnSaveEventID -> {
+                fetchEventById(eventScreenEvent.eventId)
+            }
         }
     }
-
     private fun verifyVisitorEmail(visitorEmail: String) {
         viewModelScope.launch {
             val responseState = verifyVisitorEmailUseCase.execute(visitorEmail)

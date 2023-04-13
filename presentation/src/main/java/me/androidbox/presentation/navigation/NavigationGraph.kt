@@ -157,9 +157,7 @@ fun NavigationGraph(
             *         and overwrite the state that was input in the Edit Screen
             *         and it will fetch from the DB and restore the state from there */
             it.arguments?.getString(Screen.EventScreen.EVENT_ID)?.let { eventId ->
-                LaunchedEffect(key1 = true) {
-                    eventViewModel.fetchEventById(eventId)
-                }
+                eventViewModel.onEventScreenEvent(EventScreenEvent.OnSaveEventID(eventId))
             }
 
             EventScreen(
