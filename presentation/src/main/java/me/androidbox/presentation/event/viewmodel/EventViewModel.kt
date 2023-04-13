@@ -42,7 +42,7 @@ class EventViewModel @Inject constructor(
     val eventScreenState = _eventScreenState.asStateFlow()
 
     init {
-        savedStateHandle.get<String>("event_id")?.let { eventId ->
+        savedStateHandle.get<String>("eventId")?.let { eventId ->
             fetchEventById(eventId)
         }
     }
