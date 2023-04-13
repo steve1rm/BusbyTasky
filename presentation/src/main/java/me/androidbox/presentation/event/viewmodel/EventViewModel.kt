@@ -43,7 +43,7 @@ class EventViewModel @Inject constructor(
 
     init {
         savedStateHandle.get<String>("event_id")?.let { eventId ->
-            eventRepository.getEventById(eventId)
+            fetchEventById(eventId)
         }
     }
 
@@ -217,7 +217,7 @@ class EventViewModel @Inject constructor(
         }
     }
 
-    fun fetchEventById(eventId: String) {
+    private fun fetchEventById(eventId: String) {
         viewModelScope.launch {
             eventRepository.getEventById(eventId).collectLatest { responseState ->
                 when(responseState) {
