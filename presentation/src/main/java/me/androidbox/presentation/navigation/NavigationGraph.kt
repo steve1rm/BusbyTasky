@@ -105,18 +105,18 @@ fun NavigationGraph(
                 *   i.e navHostController.navigate(Screen.TaskScreen.route) */
                 navHostController.navigate(Screen.EventScreen.route)
             },
-            onSelectedEditAgendaItemClicked = { id, agendaType, agendaMenuActionType ->
+            onSelectedEditAgendaItemClicked = { eventId, agendaType, agendaMenuActionType ->
                 when(agendaType) {
                     AgendaType.EVENT -> {
                         when(agendaMenuActionType) {
                             AgendaMenuActionType.OPEN -> {
-                                navHostController.navigate(route = "${Screen.EventScreen.EVENT_SCREEN}/$id")
+                                navHostController.navigate(route = "${Screen.EventScreen.EVENT_SCREEN}/$eventId")
                             }
                             AgendaMenuActionType.EDIT -> {
                                 navHostController.navigate(Screen.EventScreen.route)
                             }
                             AgendaMenuActionType.DELETE -> {
-                                agendaViewModel.deleteEventById(id)
+                                agendaViewModel.deleteEventById(eventId)
                             }
                         }
                     }
@@ -128,7 +128,12 @@ fun NavigationGraph(
 
         /* Event Detail Screen */
         composable(
-            route = Screen.EventScreen.route
+            route = Screen.EventScreen.route,
+            arguments = listOf(navArgument("event_id") {
+                type = NavType.StringType
+                nullable = true
+                defaultValue = null
+            })
         ) {
             val eventViewModel: EventViewModel = hiltViewModel()
             val eventScreenState by eventViewModel.eventScreenState.collectAsStateWithLifecycle()
@@ -144,7 +149,7 @@ fun NavigationGraph(
                 )
             }
 
-            /** TODO Once the insertion has completed the state will change to true then
+            /** Once the insertion has completed the state will change to true then
              *  we will know that the insertion has completed and we can popbackstack
              *  to go back to the agenda screen */
             LaunchedEffect(key1 = eventScreenState.isSaved) {
@@ -152,14 +157,7 @@ fun NavigationGraph(
                     navHostController.popBackStack()
                 }
             }
-
-            /* FIXME: Issue when landing back from the Edit Screen this will run
-            *         and overwrite the state that was input in the Edit Screen
-            *         and it will fetch from the DB and restore the state from there */
-            it.arguments?.getString(Screen.EventScreen.EVENT_ID)?.let { eventId ->
-                eventViewModel.onEventScreenEvent(EventScreenEvent.OnSaveEventID(eventId))
-            }
-
+            
             EventScreen(
                 eventScreenState = eventScreenState,
                 eventScreenEvent = { eventScreenEvent ->

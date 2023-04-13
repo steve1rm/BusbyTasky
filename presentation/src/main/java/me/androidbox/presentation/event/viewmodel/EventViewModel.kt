@@ -1,6 +1,7 @@
 package me.androidbox.presentation.event.viewmodel
 
 import android.util.Log
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -33,16 +34,19 @@ class EventViewModel @Inject constructor(
     private val verifyVisitorEmailUseCase: VerifyVisitorEmailUseCase,
     private val preferenceRepository: PreferenceRepository,
     private val alarmScheduler: AlarmScheduler,
-    private val uploadEvent: UploadEvent
+    private val uploadEvent: UploadEvent,
+    savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
     private val _eventScreenState: MutableStateFlow<EventScreenState> = MutableStateFlow(EventScreenState())
     val eventScreenState = _eventScreenState.asStateFlow()
 
     init {
-        Log.d("EVENT_VIEWMODEL", "THIS IS IN THE EVENT_VIEW_MODEL")
-        eventScreenState.value.eventId
+        savedStateHandle.get<String>("event_id")?.let { eventId ->
+            eventRepository.getEventById(eventId)
+        }
     }
+
     fun onEventScreenEvent(eventScreenEvent: EventScreenEvent) {
         when(eventScreenEvent) {
             is EventScreenEvent.OnPhotoUriAdded -> {
