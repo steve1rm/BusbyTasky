@@ -30,4 +30,5 @@ data class EventScreenState(
     val alarmReminderItem: AlarmReminderItem = AlarmReminderItem.TEN_MINUTES,
     val attendees: List<Attendee> = listOf(),
     val isSaved: Boolean = false,
+    val isEditMode: Boolean = false
 )

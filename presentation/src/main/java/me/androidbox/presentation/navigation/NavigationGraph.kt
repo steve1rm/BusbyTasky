@@ -25,6 +25,9 @@ import me.androidbox.presentation.login.screen.LoginScreen
 import me.androidbox.presentation.login.screen.RegisterScreen
 import me.androidbox.presentation.login.viewmodel.LoginViewModel
 import me.androidbox.presentation.login.viewmodel.RegisterViewModel
+import me.androidbox.presentation.navigation.Screen.EditScreen.CONTENT
+import me.androidbox.presentation.navigation.Screen.EditScreen.CONTENT_TYPE
+import me.androidbox.presentation.navigation.Screen.EventScreen.MENU_ACTION_TYPE
 
 @Composable
 fun NavigationGraph(
@@ -110,7 +113,8 @@ fun NavigationGraph(
                     AgendaType.EVENT -> {
                         when(agendaMenuActionType) {
                             AgendaMenuActionType.OPEN -> {
-                                navHostController.navigate(route = "${Screen.EventScreen.EVENT_SCREEN}/$eventId")
+                                val open = AgendaMenuActionType.OPEN.name
+                                navHostController.navigate(route = "${Screen.EventScreen.EVENT_SCREEN}/$eventId/${AgendaMenuActionType.OPEN}")
                             }
                             AgendaMenuActionType.EDIT -> {
                                 navHostController.navigate(Screen.EventScreen.route)
@@ -133,9 +137,11 @@ fun NavigationGraph(
                 type = NavType.StringType
                 nullable = true
                 defaultValue = null
-            })
+            }, navArgument(MENU_ACTION_TYPE) {
+                    type = NavType.StringType
+                })
         ) {
-            val eventViewModel: EventViewModel = hiltViewModel()
+        val eventViewModel: EventViewModel = hiltViewModel()
             val eventScreenState by eventViewModel.eventScreenState.collectAsStateWithLifecycle()
             val title = it.savedStateHandle.get<String>(ContentType.TITLE.name) ?: "New Event"
             val description = it.savedStateHandle.get<String>(ContentType.DESCRIPTION.name) ?: "New Description"
@@ -180,19 +186,19 @@ fun NavigationGraph(
         /* Edit Screen */
         composable(
             route = Screen.EditScreen.route,
-            arguments = listOf(navArgument(Screen.EditScreen.CONTENT) {
+            arguments = listOf(navArgument(CONTENT) {
                 type = NavType.StringType
-            }, navArgument(Screen.EditScreen.CONTENT_TYPE) {
+            }, navArgument(CONTENT_TYPE) {
                 type = NavType.StringType
             })
         ) {
             val editScreenViewModel: EditScreenViewModel = hiltViewModel()
             val editScreenState by editScreenViewModel.editScreenState.collectAsStateWithLifecycle()
-            val content = it.arguments?.getString(Screen.EditScreen.CONTENT) ?: ""
+            val content = it.arguments?.getString(CONTENT) ?: ""
 
             /** Get the contentType that has been edited which could be either the Title or the Description
              *  If null then return the default title instead */
-            val contentType = it.arguments?.getString(Screen.EditScreen.CONTENT_TYPE)?.let { contentType ->
+            val contentType = it.arguments?.getString(CONTENT_TYPE)?.let { contentType ->
                 when(contentType) {
                     ContentType.TITLE.name -> ContentType.TITLE
                     ContentType.DESCRIPTION.name -> ContentType.DESCRIPTION

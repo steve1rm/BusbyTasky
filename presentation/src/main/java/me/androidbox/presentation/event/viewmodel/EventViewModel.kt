@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import me.androidbox.domain.agenda.model.AgendaMenuActionType
 import me.androidbox.domain.agenda.model.Attendee
 import me.androidbox.domain.agenda.model.Event
 import me.androidbox.domain.agenda.usecase.UsersInitialsExtractionUseCase
@@ -24,6 +25,7 @@ import me.androidbox.domain.work_manager.UploadEvent
 import me.androidbox.presentation.alarm_manager.AlarmReminderProvider
 import me.androidbox.presentation.event.screen.EventScreenEvent
 import me.androidbox.presentation.event.screen.EventScreenState
+import me.androidbox.presentation.navigation.Screen
 import java.util.*
 import javax.inject.Inject
 
@@ -42,8 +44,36 @@ class EventViewModel @Inject constructor(
     val eventScreenState = _eventScreenState.asStateFlow()
 
     init {
-        savedStateHandle.get<String>("eventId")?.let { eventId ->
-            fetchEventById(eventId)
+        val menuActionType = savedStateHandle.get<String>(Screen.EventScreen.MENU_ACTION_TYPE)
+        val eventId = savedStateHandle.get<String>("eventId")
+
+        menuActionType?.let { actionType ->
+            when (actionType) {
+                AgendaMenuActionType.OPEN.name -> {
+                    _eventScreenState.update { eventScreenState ->
+                        eventScreenState.copy(
+                            isEditMode = false,
+                            eventId = eventId ?: ""
+                        )
+                    }
+                }
+                AgendaMenuActionType.EDIT.name -> {
+                    _eventScreenState.update { eventScreenState ->
+                        eventScreenState.copy(
+                            isEditMode = true,
+                            eventId = eventId ?: ""
+                        )
+                    }
+                }
+                else -> {
+                    _eventScreenState.update { eventScreenState ->
+                        eventScreenState.copy(
+                            isEditMode = false,
+                            eventId = UUID.randomUUID().toString()
+                        )
+                    }
+                }
+            }
         }
     }
 
@@ -86,12 +116,7 @@ class EventViewModel @Inject constructor(
                 }
             }
             is EventScreenEvent.OnSaveEventDetails -> {
-                _eventScreenState.update { eventScreenState ->
-                    eventScreenState.copy(
-                        eventId = UUID.randomUUID().toString()
-                    )
-                }
-                insertEventDetails()
+                insertEventDetails(eventScreenState.value.eventId)
             }
             is EventScreenEvent.OnStartTimeDuration -> {
                 _eventScreenState.update { eventScreenState ->
@@ -170,6 +195,7 @@ class EventViewModel @Inject constructor(
             }
         }
     }
+
     private fun verifyVisitorEmail(visitorEmail: String) {
         viewModelScope.launch {
             val responseState = verifyVisitorEmailUseCase.execute(visitorEmail)
@@ -241,13 +267,13 @@ class EventViewModel @Inject constructor(
         }
     }
 
-    private fun insertEventDetails() {
+    private fun insertEventDetails(eventId: String) {
         val startDateTime = AlarmReminderProvider.getCombinedDateTime(eventScreenState.value.startTime, eventScreenState.value.startDate)
         val endDateTime = AlarmReminderProvider.getCombinedDateTime(eventScreenState.value.endTime, eventScreenState.value.endDate)
         val remindAt = AlarmReminderProvider.getRemindAt(eventScreenState.value.alarmReminderItem, startDateTime)
 
         val event = Event(
-            id = eventScreenState.value.eventId,
+            id = eventId,
             title = eventScreenState.value.eventTitle,
             description = eventScreenState.value.eventDescription,
             startDateTime = startDateTime.toEpochSecond(),
