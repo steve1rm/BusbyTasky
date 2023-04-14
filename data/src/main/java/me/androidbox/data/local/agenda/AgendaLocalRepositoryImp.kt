@@ -1,7 +1,8 @@
 package me.androidbox.data.local.agenda
 
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.supervisorScope
 import me.androidbox.data.local.dao.EventDao
@@ -43,7 +44,7 @@ class AgendaLocalRepositoryImp @Inject constructor(
             /* Fetch all agenda for the current day and time zone */
             val agenda = agendaRemoteRepository.fetchAgendaForDay(
                 ZoneId.systemDefault(),
-                startTimeStamp * 1000
+                startTimeStamp
             )
 
             /* Insert events tasks and reminders into the DB */
