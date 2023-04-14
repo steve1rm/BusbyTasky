@@ -27,6 +27,7 @@ import me.androidbox.presentation.login.viewmodel.LoginViewModel
 import me.androidbox.presentation.login.viewmodel.RegisterViewModel
 import me.androidbox.presentation.navigation.Screen.EditScreen.CONTENT
 import me.androidbox.presentation.navigation.Screen.EditScreen.CONTENT_TYPE
+import me.androidbox.presentation.navigation.Screen.EventScreen.EVENT_ID
 import me.androidbox.presentation.navigation.Screen.EventScreen.MENU_ACTION_TYPE
 
 @Composable
@@ -133,7 +134,7 @@ fun NavigationGraph(
         /* Event Detail Screen */
         composable(
             route = Screen.EventScreen.route,
-            arguments = listOf(navArgument("eventId") {
+            arguments = listOf(navArgument(EVENT_ID) {
                 type = NavType.StringType
                 nullable = true
                 defaultValue = null

@@ -26,6 +26,8 @@ import me.androidbox.presentation.alarm_manager.AlarmReminderProvider
 import me.androidbox.presentation.event.screen.EventScreenEvent
 import me.androidbox.presentation.event.screen.EventScreenState
 import me.androidbox.presentation.navigation.Screen
+import me.androidbox.presentation.navigation.Screen.EventScreen.EVENT_ID
+import me.androidbox.presentation.navigation.Screen.EventScreen.MENU_ACTION_TYPE
 import java.util.*
 import javax.inject.Inject
 
@@ -44,8 +46,8 @@ class EventViewModel @Inject constructor(
     val eventScreenState = _eventScreenState.asStateFlow()
 
     init {
-        val menuActionType = savedStateHandle.get<String>(Screen.EventScreen.MENU_ACTION_TYPE)
-        val eventId = savedStateHandle.get<String>("eventId")
+        val menuActionType = savedStateHandle.get<String>(MENU_ACTION_TYPE)
+        val eventId = savedStateHandle.get<String>(EVENT_ID) ?: ""
 
         menuActionType?.let { actionType ->
             when (actionType) {
@@ -53,17 +55,19 @@ class EventViewModel @Inject constructor(
                     _eventScreenState.update { eventScreenState ->
                         eventScreenState.copy(
                             isEditMode = false,
-                            eventId = eventId ?: ""
+                            eventId = eventId
                         )
                     }
+                    fetchEventById(eventId)
                 }
                 AgendaMenuActionType.EDIT.name -> {
                     _eventScreenState.update { eventScreenState ->
                         eventScreenState.copy(
                             isEditMode = true,
-                            eventId = eventId ?: ""
+                            eventId = eventId
                         )
                     }
+                    fetchEventById(eventId)
                 }
                 else -> {
                     _eventScreenState.update { eventScreenState ->
