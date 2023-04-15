@@ -9,7 +9,7 @@ package me.androidbox.data.remote.model.response
  *
  * */
 data class FullAgendaDto(
-    val deletedEventIds: List<String>,
-    val deletedTaskIds: List<String>,
-    val deletedReminderIds: List<String>
+    val events: List<EventDto>,
+    val tasks: List<TaskDto>,
+    val reminders: List<ReminderDto>
 )
