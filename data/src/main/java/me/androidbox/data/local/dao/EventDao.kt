@@ -26,5 +26,5 @@ interface EventDao {
     suspend fun deleteAllEvent()
 
     @Upsert(entity = EventSyncEntity::class)
-    suspend fun insertSyncEvent(id: String, syncAgendaType: SyncAgendaType)
+    suspend fun insertSyncEvent(eventSyncEntity: EventSyncEntity)
 }
