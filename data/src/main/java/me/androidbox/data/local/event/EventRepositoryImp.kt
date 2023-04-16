@@ -53,6 +53,7 @@ class EventRepositoryImp @Inject constructor(
 
         val result = checkResult {
             eventDao.insertEvent(eventEntity)
+            eventDao.insertSyncEvent(EventSyncEntity(event.id, SyncAgendaType.CREATE))
         }
 
         val responseState = result.fold(
