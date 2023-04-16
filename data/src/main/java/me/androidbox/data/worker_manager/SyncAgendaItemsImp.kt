@@ -8,7 +8,7 @@ class SyncAgendaItemsImp @Inject constructor(
     private val workManager: WorkManager
 ) : SyncAgendaItems {
 
-    override suspend fun sync(syncAgendaItems: SyncAgendaItems) {
+    override suspend fun sync() {
 
     }
 }
