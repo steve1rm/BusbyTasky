@@ -24,16 +24,16 @@ interface ReminderDao {
     @Query("DELETE FROM ${DatabaseConstant.REMINDER_TABLE}")
     suspend fun deleteAllReminder()
 
-    @Query("SELECT * FROM ${DatabaseConstant.REMINDER_SYNC_TABLE} WHERE `syncAgendaType` = :syncAgendaType")
-    suspend fun getAllDeletedReminders(syncAgendaType: SyncAgendaType)
+    @Query("SELECT `id` FROM ${DatabaseConstant.REMINDER_SYNC_TABLE} WHERE `syncAgendaType` = :syncAgendaType")
+    suspend fun getAllDeletedReminders(syncAgendaType: SyncAgendaType): List<String>
 
-    @Query("SELECT * FROM ${DatabaseConstant.REMINDER_SYNC_TABLE} WHERE `syncAgendaType` = :syncAgendaType")
-    suspend fun getAllCreatedReminders(syncAgendaType: SyncAgendaType)
+    @Query("SELECT `id` FROM ${DatabaseConstant.REMINDER_SYNC_TABLE} WHERE `syncAgendaType` = :syncAgendaType")
+    suspend fun getAllCreatedReminders(syncAgendaType: SyncAgendaType): List<String>
 
-    @Query("SELECT * FROM ${DatabaseConstant.REMINDER_SYNC_TABLE} WHERE `syncAgendaType` = :syncAgendaType")
-    suspend fun getAllUpdatedReminders(syncAgendaType: SyncAgendaType)
+    @Query("SELECT `id` FROM ${DatabaseConstant.REMINDER_SYNC_TABLE} WHERE `syncAgendaType` = :syncAgendaType")
+    suspend fun getAllUpdatedReminders(syncAgendaType: SyncAgendaType): List<String>
 
-    @Query("DELETE FROM ${DatabaseConstant.REMINDER_SYNC_TABLE} WHERE id = :id")
+    @Query("DELETE FROM ${DatabaseConstant.REMINDER_SYNC_TABLE} WHERE `id` = :id")
     suspend fun deleteSyncReminderById(id: String)
 
     @Query("DELETE FROM ${DatabaseConstant.REMINDER_SYNC_TABLE} WHERE `id` IN :ids")

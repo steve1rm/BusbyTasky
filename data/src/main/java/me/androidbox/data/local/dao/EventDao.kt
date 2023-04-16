@@ -28,14 +28,14 @@ interface EventDao {
     @Upsert(entity = EventSyncEntity::class)
     suspend fun insertSyncEvent(eventSyncEntity: EventSyncEntity)
 
-    @Query("SELECT * FROM ${DatabaseConstant.EVENT_SYNC_TABLE} WHERE `syncAgendaType` = :syncAgendaType")
-    suspend fun getAllDeletedEvents(syncAgendaType: SyncAgendaType)
+    @Query("SELECT `id` FROM ${DatabaseConstant.EVENT_SYNC_TABLE} WHERE `syncAgendaType` = :syncAgendaType")
+    suspend fun getAllDeletedEvents(syncAgendaType: SyncAgendaType): List<String>
 
-    @Query("SELECT * FROM ${DatabaseConstant.EVENT_SYNC_TABLE} WHERE `syncAgendaType` = :syncAgendaType")
-    suspend fun getAllCreatedEvents(syncAgendaType: SyncAgendaType)
+    @Query("SELECT `id` FROM ${DatabaseConstant.EVENT_SYNC_TABLE} WHERE `syncAgendaType` = :syncAgendaType")
+    suspend fun getAllCreatedEvents(syncAgendaType: SyncAgendaType): List<String>
 
-    @Query("SELECT * FROM ${DatabaseConstant.EVENT_SYNC_TABLE} WHERE `syncAgendaType` = :syncAgendaType")
-    suspend fun getAllDeletedUpdated(syncAgendaType: SyncAgendaType)
+    @Query("SELECT `id` FROM ${DatabaseConstant.EVENT_SYNC_TABLE} WHERE `syncAgendaType` = :syncAgendaType")
+    suspend fun getAllDeletedUpdated(syncAgendaType: SyncAgendaType): List<String>
 
     @Query("DELETE FROM ${DatabaseConstant.EVENT_SYNC_TABLE} WHERE `id` = :id")
     suspend fun deleteSyncEventById(id: String)

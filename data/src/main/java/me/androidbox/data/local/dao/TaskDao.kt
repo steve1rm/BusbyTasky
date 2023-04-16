@@ -24,16 +24,16 @@ interface TaskDao {
     @Query("DELETE FROM ${DatabaseConstant.TASK_TABLE}")
     suspend fun deleteAllTask()
 
-    @Query("SELECT * FROM ${DatabaseConstant.TASK_SYNC_TABLE} WHERE `syncAgendaType` = :syncAgendaType")
-    suspend fun getAllDeletedTasks(syncAgendaType: SyncAgendaType)
+    @Query("SELECT `id` FROM ${DatabaseConstant.TASK_SYNC_TABLE} WHERE `syncAgendaType` = :syncAgendaType")
+    suspend fun getAllDeletedTasks(syncAgendaType: SyncAgendaType): List<String>
 
-    @Query("SELECT * FROM ${DatabaseConstant.TASK_SYNC_TABLE} WHERE `syncAgendaType` = :syncAgendaType")
-    suspend fun getAllCreatedTasks(syncAgendaType: SyncAgendaType)
+    @Query("SELECT `id` FROM ${DatabaseConstant.TASK_SYNC_TABLE} WHERE `syncAgendaType` = :syncAgendaType")
+    suspend fun getAllCreatedTasks(syncAgendaType: SyncAgendaType): List<String>
 
-    @Query("SELECT * FROM ${DatabaseConstant.TASK_SYNC_TABLE} WHERE `syncAgendaType` = :syncAgendaType")
-    suspend fun getAllUpdatedTasks(syncAgendaType: SyncAgendaType)
+    @Query("SELECT `id` FROM ${DatabaseConstant.TASK_SYNC_TABLE} WHERE `syncAgendaType` = :syncAgendaType")
+    suspend fun getAllUpdatedTasks(syncAgendaType: SyncAgendaType): List<String>
 
-    @Query("DELETE FROM ${DatabaseConstant.TASK_SYNC_TABLE} WHERE id = :id")
+    @Query("DELETE FROM ${DatabaseConstant.TASK_SYNC_TABLE} WHERE `id` = :id")
     suspend fun deleteSyncTaskById(id: String)
 
     @Query("DELETE FROM ${DatabaseConstant.TASK_SYNC_TABLE} WHERE `id` IN :ids")
