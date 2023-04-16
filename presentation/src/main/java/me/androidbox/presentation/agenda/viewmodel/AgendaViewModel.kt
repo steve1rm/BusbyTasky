@@ -10,6 +10,7 @@ import kotlinx.coroutines.launch
 import me.androidbox.domain.agenda.usecase.UsersInitialsExtractionUseCase
 import me.androidbox.domain.authentication.ResponseState
 import me.androidbox.domain.authentication.preference.PreferenceRepository
+import me.androidbox.domain.authentication.remote.AgendaLocalRepository
 import me.androidbox.domain.authentication.remote.EventRepository
 import me.androidbox.presentation.agenda.screen.AgendaScreenEvent
 import me.androidbox.presentation.agenda.screen.AgendaScreenState
@@ -21,7 +22,8 @@ import javax.inject.Inject
 class AgendaViewModel @Inject constructor(
     private val preferenceRepository: PreferenceRepository,
     private val usersInitialsExtractionUseCase: UsersInitialsExtractionUseCase,
-    private val eventRepository: EventRepository
+    private val eventRepository: EventRepository,
+    private val agendaLocalRepository: AgendaLocalRepository
 ) : ViewModel() {
     private var agendaJob: Job? = null
 
@@ -49,7 +51,7 @@ class AgendaViewModel @Inject constructor(
         agendaJob?.cancel()
 
         agendaJob = viewModelScope.launch {
-            eventRepository.getEventsFromTimeStamp(getStartOffCurrentDay(agendaDate).toEpochSecond(), getEndOfCurrentDay(agendaDate).toEpochSecond())
+            agendaLocalRepository.fetchAgenda(getStartOffCurrentDay(agendaDate).toEpochSecond(), getEndOfCurrentDay(agendaDate).toEpochSecond())
                 .collectLatest { responseState ->
                     when(responseState) {
                         ResponseState.Loading -> {
@@ -59,12 +61,16 @@ class AgendaViewModel @Inject constructor(
                             /* TODO Show a toast or a snack bar message */
                             Log.e("AGENDA_VIEWMODEL", responseState.error.toString())
                         }
-
                         is ResponseState.Success -> {
                             /* TODO Update the state */
+                            Log.d("AGENDA_VIEW", "${responseState.data}")
                             _agendaScreenState.update { agendaScreenState ->
+                                val agendaItems = responseState.data.events + responseState.data.tasks + responseState.data.reminders
+                                agendaItems.sortedBy { agendaItem ->
+                                    agendaItem.startDateTime
+                                }
                                 agendaScreenState.copy(
-                                    agendaItems = responseState.data
+                                    agendaItems = agendaItems
                                 )
                             }
                         }
