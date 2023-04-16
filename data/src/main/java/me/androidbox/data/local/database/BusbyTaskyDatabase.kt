@@ -9,14 +9,15 @@ import me.androidbox.data.local.converter.StringListConvertor
 import me.androidbox.data.local.dao.EventDao
 import me.androidbox.data.local.dao.ReminderDao
 import me.androidbox.data.local.dao.TaskDao
-import me.androidbox.data.local.entity.EventEntity
-import me.androidbox.data.local.entity.ReminderEntity
-import me.androidbox.data.local.entity.TaskEntity
+import me.androidbox.data.local.entity.*
 
 @Database(entities = [
     EventEntity::class,
     ReminderEntity::class,
-    TaskEntity::class],
+    TaskEntity::class,
+    EventSyncEntity::class,
+    TaskSyncEntity::class,
+    ReminderSyncEntity::class],
     version = 1
 )
 @TypeConverters(AttendeeConverter::class, PhotoConverter::class, StringListConvertor::class)

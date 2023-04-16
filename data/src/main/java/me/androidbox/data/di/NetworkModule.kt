@@ -9,6 +9,7 @@ import dagger.hilt.components.SingletonComponent
 import me.androidbox.data.BuildConfig
 import me.androidbox.data.remote.interceptor.ApiKeyInterceptor
 import me.androidbox.data.remote.interceptor.TokenInterceptor
+import me.androidbox.data.remote.network.agenda.AgendaService
 import me.androidbox.data.remote.network.authentication.AuthenticationService
 import me.androidbox.data.remote.network.event.EventService
 import me.androidbox.domain.authentication.preference.PreferenceRepository
@@ -91,5 +92,11 @@ object NetworkModule {
     @Provides
     fun providesEventService(retrofit: Retrofit): EventService {
         return retrofit.create(EventService::class.java)
+    }
+
+    @Singleton
+    @Provides
+    fun providesAgendaService(retrofit: Retrofit): AgendaService {
+        return retrofit.create(AgendaService::class.java)
     }
 }

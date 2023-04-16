@@ -1,12 +1,19 @@
 package me.androidbox.data.mapper
 
 import me.androidbox.data.local.entity.EventEntity
+import me.androidbox.data.local.entity.ReminderEntity
+import me.androidbox.data.local.entity.TaskEntity
 import me.androidbox.data.remote.model.request.EventCreateRequestDto
 import me.androidbox.data.remote.model.request.EventUpdateRequestDto
 import me.androidbox.data.remote.model.request.SyncAgendaDto
 import me.androidbox.data.remote.model.response.AttendeeDto
+import me.androidbox.data.remote.model.response.EventDto
+import me.androidbox.data.remote.model.response.ReminderDto
+import me.androidbox.data.remote.model.response.TaskDto
 import me.androidbox.domain.agenda.model.Attendee
 import me.androidbox.domain.agenda.model.Event
+import me.androidbox.domain.agenda.model.Reminder
+import me.androidbox.domain.agenda.model.Task
 import me.androidbox.domain.agenda.model.SyncAgenda
 import java.util.*
 
@@ -26,6 +33,43 @@ fun EventEntity.toEvent(): Event {
     )
 }
 
+fun EventDto.toEvent(): Event {
+    return Event(
+        id = this.id,
+        title = this.title,
+        description = this.description,
+        startDateTime = this.from,
+        endDateTime = this.to,
+        remindAt = this.remindAt,
+        eventCreatorId = this.host,
+        isUserEventCreator = this.isUserEventCreator,
+        isGoing = true,
+        attendees = this.attendees.map { it.toAttendee() },
+        photos = this.photos.map { it.key }
+    )
+}
+
+fun TaskDto.toTask(): Task {
+    return Task(
+        id = this.id,
+        title = this.title,
+        description = this.description,
+        startDateTime = this.time,
+        remindAt = this.remindAt,
+        isDone = this.isDone
+    )
+}
+
+fun ReminderDto.toReminder(): Reminder {
+    return Reminder(
+        id = this.id,
+        title = this.title,
+        description = this.description,
+        startDateTime = this.time,
+        remindAt = this.remindAt,
+    )
+}
+
 fun Event.toEventEntity(): EventEntity {
     return EventEntity(
         id = this.id,
@@ -39,6 +83,48 @@ fun Event.toEventEntity(): EventEntity {
         isGoing = this.isGoing,
         attendees = this.attendees,
         photos = this.photos
+    )
+}
+
+fun Task.toTaskEntity(): TaskEntity {
+    return TaskEntity(
+        id = this.id,
+        title = this.title,
+        description = this.description,
+        time = this.startDateTime,
+        remindAt = this.remindAt,
+        isDone = this.isDone
+    )
+}
+
+fun TaskEntity.toTask(): Task {
+    return Task(
+        id = this.id,
+        title = this.title,
+        description = this.description,
+        startDateTime = this.time,
+        remindAt = this.remindAt,
+        isDone = this.isDone
+    )
+}
+
+fun Reminder.toReminderEntity(): ReminderEntity {
+    return ReminderEntity(
+        id = this.id,
+        title = this.title,
+        description = this.description,
+        remindAt = this.remindAt,
+        time = this.startDateTime
+    )
+}
+
+fun ReminderEntity.toReminder(): Reminder {
+    return Reminder(
+        id = this.id,
+        title = this.title,
+        description = this.description,
+        remindAt = this.remindAt,
+        startDateTime = this.time
     )
 }
 
