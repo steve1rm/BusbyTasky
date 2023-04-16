@@ -32,7 +32,7 @@ interface EventDao {
     suspend fun insertSyncEvent(eventSyncEntity: EventSyncEntity)
 
     @Query("SELECT `id` FROM ${DatabaseConstant.EVENT_SYNC_TABLE} WHERE `syncAgendaType` = :syncAgendaType")
-    suspend fun getAllDeletedEvents(syncAgendaType: SyncAgendaType): List<String>
+    suspend fun getAllEventsBySyncType(syncAgendaType: SyncAgendaType): List<String>
 
     @Query("SELECT `id` FROM ${DatabaseConstant.EVENT_SYNC_TABLE} WHERE `syncAgendaType` = :syncAgendaType")
     suspend fun getAllCreatedEvents(syncAgendaType: SyncAgendaType): List<String>

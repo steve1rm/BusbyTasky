@@ -28,7 +28,7 @@ interface ReminderDao {
     suspend fun deleteAllReminder()
 
     @Query("SELECT `id` FROM ${DatabaseConstant.REMINDER_SYNC_TABLE} WHERE `syncAgendaType` = :syncAgendaType")
-    suspend fun getAllDeletedReminders(syncAgendaType: SyncAgendaType): List<String>
+    suspend fun getAllRemindersBySyncType(syncAgendaType: SyncAgendaType): List<String>
 
     @Query("SELECT `id` FROM ${DatabaseConstant.REMINDER_SYNC_TABLE} WHERE `syncAgendaType` = :syncAgendaType")
     suspend fun getAllCreatedReminders(syncAgendaType: SyncAgendaType): List<String>
