@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import me.androidbox.domain.DateTimeFormatterProvider.toZoneDateTime
 import me.androidbox.presentation.agenda.constant.AgendaMenuActionType
 import me.androidbox.domain.agenda.model.Attendee
 import me.androidbox.domain.agenda.model.Event
@@ -258,6 +259,8 @@ class EventViewModel @Inject constructor(
                                 eventId = event.id,
                                 eventTitle = event.title,
                                 eventDescription = event.description,
+                                startDate = event.startDateTime.toZoneDateTime(),
+                                endDate = event.endDateTime.toZoneDateTime(),
                                 /** TODO Adding the rest */
                             )
                         }
