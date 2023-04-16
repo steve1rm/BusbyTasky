@@ -28,7 +28,7 @@ interface TaskDao {
     suspend fun deleteAllTask()
 
     @Query("SELECT `id` FROM ${DatabaseConstant.TASK_SYNC_TABLE} WHERE `syncAgendaType` = :syncAgendaType")
-    suspend fun getAllDeletedTasks(syncAgendaType: SyncAgendaType): List<String>
+    suspend fun getAllTasksBySyncType(syncAgendaType: SyncAgendaType): List<String>
 
     @Query("SELECT `id` FROM ${DatabaseConstant.TASK_SYNC_TABLE} WHERE `syncAgendaType` = :syncAgendaType")
     suspend fun getAllCreatedTasks(syncAgendaType: SyncAgendaType): List<String>
