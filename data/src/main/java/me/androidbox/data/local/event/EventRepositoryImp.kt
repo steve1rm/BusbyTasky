@@ -3,7 +3,9 @@ package me.androidbox.data.local.event
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
 import me.androidbox.data.local.dao.EventDao
+import me.androidbox.data.local.entity.EventEntity
 import me.androidbox.data.mapper.toEvent
 import me.androidbox.data.mapper.toEventEntity
 import me.androidbox.data.remote.util.CheckResult.checkResult
@@ -28,6 +30,16 @@ class EventRepositoryImp @Inject constructor(
                 }
 
                 ResponseState.Success(listOfEvent)
+            }
+            .catch { throwable ->
+                ResponseState.Failure(throwable)
+            }
+    }
+
+    override fun getEventById(id: String): Flow<ResponseState<Event>> {
+        return eventDao.getEventById(id)
+            .map { eventEntity ->
+                ResponseState.Success(eventEntity.toEvent())
             }
             .catch { throwable ->
                 ResponseState.Failure(throwable)

@@ -73,6 +73,12 @@ class AgendaViewModel @Inject constructor(
         }
     }
 
+    fun deleteEventById(eventId: String) {
+        viewModelScope.launch {
+            eventRepository.deleteEventById(eventId)
+        }
+    }
+
     fun onAgendaScreenEvent(agendaScreenEvent: AgendaScreenEvent) {
         when(agendaScreenEvent) {
             is AgendaScreenEvent.OnDateChanged -> {
@@ -87,6 +93,20 @@ class AgendaViewModel @Inject constructor(
                 _agendaScreenState.update { agendaScreenState ->
                     agendaScreenState.copy(
                         shouldOpenDropdown = agendaScreenEvent.shouldOpen
+                    )
+                }
+            }
+            is AgendaScreenEvent.OnChangeShowEditAgendaItemDropdownStatus -> {
+                _agendaScreenState.update { agendaScreenState ->
+                    agendaScreenState.copy(
+                        shouldOpenEditAgendaDropdown = agendaScreenEvent.shouldOpen
+                    )
+                }
+            }
+            is AgendaScreenEvent.OnAgendaItemClicked -> {
+                _agendaScreenState.update { agendaScreenState ->
+                    agendaScreenState.copy(
+                        agendaItemClicked = agendaScreenEvent.agendaItem
                     )
                 }
             }
