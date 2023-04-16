@@ -19,6 +19,6 @@ interface AgendaService {
     @POST("/syncAgenda")
     suspend fun syncAgenda(@Body syncAgenda: SyncAgendaDto)
 
-    @GET("/fullagenda")
+    @GET("/fullAgenda")
     suspend fun fullAgenda(): FullAgendaDto
 }
