@@ -3,6 +3,7 @@ package me.androidbox.data.local.agenda
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.supervisorScope
 import me.androidbox.data.local.dao.EventDao
@@ -48,29 +49,7 @@ class AgendaLocalRepositoryImp @Inject constructor(
             )
 
             /* Insert events tasks and reminders into the DB */
-            supervisorScope {
-                agenda.events.map { event ->
-                    launch {
-                        eventDao.insertEvent(event.toEventEntity())
-                    }
-                }.forEach { job -> job.join() }
-            }
-
-            supervisorScope {
-                agenda.tasks.map { task ->
-                    launch {
-                        taskDao.insertTask(task.toTaskEntity())
-                    }
-                }.forEach { job -> job.join() }
-            }
-
-            supervisorScope {
-                agenda.reminders.map { reminder ->
-                    launch {
-                        reminderDao.insertReminder(reminder.toReminderEntity())
-                    }
-                }.forEach { job -> job.join() }
-            }
+            insertAllAgendaItems(agenda)
 
             /* Fetch all the events, tasks, and reminders from the DB and return to populate the agenda screen */
             val updatedEvents = fetchEventsFromLocal(startTimeStamp, endTimeStamp)
@@ -87,6 +66,30 @@ class AgendaLocalRepositoryImp @Inject constructor(
             .catch { throwable ->
                 emit(ResponseState.Failure(throwable))
             }
+    }
+
+    private suspend fun insertAllAgendaItems(agenda: Agenda) {
+        supervisorScope {
+            val eventJobs = agenda.events.map { event ->
+                launch {
+                    eventDao.insertEvent(event.toEventEntity())
+                }
+            }
+
+            val taskJobs = agenda.tasks.map { task ->
+                launch {
+                    taskDao.insertTask(task.toTaskEntity())
+                }
+            }
+
+            val reminderJobs = agenda.reminders.map { reminder ->
+                launch {
+                    reminderDao.insertReminder(reminder.toReminderEntity())
+                }
+            }
+
+            (eventJobs + taskJobs + reminderJobs).joinAll()
+        }
     }
 
     private suspend fun fetchRemindersFromLocal(
