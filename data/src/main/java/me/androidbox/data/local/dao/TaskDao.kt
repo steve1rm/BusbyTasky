@@ -4,6 +4,7 @@ import androidx.room.*
 import kotlinx.coroutines.flow.Flow
 import me.androidbox.data.local.DatabaseConstant
 import me.androidbox.data.local.entity.TaskEntity
+import me.androidbox.domain.constant.SyncAgendaType
 
 @Dao
 interface TaskDao {
@@ -22,4 +23,13 @@ interface TaskDao {
     /* TODO Maybe there is a use case when the user want to clear all tasks */
     @Query("DELETE FROM ${DatabaseConstant.TASK_TABLE}")
     suspend fun deleteAllTask()
+
+    @Query("SELECT * FROM ${DatabaseConstant.TASK_SYNC_TABLE} WHERE `syncAgendaType` = :syncAgendaType")
+    suspend fun getAllDeletedTasks(syncAgendaType: SyncAgendaType)
+
+    @Query("SELECT * FROM ${DatabaseConstant.TASK_SYNC_TABLE} WHERE `syncAgendaType` = :syncAgendaType")
+    suspend fun getAllCreatedTasks(syncAgendaType: SyncAgendaType)
+
+    @Query("SELECT * FROM ${DatabaseConstant.TASK_SYNC_TABLE} WHERE `syncAgendaType` = :syncAgendaType")
+    suspend fun getAllUpdatedTasks(syncAgendaType: SyncAgendaType)
 }

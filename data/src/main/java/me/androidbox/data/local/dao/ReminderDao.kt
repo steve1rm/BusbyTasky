@@ -4,6 +4,7 @@ import androidx.room.*
 import kotlinx.coroutines.flow.Flow
 import me.androidbox.data.local.DatabaseConstant
 import me.androidbox.data.local.entity.ReminderEntity
+import me.androidbox.domain.constant.SyncAgendaType
 
 @Dao
 interface ReminderDao {
@@ -22,4 +23,14 @@ interface ReminderDao {
     /* TODO Maybe there is a use case when the user want to clear all reminders */
     @Query("DELETE FROM ${DatabaseConstant.REMINDER_TABLE}")
     suspend fun deleteAllReminder()
+
+    @Query("SELECT * FROM ${DatabaseConstant.REMINDER_SYNC_TABLE} WHERE `syncAgendaType` = :syncAgendaType")
+    suspend fun getAllDeletedReminders(syncAgendaType: SyncAgendaType)
+
+    @Query("SELECT * FROM ${DatabaseConstant.REMINDER_SYNC_TABLE} WHERE `syncAgendaType` = :syncAgendaType")
+    suspend fun getAllCreatedReminders(syncAgendaType: SyncAgendaType)
+
+    @Query("SELECT * FROM ${DatabaseConstant.REMINDER_SYNC_TABLE} WHERE `syncAgendaType` = :syncAgendaType")
+    suspend fun getAllUpdatedReminders(syncAgendaType: SyncAgendaType)
+
 }

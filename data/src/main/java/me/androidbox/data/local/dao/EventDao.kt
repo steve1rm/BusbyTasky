@@ -27,4 +27,13 @@ interface EventDao {
 
     @Upsert(entity = EventSyncEntity::class)
     suspend fun insertSyncEvent(eventSyncEntity: EventSyncEntity)
+
+    @Query("SELECT * FROM ${DatabaseConstant.EVENT_SYNC_TABLE} WHERE `syncAgendaType` = :syncAgendaType")
+    suspend fun getAllDeletedEvents(syncAgendaType: SyncAgendaType)
+
+    @Query("SELECT * FROM ${DatabaseConstant.EVENT_SYNC_TABLE} WHERE `syncAgendaType` = :syncAgendaType")
+    suspend fun getAllCreatedEvents(syncAgendaType: SyncAgendaType)
+
+    @Query("SELECT * FROM ${DatabaseConstant.EVENT_SYNC_TABLE} WHERE `syncAgendaType` = :syncAgendaType")
+    suspend fun getAllDeletedUpdated(syncAgendaType: SyncAgendaType)
 }
