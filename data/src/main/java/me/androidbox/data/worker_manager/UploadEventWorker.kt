@@ -17,6 +17,7 @@ import me.androidbox.data.remote.network.event.EventService
 import me.androidbox.data.remote.util.CheckResult.checkResult
 import me.androidbox.data.worker_manager.UploadEventImp.Companion.ERROR
 import me.androidbox.data.worker_manager.UploadEventImp.Companion.EVENT_PHOTOS
+import me.androidbox.data.worker_manager.constant.Constant.RETRY_COUNT
 import me.androidbox.data.worker_manager.util.CreatePhotoMultipart
 import okhttp3.MultipartBody
 
@@ -29,9 +30,6 @@ class UploadEventWorker @AssistedInject constructor(
     private val moshi: Moshi
 ) : CoroutineWorker(context, workerParameters)  {
 
-    companion object {
-        private const val RETRY_COUNT = 3
-    }
     override suspend fun doWork(): Result {
         val listOfPhoto = inputData.getStringArray(EVENT_PHOTOS)
         val eventRequestJson = inputData.getString(UploadEventImp.EVENT)
