@@ -32,7 +32,7 @@ import me.androidbox.component.ui.theme.backgroundBackColor
 import me.androidbox.component.ui.theme.dropDownMenuBackgroundColor
 import me.androidbox.domain.DateTimeFormatterProvider.toDisplayDateTime
 import me.androidbox.domain.DateTimeFormatterProvider.toZoneDateTime
-import me.androidbox.domain.agenda.model.AgendaMenuActionType
+import me.androidbox.presentation.agenda.constant.AgendaMenuActionType
 import me.androidbox.domain.alarm_manager.AgendaType
 import me.androidbox.presentation.ui.theme.BusbyTaskyTheme
 
@@ -139,7 +139,7 @@ fun AgendaScreen(
                             agendaScreenEvent(
                                 AgendaScreenEvent.OnChangeShowEditAgendaItemDropdownStatus(shouldOpen = false))
                         },
-                        listOfMenuItemId = listOf(R.string.open, R.string.edit, R.string.delete),
+                        listOfMenuItemId = AgendaMenuActionType.values().map { it.titleId },
                         onSelectedOption = { item ->
                             agendaScreenState.agendaItemClicked?.let { agendaItem ->
                                 onSelectedEditAgendaItemClicked(agendaItem.id, agendaItem.agendaType, AgendaMenuActionType.values()[item])
