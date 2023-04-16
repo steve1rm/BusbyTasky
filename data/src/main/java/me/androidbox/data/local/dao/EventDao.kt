@@ -4,6 +4,8 @@ import androidx.room.*
 import kotlinx.coroutines.flow.Flow
 import me.androidbox.data.local.DatabaseConstant
 import me.androidbox.data.local.entity.EventEntity
+import me.androidbox.data.local.entity.EventSyncEntity
+import me.androidbox.domain.constant.SyncAgendaType
 
 @Dao
 interface EventDao {
@@ -19,4 +21,7 @@ interface EventDao {
     /* TODO Maybe there is a use case when the user want to clear all events */
     @Query("DELETE FROM ${DatabaseConstant.EVENT_TABLE}")
     suspend fun deleteAllEvent()
+
+    @Upsert(entity = EventSyncEntity::class)
+    suspend fun insertSyncEvent(id: String, syncAgendaType: SyncAgendaType)
 }
