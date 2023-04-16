@@ -9,6 +9,9 @@ import dagger.assisted.AssistedInject
 import me.androidbox.data.remote.model.request.SyncAgendaDto
 import me.androidbox.data.remote.network.agenda.AgendaService
 import me.androidbox.data.remote.util.CheckResult.checkResult
+import me.androidbox.data.worker_manager.SyncAgendaItemsImp.Companion.DELETED_EVENT_IDS
+import me.androidbox.data.worker_manager.SyncAgendaItemsImp.Companion.DELETED_REMINDER_IDS
+import me.androidbox.data.worker_manager.SyncAgendaItemsImp.Companion.DELETED_TASK_IDS
 import me.androidbox.data.worker_manager.constant.Constant.RETRY_COUNT
 
 @HiltWorker
@@ -19,8 +22,17 @@ class SyncAgendaItemsWorker @AssistedInject constructor(
 ) : CoroutineWorker(context, workerParameters) {
 
     override suspend fun doWork(): Result {
+        val deletedEventIds = inputData.getStringArray(DELETED_EVENT_IDS) ?: emptyArray()
+        val deletedTaskIds = inputData.getStringArray(DELETED_TASK_IDS) ?: emptyArray()
+        val deletedReminderIds = inputData.getStringArray(DELETED_REMINDER_IDS) ?: emptyArray()
+
+
         val responseResult = checkResult {
-            val syncAgendaDto = SyncAgendaDto(emptyList(), emptyList(), emptyList())
+            val syncAgendaDto = SyncAgendaDto(
+                deletedEventIds = deletedEventIds.toList(),
+                deletedTaskIds = deletedTaskIds.toList(),
+                deletedReminderIds = deletedReminderIds.toList())
+
             agendaService.syncAgenda(syncAgendaDto)
         }
 
