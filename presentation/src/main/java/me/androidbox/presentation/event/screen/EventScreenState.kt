@@ -19,7 +19,7 @@ data class EventScreenState(
     val isEmailVerified: Boolean = true,
     val eventTitle: String = "New Event",
     val eventDescription: String = "Description",
-    val eventId: String = UUID.randomUUID().toString(),
+    val eventId: String = "",
     val selectedAgendaActionType: AgendaActionType = AgendaActionType.DELETE_EVENT,
     val startTime: ZonedDateTime = ZonedDateTime.now(ZoneId.systemDefault()),
     val endTime: ZonedDateTime = ZonedDateTime.now(ZoneId.systemDefault()),
@@ -29,5 +29,6 @@ data class EventScreenState(
     val shouldOpenDropdown: Boolean = false,
     val alarmReminderItem: AlarmReminderItem = AlarmReminderItem.TEN_MINUTES,
     val attendees: List<Attendee> = listOf(),
-    val isSaved: Boolean = false
+    val isSaved: Boolean = false,
+    val isEditMode: Boolean = false
 )

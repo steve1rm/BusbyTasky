@@ -10,4 +10,6 @@ interface EventRepository {
     suspend fun insertEvent(event: Event): ResponseState<Unit>
 
     suspend fun deleteEventById(id: String): ResponseState<Unit>
+
+    fun getEventById(id: String): Flow<ResponseState<Event>>
 }
