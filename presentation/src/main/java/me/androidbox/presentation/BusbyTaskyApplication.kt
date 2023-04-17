@@ -8,6 +8,8 @@ import android.os.Build
 import androidx.hilt.work.HiltWorkerFactory
 import androidx.work.Configuration
 import dagger.hilt.android.HiltAndroidApp
+import me.androidbox.domain.agenda.model.Task
+import me.androidbox.domain.alarm_manager.AgendaType
 import javax.inject.Inject
 
 @HiltAndroidApp
@@ -49,9 +51,9 @@ class BusbyTaskyApplication : Application(), Configuration.Provider {
 
     private fun generateChannels(): Map<String, String> {
         return mapOf(
-            "event" to "Notifications for EVENTS",
-            "task" to "Notifications for TASKS",
-            "reminders" to "Notifications for REMINDERS"
+            AgendaType.EVENT.name to "Notifications for Events",
+            AgendaType.TASK.name to "Notifications for Tasks",
+            AgendaType.REMINDER.name to "Notifications for Reminders"
         )
     }
 }
