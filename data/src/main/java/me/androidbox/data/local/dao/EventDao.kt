@@ -44,7 +44,7 @@ interface EventDao {
     suspend fun deleteSyncEventById(id: String)
 
     @Query("DELETE FROM ${DatabaseConstant.EVENT_SYNC_TABLE} WHERE `syncAgendaType` = :syncAgendaType")
-    suspend fun deleteSyncEventBySyncType(syncAgendaType: SyncAgendaType)
+    suspend fun deleteSyncEventsBySyncType(syncAgendaType: SyncAgendaType)
 
     @Query("DELETE FROM ${DatabaseConstant.EVENT_SYNC_TABLE} WHERE `id` IN (:ids)")
     suspend fun deleteAllSyncEventsByIds(ids: List<String>)
