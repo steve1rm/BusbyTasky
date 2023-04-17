@@ -4,4 +4,5 @@ import java.util.UUID
 
 interface AgendaSynchronizer {
     suspend fun sync(): UUID
+    suspend fun cancel()
 }

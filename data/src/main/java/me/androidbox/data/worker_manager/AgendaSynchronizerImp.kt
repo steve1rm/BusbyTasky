@@ -35,4 +35,8 @@ class AgendaSynchronizerImp @Inject constructor(
 
         return syncWorkerRequest.id
     }
+
+    override suspend fun cancel() {
+        workManager.cancelAllWork()
+    }
 }
