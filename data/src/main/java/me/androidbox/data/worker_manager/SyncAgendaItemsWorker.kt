@@ -9,6 +9,7 @@ import dagger.assisted.AssistedInject
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.supervisorScope
 import kotlinx.coroutines.withContext
 import me.androidbox.data.local.dao.EventDao
@@ -54,6 +55,7 @@ class SyncAgendaItemsWorker @AssistedInject constructor(
                 deletedEventIds = deletedEventIds.await().toList(),
                 deletedTaskIds = deletedTaskIds.await().toList(),
                 deletedReminderIds = deletedReminderIds.await().toList())
+
             agendaService.syncAgenda(syncAgendaDto)
         }
 
@@ -75,10 +77,20 @@ class SyncAgendaItemsWorker @AssistedInject constructor(
     }
 
     private suspend fun deleteAllDeletedSyncAgendaItems() {
-        withContext(Dispatchers.IO) {
-            eventDao.deleteSyncEventsBySyncType(SyncAgendaType.DELETE)
-            taskDao.deleteSyncTasksBySyncType(SyncAgendaType.DELETE)
-            reminderDao.deleteSyncRemindersBySyncType(SyncAgendaType.DELETE)
+        supervisorScope {
+            val eventJob = launch {
+                eventDao.deleteSyncEventsBySyncType(SyncAgendaType.DELETE)
+            }
+            val taskJob = launch {
+                taskDao.deleteSyncTasksBySyncType(SyncAgendaType.DELETE)
+            }
+            val reminderJob = launch {
+                reminderDao.deleteSyncRemindersBySyncType(SyncAgendaType.DELETE)
+            }
+
+            eventJob.join()
+            taskJob.join()
+            reminderJob.join()
         }
     }
 }
