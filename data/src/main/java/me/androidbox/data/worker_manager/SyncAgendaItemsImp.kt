@@ -33,7 +33,7 @@ class SyncAgendaItemsImp @Inject constructor(
 
         workManager.enqueueUniquePeriodicWork(
             SYNC_DELETED_AGENDA_IDS,
-            ExistingPeriodicWorkPolicy.KEEP,
+            ExistingPeriodicWorkPolicy.CANCEL_AND_REENQUEUE,
             syncWorkerRequest,
         )
 
