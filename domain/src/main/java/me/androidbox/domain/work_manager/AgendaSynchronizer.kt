@@ -2,6 +2,6 @@ package me.androidbox.domain.work_manager
 
 import java.util.UUID
 
-interface SyncAgendaItems {
+interface AgendaSynchronizer {
     suspend fun sync(): UUID
 }

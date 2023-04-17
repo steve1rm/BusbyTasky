@@ -1,18 +1,14 @@
 package me.androidbox.data.worker_manager
 
 import androidx.work.*
-import me.androidbox.data.local.dao.EventDao
-import me.androidbox.data.local.dao.ReminderDao
-import me.androidbox.data.local.dao.TaskDao
-import me.androidbox.domain.constant.SyncAgendaType
-import me.androidbox.domain.work_manager.SyncAgendaItems
+import me.androidbox.domain.work_manager.AgendaSynchronizer
 import java.util.UUID
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
-class SyncAgendaItemsImp @Inject constructor(
+class AgendaSynchronizerImp @Inject constructor(
     private val workManager: WorkManager,
-) : SyncAgendaItems {
+) : AgendaSynchronizer {
 
     companion object {
         const val THIRTY_MINUTES = 30L
