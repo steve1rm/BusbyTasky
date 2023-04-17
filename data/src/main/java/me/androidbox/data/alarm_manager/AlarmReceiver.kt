@@ -5,7 +5,6 @@ import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import androidx.core.app.NotificationCompat
 import androidx.core.app.TaskStackBuilder
 import androidx.core.net.toUri
@@ -13,12 +12,10 @@ import me.androidbox.data.R
 import me.androidbox.data.alarm_manager.AlarmSchedulerImp.Companion.EXTRA_DESCRIPTION
 import me.androidbox.data.alarm_manager.AlarmSchedulerImp.Companion.EXTRA_ID
 import me.androidbox.data.alarm_manager.AlarmSchedulerImp.Companion.EXTRA_TITLE
+import me.androidbox.domain.constant.AgendaDeepLinks.EVENT_DEEPLINK
 
 class AlarmReceiver : BroadcastReceiver() {
 
-    companion object {
-        private const val EVENT_DEEPLINK = "https://androidbox.me/event?agendaId="
-    }
     override fun onReceive(context: Context?, intent: Intent?) {
         if(intent != null && context != null) {
             intent.extras?.let { bundle ->
@@ -39,7 +36,7 @@ class AlarmReceiver : BroadcastReceiver() {
         /** TODO Only Events for the moment, tasks and reminders coming soon... */
         val agendaIntent = Intent(
             Intent.ACTION_VIEW,
-            "$EVENT_DEEPLINK={$agendaId}".toUri())
+            "$EVENT_DEEPLINK".replace("{id}", agendaId).toUri())
 
         val pendingIntent = TaskStackBuilder.create(context).run {
             this.addNextIntentWithParentStack(agendaIntent)
