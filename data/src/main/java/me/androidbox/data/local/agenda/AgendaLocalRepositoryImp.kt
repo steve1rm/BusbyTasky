@@ -70,7 +70,7 @@ class AgendaLocalRepositoryImp @Inject constructor(
     }
 
     override suspend fun deleteEventSyncType(syncAgendaType: SyncAgendaType) {
-        eventDao.deleteSyncEventBySyncType(syncAgendaType)
+        eventDao.deleteSyncEventsBySyncType(syncAgendaType)
     }
 
     private suspend fun insertAllAgendaItems(agenda: Agenda) {
