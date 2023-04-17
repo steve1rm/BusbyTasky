@@ -52,9 +52,9 @@ class SyncAgendaItemsWorker @AssistedInject constructor(
 
         val responseResult = checkResult {
             val syncAgendaDto = SyncAgendaDto(
-                deletedEventIds = deletedEventIds.await().toList(),
-                deletedTaskIds = deletedTaskIds.await().toList(),
-                deletedReminderIds = deletedReminderIds.await().toList())
+                deletedEventIds = deletedEventIds.await(),
+                deletedTaskIds = deletedTaskIds.await(),
+                deletedReminderIds = deletedReminderIds.await())
 
             agendaService.syncAgenda(syncAgendaDto)
         }
