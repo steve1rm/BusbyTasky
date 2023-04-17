@@ -140,10 +140,11 @@ fun NavigationGraph(
                 nullable = true
                 defaultValue = null
             }, navArgument(MENU_ACTION_TYPE) {
-                    type = NavType.StringType
+                type = NavType.StringType
+                defaultValue = AgendaMenuActionType.OPEN
                 }),
             deepLinks = listOf(navDeepLink {
-                this.uriPattern = "https://androidbox.me/event{eventId}/{menuActionType}"
+                this.uriPattern = "https://androidbox.me/event/{eventId}"
             })
         ) {
         val eventViewModel: EventViewModel = hiltViewModel()
