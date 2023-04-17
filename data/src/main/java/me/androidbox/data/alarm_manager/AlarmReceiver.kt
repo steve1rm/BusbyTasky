@@ -43,7 +43,7 @@ class AlarmReceiver : BroadcastReceiver() {
 
         val pendingIntent = TaskStackBuilder.create(context).run {
             this.addNextIntentWithParentStack(agendaIntent)
-            this.getPendingIntent(101, PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_CANCEL_CURRENT)
+            this.getPendingIntent(agendaId.hashCode(), PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_CANCEL_CURRENT)
         }
 
         val notification = NotificationCompat.Builder(context, agendaId)
