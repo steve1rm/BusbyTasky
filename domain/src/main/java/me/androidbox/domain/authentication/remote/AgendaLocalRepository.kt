@@ -8,4 +8,10 @@ import me.androidbox.domain.constant.SyncAgendaType
 interface AgendaLocalRepository {
     fun fetchAgenda(startTimeStamp: Long, endTimeStamp: Long): Flow<ResponseState<Agenda>>
     suspend fun deleteEventSyncType(syncAgendaType: SyncAgendaType)
+
+    suspend fun fetchAllRemindAtFromEvents(): List<Long>
+
+    suspend fun fetchAllRemindAtFromTasks(): List<Long>
+
+    suspend fun fetchAllRemindAtFromReminders(): List<Long>
 }
