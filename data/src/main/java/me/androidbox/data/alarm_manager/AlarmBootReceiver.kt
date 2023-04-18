@@ -53,8 +53,6 @@ class AlarmBootReceiver : BroadcastReceiver() {
                             )
                         )
                     }
-                    
-                    coroutineContext.cancelChildren()
                 }
             }
         }
