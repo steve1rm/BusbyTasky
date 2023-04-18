@@ -40,12 +40,20 @@
             android:name="androidx.startup.InitializationProvider"
             android:authorities="${applicationId}.androidx-startup"
             tools:node="remove">
-
         </provider>
+
         <receiver
-            android:name="me.androidbox.data.alarm_manager.AlarmReceiver"/>
+            android:name="me.androidbox.data.alarm_manager.AlarmReceiver"
+            android:exported="false"/>
         <receiver
-            android:name="me.androidbox.data.alarm_manager.AlarmBootReceiver"/>
+            android:name="me.androidbox.data.alarm_manager.AlarmBootReceiver"
+            android:exported="false">
+
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+            </intent-filter>
+
+        </receiver>
     </application>
 
 </manifest>
