@@ -25,6 +25,7 @@ import me.androidbox.data.remote.agenda.AgendaRemoteRepositoryImp
 import me.androidbox.data.remote.event.VerifyVisitorEmailUseCaseImp
 import me.androidbox.data.remote.preference.PreferenceRepositoryImp
 import me.androidbox.data.worker_manager.AgendaSynchronizerImp
+import me.androidbox.data.worker_manager.FullAgendaSynchronizerImp
 import me.androidbox.data.worker_manager.UploadEventImp
 import me.androidbox.domain.authentication.preference.PreferenceRepository
 import me.androidbox.domain.authentication.remote.AgendaLocalRepository
@@ -32,6 +33,7 @@ import me.androidbox.domain.authentication.remote.EventRepository
 import me.androidbox.domain.event.usecase.VerifyVisitorEmailUseCase
 import me.androidbox.domain.repository.AgendaRemoteRepository
 import me.androidbox.domain.work_manager.AgendaSynchronizer
+import me.androidbox.domain.work_manager.FullAgendaSynchronizer
 import me.androidbox.domain.work_manager.UploadEvent
 
 @Module
@@ -52,6 +54,9 @@ interface RepositoryModule {
 
     @Binds
     fun SyncAgendaItemsImp(syncAgendaItemsImp: AgendaSynchronizerImp): AgendaSynchronizer
+
+    @Binds
+    fun fullAgendaSynchronizerImp(fullAgendaSynchronizerImp: FullAgendaSynchronizerImp): FullAgendaSynchronizer
 
     @Binds
     fun bindsVerifyVisitorEmailUseCaseImp(verifyVisitorEmailUseCaseImp: VerifyVisitorEmailUseCaseImp): VerifyVisitorEmailUseCase

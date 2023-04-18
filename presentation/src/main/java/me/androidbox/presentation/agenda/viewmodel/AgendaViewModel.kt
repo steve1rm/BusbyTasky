@@ -17,6 +17,7 @@ import me.androidbox.domain.authentication.preference.PreferenceRepository
 import me.androidbox.domain.authentication.remote.AgendaLocalRepository
 import me.androidbox.domain.authentication.remote.EventRepository
 import me.androidbox.domain.work_manager.AgendaSynchronizer
+import me.androidbox.domain.work_manager.FullAgendaSynchronizer
 import me.androidbox.presentation.agenda.screen.AgendaScreenEvent
 import me.androidbox.presentation.agenda.screen.AgendaScreenState
 import java.time.ZoneId
@@ -30,6 +31,7 @@ class AgendaViewModel @Inject constructor(
     private val eventRepository: EventRepository,
     private val agendaLocalRepository: AgendaLocalRepository,
     private val agendaSynchronizer: AgendaSynchronizer,
+    private val fullAgendaSynchronizer: FullAgendaSynchronizer
 ) : ViewModel() {
     private var agendaJob: Job? = null
 
@@ -40,6 +42,7 @@ class AgendaViewModel @Inject constructor(
         getAuthenticatedUser()
         fetchAgendaItems(ZonedDateTime.now())
         syncAgendaItems()
+        syncFullAgendaItems()
     }
 
     private fun getStartOffCurrentDay(agendaDate: ZonedDateTime = ZonedDateTime.now(ZoneId.systemDefault())): ZonedDateTime {
@@ -141,6 +144,12 @@ class AgendaViewModel @Inject constructor(
     private fun syncAgendaItems() {
         viewModelScope.async {
             agendaSynchronizer.sync()
+        }
+    }
+
+    private fun syncFullAgendaItems() {
+        viewModelScope.launch {
+            fullAgendaSynchronizer.sync()
         }
     }
 }
