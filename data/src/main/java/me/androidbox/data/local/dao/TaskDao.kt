@@ -36,6 +36,9 @@ interface TaskDao {
     @Query("SELECT `id` FROM ${DatabaseConstant.TASK_SYNC_TABLE} WHERE `syncAgendaType` = :syncAgendaType")
     suspend fun getAllUpdatedTasks(syncAgendaType: SyncAgendaType): List<String>
 
+    @Query("SELECT * FROM ${DatabaseConstant.TASK_TABLE} WHERE remindAt > :startDateTime")
+    suspend fun getAllRemindAt(startDateTime: Long): List<TaskEntity>
+
     @Query("DELETE FROM ${DatabaseConstant.TASK_SYNC_TABLE} WHERE `id` = :id")
     suspend fun deleteSyncTaskById(id: String)
 
