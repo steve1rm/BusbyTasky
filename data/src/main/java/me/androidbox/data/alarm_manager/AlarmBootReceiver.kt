@@ -41,13 +41,20 @@ class AlarmBootReceiver : BroadcastReceiver() {
                         agendaLocalRepositoryImp.fetchAllRemindAtFromReminders()
                     }
 
-                    val remindAts = eventsRemindAts.await() + taskRemindAts + remindersRemindAt
-                    AlarmItem(
+                    val remindAts = eventsRemindAts.await() + taskRemindAts.await() + remindersRemindAt.await()
 
-                    )
-                    alarmScheduler.scheduleAlarmReminder(
-
-                    )
+                    remindAts.forEach { agendaItem ->
+                        alarmScheduler.scheduleAlarmReminder(
+                            AlarmItem(
+                                agendaId = agendaItem.id,
+                                title = agendaItem.title,
+                                description = agendaItem.description,
+                                remindAt = agendaItem.remindAt,
+                                agendaType = agendaItem.agendaType
+                            )
+                        )
+                    }
+                    
                     coroutineContext.cancelChildren()
                 }
             }
