@@ -10,8 +10,10 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import androidx.navigation.navDeepLink
 import me.androidbox.presentation.agenda.constant.AgendaMenuActionType
 import me.androidbox.domain.alarm_manager.AgendaType
+import me.androidbox.domain.constant.AgendaDeepLinks
 import me.androidbox.presentation.agenda.screen.AgendaScreen
 import me.androidbox.presentation.agenda.viewmodel.AgendaViewModel
 import me.androidbox.presentation.edit.screen.ContentType
@@ -139,8 +141,12 @@ fun NavigationGraph(
                 nullable = true
                 defaultValue = null
             }, navArgument(MENU_ACTION_TYPE) {
-                    type = NavType.StringType
-                })
+                type = NavType.StringType
+                defaultValue = AgendaMenuActionType.OPEN.name
+                }),
+            deepLinks = listOf(navDeepLink {
+                this.uriPattern = AgendaDeepLinks.EVENT_DEEPLINK
+            })
         ) {
         val eventViewModel: EventViewModel = hiltViewModel()
             val eventScreenState by eventViewModel.eventScreenState.collectAsStateWithLifecycle()
