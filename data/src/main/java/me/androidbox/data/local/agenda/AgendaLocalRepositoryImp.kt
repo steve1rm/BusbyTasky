@@ -9,6 +9,9 @@ import kotlinx.coroutines.supervisorScope
 import me.androidbox.data.local.dao.EventDao
 import me.androidbox.data.local.dao.ReminderDao
 import me.androidbox.data.local.dao.TaskDao
+import me.androidbox.data.local.entity.EventEntity
+import me.androidbox.data.local.entity.ReminderEntity
+import me.androidbox.data.local.entity.TaskEntity
 import me.androidbox.data.mapper.*
 import me.androidbox.domain.agenda.model.Agenda
 import me.androidbox.domain.agenda.model.Event
@@ -73,27 +76,27 @@ class AgendaLocalRepositoryImp @Inject constructor(
         eventDao.deleteSyncEventsBySyncType(syncAgendaType)
     }
 
-    override suspend fun fetchAllRemindAtFromEvents(): List<Long> {
-        val remindAts = eventDao.getAllRemindAt()
+    override suspend fun fetchAllRemindAtFromEvents(): List<Event> {
+        val eventEntity = eventDao.getAllRemindAt(System.currentTimeMillis())
 
-        return remindAts.filter { remindAt ->
-            remindAt > System.currentTimeMillis()
+        return eventEntity.map { eventEntity ->
+            eventEntity.toEvent()
         }
     }
 
-    override suspend fun fetchAllRemindAtFromTasks(): List<Long> {
-        val remindAts = taskDao.getAllRemindAt()
+    override suspend fun fetchAllRemindAtFromTasks(): List<Task> {
+        val taskEntity = taskDao.getAllRemindAt(System.currentTimeMillis())
 
-        return remindAts.filter { remindAt ->
-            remindAt > System.currentTimeMillis()
+        return taskEntity.map { taskEntity ->
+            taskEntity.toTask()
         }
     }
 
-    override suspend fun fetchAllRemindAtFromReminders(): List<Long> {
-        val remindAts = reminderDao.getAllRemindAt()
+    override suspend fun fetchAllRemindAtFromReminders(): List<Reminder> {
+        val reminderEntity = reminderDao.getAllRemindAt(System.currentTimeMillis())
 
-        return remindAts.filter { remindAt ->
-            remindAt > System.currentTimeMillis()
+        return reminderEntity.map { reminderEntity ->
+            reminderEntity.toReminder()
         }
     }
 
