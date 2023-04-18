@@ -5,13 +5,18 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.async
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import me.androidbox.domain.agenda.usecase.UsersInitialsExtractionUseCase
 import me.androidbox.domain.authentication.ResponseState
 import me.androidbox.domain.authentication.preference.PreferenceRepository
 import me.androidbox.domain.authentication.remote.AgendaLocalRepository
 import me.androidbox.domain.authentication.remote.EventRepository
+import me.androidbox.domain.work_manager.AgendaSynchronizer
 import me.androidbox.presentation.agenda.screen.AgendaScreenEvent
 import me.androidbox.presentation.agenda.screen.AgendaScreenState
 import java.time.ZoneId
@@ -23,7 +28,8 @@ class AgendaViewModel @Inject constructor(
     private val preferenceRepository: PreferenceRepository,
     private val usersInitialsExtractionUseCase: UsersInitialsExtractionUseCase,
     private val eventRepository: EventRepository,
-    private val agendaLocalRepository: AgendaLocalRepository
+    private val agendaLocalRepository: AgendaLocalRepository,
+    private val agendaSynchronizer: AgendaSynchronizer,
 ) : ViewModel() {
     private var agendaJob: Job? = null
 
@@ -33,6 +39,7 @@ class AgendaViewModel @Inject constructor(
     init {
         getAuthenticatedUser()
         fetchAgendaItems(ZonedDateTime.now())
+        syncAgendaItems()
     }
 
     private fun getStartOffCurrentDay(agendaDate: ZonedDateTime = ZonedDateTime.now(ZoneId.systemDefault())): ZonedDateTime {
@@ -128,6 +135,12 @@ class AgendaViewModel @Inject constructor(
                     )
                 }
             }
+        }
+    }
+
+    private fun syncAgendaItems() {
+        viewModelScope.async {
+            agendaSynchronizer.sync()
         }
     }
 }

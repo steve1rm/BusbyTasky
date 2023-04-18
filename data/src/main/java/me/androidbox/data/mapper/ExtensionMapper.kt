@@ -5,6 +5,7 @@ import me.androidbox.data.local.entity.ReminderEntity
 import me.androidbox.data.local.entity.TaskEntity
 import me.androidbox.data.remote.model.request.EventCreateRequestDto
 import me.androidbox.data.remote.model.request.EventUpdateRequestDto
+import me.androidbox.data.remote.model.request.SyncAgendaDto
 import me.androidbox.data.remote.model.response.AttendeeDto
 import me.androidbox.data.remote.model.response.EventDto
 import me.androidbox.data.remote.model.response.ReminderDto
@@ -13,6 +14,7 @@ import me.androidbox.domain.agenda.model.Attendee
 import me.androidbox.domain.agenda.model.Event
 import me.androidbox.domain.agenda.model.Reminder
 import me.androidbox.domain.agenda.model.Task
+import me.androidbox.domain.agenda.model.SyncAgenda
 import java.util.*
 
 fun EventEntity.toEvent(): Event {
@@ -160,4 +162,12 @@ fun AttendeeDto.toAttendee(): Attendee {
         eventId = "",
         isGoing = false,
         remindAt = 0L)
+}
+
+fun SyncAgenda.toSyncAgendaDto(): SyncAgendaDto {
+    return SyncAgendaDto(
+        deletedEventIds = this.deletedEventIds,
+        deletedTaskIds = this.deletedTaskIds,
+        deletedReminderIds = this.deletedReminderIds
+    )
 }

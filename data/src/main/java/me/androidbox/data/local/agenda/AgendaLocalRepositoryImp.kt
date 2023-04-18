@@ -16,6 +16,7 @@ import me.androidbox.domain.agenda.model.Reminder
 import me.androidbox.domain.agenda.model.Task
 import me.androidbox.domain.authentication.ResponseState
 import me.androidbox.domain.authentication.remote.AgendaLocalRepository
+import me.androidbox.domain.constant.SyncAgendaType
 import me.androidbox.domain.repository.AgendaRemoteRepository
 import java.time.ZoneId
 import javax.inject.Inject
@@ -66,6 +67,10 @@ class AgendaLocalRepositoryImp @Inject constructor(
             .catch { throwable ->
                 emit(ResponseState.Failure(throwable))
             }
+    }
+
+    override suspend fun deleteEventSyncType(syncAgendaType: SyncAgendaType) {
+        eventDao.deleteSyncEventsBySyncType(syncAgendaType)
     }
 
     private suspend fun insertAllAgendaItems(agenda: Agenda) {
