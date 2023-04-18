@@ -73,6 +73,30 @@ class AgendaLocalRepositoryImp @Inject constructor(
         eventDao.deleteSyncEventsBySyncType(syncAgendaType)
     }
 
+    override suspend fun fetchAllRemindAtFromEvents(): List<Long> {
+        val remindAts = eventDao.getAllRemindAt()
+
+        return remindAts.filter { remindAt ->
+            remindAt > System.currentTimeMillis()
+        }
+    }
+
+    override suspend fun fetchAllRemindAtFromTasks(): List<Long> {
+        val remindAts = taskDao.getAllRemindAt()
+
+        return remindAts.filter { remindAt ->
+            remindAt > System.currentTimeMillis()
+        }
+    }
+
+    override suspend fun fetchAllRemindAtFromReminders(): List<Long> {
+        val remindAts = reminderDao.getAllRemindAt()
+
+        return remindAts.filter { remindAt ->
+            remindAt > System.currentTimeMillis()
+        }
+    }
+
     private suspend fun insertAllAgendaItems(agenda: Agenda) {
         supervisorScope {
             val eventJobs = agenda.events.map { event ->
