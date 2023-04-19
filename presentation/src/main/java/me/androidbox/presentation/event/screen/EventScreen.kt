@@ -163,8 +163,7 @@ fun EventScreen(
                         onActionClicked = { agendaActionType ->
                             when(agendaActionType) {
                                 AgendaActionType.DELETE_EVENT -> {
-                                    /* TODO Show popup confirming if you want to delete */
-
+                                    eventScreenEvent(EventScreenEvent.OnShowDeleteEventAlertDialog(shouldShowDeleteAlertDialog = true))
                                 }
                                 AgendaActionType.JOIN_EVENT -> {
 
@@ -225,6 +224,16 @@ fun EventScreen(
             }
         }
     )
+
+    if(eventScreenState.shouldShowDeleteAlertDialog) {
+        DeleteEventAlertDialog(
+            onConfirmationClicked = {
+
+            },
+            onDismissClicked = {
+                eventScreenEvent(EventScreenEvent.OnShowDeleteEventAlertDialog(shouldShowDeleteAlertDialog = false))
+            })
+    }
 }
 
 @Composable

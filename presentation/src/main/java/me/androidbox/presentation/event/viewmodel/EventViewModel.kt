@@ -197,6 +197,14 @@ class EventViewModel @Inject constructor(
             is EventScreenEvent.CheckVisitorExists -> {
                 verifyVisitorEmail(eventScreenEvent.visitorEmail)
             }
+
+            is EventScreenEvent.OnShowDeleteEventAlertDialog -> {
+                _eventScreenState.update { eventScreenState ->
+                    eventScreenState.copy(
+                        shouldShowDeleteAlertDialog = eventScreenEvent.shouldShowDeleteAlertDialog
+                    )
+                }
+            }
         }
     }
 

@@ -31,5 +31,6 @@ data class EventScreenState(
     val attendees: List<Attendee> = listOf(),
     val isSaved: Boolean = false,
     val isEditMode: Boolean = false,
-    val isUserEventCreator: Boolean = true
+    val isUserEventCreator: Boolean = true,
+    val shouldShowDeleteAlertDialog: Boolean = false
 )
