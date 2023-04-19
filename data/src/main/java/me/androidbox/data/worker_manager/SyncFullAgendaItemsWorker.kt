@@ -17,6 +17,7 @@ import me.androidbox.data.local.dao.TaskDao
 import me.androidbox.data.local.entity.EventEntity
 import me.androidbox.data.local.entity.ReminderEntity
 import me.androidbox.data.local.entity.TaskEntity
+import me.androidbox.data.mapper.toAttendee
 import me.androidbox.data.remote.model.response.FullAgendaDto
 import me.androidbox.data.remote.network.agenda.AgendaService
 import me.androidbox.data.remote.util.CheckResult.checkResult
@@ -29,10 +30,11 @@ class SyncFullAgendaItemsWorker @AssistedInject constructor(
     private val agendaService: AgendaService,
     private val eventDao: EventDao,
     private val taskDao: TaskDao,
-    private val reminderDao: ReminderDao
+    private val reminderDao: ReminderDao,
 ) : CoroutineWorker(context, workerParameters) {
 
     override suspend fun doWork(): Result {
+
         val responseResult = checkResult {
             agendaService.fullAgenda()
         }
@@ -43,7 +45,6 @@ class SyncFullAgendaItemsWorker @AssistedInject constructor(
 
         val result = responseResult.fold(
             onSuccess = { fullAgendaDto ->
-                println("FullAgenda $fullAgendaDto")
                 insertAllAgendaItems(fullAgendaDto, eventDao, taskDao, reminderDao)
                 Result.success()
             },
@@ -68,10 +69,12 @@ private suspend fun insertAllAgendaItems(fullAgendaDto: FullAgendaDto, eventDao:
                     endDateTime = eventDto.to,
                     remindAt = eventDto.remindAt,
                     eventCreatorId = eventDto.host,
-                    isUserEventCreator = false,
-                    photos = emptyList(),
-                    isGoing = false,
-                    attendees = emptyList()
+                    isUserEventCreator = eventDto.isUserEventCreator,
+                    photos = eventDto.photos.map { photoDto ->  photoDto.key },
+                    isGoing = true,
+                    attendees = eventDto.attendees.map { attendeeDto ->
+                        attendeeDto.toAttendee()
+                    }
                 )
 
                 eventDao.insertEvent(eventEntity)
