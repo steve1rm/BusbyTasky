@@ -11,6 +11,8 @@ import me.androidbox.component.ui.theme.BusbyTaskyTheme
 
 @Composable
 fun DeleteEventAlertDialog(
+    title: String,
+    text: String,
     onConfirmationClicked: () -> Unit,
     onDismissClicked: () -> Unit
 ) {
@@ -19,19 +21,19 @@ fun DeleteEventAlertDialog(
             onDismissClicked()
         },
     title = {
-        Text(text = stringResource(id = R.string.delete_event))
+        Text(text = title)
     },
     text = {
-        Text(text = stringResource(R.string.confirm_delete_event))
+        Text(text = text)
     },
     confirmButton = {
         Button(onClick = { onConfirmationClicked() }) {
-            Text(text = "Confirm")
+            Text(text = stringResource(R.string.confirm))
         }
     },
     dismissButton = {
         Button(onClick = { onDismissClicked() }) {
-            Text(text = "Dismiss")
+            Text(text = stringResource(R.string.dismiss))
         }
     })
 }
@@ -41,6 +43,8 @@ fun DeleteEventAlertDialog(
 fun PreviewDeleteEventAlertDialog() {
     BusbyTaskyTheme {
         DeleteEventAlertDialog(
+            title = stringResource(id = R.string.delete_event),
+            text = stringResource(id = R.string.confirm_delete_event),
             onConfirmationClicked = {},
             onDismissClicked = {}
         )

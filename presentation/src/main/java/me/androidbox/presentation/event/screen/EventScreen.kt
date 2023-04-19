@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.dp
 import com.maxkeppeker.sheets.core.models.base.rememberUseCaseState
 import com.maxkeppeler.sheets.date_time.DateTimeDialog
 import com.maxkeppeler.sheets.date_time.models.DateTimeSelection
+import me.androidbox.component.R
 import me.androidbox.component.agenda.*
 import me.androidbox.component.general.AgendaDropDownMenu
 import me.androidbox.component.general.PhotoPicker
@@ -227,6 +228,8 @@ fun EventScreen(
 
     if(eventScreenState.shouldShowDeleteAlertDialog) {
         DeleteEventAlertDialog(
+            title = stringResource(id = R.string.delete_event),
+            text = stringResource(id = R.string.confirm_delete_event),
             onConfirmationClicked = {
                 eventScreenEvent(EventScreenEvent.OnDeleteEvent(eventScreenState.eventId))
                 onCloseClicked()
