@@ -53,7 +53,7 @@ interface RepositoryModule {
     fun bindsUploadEventImp(uploadEventImp: UploadEventImp): UploadEvent
 
     @Binds
-    fun SyncAgendaItemsImp(syncAgendaItemsImp: AgendaSynchronizerImp): AgendaSynchronizer
+    fun bindsSyncAgendaItemsImp(syncAgendaItemsImp: AgendaSynchronizerImp): AgendaSynchronizer
 
     @Binds
     fun fullAgendaSynchronizerImp(fullAgendaSynchronizerImp: FullAgendaSynchronizerImp): FullAgendaSynchronizer
