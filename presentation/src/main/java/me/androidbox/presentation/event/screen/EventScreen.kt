@@ -159,8 +159,23 @@ fun EventScreen(
                     Spacer(modifier = modifier.height(26.dp))
 
                     AgendaAction(
-                        agendaActionType = AgendaActionType.LEAVE_EVENT,
-                        onActionClicked = {}
+                        agendaActionType = if(eventScreenState.isUserEventCreator) { AgendaActionType.DELETE_EVENT } else { AgendaActionType.JOIN_EVENT },
+                        onActionClicked = { agendaActionType ->
+                            when(agendaActionType) {
+                                AgendaActionType.DELETE_EVENT -> {
+                                    /* TODO Show popup confirming if you want to delete */
+
+                                }
+                                AgendaActionType.JOIN_EVENT -> {
+
+                                }
+                                AgendaActionType.LEAVE_EVENT -> {
+
+                                }
+                                else -> Unit
+                            }
+
+                        }
                     )
                 }
             }
