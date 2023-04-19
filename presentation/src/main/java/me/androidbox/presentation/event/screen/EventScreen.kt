@@ -228,7 +228,8 @@ fun EventScreen(
     if(eventScreenState.shouldShowDeleteAlertDialog) {
         DeleteEventAlertDialog(
             onConfirmationClicked = {
-
+                eventScreenEvent(EventScreenEvent.OnDeleteEvent(eventScreenState.eventId))
+                onCloseClicked()
             },
             onDismissClicked = {
                 eventScreenEvent(EventScreenEvent.OnShowDeleteEventAlertDialog(shouldShowDeleteAlertDialog = false))

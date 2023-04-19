@@ -197,13 +197,15 @@ class EventViewModel @Inject constructor(
             is EventScreenEvent.CheckVisitorExists -> {
                 verifyVisitorEmail(eventScreenEvent.visitorEmail)
             }
-
             is EventScreenEvent.OnShowDeleteEventAlertDialog -> {
                 _eventScreenState.update { eventScreenState ->
                     eventScreenState.copy(
                         shouldShowDeleteAlertDialog = eventScreenEvent.shouldShowDeleteAlertDialog
                     )
                 }
+            }
+            is EventScreenEvent.OnDeleteEvent -> {
+                deleteEvent(eventScreenEvent.eventId)
             }
         }
     }
@@ -319,6 +321,12 @@ class EventViewModel @Inject constructor(
                    /* TODO Show some kink of snack bar or toast message */
                 }
             }
+        }
+    }
+
+    private fun deleteEvent(eventId: String) {
+        viewModelScope.launch {
+            eventRepository.deleteEventById(eventId)
         }
     }
 }
