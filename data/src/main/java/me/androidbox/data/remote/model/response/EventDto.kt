@@ -18,6 +18,7 @@ data class EventDto(
     val remindAt: Long = 0L,
     val host: String,
     val isUserEventCreator: Boolean = false,
-    val attendees: List<AttendeeDto>,
-    val photos: List<PhotoDto>
+    val attendees: List<AttendeeDto> = emptyList(),
+    val photos: List<PhotoDto> = emptyList(),
+    val attendeeIds: List<String> = emptyList()
 )
