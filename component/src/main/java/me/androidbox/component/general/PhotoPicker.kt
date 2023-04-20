@@ -42,7 +42,7 @@ import me.androidbox.component.ui.theme.photoTextColor
 fun PhotoPicker(
     listOfPhotoUri: List<String>,
     onPhotoUriSelected: (photoUri: Uri) -> Unit,
-    onOpenPhoto: (photo: Uri) -> Unit,
+    onOpenPhoto: (photo: String) -> Unit,
     modifier: Modifier = Modifier) {
 
     val photoPickerLauncher = rememberLauncherForActivityResult(
@@ -96,7 +96,7 @@ fun AddFirstPhoto(
 }
 
 @Composable
-fun AddSequentialPhoto(modifier: Modifier, selectedImageUri: List<String>, onAddPhotosClicked: () -> Unit, onOpenPhoto: (photo: Uri) -> Unit) {
+fun AddSequentialPhoto(modifier: Modifier, selectedImageUri: List<String>, onAddPhotosClicked: () -> Unit, onOpenPhoto: (photo: String) -> Unit) {
     /* We have images that have been selected */
     Column(modifier = modifier) {
         Spacer(modifier = Modifier.height(20.dp))
@@ -125,7 +125,7 @@ fun AddSequentialPhoto(modifier: Modifier, selectedImageUri: List<String>, onAdd
                         )
                         .clip(shape = RoundedCornerShape(5.dp)).
                     clickable {
-                        onOpenPhoto(uri.toUri())
+                        onOpenPhoto(uri)
                     },
                     contentScale = ContentScale.Crop
                 )

@@ -4,6 +4,7 @@ import android.net.Uri
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.core.net.toUri
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
@@ -32,7 +33,11 @@ import me.androidbox.presentation.navigation.Screen.EditScreen.CONTENT
 import me.androidbox.presentation.navigation.Screen.EditScreen.CONTENT_TYPE
 import me.androidbox.presentation.navigation.Screen.EventScreen.EVENT_ID
 import me.androidbox.presentation.navigation.Screen.EventScreen.MENU_ACTION_TYPE
-import me.androidbox.presentation.photo.PhotoScreen
+import me.androidbox.presentation.navigation.Screen.PhotoScreen.PHOTO_IMAGE_PATH
+import me.androidbox.presentation.photo.screen.PhotoScreen
+import me.androidbox.presentation.photo.screen.PhotoScreenEvent
+import me.androidbox.presentation.photo.screen.PhotoScreenState
+import me.androidbox.presentation.photo.viewmodel.PhotoScreenViewModel
 
 @Composable
 fun NavigationGraph(
@@ -189,8 +194,9 @@ fun NavigationGraph(
                 onCloseClicked = {
                     navHostController.popBackStack()
                 },
-                onPhotoClicked = {
-                    navHostController.navigate(route = Screen.PhotoScreen.route)
+                onPhotoClicked = { photoImage ->
+                    val encodedImagePath = Uri.encode(photoImage)
+                    navHostController.navigate(route = "${Screen.PhotoScreen.PHOTO_SCREEN}/${encodedImagePath}")
                 }
             )
         }
@@ -241,17 +247,24 @@ fun NavigationGraph(
 
         /** Photo Screen */
         composable(
-            route = Screen.PhotoScreen.route
+            route = Screen.PhotoScreen.route,
+            arguments = listOf(navArgument(PHOTO_IMAGE_PATH) {
+                this.type = NavType.StringType
+                this.defaultValue = ""
+                this.nullable = true
+            })
         ) {
+            val photoScreenViewModel: PhotoScreenViewModel = hiltViewModel()
+            val photoScreenState by photoScreenViewModel.photoScreenState.collectAsStateWithLifecycle()
 
             PhotoScreen(
+                photoScreenState = photoScreenState,
+                photoScreenEvent = { photoScreenEvent ->
+                    photoScreenViewModel.onPhotoScreenEvent(photoScreenEvent)
+                },
                 onCloseClicked = {
                     navHostController.popBackStack()
-                },
-                onDeletePhoto = {
-
-                },
-                photoImage = ""
+                }
             )
         }
     }

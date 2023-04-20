@@ -1,6 +1,5 @@
-package me.androidbox.presentation.photo
+package me.androidbox.presentation.photo.screen
 
-import android.net.Uri
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -21,11 +20,12 @@ import me.androidbox.presentation.ui.theme.BusbyTaskyTheme
 
 @Composable
 fun PhotoScreen(
+    photoScreenState: PhotoScreenState,
+    photoScreenEvent: (PhotoScreenEvent) -> Unit,
     modifier: Modifier = Modifier,
-    onCloseClicked: () -> Unit,
-    onDeletePhoto: (selectedPhoto: String) -> Unit,
-    photoImage: String
+    onCloseClicked: () -> Unit
 ) {
+
     Column(modifier = modifier) {
         Row(modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -39,7 +39,7 @@ fun PhotoScreen(
             Text(text = "Photo")
 
             IconButton(onClick = {
-                onDeletePhoto(photoImage)
+                photoScreenEvent(PhotoScreenEvent.OnPhotoDelete(photoScreenState.photoSelected))
             }) {
                 Icon(painter = painterResource(id = R.drawable.bin), contentDescription = "Delete photo")
             }
@@ -47,7 +47,7 @@ fun PhotoScreen(
 
         AsyncImage(
             modifier = Modifier.fillMaxSize(),
-            model = photoImage,
+            model = photoScreenState.photoSelected,
             contentDescription = "Photo selected",
             contentScale = ContentScale.Crop
         )
@@ -59,9 +59,9 @@ fun PhotoScreen(
 fun PreviewPhotoScreen() {
     BusbyTaskyTheme {
         PhotoScreen(
-            onCloseClicked = {},
-            onDeletePhoto = {},
-            photoImage = "content://com.android.providers.media.documents/document/image%3A37893"
+            photoScreenState = PhotoScreenState(),
+            photoScreenEvent = {},
+            onCloseClicked = {}
         )
     }
 }

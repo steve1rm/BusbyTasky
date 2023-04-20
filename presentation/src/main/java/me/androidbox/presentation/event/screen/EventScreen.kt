@@ -40,7 +40,7 @@ fun EventScreen(
     onEditTitleClicked: (title: String) -> Unit,
     onEditDescriptionClicked: (description: String) -> Unit,
     onCloseClicked: () -> Unit,
-    onPhotoClicked: (photo: Uri) -> Unit,
+    onPhotoClicked: (photo: String) -> Unit,
     modifier: Modifier = Modifier) {
 
     val calendarStateTimeDate = rememberUseCaseState()
