@@ -23,8 +23,8 @@ import me.androidbox.presentation.ui.theme.BusbyTaskyTheme
 fun PhotoScreen(
     modifier: Modifier = Modifier,
     onCloseClicked: () -> Unit,
-    onDeletePhoto: (selectedPhoto: Uri) -> Unit,
-    photoImage: Uri
+    onDeletePhoto: (selectedPhoto: String) -> Unit,
+    photoImage: String
 ) {
     Column(modifier = modifier) {
         Row(modifier = Modifier.fillMaxWidth(),
@@ -61,7 +61,7 @@ fun PreviewPhotoScreen() {
         PhotoScreen(
             onCloseClicked = {},
             onDeletePhoto = {},
-            photoImage = Uri.EMPTY
+            photoImage = "content://com.android.providers.media.documents/document/image%3A37893"
         )
     }
 }

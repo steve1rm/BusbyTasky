@@ -1,5 +1,6 @@
 package me.androidbox.presentation.navigation
 
+import android.net.Uri
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -31,6 +32,7 @@ import me.androidbox.presentation.navigation.Screen.EditScreen.CONTENT
 import me.androidbox.presentation.navigation.Screen.EditScreen.CONTENT_TYPE
 import me.androidbox.presentation.navigation.Screen.EventScreen.EVENT_ID
 import me.androidbox.presentation.navigation.Screen.EventScreen.MENU_ACTION_TYPE
+import me.androidbox.presentation.photo.PhotoScreen
 
 @Composable
 fun NavigationGraph(
@@ -187,9 +189,12 @@ fun NavigationGraph(
                 onCloseClicked = {
                     navHostController.popBackStack()
                 },
+                onPhotoClicked = {
+                    navHostController.navigate(route = Screen.PhotoScreen.route)
+                }
             )
         }
-        
+
         /* Edit Screen */
         composable(
             route = Screen.EditScreen.route,
@@ -231,6 +236,22 @@ fun NavigationGraph(
                     navHostController.previousBackStackEntry?.savedStateHandle?.set(contentType.name, content)
                     navHostController.popBackStack()
                 }
+            )
+        }
+
+        /** Photo Screen */
+        composable(
+            route = Screen.PhotoScreen.route
+        ) {
+
+            PhotoScreen(
+                onCloseClicked = {
+                    navHostController.popBackStack()
+                },
+                onDeletePhoto = {
+
+                },
+                photoImage = ""
             )
         }
     }

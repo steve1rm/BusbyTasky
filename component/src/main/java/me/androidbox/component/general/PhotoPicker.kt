@@ -8,6 +8,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -29,6 +30,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.net.toUri
 import coil.compose.AsyncImage
 import me.androidbox.component.R
 import me.androidbox.component.ui.theme.BusbyTaskyTheme
@@ -40,6 +42,7 @@ import me.androidbox.component.ui.theme.photoTextColor
 fun PhotoPicker(
     listOfPhotoUri: List<String>,
     onPhotoUriSelected: (photoUri: Uri) -> Unit,
+    onOpenPhoto: (photo: Uri) -> Unit,
     modifier: Modifier = Modifier) {
 
     val photoPickerLauncher = rememberLauncherForActivityResult(
@@ -58,7 +61,7 @@ fun PhotoPicker(
         }
     }
     else {
-        AddSequentialPhoto(modifier = modifier, selectedImageUri = listOfPhotoUri, onAddPhotosClicked = {
+        AddSequentialPhoto(modifier = modifier, selectedImageUri = listOfPhotoUri, onOpenPhoto = onOpenPhoto, onAddPhotosClicked = {
             photoPickerLauncher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
         })
     }
@@ -93,7 +96,7 @@ fun AddFirstPhoto(
 }
 
 @Composable
-fun AddSequentialPhoto(modifier: Modifier, selectedImageUri: List<String>, onAddPhotosClicked: () -> Unit) {
+fun AddSequentialPhoto(modifier: Modifier, selectedImageUri: List<String>, onAddPhotosClicked: () -> Unit, onOpenPhoto: (photo: Uri) -> Unit) {
     /* We have images that have been selected */
     Column(modifier = modifier) {
         Spacer(modifier = Modifier.height(20.dp))
@@ -120,7 +123,10 @@ fun AddSequentialPhoto(modifier: Modifier, selectedImageUri: List<String>, onAdd
                             color = MaterialTheme.colorScheme.photoPickerBorderColor,
                             shape = RoundedCornerShape(5.dp)
                         )
-                        .clip(shape = RoundedCornerShape(5.dp)),
+                        .clip(shape = RoundedCornerShape(5.dp)).
+                    clickable {
+                        onOpenPhoto(uri.toUri())
+                    },
                     contentScale = ContentScale.Crop
                 )
             }
@@ -172,7 +178,8 @@ fun PreviewAddSequentialPhoto() {
                 .fillMaxWidth()
                 .background(color = MaterialTheme.colorScheme.photoBackgroundColor),
             selectedImageUri = SnapshotStateList(),
-            onAddPhotosClicked = {})
+            onAddPhotosClicked = {},
+            onOpenPhoto = {})
     }
 }
 
@@ -190,6 +197,7 @@ fun PreviewEventPhotoPicker() {
             modifier = Modifier
                 .fillMaxWidth()
                 .background(color = MaterialTheme.colorScheme.photoBackgroundColor),
-            onPhotoUriSelected = {})
+            onPhotoUriSelected = {},
+            onOpenPhoto = {})
     }
 }
