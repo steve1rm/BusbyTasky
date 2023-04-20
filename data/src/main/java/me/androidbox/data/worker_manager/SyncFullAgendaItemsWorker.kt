@@ -66,24 +66,25 @@ class SyncFullAgendaItemsWorker @AssistedInject constructor(
 private suspend fun insertAllAgendaItems(fullAgendaDto: FullAgendaDto, eventDao: EventDao, taskDao: TaskDao, reminderDao: ReminderDao) {
     supervisorScope {
         val eventJob = launch {
-            fullAgendaDto.events.mapAsync { eventDto ->
-                val eventEntity = eventDto.toEventEntity()
-                eventDao.insertEvent(eventEntity)
+            val eventEntities = fullAgendaDto.events.map { eventDto ->
+                eventDto.toEventEntity()
             }
+            eventDao.insertEvents(eventEntities)
         }
 
         val taskJob = launch {
-            fullAgendaDto.tasks.mapAsync { taskDto ->
-                val taskEntity = taskDto.toTaskEntity()
-                taskDao.insertTask(taskEntity)
+            val taskEntities = fullAgendaDto.tasks.map { taskDto ->
+                taskDto.toTaskEntity()
             }
+            taskDao.insertTasks(taskEntities)
         }
 
         val reminderJob = launch {
-            fullAgendaDto.reminders.mapAsync { reminderDto ->
-                val reminderEntity = reminderDto.toReminderEntity()
-                reminderDao.insertReminder(reminderEntity)
+            val reminderEntities = fullAgendaDto.reminders.map { reminderDto ->
+                reminderDto.toReminderEntity()
             }
+
+            reminderDao.insertReminders(reminderEntities)
         }
 
         eventJob.join()
