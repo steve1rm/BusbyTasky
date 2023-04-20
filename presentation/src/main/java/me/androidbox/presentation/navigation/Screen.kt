@@ -19,4 +19,6 @@ sealed class Screen(val route: String) {
         const val EVENT_ID = "id"
         const val MENU_ACTION_TYPE = "menuActionType"
     }
+
+    object PhotoScreen : Screen(route = "photo_screen")
 }
