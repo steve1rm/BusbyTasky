@@ -1,9 +1,12 @@
 package me.androidbox.presentation.navigation
 
 import android.net.Uri
+import androidx.compose.foundation.background
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
 import androidx.core.net.toUri
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -258,6 +261,7 @@ fun NavigationGraph(
             val photoScreenState by photoScreenViewModel.photoScreenState.collectAsStateWithLifecycle()
 
             PhotoScreen(
+                modifier = Modifier.background(color = MaterialTheme.colorScheme.background),
                 photoScreenState = photoScreenState,
                 photoScreenEvent = { photoScreenEvent ->
                     photoScreenViewModel.onPhotoScreenEvent(photoScreenEvent)
