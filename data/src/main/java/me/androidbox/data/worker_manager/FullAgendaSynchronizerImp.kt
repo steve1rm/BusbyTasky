@@ -16,13 +16,13 @@ class FullAgendaSynchronizerImp @Inject constructor(
     private val workManager: WorkManager) : FullAgendaSynchronizer {
 
     companion object {
-        const val THIRTY_MINUTES = 30L
+        const val SYNC_INTERVAL = 30L
         const val FULL_AGENDA_SYNC = "full_agenda_sync"
     }
 
     override suspend fun sync(): UUID {
         val fullSynWorkerRequest = PeriodicWorkRequestBuilder<SyncFullAgendaItemsWorker>(
-            repeatInterval = THIRTY_MINUTES,
+            repeatInterval = SYNC_INTERVAL,
             repeatIntervalTimeUnit = TimeUnit.MINUTES)
             .setConstraints(Constraints(Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build()))
             .setBackoffCriteria(
