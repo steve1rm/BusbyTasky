@@ -40,6 +40,6 @@ class FullAgendaSynchronizerImp @Inject constructor(
     }
 
     override suspend fun cancel() {
-        workManager.cancelAllWork()
+        workManager.cancelUniqueWork(FULL_AGENDA_SYNC)
     }
 }

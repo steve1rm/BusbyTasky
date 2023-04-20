@@ -37,6 +37,6 @@ class AgendaSynchronizerImp @Inject constructor(
     }
 
     override suspend fun cancel() {
-        workManager.cancelAllWork()
+        workManager.cancelUniqueWork(SYNC_DELETED_AGENDA_IDS)
     }
 }
