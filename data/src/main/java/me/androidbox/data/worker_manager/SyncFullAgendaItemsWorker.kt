@@ -18,6 +18,12 @@ import me.androidbox.data.local.entity.EventEntity
 import me.androidbox.data.local.entity.ReminderEntity
 import me.androidbox.data.local.entity.TaskEntity
 import me.androidbox.data.mapper.toAttendee
+import me.androidbox.data.mapper.toEvent
+import me.androidbox.data.mapper.toEventEntity
+import me.androidbox.data.mapper.toReminder
+import me.androidbox.data.mapper.toReminderEntity
+import me.androidbox.data.mapper.toTask
+import me.androidbox.data.mapper.toTaskEntity
 import me.androidbox.data.remote.model.response.FullAgendaDto
 import me.androidbox.data.remote.network.agenda.AgendaService
 import me.androidbox.data.remote.util.CheckResult.checkResult
@@ -61,51 +67,21 @@ private suspend fun insertAllAgendaItems(fullAgendaDto: FullAgendaDto, eventDao:
     supervisorScope {
         val eventJob = launch {
             fullAgendaDto.events.mapAsync { eventDto ->
-                val eventEntity = EventEntity(
-                    id = eventDto.id,
-                    title = eventDto.title,
-                    description = eventDto.description,
-                    startDateTime = eventDto.from,
-                    endDateTime = eventDto.to,
-                    remindAt = eventDto.remindAt,
-                    eventCreatorId = eventDto.host,
-                    isUserEventCreator = eventDto.isUserEventCreator,
-                    photos = eventDto.photos.map { photoDto ->  photoDto.key },
-                    isGoing = true,
-                    attendees = eventDto.attendees.map { attendeeDto ->
-                        attendeeDto.toAttendee()
-                    }
-                )
-
+                val eventEntity = eventDto.toEventEntity()
                 eventDao.insertEvent(eventEntity)
             }
         }
 
         val taskJob = launch {
             fullAgendaDto.tasks.mapAsync { taskDto ->
-                val taskEntity = TaskEntity(
-                    id = taskDto.id,
-                    title = taskDto.title,
-                    description = taskDto.description,
-                    time = taskDto.time,
-                    remindAt = taskDto.remindAt,
-                    isDone = taskDto.isDone
-                )
-
+                val taskEntity = taskDto.toTaskEntity()
                 taskDao.insertTask(taskEntity)
             }
         }
 
         val reminderJob = launch {
             fullAgendaDto.reminders.mapAsync { reminderDto ->
-                val reminderEntity = ReminderEntity(
-                    id = reminderDto.id,
-                    title = reminderDto.title,
-                    description = reminderDto.description,
-                    time = reminderDto.time,
-                    remindAt = reminderDto.remindAt
-                )
-
+                val reminderEntity = reminderDto.toReminderEntity()
                 reminderDao.insertReminder(reminderEntity)
             }
         }
