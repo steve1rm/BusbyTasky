@@ -11,11 +11,11 @@ import java.time.ZonedDateTime
 
 data class EventScreenState(
     val listOfPhotoUri: List<String> = mutableStateListOf<String>(),
-    val selectedVisitorType: VisitorFilterType = VisitorFilterType.ALL,
     val selectedVisitor: VisitorInfo? = null,
     val visitorEmail: String = "",
     val shouldShowVisitorDialog: Boolean = false,
     val selectedVisitorFilterType: VisitorFilterType = VisitorFilterType.ALL,
+    val visitors: List<VisitorInfo> = mutableStateListOf(),
     val isEmailVerified: Boolean = true,
     val eventTitle: String = "New Event",
     val eventDescription: String = "Description",

@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import me.androidbox.component.R
 import me.androidbox.component.ui.theme.*
+import java.util.UUID
 
 @Composable
 fun VisitorItem(
@@ -87,7 +88,13 @@ fun PreviewVisitorIsCreator() {
     BusbyTaskyTheme {
         VisitorItem(
             visitorInitials = "SM",
-            visitor = VisitorInfo("Steve Mason", "48484jdjdj", isGoing = true, isCreator = true),
+            visitor = VisitorInfo(
+                initials = "SM",
+                "Steve Mason",
+                UUID.randomUUID().toString(),
+                isGoing = true,
+                isCreator = true
+            ),
             isCreator = true
         ) {}
     }
@@ -99,7 +106,13 @@ fun PreviewVisitorIsVisitor() {
     BusbyTaskyTheme {
         VisitorItem(
             visitorInitials = "SM",
-            visitor = VisitorInfo("Steve Mason", "48484jdjdj", isGoing = true, isCreator = true),
+            visitor = VisitorInfo(
+                initials = "SM",
+                "Steve Mason",
+                UUID.randomUUID().toString(),
+                isGoing = true,
+                isCreator = true
+            ),
             isCreator = false
         ) {}
     }

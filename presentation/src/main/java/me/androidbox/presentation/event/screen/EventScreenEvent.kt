@@ -9,13 +9,12 @@ import java.time.ZonedDateTime
 
 sealed interface EventScreenEvent {
     data class OnPhotoUriAdded(val photoUri: String): EventScreenEvent
-    /* Visitor Type i.e. All, Going, Not Going */
-    data class OnSelectedVisitorType(val visitorType: VisitorFilterType): EventScreenEvent
     data class OnSaveTitleOrDescription(val title: String, val description: String): EventScreenEvent
     data class OnDeleteVisitor(val visitorInfo: VisitorInfo): EventScreenEvent
     data class OnVisitorEmailChanged(val visitorEmail: String): EventScreenEvent
     data class OnShowVisitorDialog(val shouldShowVisitorDialog: Boolean): EventScreenEvent
     data class CheckVisitorExists(val visitorEmail: String): EventScreenEvent
+    /* Visitor Type i.e. All, Going, Not Going */
     data class OnVisitorFilterTypeChanged(val visitorFilterType: VisitorFilterType): EventScreenEvent
     data class OnSelectedAgendaAction(val agendaActionType: AgendaActionType): EventScreenEvent
     object OnSaveEventDetails: EventScreenEvent

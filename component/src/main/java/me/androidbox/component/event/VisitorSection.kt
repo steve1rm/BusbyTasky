@@ -1,9 +1,11 @@
 package me.androidbox.component.event
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
@@ -24,59 +26,58 @@ import kotlin.random.Random
 
 @Composable
 fun VisitorSection(
-    modifier: Modifier = Modifier,
     visitors: List<VisitorInfo>,
+    modifier: Modifier = Modifier,
     visitorDeleteClicked: (VisitorInfo) -> Unit,
     visitorFilterType: VisitorFilterType = VisitorFilterType.ALL,
 ) {
-    Column(modifier = modifier
-        .fillMaxWidth()) {
-
+    Column(modifier = modifier) {
         Spacer(modifier = Modifier.height(16.dp))
 
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxWidth()) {
+        LazyColumn(modifier = Modifier.fillMaxWidth(),
+            verticalArrangement = Arrangement.spacedBy(16.dp)) {
 
-            /* Going */
-            if(visitorFilterType == VisitorFilterType.ALL || visitorFilterType == VisitorFilterType.GOING) {
-                item {
-                    Text(
-                        text = stringResource(id = R.string.going),
-                        fontWeight = FontWeight.Medium,
-                        fontSize = 16.sp,
-                        color = MaterialTheme.colorScheme.visitorTextFontColor
-                    )
+            if (visitors.isNotEmpty()) {
+                /** Going */
+                if (visitorFilterType == VisitorFilterType.ALL || visitorFilterType == VisitorFilterType.GOING) {
+                    item {
+                        Text(
+                            text = stringResource(id = R.string.going),
+                            fontWeight = FontWeight.Medium,
+                            fontSize = 16.sp,
+                            color = MaterialTheme.colorScheme.visitorTextFontColor
+                        )
+                    }
+
+                    items(visitors.filter { visitorInfo -> visitorInfo.isGoing }) { visitor ->
+                        VisitorItem(
+                            visitorInitials = "SM",
+                            visitor = visitor,
+                            isCreator = visitor.isCreator,
+                            onDeleteClicked = visitorDeleteClicked
+                        )
+                    }
                 }
 
-                items(visitors.filter { visitorInfo -> visitorInfo.isGoing }) { visitor ->
-                    VisitorItem(
-                        visitorInitials = "SM",
-                        visitor = visitor,
-                        isCreator = visitor.isCreator,
-                        onDeleteClicked = visitorDeleteClicked
-                    )
-                }
-            }
+                /* Not going */
+                if (visitorFilterType == VisitorFilterType.ALL || visitorFilterType == VisitorFilterType.NOT_GOING) {
+                    item {
+                        Text(
+                            text = stringResource(id = R.string.not_going),
+                            fontWeight = FontWeight.Medium,
+                            fontSize = 16.sp,
+                            color = MaterialTheme.colorScheme.visitorTextFontColor
+                        )
+                    }
 
-            /* Not going */
-            if(visitorFilterType == VisitorFilterType.ALL || visitorFilterType == VisitorFilterType.NOT_GOING) {
-                item {
-                    Text(
-                        text = stringResource(id = R.string.not_going),
-                        fontWeight = FontWeight.Medium,
-                        fontSize = 16.sp,
-                        color = MaterialTheme.colorScheme.visitorTextFontColor
-                    )
-                }
-
-                items(visitors.filter { visitorInfo -> !visitorInfo.isGoing }) { visitor ->
-                    VisitorItem(
-                        visitorInitials = "SM",
-                        visitor = visitor,
-                        isCreator = visitor.isCreator,
-                        onDeleteClicked = visitorDeleteClicked
-                    )
+                    items(visitors.filter { visitorInfo -> !visitorInfo.isGoing }) { visitor ->
+                        VisitorItem(
+                            visitorInitials = "SM",
+                            visitor = visitor,
+                            isCreator = visitor.isCreator,
+                            onDeleteClicked = visitorDeleteClicked
+                        )
+                    }
                 }
             }
         }
@@ -98,6 +99,7 @@ fun PreviewVisitorSection() {
 private fun generateVisitorInfo(): List<VisitorInfo> {
     return generateSequence {
         VisitorInfo(
+            initials = "SM",
             fullName = UUID.randomUUID().toString(),
             userId = UUID.randomUUID().toString(),
             isGoing = Random.nextBoolean(),

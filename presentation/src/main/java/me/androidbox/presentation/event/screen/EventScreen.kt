@@ -1,7 +1,6 @@
 package me.androidbox.presentation.event.screen
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -20,6 +19,7 @@ import com.maxkeppeler.sheets.date_time.DateTimeDialog
 import com.maxkeppeler.sheets.date_time.models.DateTimeSelection
 import me.androidbox.component.R
 import me.androidbox.component.agenda.*
+import me.androidbox.component.event.VisitorSection
 import me.androidbox.component.general.AgendaDropDownMenu
 import me.androidbox.component.general.PhotoPicker
 import me.androidbox.component.ui.theme.BusbyTaskyTheme
@@ -146,6 +146,7 @@ fun EventScreen(
                             eventScreenEvent(EventScreenEvent.OnShowAlarmReminderDropdown(shouldOpen = true))
                         }
                     )
+
                     Spacer(modifier = modifier.height(26.dp))
 
                     VisitorFilter(
@@ -156,6 +157,17 @@ fun EventScreen(
                         },
                         onAddVisitorClicked = {
                             eventScreenEvent(EventScreenEvent.OnShowVisitorDialog(shouldShowVisitorDialog = true))
+                        }
+                    )
+
+                    Spacer(modifier = modifier.height(20.dp))
+
+                    VisitorSection(
+                        modifier = Modifier.fillMaxWidth(),
+                        visitorFilterType = eventScreenState.selectedVisitorFilterType,
+                        visitors = eventScreenState.visitors,
+                        visitorDeleteClicked = { visitorInfo ->
+                            /** TODO Delete the visitor from the list of attendees */
                         }
                     )
 

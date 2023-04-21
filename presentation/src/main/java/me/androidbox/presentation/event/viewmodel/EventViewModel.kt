@@ -26,6 +26,7 @@ import me.androidbox.domain.work_manager.UploadEvent
 import me.androidbox.presentation.alarm_manager.AlarmReminderProvider
 import me.androidbox.presentation.event.screen.EventScreenEvent
 import me.androidbox.presentation.event.screen.EventScreenState
+import me.androidbox.presentation.mapper.toVisitorInfo
 import me.androidbox.presentation.navigation.Screen.EventScreen.EVENT_ID
 import me.androidbox.presentation.navigation.Screen.EventScreen.MENU_ACTION_TYPE
 import java.util.*
@@ -87,13 +88,6 @@ class EventViewModel @Inject constructor(
                 _eventScreenState.update { eventScreenState ->
                     eventScreenState.copy(
                         listOfPhotoUri = eventScreenState.listOfPhotoUri + eventScreenEvent.photoUri
-                    )
-                }
-            }
-            is EventScreenEvent.OnSelectedVisitorType -> {
-                _eventScreenState.update { eventScreenState ->
-                    eventScreenState.copy(
-                        selectedVisitorType = eventScreenEvent.visitorType
                     )
                 }
             }
@@ -173,8 +167,17 @@ class EventViewModel @Inject constructor(
             }
             is EventScreenEvent.OnAttendeeAdded -> {
                 _eventScreenState.update { eventScreenState ->
+                    val currentUserId = preferenceRepository.retrieveCurrentUserOrNull()?.userId
+                    val initials = usersInitialsExtractionUseCase.execute(eventScreenEvent.attendee.fullName)
+
+                    val visitorInfo = eventScreenEvent.attendee.toVisitorInfo(
+                        initials = initials,
+                        isCreator = currentUserId == eventScreenEvent.attendee.userId
+                    )
+
                     eventScreenState.copy(
-                        attendees = eventScreenState.attendees + eventScreenEvent.attendee
+                        attendees = eventScreenState.attendees + eventScreenEvent.attendee,
+                        visitors = eventScreenState.visitors + visitorInfo
                     )
                 }
             }
