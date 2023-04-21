@@ -197,6 +197,16 @@ class EventViewModel @Inject constructor(
             is EventScreenEvent.CheckVisitorExists -> {
                 verifyVisitorEmail(eventScreenEvent.visitorEmail)
             }
+            is EventScreenEvent.OnShowDeleteEventAlertDialog -> {
+                _eventScreenState.update { eventScreenState ->
+                    eventScreenState.copy(
+                        shouldShowDeleteAlertDialog = eventScreenEvent.shouldShowDeleteAlertDialog
+                    )
+                }
+            }
+            is EventScreenEvent.OnDeleteEvent -> {
+                deleteEvent(eventScreenEvent.eventId)
+            }
         }
     }
 
@@ -261,7 +271,7 @@ class EventViewModel @Inject constructor(
                                 eventDescription = event.description,
                                 startDate = event.startDateTime.toZoneDateTime(),
                                 endDate = event.endDateTime.toZoneDateTime(),
-                                /** TODO Adding the rest */
+                                isUserEventCreator = event.isUserEventCreator
                             )
                         }
                     }
@@ -286,7 +296,7 @@ class EventViewModel @Inject constructor(
             endDateTime = endDateTime.toEpochSecond(),
             remindAt = remindAt.toEpochSecond(),
             eventCreatorId = preferenceRepository.retrieveCurrentUserOrNull()?.userId ?: "",
-            isUserEventCreator = false,
+            isUserEventCreator = true,
             isGoing = true,
             attendees = eventScreenState.value.attendees,
             photos = eventScreenState.value.listOfPhotoUri
@@ -311,6 +321,12 @@ class EventViewModel @Inject constructor(
                    /* TODO Show some kink of snack bar or toast message */
                 }
             }
+        }
+    }
+
+    private fun deleteEvent(eventId: String) {
+        viewModelScope.launch {
+            eventRepository.deleteEventById(eventId)
         }
     }
 }
