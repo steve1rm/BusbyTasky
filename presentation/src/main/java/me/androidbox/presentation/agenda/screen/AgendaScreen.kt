@@ -32,8 +32,8 @@ import me.androidbox.component.ui.theme.backgroundBackColor
 import me.androidbox.component.ui.theme.dropDownMenuBackgroundColor
 import me.androidbox.domain.DateTimeFormatterProvider.toDisplayDateTime
 import me.androidbox.domain.DateTimeFormatterProvider.toZoneDateTime
-import me.androidbox.presentation.agenda.constant.AgendaMenuActionType
 import me.androidbox.domain.alarm_manager.AgendaType
+import me.androidbox.presentation.agenda.constant.AgendaMenuActionType
 import me.androidbox.presentation.ui.theme.BusbyTaskyTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -130,6 +130,7 @@ fun AgendaScreen(
                         agendaScreenEvent(AgendaScreenEvent.OnChangeShowEditAgendaItemDropdownStatus(shouldOpen = true))
                     }
 
+                    /** Open, Edit, Delete Agenda Items */
                     AgendaDropDownMenu(
                         modifier = Modifier
                             .background(color = MaterialTheme.colorScheme.dropDownMenuBackgroundColor)

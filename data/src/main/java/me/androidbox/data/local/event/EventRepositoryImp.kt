@@ -1,5 +1,6 @@
 package me.androidbox.data.local.event
 
+import androidx.room.Database
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map

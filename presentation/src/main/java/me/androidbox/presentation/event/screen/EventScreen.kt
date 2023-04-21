@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.dp
 import com.maxkeppeker.sheets.core.models.base.rememberUseCaseState
 import com.maxkeppeler.sheets.date_time.DateTimeDialog
 import com.maxkeppeler.sheets.date_time.models.DateTimeSelection
+import me.androidbox.component.R
 import me.androidbox.component.agenda.*
 import me.androidbox.component.general.AgendaDropDownMenu
 import me.androidbox.component.general.PhotoPicker
@@ -159,8 +160,22 @@ fun EventScreen(
                     Spacer(modifier = modifier.height(26.dp))
 
                     AgendaAction(
-                        agendaActionType = AgendaActionType.LEAVE_EVENT,
-                        onActionClicked = {}
+                        agendaActionType = if(eventScreenState.isUserEventCreator) { AgendaActionType.DELETE_EVENT } else { AgendaActionType.JOIN_EVENT },
+                        onActionClicked = { agendaActionType ->
+                            when(agendaActionType) {
+                                AgendaActionType.DELETE_EVENT -> {
+                                    eventScreenEvent(EventScreenEvent.OnShowDeleteEventAlertDialog(shouldShowDeleteAlertDialog = true))
+                                }
+                                AgendaActionType.JOIN_EVENT -> {
+
+                                }
+                                AgendaActionType.LEAVE_EVENT -> {
+
+                                }
+                                else -> Unit
+                            }
+
+                        }
                     )
                 }
             }
@@ -210,6 +225,19 @@ fun EventScreen(
             }
         }
     )
+
+    if(eventScreenState.shouldShowDeleteAlertDialog) {
+        DeleteEventAlertDialog(
+            title = stringResource(id = R.string.delete_event),
+            text = stringResource(id = R.string.confirm_delete_event),
+            onConfirmationClicked = {
+                eventScreenEvent(EventScreenEvent.OnDeleteEvent(eventScreenState.eventId))
+                onCloseClicked()
+            },
+            onDismissClicked = {
+                eventScreenEvent(EventScreenEvent.OnShowDeleteEventAlertDialog(shouldShowDeleteAlertDialog = false))
+            })
+    }
 }
 
 @Composable
