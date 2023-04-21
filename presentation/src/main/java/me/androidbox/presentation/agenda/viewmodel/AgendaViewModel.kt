@@ -142,14 +142,10 @@ class AgendaViewModel @Inject constructor(
     }
 
     private fun syncAgendaItems() {
-        viewModelScope.async {
-            agendaSynchronizer.sync()
-        }
+        agendaSynchronizer.sync()
     }
 
     private fun syncFullAgendaItems() {
-        viewModelScope.launch {
-            fullAgendaSynchronizer.sync()
-        }
+        fullAgendaSynchronizer.sync()
     }
 }

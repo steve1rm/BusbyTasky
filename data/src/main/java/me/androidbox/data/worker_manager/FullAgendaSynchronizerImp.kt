@@ -20,7 +20,7 @@ class FullAgendaSynchronizerImp @Inject constructor(
         const val FULL_AGENDA_SYNC = "full_agenda_sync"
     }
 
-    override suspend fun sync(): UUID {
+    override fun sync(): UUID {
         val fullSynWorkerRequest = PeriodicWorkRequestBuilder<SyncFullAgendaItemsWorker>(
             repeatInterval = SYNC_INTERVAL,
             repeatIntervalTimeUnit = TimeUnit.MINUTES)
@@ -39,7 +39,7 @@ class FullAgendaSynchronizerImp @Inject constructor(
         return fullSynWorkerRequest.id
     }
 
-    override suspend fun cancel() {
+    override fun cancel() {
         workManager.cancelUniqueWork(FULL_AGENDA_SYNC)
     }
 }
