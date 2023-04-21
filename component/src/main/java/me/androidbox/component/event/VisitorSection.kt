@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
@@ -34,7 +33,9 @@ fun VisitorSection(
     Column(modifier = modifier) {
         Spacer(modifier = Modifier.height(16.dp))
 
-        LazyColumn(modifier = Modifier.fillMaxWidth(),
+        LazyColumn(modifier = Modifier
+            .fillMaxWidth()
+            .height(300.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)) {
 
             if (visitors.isNotEmpty()) {
@@ -72,7 +73,7 @@ fun VisitorSection(
 
                     items(visitors.filter { visitorInfo -> !visitorInfo.isGoing }) { visitor ->
                         VisitorItem(
-                            visitorInitials = "SM",
+                            visitorInitials = visitor.initials,
                             visitor = visitor,
                             isCreator = visitor.isCreator,
                             onDeleteClicked = visitorDeleteClicked

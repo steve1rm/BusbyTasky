@@ -28,7 +28,7 @@ data class EventScreenState(
     val isStartDateTime: Boolean = false,
     val shouldOpenDropdown: Boolean = false,
     val alarmReminderItem: AlarmReminderItem = AlarmReminderItem.TEN_MINUTES,
-    val attendees: List<Attendee> = listOf(),
+    val attendees: List<Attendee> = mutableStateListOf(),
     val isSaved: Boolean = false,
     val isEditMode: Boolean = false,
     val isUserEventCreator: Boolean = true,
