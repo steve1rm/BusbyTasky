@@ -4,5 +4,5 @@ import me.androidbox.domain.agenda.model.Event
 
 
 interface UploadEvent {
-    suspend fun upload(event: Event, isEditMode: Boolean)
+    fun upload(event: Event, isEditMode: Boolean)
 }

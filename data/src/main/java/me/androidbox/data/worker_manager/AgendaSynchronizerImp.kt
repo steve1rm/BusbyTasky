@@ -15,7 +15,7 @@ class AgendaSynchronizerImp @Inject constructor(
         const val SYNC_DELETED_AGENDA_IDS = "syncDeletedAgendaIds"
     }
 
-    override suspend fun sync(): UUID {
+    override fun sync(): UUID {
 
         val syncWorkerRequest = PeriodicWorkRequestBuilder<SyncAgendaItemsWorker>(
             repeatInterval = THIRTY_MINUTES,
@@ -36,7 +36,7 @@ class AgendaSynchronizerImp @Inject constructor(
         return syncWorkerRequest.id
     }
 
-    override suspend fun cancel() {
-        workManager.cancelAllWork()
+    override fun cancel() {
+        workManager.cancelUniqueWork(SYNC_DELETED_AGENDA_IDS)
     }
 }

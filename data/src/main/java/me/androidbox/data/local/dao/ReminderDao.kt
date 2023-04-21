@@ -4,6 +4,7 @@ import androidx.room.*
 import kotlinx.coroutines.flow.Flow
 import me.androidbox.data.local.DatabaseConstant
 import me.androidbox.data.local.entity.ReminderEntity
+import me.androidbox.data.local.entity.TaskEntity
 import me.androidbox.domain.constant.SyncAgendaType
 
 @Dao
@@ -16,6 +17,9 @@ interface ReminderDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertReminder(reminderEntity: ReminderEntity)
+
+    @Upsert(entity = ReminderEntity::class)
+    suspend fun insertReminders(reminders: List<ReminderEntity>)
 
     /**
      * TODO Delete only a single reminder

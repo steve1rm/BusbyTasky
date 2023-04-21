@@ -23,7 +23,7 @@ class UploadEventImp @Inject constructor(
         const val ERROR = "error"
     }
 
-    override suspend fun upload(event: Event, isEditMode: Boolean) {
+    override fun upload(event: Event, isEditMode: Boolean) {
         /** Serialize the event to json */
         val eventRequestJson = if(isEditMode) {
             /** request for update eventRequestDto */
