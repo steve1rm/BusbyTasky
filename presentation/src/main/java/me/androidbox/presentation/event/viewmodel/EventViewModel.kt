@@ -207,6 +207,14 @@ class EventViewModel @Inject constructor(
             is EventScreenEvent.OnDeleteEvent -> {
                 deleteEvent(eventScreenEvent.eventId)
             }
+
+            is EventScreenEvent.OnVisitorFilterTypeChanged -> {
+                _eventScreenState.update {  eventScreenState ->
+                    eventScreenState.copy(
+                        selectedVisitorFilterType = eventScreenEvent.visitorFilterType
+                    )
+                }
+            }
         }
     }
 
