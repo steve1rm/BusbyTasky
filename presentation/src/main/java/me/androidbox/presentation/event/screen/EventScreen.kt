@@ -150,7 +150,7 @@ fun EventScreen(
 
                     VisitorFilter(
                         modifier = Modifier.fillMaxWidth(),
-                        selectedVisitorType = VisitorType.ALL,
+                        selectedVisitorType = VisitorFilterType.ALL,
                         onSelectedTypeClicked = {},
                         onAddVisitorClicked = {
                             eventScreenEvent(EventScreenEvent.OnShowVisitorDialog(shouldShowVisitorDialog = true))
