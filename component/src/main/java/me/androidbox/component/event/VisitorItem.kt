@@ -54,7 +54,7 @@ fun VisitorItem(
             modifier = Modifier
                 .weight(1F)
                 .padding(start = 16.dp),
-            text = visitor.visitorName,
+            text = visitor.fullName,
             fontSize = 14.sp,
             color = MaterialTheme.colorScheme.visitorTextFontColor,
             fontWeight = FontWeight.Normal)
@@ -87,7 +87,7 @@ fun PreviewVisitorIsCreator() {
     BusbyTaskyTheme {
         VisitorItem(
             visitorInitials = "SM",
-            visitor = VisitorInfo("Steve Mason", "48484jdjdj"),
+            visitor = VisitorInfo("Steve Mason", "48484jdjdj", isGoing = true, isCreator = true),
             isCreator = true
         ) {}
     }
@@ -99,7 +99,7 @@ fun PreviewVisitorIsVisitor() {
     BusbyTaskyTheme {
         VisitorItem(
             visitorInitials = "SM",
-            visitor = VisitorInfo("Steve Mason", "48484jdjdj"),
+            visitor = VisitorInfo("Steve Mason", "48484jdjdj", isGoing = true, isCreator = true),
             isCreator = false
         ) {}
     }
