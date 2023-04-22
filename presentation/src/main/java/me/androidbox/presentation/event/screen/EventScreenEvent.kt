@@ -26,6 +26,7 @@ sealed interface EventScreenEvent {
     data class OnShowAlarmReminderDropdown(val shouldOpen: Boolean) : EventScreenEvent
     data class OnAlarmReminderChanged(val reminderItem: AlarmReminderItem): EventScreenEvent
     data class OnAttendeeAdded(val attendee: Attendee): EventScreenEvent
+    data class OnAttendeeDeleted(val attendee: Attendee): EventScreenEvent
     data class OnShowDeleteEventAlertDialog(val shouldShowDeleteAlertDialog: Boolean): EventScreenEvent
     data class OnDeleteEvent(val eventId: String): EventScreenEvent
 }

@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import me.androidbox.component.event.VisitorInfo
 import me.androidbox.domain.DateTimeFormatterProvider.toZoneDateTime
 import me.androidbox.presentation.agenda.constant.AgendaMenuActionType
 import me.androidbox.domain.agenda.model.Attendee
@@ -100,10 +101,28 @@ class EventViewModel @Inject constructor(
                 }
             }
             is EventScreenEvent.OnDeleteVisitor -> {
-                _eventScreenState.update { eventScreenState ->
-                    eventScreenState.copy(
-                        selectedVisitor = eventScreenEvent.visitorInfo
-                    )
+                val visitorInfo = eventScreenState.value.visitors.firstOrNull { visitorInfo ->
+                    visitorInfo.userId == eventScreenEvent.visitorInfo.userId
+                }
+
+                val attendee = eventScreenState.value.attendees.firstOrNull { attendee ->
+                    attendee.userId == eventScreenEvent.visitorInfo.userId
+                }
+
+                if(visitorInfo != null) {
+                    _eventScreenState.update { eventScreenState ->
+                        eventScreenState.copy(
+                            visitors = eventScreenState.visitors - visitorInfo
+                        )
+                    }
+                }
+
+                if(attendee != null) {
+                    _eventScreenState.update { eventScreenState ->
+                        eventScreenState.copy(
+                            attendees = eventScreenState.attendees - attendee
+                        )
+                    }
                 }
             }
             is EventScreenEvent.OnSelectedAgendaAction -> {
@@ -218,6 +237,8 @@ class EventViewModel @Inject constructor(
                     )
                 }
             }
+
+            is EventScreenEvent.OnAttendeeDeleted -> TODO()
         }
     }
 

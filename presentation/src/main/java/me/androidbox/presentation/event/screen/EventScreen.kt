@@ -167,9 +167,9 @@ fun EventScreen(
                     VisitorSection(
                         modifier = Modifier.fillMaxWidth(),
                         visitorFilterType = eventScreenState.selectedVisitorFilterType,
-                        visitors = generateVisitorInfo(),
+                        visitors = eventScreenState.visitors,
                         visitorDeleteClicked = { visitorInfo ->
-                            /** TODO Delete the visitor from the list of attendees */
+                            eventScreenEvent(EventScreenEvent.OnDeleteVisitor(visitorInfo))
                         }
                     )
 
@@ -216,6 +216,7 @@ fun EventScreen(
             },
             isValidInput = false,
             onAddButtonClicked = { visitorEmail ->
+                /** Check if the visitors email does exist */
                 eventScreenEvent(EventScreenEvent.CheckVisitorExists(visitorEmail))
             },
             isEmailVerified = eventScreenState.isEmailVerified
@@ -254,18 +255,6 @@ fun EventScreen(
                 eventScreenEvent(EventScreenEvent.OnShowDeleteEventAlertDialog(shouldShowDeleteAlertDialog = false))
             })
     }
-}
-
-private fun generateVisitorInfo(): List<VisitorInfo> {
-    return generateSequence {
-        VisitorInfo(
-            initials = "SM",
-            fullName = UUID.randomUUID().toString(),
-            userId = UUID.randomUUID().toString(),
-            isGoing = Random.nextBoolean(),
-            isCreator = Random.nextBoolean()
-        )
-    }.take(10).toList()
 }
 
 @Composable
