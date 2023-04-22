@@ -19,6 +19,7 @@ import com.maxkeppeler.sheets.date_time.DateTimeDialog
 import com.maxkeppeler.sheets.date_time.models.DateTimeSelection
 import me.androidbox.component.R
 import me.androidbox.component.agenda.*
+import me.androidbox.component.event.VisitorInfo
 import me.androidbox.component.event.VisitorSection
 import me.androidbox.component.general.AgendaDropDownMenu
 import me.androidbox.component.general.PhotoPicker
@@ -32,6 +33,7 @@ import me.androidbox.domain.DateTimeFormatterProvider.formatDateTime
 import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.util.*
+import kotlin.random.Random
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -165,7 +167,7 @@ fun EventScreen(
                     VisitorSection(
                         modifier = Modifier.fillMaxWidth(),
                         visitorFilterType = eventScreenState.selectedVisitorFilterType,
-                        visitors = eventScreenState.visitors,
+                        visitors = generateVisitorInfo(),
                         visitorDeleteClicked = { visitorInfo ->
                             /** TODO Delete the visitor from the list of attendees */
                         }
@@ -252,6 +254,18 @@ fun EventScreen(
                 eventScreenEvent(EventScreenEvent.OnShowDeleteEventAlertDialog(shouldShowDeleteAlertDialog = false))
             })
     }
+}
+
+private fun generateVisitorInfo(): List<VisitorInfo> {
+    return generateSequence {
+        VisitorInfo(
+            initials = "SM",
+            fullName = UUID.randomUUID().toString(),
+            userId = UUID.randomUUID().toString(),
+            isGoing = Random.nextBoolean(),
+            isCreator = Random.nextBoolean()
+        )
+    }.take(10).toList()
 }
 
 @Composable

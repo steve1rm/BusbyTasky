@@ -1,12 +1,11 @@
 package me.androidbox.component.event
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -30,55 +29,46 @@ fun VisitorSection(
     visitorDeleteClicked: (VisitorInfo) -> Unit,
     visitorFilterType: VisitorFilterType = VisitorFilterType.ALL,
 ) {
-    Column(modifier = modifier) {
+    Column(
+        modifier = modifier.fillMaxWidth(),
+    ) {
         Spacer(modifier = Modifier.height(16.dp))
+        if (visitors.isNotEmpty()) {
+            /** Going */
+            if (visitorFilterType == VisitorFilterType.ALL || visitorFilterType == VisitorFilterType.GOING) {
+                Text(
+                    text = stringResource(id = R.string.going),
+                    fontWeight = FontWeight.Medium,
+                    fontSize = 16.sp,
+                    color = MaterialTheme.colorScheme.visitorTextFontColor
+                )
 
-        LazyColumn(modifier = Modifier
-            .fillMaxWidth()
-            .height(300.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)) {
-
-            if (visitors.isNotEmpty()) {
-                /** Going */
-                if (visitorFilterType == VisitorFilterType.ALL || visitorFilterType == VisitorFilterType.GOING) {
-                    item {
-                        Text(
-                            text = stringResource(id = R.string.going),
-                            fontWeight = FontWeight.Medium,
-                            fontSize = 16.sp,
-                            color = MaterialTheme.colorScheme.visitorTextFontColor
-                        )
-                    }
-
-                    items(visitors.filter { visitorInfo -> visitorInfo.isGoing }) { visitor ->
-                        VisitorItem(
-                            visitorInitials = "SM",
-                            visitor = visitor,
-                            isCreator = visitor.isCreator,
-                            onDeleteClicked = visitorDeleteClicked
-                        )
-                    }
+                visitors.filter { visitorInfo -> visitorInfo.isGoing }.forEach { visitor ->
+                    VisitorItem(
+                        visitorInitials = "SM",
+                        visitor = visitor,
+                        isCreator = visitor.isCreator,
+                        onDeleteClicked = visitorDeleteClicked
+                    )
                 }
+            }
 
-                /* Not going */
-                if (visitorFilterType == VisitorFilterType.ALL || visitorFilterType == VisitorFilterType.NOT_GOING) {
-                    item {
-                        Text(
-                            text = stringResource(id = R.string.not_going),
-                            fontWeight = FontWeight.Medium,
-                            fontSize = 16.sp,
-                            color = MaterialTheme.colorScheme.visitorTextFontColor
-                        )
-                    }
+            /* Not going */
+            if (visitorFilterType == VisitorFilterType.ALL || visitorFilterType == VisitorFilterType.NOT_GOING) {
+                Text(
+                    text = stringResource(id = R.string.not_going),
+                    fontWeight = FontWeight.Medium,
+                    fontSize = 16.sp,
+                    color = MaterialTheme.colorScheme.visitorTextFontColor
+                )
 
-                    items(visitors.filter { visitorInfo -> !visitorInfo.isGoing }) { visitor ->
-                        VisitorItem(
-                            visitorInitials = visitor.initials,
-                            visitor = visitor,
-                            isCreator = visitor.isCreator,
-                            onDeleteClicked = visitorDeleteClicked
-                        )
-                    }
+              visitors.filter { visitorInfo -> !visitorInfo.isGoing }.forEach { visitor ->
+                    VisitorItem(
+                        visitorInitials = visitor.initials,
+                        visitor = visitor,
+                        isCreator = visitor.isCreator,
+                        onDeleteClicked = visitorDeleteClicked
+                    )
                 }
             }
         }
@@ -106,5 +96,5 @@ private fun generateVisitorInfo(): List<VisitorInfo> {
             isGoing = Random.nextBoolean(),
             isCreator = Random.nextBoolean()
         )
-    }.take(10).toList()
+    }.take(20).toList()
 }
