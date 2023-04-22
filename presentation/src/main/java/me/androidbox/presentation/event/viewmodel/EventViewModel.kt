@@ -242,14 +242,7 @@ class EventViewModel @Inject constructor(
 
                         onEventScreenEvent(EventScreenEvent.OnAttendeeAdded(attendee))
                         onEventScreenEvent(EventScreenEvent.OnShowVisitorDialog(false))
-/*
-                        _eventScreenState.update { eventScreenState ->
-                            eventScreenState.copy(
-                                isEmailVerified = true,
-                                attendees = eventScreenState.attendees + attendee
-                            )
-                        }
-*/
+
                     } ?: run {
                         _eventScreenState.update { eventScreenState ->
                             eventScreenState.copy(
