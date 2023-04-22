@@ -42,8 +42,11 @@ fun VisitorSection(
                     fontSize = 16.sp,
                     color = MaterialTheme.colorScheme.visitorTextFontColor
                 )
+                Spacer(modifier = Modifier.height(16.dp))
 
                 visitors.filter { visitorInfo -> visitorInfo.isGoing }.forEach { visitor ->
+                    Spacer(modifier = Modifier.height(6.dp))
+
                     VisitorItem(
                         visitorInitials = "SM",
                         visitor = visitor,
@@ -61,8 +64,11 @@ fun VisitorSection(
                     fontSize = 16.sp,
                     color = MaterialTheme.colorScheme.visitorTextFontColor
                 )
+                Spacer(modifier = Modifier.height(16.dp))
 
-              visitors.filter { visitorInfo -> !visitorInfo.isGoing }.forEach { visitor ->
+                visitors.filter { visitorInfo -> !visitorInfo.isGoing }.forEach { visitor ->
+                    Spacer(modifier = Modifier.height(6.dp))
+
                     VisitorItem(
                         visitorInitials = visitor.initials,
                         visitor = visitor,
