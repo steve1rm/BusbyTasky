@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.runtime.collectAsState
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
 import me.androidbox.domain.authentication.ResponseState
@@ -28,7 +29,8 @@ class HomeActivity : ComponentActivity() {
         }
 
         setContent {
-            val authenticatedState = homeViewModel.authenticationState.collectAsState()
+            val authenticatedState = homeViewModel.authenticationState.collectAsStateWithLifecycle()
+
             val destination = when(authenticatedState.value) {
                 is ResponseState.Success -> {
                     Screen.AgendaScreen.route
