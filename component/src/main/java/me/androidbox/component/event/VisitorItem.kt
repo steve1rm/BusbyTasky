@@ -21,16 +21,21 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import me.androidbox.component.R
-import me.androidbox.component.ui.theme.*
+import me.androidbox.component.ui.theme.BusbyTaskyTheme
+import me.androidbox.component.ui.theme.creatorTextFontColor
+import me.androidbox.component.ui.theme.visitorBackgroundColor
+import me.androidbox.component.ui.theme.visitorInitialsFontColor
+import me.androidbox.component.ui.theme.visitorTextFontColor
 import java.util.UUID
 
 @Composable
 fun VisitorItem(
-    visitorInitials: String,
-    visitor: VisitorInfo,
+    initials: String,
+    fullName: String,
+    userId: String,
     isCreator: Boolean = true,
     modifier: Modifier = Modifier,
-    onDeleteClicked: (visitor: VisitorInfo) -> Unit) {
+    onDeleteClicked: (userId: String) -> Unit) {
 
     Row(modifier = modifier
         .fillMaxWidth()
@@ -45,7 +50,7 @@ fun VisitorItem(
                         radius = this.size.maxDimension
                     )
                 },
-            text = visitorInitials,
+            text = initials,
             fontSize = 12.sp,
             color = MaterialTheme.colorScheme.visitorInitialsFontColor,
             fontWeight = FontWeight.SemiBold
@@ -55,7 +60,7 @@ fun VisitorItem(
             modifier = Modifier
                 .weight(1F)
                 .padding(start = 16.dp),
-            text = visitor.fullName,
+            text = fullName,
             fontSize = 14.sp,
             color = MaterialTheme.colorScheme.visitorTextFontColor,
             fontWeight = FontWeight.Normal)
@@ -71,7 +76,7 @@ fun VisitorItem(
         }
         else {
             IconButton(onClick = {
-                onDeleteClicked(visitor)
+                onDeleteClicked(userId)
             }) {
                 Icon(
                     painter = painterResource(id = R.drawable.bin),
@@ -87,16 +92,12 @@ fun VisitorItem(
 fun PreviewVisitorIsCreator() {
     BusbyTaskyTheme {
         VisitorItem(
-            visitorInitials = "SM",
-            visitor = VisitorInfo(
-                initials = "SM",
-                "Steve Mason",
-                UUID.randomUUID().toString(),
-                isGoing = true,
-                isCreator = true
-            ),
-            isCreator = true
-        ) {}
+            initials = "SM",
+            fullName = "Steve Mason",
+            userId = UUID.randomUUID().toString(),
+            isCreator = true,
+            onDeleteClicked = {}
+        )
     }
 }
 
@@ -105,15 +106,11 @@ fun PreviewVisitorIsCreator() {
 fun PreviewVisitorIsVisitor() {
     BusbyTaskyTheme {
         VisitorItem(
-            visitorInitials = "SM",
-            visitor = VisitorInfo(
-                initials = "SM",
-                "Steve Mason",
-                UUID.randomUUID().toString(),
-                isGoing = true,
-                isCreator = true
-            ),
-            isCreator = false
-        ) {}
+            initials = "SM",
+            fullName = "Steve Mason",
+            userId = UUID.randomUUID().toString(),
+            isCreator = false,
+            onDeleteClicked = {}
+        )
     }
 }

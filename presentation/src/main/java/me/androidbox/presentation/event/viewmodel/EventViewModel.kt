@@ -10,12 +10,10 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import me.androidbox.component.event.VisitorInfo
+import me.androidbox.component.agenda.VisitorFilterType
 import me.androidbox.domain.DateTimeFormatterProvider.toZoneDateTime
-import me.androidbox.presentation.agenda.constant.AgendaMenuActionType
 import me.androidbox.domain.agenda.model.Attendee
 import me.androidbox.domain.agenda.model.Event
-import me.androidbox.domain.agenda.usecase.UsersInitialsExtractionUseCase
 import me.androidbox.domain.alarm_manager.AgendaType
 import me.androidbox.domain.alarm_manager.AlarmScheduler
 import me.androidbox.domain.alarm_manager.toAlarmItem
@@ -24,19 +22,18 @@ import me.androidbox.domain.authentication.preference.PreferenceRepository
 import me.androidbox.domain.authentication.remote.EventRepository
 import me.androidbox.domain.event.usecase.VerifyVisitorEmailUseCase
 import me.androidbox.domain.work_manager.UploadEvent
+import me.androidbox.presentation.agenda.constant.AgendaMenuActionType
 import me.androidbox.presentation.alarm_manager.AlarmReminderProvider
 import me.androidbox.presentation.event.screen.EventScreenEvent
 import me.androidbox.presentation.event.screen.EventScreenState
-import me.androidbox.presentation.mapper.toVisitorInfo
 import me.androidbox.presentation.navigation.Screen.EventScreen.EVENT_ID
 import me.androidbox.presentation.navigation.Screen.EventScreen.MENU_ACTION_TYPE
-import java.util.*
+import java.util.UUID
 import javax.inject.Inject
 
 @HiltViewModel
 class EventViewModel @Inject constructor(
     private val eventRepository: EventRepository,
-    private val usersInitialsExtractionUseCase: UsersInitialsExtractionUseCase,
     private val verifyVisitorEmailUseCase: VerifyVisitorEmailUseCase,
     private val preferenceRepository: PreferenceRepository,
     private val alarmScheduler: AlarmScheduler,
@@ -101,20 +98,8 @@ class EventViewModel @Inject constructor(
                 }
             }
             is EventScreenEvent.OnDeleteVisitor -> {
-                val visitorInfo = eventScreenState.value.visitors.firstOrNull { visitorInfo ->
-                    visitorInfo.userId == eventScreenEvent.visitorInfo.userId
-                }
-
                 val attendee = eventScreenState.value.attendees.firstOrNull { attendee ->
                     attendee.userId == eventScreenEvent.visitorInfo.userId
-                }
-
-                if(visitorInfo != null) {
-                    _eventScreenState.update { eventScreenState ->
-                        eventScreenState.copy(
-                            visitors = eventScreenState.visitors - visitorInfo
-                        )
-                    }
                 }
 
                 if(attendee != null) {
@@ -186,17 +171,9 @@ class EventViewModel @Inject constructor(
             }
             is EventScreenEvent.OnAttendeeAdded -> {
                 _eventScreenState.update { eventScreenState ->
-                    val currentUserId = preferenceRepository.retrieveCurrentUserOrNull()?.userId
-                    val initials = usersInitialsExtractionUseCase.execute(eventScreenEvent.attendee.fullName)
-
-                    val visitorInfo = eventScreenEvent.attendee.toVisitorInfo(
-                        initials = initials,
-                        isCreator = currentUserId == eventScreenEvent.attendee.userId
-                    )
-
                     eventScreenState.copy(
                         attendees = eventScreenState.attendees + eventScreenEvent.attendee,
-                        visitors = eventScreenState.visitors + visitorInfo
+                        filteredVisitors = eventScreenState.attendees + eventScreenEvent.attendee
                     )
                 }
             }
@@ -236,11 +213,23 @@ class EventViewModel @Inject constructor(
             is EventScreenEvent.OnDeleteEvent -> {
                 deleteEvent(eventScreenEvent.eventId)
             }
-
             is EventScreenEvent.OnVisitorFilterTypeChanged -> {
                 _eventScreenState.update {  eventScreenState ->
                     eventScreenState.copy(
-                        selectedVisitorFilterType = eventScreenEvent.visitorFilterType
+                        selectedVisitorFilterType = eventScreenEvent.visitorFilterType,
+                        filteredVisitors = eventScreenState.attendees.filter { attendee ->
+                            when(eventScreenEvent.visitorFilterType) {
+                                VisitorFilterType.GOING -> {
+                                    attendee.isGoing
+                                }
+                                VisitorFilterType.NOT_GOING -> {
+                                    !attendee.isGoing
+                                }
+                                VisitorFilterType.ALL -> {
+                                    true
+                                }
+                            }
+                        }
                     )
                 }
             }
