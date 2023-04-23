@@ -219,7 +219,8 @@ fun EventScreen(
                 /** Check if the visitors email does exist */
                 eventScreenEvent(EventScreenEvent.CheckVisitorExists(visitorEmail))
             },
-            isEmailVerified = eventScreenState.isEmailVerified
+            isEmailVerified = eventScreenState.isEmailVerified,
+            isLoading = eventScreenState.isVerifyingVisitorEmail
         )
     }
 

@@ -219,6 +219,13 @@ class EventViewModel @Inject constructor(
             is EventScreenEvent.CheckVisitorExists -> {
                 verifyVisitorEmail(eventScreenEvent.visitorEmail)
             }
+            is EventScreenEvent.OnVerifyingVisitorEmail -> {
+                _eventScreenState.update { eventScreenState ->
+                    eventScreenState.copy(
+                        isVerifyingVisitorEmail = eventScreenEvent.isVerifyingVisitorEmail
+                    )
+                }
+            }
             is EventScreenEvent.OnShowDeleteEventAlertDialog -> {
                 _eventScreenState.update { eventScreenState ->
                     eventScreenState.copy(
@@ -244,6 +251,7 @@ class EventViewModel @Inject constructor(
 
     private fun verifyVisitorEmail(visitorEmail: String) {
         viewModelScope.launch {
+            onEventScreenEvent(EventScreenEvent.OnVerifyingVisitorEmail(true))
             val responseState = verifyVisitorEmailUseCase.execute(visitorEmail)
 
             when(responseState) {
@@ -262,6 +270,7 @@ class EventViewModel @Inject constructor(
                         )
 
                         onEventScreenEvent(EventScreenEvent.OnAttendeeAdded(attendee))
+                        onEventScreenEvent(EventScreenEvent.OnVerifyingVisitorEmail(false))
                         onEventScreenEvent(EventScreenEvent.OnShowVisitorDialog(false))
 
                     } ?: run {
@@ -278,6 +287,7 @@ class EventViewModel @Inject constructor(
                             isEmailVerified = false
                         )
                     }
+                    onEventScreenEvent(EventScreenEvent.OnVerifyingVisitorEmail(false))
                 }
             }
         }

@@ -33,7 +33,8 @@ fun AddVisitorDialog(
     onDialogClose: () -> Unit,
     isValidInput: Boolean,
     onAddButtonClicked: (email: String) -> Unit,
-    modifier: Modifier = Modifier) {
+    modifier: Modifier = Modifier,
+    isLoading: Boolean = false) {
 
     Dialog(onDismissRequest = { onDialogClose() }) {
         Column(
@@ -89,6 +90,7 @@ fun AddVisitorDialog(
             TaskButton(
                 modifier = Modifier.fillMaxWidth(),
                 buttonText = stringResource(R.string.add),
+                isLoading = isLoading,
                 onButtonClick = {
                     onAddButtonClicked(email)
                 }

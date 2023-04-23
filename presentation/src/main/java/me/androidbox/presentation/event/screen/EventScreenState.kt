@@ -17,6 +17,7 @@ data class EventScreenState(
     val selectedVisitorFilterType: VisitorFilterType = VisitorFilterType.ALL,
     val visitors: List<VisitorInfo> = mutableStateListOf(),
     val isEmailVerified: Boolean = true,
+    val isVerifyingVisitorEmail: Boolean = false,
     val eventTitle: String = "New Event",
     val eventDescription: String = "Description",
     val eventId: String = "",
@@ -32,5 +33,5 @@ data class EventScreenState(
     val isSaved: Boolean = false,
     val isEditMode: Boolean = false,
     val isUserEventCreator: Boolean = true,
-    val shouldShowDeleteAlertDialog: Boolean = false
+    val shouldShowDeleteAlertDialog: Boolean = false,
 )
