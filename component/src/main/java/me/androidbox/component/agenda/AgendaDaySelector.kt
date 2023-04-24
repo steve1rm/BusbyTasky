@@ -12,6 +12,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import me.androidbox.component.general.CalendarDayButton
@@ -32,7 +33,9 @@ fun AgendaDaySelector(
 
         (0L..6L).forEach { day ->
             CalendarDayButton(
-                modifier = Modifier.background(color = Orange, shape = RoundedCornerShape(100.dp))
+                modifier = Modifier
+                    .clip(shape = RoundedCornerShape(100.dp))
+                    .background(color = Orange)
                     .size(width = 40.dp, height = 60.dp),
                 date = date.plusDays(day),
                 isSelected = isSelectedDay.dayOfWeek == date.plusDays(day).dayOfWeek,
