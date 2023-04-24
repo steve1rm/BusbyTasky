@@ -27,8 +27,8 @@ import java.time.ZonedDateTime
 fun CalendarDayButton(
     date: ZonedDateTime,
     isSelected: Boolean,
-    onSelected: (date: ZonedDateTime) -> Unit,
-    modifier: Modifier = Modifier) {
+    modifier: Modifier = Modifier,
+    onSelected: (date: ZonedDateTime) -> Unit) {
 
     val backgroundColor = if(isSelected) Orange else White
     val fontDayColor = if(isSelected) DarkGray else Gray
