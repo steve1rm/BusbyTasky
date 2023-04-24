@@ -41,6 +41,7 @@ fun AgendaDaySelector(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceEvenly) {
 
+            /* Display only 6 days */
             (0L..6L).forEach { day ->
                 CalendarDayButton(
                     modifier = Modifier
