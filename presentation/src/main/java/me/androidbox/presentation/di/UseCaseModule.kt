@@ -47,5 +47,9 @@ interface UseCaseModule {
 
     @Reusable
     @Binds
+    fun bindsLogoutUseCaseImp(logoutUseCaseImp: LogoutUseCaseImp): LogoutUseCase
+
+    @Reusable
+    @Binds
     fun bindsUsersInitialsExtractionUseCaseImp(usersInitialsExtractionUseCaseImp: UsersInitialsExtractionUseCaseImp): UsersInitialsExtractionUseCase
 }
