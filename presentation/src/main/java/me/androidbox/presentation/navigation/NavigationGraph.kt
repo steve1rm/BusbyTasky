@@ -131,6 +131,10 @@ fun NavigationGraph(
                     AgendaType.TASK -> TODO()
                     AgendaType.REMINDER -> TODO()
                 }
+            },
+            onLogout = {
+                navHostController.popBackStack()
+                navHostController.navigate(Screen.LoginScreen.route)
             })
         }
 

@@ -14,6 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.maxkeppeker.sheets.core.models.base.rememberUseCaseState
@@ -43,6 +44,7 @@ fun AgendaScreen(
     agendaScreenEvent: (AgendaScreenEvent) -> Unit,
     onSelectedEditAgendaItemClicked: (id: String, AgendaType, agendaMenuActionType: AgendaMenuActionType) -> Unit,
     onSelectedAgendaItem: (agendaType: Int) -> Unit, /* TODO Check where this is being used */
+    onLogout: () -> Unit,
     modifier: Modifier = Modifier) {
 
     val calendarState = rememberUseCaseState()
@@ -50,21 +52,38 @@ fun AgendaScreen(
     Scaffold(
         modifier = modifier,
         topBar = {
-            AgendaTopBar(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(color = MaterialTheme.colorScheme.backgroundBackColor)
-                    .padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 8.dp),
-                initials = agendaScreenState.usersInitials,
-                displayMonth = agendaScreenState.selectedDate.month.toString(),
-                onProfileButtonClicked = {
-                    /** TODO Open dropdown menu here */
-                    Log.d("AGENDA_SCREEN", "Profile button clicked")
-                },
-                onDateClicked = {
-                    calendarState.show()
-                },
-            )
+            Column(modifier = Modifier.fillMaxWidth()) {
+                AgendaTopBar(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(color = MaterialTheme.colorScheme.backgroundBackColor)
+                        .padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 8.dp),
+                    initials = agendaScreenState.usersInitials,
+                    displayMonth = agendaScreenState.selectedDate.month.toString(),
+                    onProfileButtonClicked = {
+                        agendaScreenEvent(AgendaScreenEvent.OnOpenLogoutDropDownMenu(shouldOpen = true))
+                    },
+                    onDateClicked = {
+                        calendarState.show()
+                    },
+                )
+
+                AgendaDropDownMenu(
+                    modifier = Modifier
+                        .background(color = MaterialTheme.colorScheme.dropDownMenuBackgroundColor),
+                    shouldOpenDropdown = agendaScreenState.shouldOpenLogoutDropDownMenu,
+                    onCloseDropdown = {
+                        agendaScreenEvent(
+                            AgendaScreenEvent.OnChangedShowDropdownStatus(shouldOpen = false)
+                        )
+                    },
+                    listOfMenuItemId = listOf(me.androidbox.presentation.R.string.logout),
+                    onSelectedOption = { _ ->
+                        agendaScreenEvent(AgendaScreenEvent.OnOpenLogoutDropDownMenu(shouldOpen = false))
+                        onLogout()
+                    }
+                )
+            }
         },
         floatingActionButton = {
             Box {
@@ -178,7 +197,8 @@ fun PreviewAgendaScreen() {
                     color = MaterialTheme.colorScheme.agendaBackgroundColor),
             agendaScreenEvent = {},
             onSelectedEditAgendaItemClicked = { _, _, _ -> },
-            onSelectedAgendaItem = {}
+            onSelectedAgendaItem = {},
+            onLogout = {}
         )
     }
 }

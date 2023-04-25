@@ -15,6 +15,7 @@ import me.androidbox.domain.authentication.ResponseState
 import me.androidbox.domain.authentication.preference.PreferenceRepository
 import me.androidbox.domain.authentication.remote.AgendaLocalRepository
 import me.androidbox.domain.authentication.remote.EventRepository
+import me.androidbox.domain.authentication.usecase.LogoutUseCase
 import me.androidbox.domain.work_manager.AgendaSynchronizer
 import me.androidbox.domain.work_manager.FullAgendaSynchronizer
 import me.androidbox.presentation.agenda.screen.AgendaScreenEvent
@@ -28,6 +29,7 @@ class AgendaViewModel @Inject constructor(
     private val preferenceRepository: PreferenceRepository,
     private val usersInitialsExtractionUseCase: UsersInitialsExtractionUseCase,
     private val eventRepository: EventRepository,
+    private val logoutUseCase: LogoutUseCase,
     private val agendaLocalRepository: AgendaLocalRepository,
     private val agendaSynchronizer: AgendaSynchronizer,
     private val fullAgendaSynchronizer: FullAgendaSynchronizer
@@ -125,6 +127,24 @@ class AgendaViewModel @Inject constructor(
                     )
                 }
             }
+
+            AgendaScreenEvent.OnLogoutClicked -> {
+                logoutCurrentUser()
+            }
+
+            is AgendaScreenEvent.OnOpenLogoutDropDownMenu -> {
+                _agendaScreenState.update { agendaScreenState ->
+                    agendaScreenState.copy(
+                        shouldOpenLogoutDropDownMenu = agendaScreenEvent.shouldOpen
+                    )
+                }
+            }
+        }
+    }
+
+    private fun logoutCurrentUser() {
+        viewModelScope.launch {
+            logoutUseCase.execute()
         }
     }
 
