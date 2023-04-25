@@ -145,6 +145,7 @@ class AgendaViewModel @Inject constructor(
     private fun logoutCurrentUser() {
         viewModelScope.launch {
             logoutUseCase.execute()
+            preferenceRepository.deleteCurrentUser()
         }
     }
 
