@@ -70,7 +70,8 @@ fun AgendaScreen(
 
                 AgendaDropDownMenu(
                     modifier = Modifier
-                        .background(color = MaterialTheme.colorScheme.dropDownMenuBackgroundColor),
+                        .background(color = MaterialTheme.colorScheme.dropDownMenuBackgroundColor)
+                        .align(Alignment.End),
                     shouldOpenDropdown = agendaScreenState.shouldOpenLogoutDropDownMenu,
                     onCloseDropdown = {
                         agendaScreenEvent(
