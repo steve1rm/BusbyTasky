@@ -3,8 +3,6 @@ package me.androidbox.data.di
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.room.Room
-import androidx.security.crypto.EncryptedSharedPreferences
-import androidx.security.crypto.MasterKeys
 import androidx.work.WorkManager
 import dagger.Binds
 import dagger.Module
@@ -70,8 +68,10 @@ interface RepositoryModule {
 
         @Provides
         fun providesSharedPreferences(@ApplicationContext context: Context): SharedPreferences {
-            val masterKey = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC)
+            return context.getSharedPreferences(SECRET_SHARED_PREFERENCES, Context.MODE_PRIVATE)
 
+            /** FIXME Result in crash using shared preferences instead of encrypted shared preferences */
+            /* val masterKey = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC)
 
             return EncryptedSharedPreferences.create(
                 SECRET_SHARED_PREFERENCES,
@@ -79,7 +79,7 @@ interface RepositoryModule {
                 context,
                 EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
                 EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
-            )
+            )*/
         }
 
         @Provides
