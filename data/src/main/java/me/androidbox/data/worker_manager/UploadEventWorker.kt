@@ -43,15 +43,21 @@ class UploadEventWorker @AssistedInject constructor(
                 createPhotoMultipart.createMultipartPhotos(listOfPhoto.toList())
             } ?: listOf()
 
-            if(runAttemptCount > RETRY_COUNT) {
+            if(runAttemptCount < RETRY_COUNT) {
                 Result.failure()
             }
 
             val responseResult = checkResult {
-                eventService.createEvent(
-                    listOfPhoto = listOfPhotoMultiPart,
-                    eventBody = MultipartBody.Part.createFormData(formData, eventRequestJson)
-                )
+                if(isEditMode) {
+                    eventService.updateEvent(
+                        listOfPhoto = listOfPhotoMultiPart,
+                        eventBody = MultipartBody.Part.createFormData(formData, eventRequestJson))
+                }
+                else {
+                    eventService.createEvent(
+                        listOfPhoto = listOfPhotoMultiPart,
+                        eventBody = MultipartBody.Part.createFormData(formData, eventRequestJson))
+                }
             }
 
             val result = responseResult.fold(

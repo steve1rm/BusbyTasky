@@ -99,13 +99,14 @@ class EventViewModel @Inject constructor(
             }
             is EventScreenEvent.OnDeleteVisitor -> {
                 val attendee = eventScreenState.value.attendees.firstOrNull { attendee ->
-                    attendee.userId == eventScreenEvent.visitorInfo.userId
+                    attendee.userId == eventScreenEvent.userId
                 }
 
                 if(attendee != null) {
                     _eventScreenState.update { eventScreenState ->
                         eventScreenState.copy(
-                            attendees = eventScreenState.attendees - attendee
+                            attendees = eventScreenState.attendees - attendee,
+                            filteredVisitors = eventScreenState.filteredVisitors - attendee
                         )
                     }
                 }
@@ -341,7 +342,7 @@ class EventViewModel @Inject constructor(
                 is ResponseState.Success -> {
                     val alarmItem = event.toAlarmItem(AgendaType.EVENT)
                     alarmScheduler.scheduleAlarmReminder(alarmItem)
-                    uploadEvent.upload(event, isEditMode = false)
+                    uploadEvent.upload(event, isEditMode = eventScreenState.value.isEditMode)
 
                     _eventScreenState.update { eventScreenState ->
                         eventScreenState.copy(isSaved = true)

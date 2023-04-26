@@ -225,7 +225,9 @@ fun EventScreen(
                                 initials = attendee.fullName.toInitials(),
                                 userId = attendee.userId,
                                 fullName = attendee.fullName,
-                                onDeleteClicked = {},
+                                onDeleteClicked = { userId ->
+                                    eventScreenEvent(EventScreenEvent.OnDeleteVisitor(userId))
+                                },
                                 isCreator = eventScreenState.isUserEventCreator
                             )
                         }
@@ -249,7 +251,9 @@ fun EventScreen(
                                 userId = attendee.userId,
                                 fullName = attendee.fullName,
                                 isCreator = eventScreenState.eventCreatorId == attendee.userId,
-                                onDeleteClicked = {}
+                                onDeleteClicked = { userId ->
+                                    eventScreenEvent(EventScreenEvent.OnDeleteVisitor(userId))
+                                }
                             )
                         }
                     }
