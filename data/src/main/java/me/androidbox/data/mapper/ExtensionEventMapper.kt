@@ -1,21 +1,15 @@
 package me.androidbox.data.mapper
 
 import me.androidbox.data.local.entity.EventEntity
-import me.androidbox.data.local.entity.ReminderEntity
-import me.androidbox.data.local.entity.TaskEntity
 import me.androidbox.data.remote.model.request.EventCreateRequestDto
 import me.androidbox.data.remote.model.request.EventUpdateRequestDto
 import me.androidbox.data.remote.model.request.SyncAgendaDto
 import me.androidbox.data.remote.model.response.AttendeeDto
 import me.androidbox.data.remote.model.response.EventDto
-import me.androidbox.data.remote.model.response.ReminderDto
-import me.androidbox.data.remote.model.response.TaskDto
 import me.androidbox.domain.agenda.model.Attendee
 import me.androidbox.domain.agenda.model.Event
-import me.androidbox.domain.agenda.model.Reminder
-import me.androidbox.domain.agenda.model.Task
 import me.androidbox.domain.agenda.model.SyncAgenda
-import java.util.*
+import java.util.UUID
 
 fun EventEntity.toEvent(): Event {
     return Event(
@@ -60,6 +54,7 @@ fun EventDto.toEventEntity(): EventEntity {
         eventCreatorId = this.host,
         isUserEventCreator = this.isUserEventCreator,
         isGoing = true,
+        host = this.host,
         attendees = this.attendees.map { it.toAttendee() },
         photos = this.photos.map { it.key }
     )
@@ -76,6 +71,7 @@ fun Event.toEventEntity(): EventEntity {
         eventCreatorId = this.eventCreatorId,
         isUserEventCreator = this.isUserEventCreator,
         isGoing = this.isGoing,
+        host = "", /** TODO As we get the host as the response in the /event I am not sure when creating events this should be the userId of the logged in user. I have left it empty when create an event */
         attendees = this.attendees,
         photos = this.photos
     )

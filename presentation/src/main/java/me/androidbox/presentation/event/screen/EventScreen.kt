@@ -248,7 +248,7 @@ fun EventScreen(
                                 initials = attendee.fullName.toInitials(),
                                 userId = attendee.userId,
                                 fullName = attendee.fullName,
-                                isCreator = eventScreenState.isUserEventCreator,
+                                isCreator = eventScreenState.eventCreatorId == attendee.userId,
                                 onDeleteClicked = {}
                             )
                         }

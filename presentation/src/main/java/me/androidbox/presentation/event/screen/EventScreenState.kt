@@ -33,5 +33,6 @@ data class EventScreenState(
     val isSaved: Boolean = false,
     val isEditMode: Boolean = false,
     val isUserEventCreator: Boolean = true,
+    val eventCreatorId: String = "",
     val shouldShowDeleteAlertDialog: Boolean = false,
 )

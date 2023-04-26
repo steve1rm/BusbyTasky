@@ -299,7 +299,10 @@ class EventViewModel @Inject constructor(
                                 eventDescription = event.description,
                                 startDate = event.startDateTime.toZoneDateTime(),
                                 endDate = event.endDateTime.toZoneDateTime(),
-                                isUserEventCreator = event.isUserEventCreator
+                                isUserEventCreator = event.isUserEventCreator,
+                                eventCreatorId = event.eventCreatorId,
+                                attendees = event.attendees,
+                                listOfPhotoUri = event.photos
                             )
                         }
                     }
