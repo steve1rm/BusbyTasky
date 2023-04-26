@@ -1,6 +1,5 @@
 package me.androidbox.presentation.agenda.screen
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -14,7 +13,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.maxkeppeker.sheets.core.models.base.rememberUseCaseState
@@ -52,7 +50,7 @@ fun AgendaScreen(
     Scaffold(
         modifier = modifier,
         topBar = {
-            Column(modifier = Modifier.fillMaxWidth()) {
+            Box(modifier = Modifier.fillMaxWidth()) {
                 AgendaTopBar(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -68,23 +66,23 @@ fun AgendaScreen(
                     },
                 )
 
-                AgendaDropDownMenu(
-                    modifier = Modifier
-                        .background(color = MaterialTheme.colorScheme.dropDownMenuBackgroundColor)
-                        .align(Alignment.End),
-                    shouldOpenDropdown = agendaScreenState.shouldOpenLogoutDropDownMenu,
-                    onCloseDropdown = {
-                        agendaScreenEvent(
-                            AgendaScreenEvent.OnChangedShowDropdownStatus(shouldOpen = false)
-                        )
-                    },
-                    listOfMenuItemId = listOf(me.androidbox.presentation.R.string.logout),
-                    onSelectedOption = { _ ->
-                        agendaScreenEvent(AgendaScreenEvent.OnOpenLogoutDropDownMenu(shouldOpen = false))
-                        onLogout()
-                    }
-                )
-            }
+               AgendaDropDownMenu(
+                   modifier = Modifier
+                       .background(color = MaterialTheme.colorScheme.dropDownMenuBackgroundColor)
+                       .align(Alignment.BottomEnd),
+                   shouldOpenDropdown = agendaScreenState.shouldOpenLogoutDropDownMenu,
+                   onCloseDropdown = {
+                       agendaScreenEvent(
+                           AgendaScreenEvent.OnChangedShowDropdownStatus(shouldOpen = false)
+                       )
+                   },
+                   listOfMenuItemId = listOf(me.androidbox.presentation.R.string.logout),
+                   onSelectedOption = { _ ->
+                       agendaScreenEvent(AgendaScreenEvent.OnOpenLogoutDropDownMenu(shouldOpen = false))
+                       onLogout()
+                   }
+               )
+           }
         },
         floatingActionButton = {
             Box {
@@ -192,7 +190,10 @@ fun AgendaScreen(
 fun PreviewAgendaScreen() {
     BusbyTaskyTheme {
         AgendaScreen(
-            agendaScreenState = AgendaScreenState(usersInitials = "SM"),
+            agendaScreenState = AgendaScreenState(
+                usersInitials = "SM",
+                shouldOpenLogoutDropDownMenu = true,
+                shouldOpenDropdown = true),
             modifier = Modifier
                 .background(
                     color = MaterialTheme.colorScheme.agendaBackgroundColor),
