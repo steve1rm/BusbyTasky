@@ -44,4 +44,5 @@
     <string name="confirm_delete_event">Confirm if you want to delete this event</string>
     <string name="confirm">Confirm</string>
     <string name="dismiss">Dismiss</string>
+    <string name="today">Today</string>
 </resources>
