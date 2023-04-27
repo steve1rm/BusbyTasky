@@ -48,7 +48,9 @@ fun AgendaScreen(
     val calendarState = rememberUseCaseState()
 
     LaunchedEffect(key1 = agendaScreenState.deletedCacheCompleted) {
-        onLogout()
+        if(agendaScreenState.deletedCacheCompleted) {
+            onLogout()
+        }
     }
 
     Scaffold(
