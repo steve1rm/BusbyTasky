@@ -64,7 +64,7 @@ fun AgendaScreen(
                     onDateClicked = {
                         calendarState.show()
                     },
-                    dropDropMenuScope = {
+                    dropDownMenu = {
                         AgendaDropDownMenu(
                             modifier = Modifier
                                 .background(color = MaterialTheme.colorScheme.dropDownMenuBackgroundColor)

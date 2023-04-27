@@ -32,7 +32,7 @@ fun AgendaTopBar(
     onProfileButtonClicked: () -> Unit,
     onDateClicked: () -> Unit,
     modifier: Modifier = Modifier,
-    dropDropMenuScope: @Composable () -> Unit
+    dropDownMenu: @Composable () -> Unit
 ) {
 
     Row(
@@ -68,7 +68,7 @@ fun AgendaTopBar(
                 )
             }
 
-            dropDropMenuScope()
+            dropDownMenu()
         }
     }
 }
@@ -86,7 +86,7 @@ fun PreviewAgendaTopBar() {
             initials = "SM",
             onDateClicked = {},
             onProfileButtonClicked = {},
-            dropDropMenuScope = {}
+            dropDownMenu = {}
         )
     }
 }
