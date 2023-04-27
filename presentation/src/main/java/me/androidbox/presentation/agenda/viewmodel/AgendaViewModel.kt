@@ -163,6 +163,12 @@ class AgendaViewModel @Inject constructor(
                     listOf(eventJob, taskJob, reminderJob).forEach { job ->
                         job.join()
                     }
+
+                    _agendaScreenState.update { agendaScreenState ->
+                        agendaScreenState.copy(
+                            deletedCacheCompleted = true
+                        )
+                    }
                 }
                 is ResponseState.Failure -> {
                     /** TODO show error message in snack bar */

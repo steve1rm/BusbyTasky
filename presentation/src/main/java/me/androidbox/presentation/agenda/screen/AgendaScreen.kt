@@ -47,6 +47,10 @@ fun AgendaScreen(
 
     val calendarState = rememberUseCaseState()
 
+    LaunchedEffect(key1 = agendaScreenState.deletedCacheCompleted) {
+        onLogout()
+    }
+
     Scaffold(
         modifier = modifier,
         topBar = {
@@ -78,7 +82,7 @@ fun AgendaScreen(
                             listOfMenuItemId = listOf(me.androidbox.presentation.R.string.logout),
                             onSelectedOption = { _ ->
                                 agendaScreenEvent(AgendaScreenEvent.OnOpenLogoutDropDownMenu(shouldOpen = false))
-                                onLogout()
+                                agendaScreenEvent(AgendaScreenEvent.OnLogoutClicked)
                             }
                         )
                     }
