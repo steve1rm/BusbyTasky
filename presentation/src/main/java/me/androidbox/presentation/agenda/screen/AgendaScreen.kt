@@ -64,24 +64,25 @@ fun AgendaScreen(
                     onDateClicked = {
                         calendarState.show()
                     },
+                    dropDropMenuScope = {
+                        AgendaDropDownMenu(
+                            modifier = Modifier
+                                .background(color = MaterialTheme.colorScheme.dropDownMenuBackgroundColor)
+                                .align(Alignment.BottomEnd),
+                            shouldOpenDropdown = agendaScreenState.shouldOpenLogoutDropDownMenu,
+                            onCloseDropdown = {
+                                agendaScreenEvent(
+                                    AgendaScreenEvent.OnChangedShowDropdownStatus(shouldOpen = false)
+                                )
+                            },
+                            listOfMenuItemId = listOf(me.androidbox.presentation.R.string.logout),
+                            onSelectedOption = { _ ->
+                                agendaScreenEvent(AgendaScreenEvent.OnOpenLogoutDropDownMenu(shouldOpen = false))
+                                onLogout()
+                            }
+                        )
+                    }
                 )
-
-               AgendaDropDownMenu(
-                   modifier = Modifier
-                       .background(color = MaterialTheme.colorScheme.dropDownMenuBackgroundColor)
-                       .align(Alignment.BottomEnd),
-                   shouldOpenDropdown = agendaScreenState.shouldOpenLogoutDropDownMenu,
-                   onCloseDropdown = {
-                       agendaScreenEvent(
-                           AgendaScreenEvent.OnChangedShowDropdownStatus(shouldOpen = false)
-                       )
-                   },
-                   listOfMenuItemId = listOf(me.androidbox.presentation.R.string.logout),
-                   onSelectedOption = { _ ->
-                       agendaScreenEvent(AgendaScreenEvent.OnOpenLogoutDropDownMenu(shouldOpen = false))
-                       onLogout()
-                   }
-               )
            }
         },
         floatingActionButton = {
