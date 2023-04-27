@@ -144,8 +144,30 @@ class AgendaViewModel @Inject constructor(
 
     private fun logoutCurrentUser() {
         viewModelScope.launch {
-            logoutUseCase.execute()
-            preferenceRepository.deleteCurrentUser()
+            when(logoutUseCase.execute()) {
+                ResponseState.Loading -> Unit /* TODO Show loading */
+
+                is ResponseState.Success -> {
+                    preferenceRepository.deleteCurrentUser()
+
+                    val eventJob = viewModelScope.launch {
+                        agendaLocalRepository.deleteAllEvents()
+                    }
+                    val taskJob = viewModelScope.launch {
+                        agendaLocalRepository.deleteAllTasks()
+                    }
+                    val reminderJob = viewModelScope.launch {
+                        agendaLocalRepository.deleteAllReminders()
+                    }
+
+                    listOf(eventJob, taskJob, reminderJob).forEach { job ->
+                        job.join()
+                    }
+                }
+                is ResponseState.Failure -> {
+                    /** TODO show error message in snack bar */
+                }
+            }
         }
     }
 

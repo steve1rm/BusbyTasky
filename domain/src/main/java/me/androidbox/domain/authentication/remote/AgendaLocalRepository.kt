@@ -17,4 +17,10 @@ interface AgendaLocalRepository {
     suspend fun fetchAllRemindAtFromTasks(): List<Task>
 
     suspend fun fetchAllRemindAtFromReminders(): List<Reminder>
+
+    suspend fun deleteAllTasks()
+
+    suspend fun deleteAllEvents()
+
+    suspend fun deleteAllReminders()
 }

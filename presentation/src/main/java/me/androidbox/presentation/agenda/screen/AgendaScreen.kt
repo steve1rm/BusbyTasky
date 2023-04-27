@@ -72,7 +72,7 @@ fun AgendaScreen(
                             shouldOpenDropdown = agendaScreenState.shouldOpenLogoutDropDownMenu,
                             onCloseDropdown = {
                                 agendaScreenEvent(
-                                    AgendaScreenEvent.OnChangedShowDropdownStatus(shouldOpen = false)
+                                    AgendaScreenEvent.OnOpenLogoutDropDownMenu(shouldOpen = false)
                                 )
                             },
                             listOfMenuItemId = listOf(me.androidbox.presentation.R.string.logout),
