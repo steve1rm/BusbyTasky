@@ -70,4 +70,17 @@ class AuthenticationRepositoryImp @Inject constructor(
             ResponseState.Failure(result.exceptionOrNull() as? Exception ?: Exception())
         }
     }
+
+    override suspend fun logout(): ResponseState<Unit> {
+        val result = checkResult<Unit> {
+            authenticationService.logout()
+        }
+
+        return if(result.isSuccess) {
+            ResponseState.Success(Unit)
+        }
+        else {
+            ResponseState.Failure(result.exceptionOrNull() as? Exception ?: Exception())
+        }
+    }
 }

@@ -2,7 +2,13 @@ package me.androidbox.component.agenda
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
@@ -26,6 +32,7 @@ fun AgendaTopBar(
     onProfileButtonClicked: () -> Unit,
     onDateClicked: () -> Unit,
     modifier: Modifier = Modifier,
+    dropDownMenu: @Composable () -> Unit
 ) {
 
     Row(
@@ -43,21 +50,25 @@ fun AgendaTopBar(
             color = MaterialTheme.colorScheme.topbarFontColor
         )
 
-        Button(
-            modifier = Modifier.size(34.dp),
-            contentPadding = PaddingValues(0.dp),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = MaterialTheme.colorScheme.topbarButtonBackgroundColor,
-                contentColor = MaterialTheme.colorScheme.topbarFontColor),
-            onClick = {
-                onProfileButtonClicked()
-            }) {
-            Text(
-                maxLines = 1,
-                text = initials,
-                fontSize = 13.sp,
-                fontWeight = FontWeight.SemiBold,
-            )
+        Box {
+            Button(
+                modifier = Modifier.size(34.dp),
+                contentPadding = PaddingValues(0.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.topbarButtonBackgroundColor,
+                    contentColor = MaterialTheme.colorScheme.topbarFontColor),
+                onClick = {
+                    onProfileButtonClicked()
+                }) {
+                Text(
+                    maxLines = 1,
+                    text = initials,
+                    fontSize = 13.sp,
+                    fontWeight = FontWeight.SemiBold,
+                )
+            }
+
+            dropDownMenu()
         }
     }
 }
@@ -75,6 +86,7 @@ fun PreviewAgendaTopBar() {
             initials = "SM",
             onDateClicked = {},
             onProfileButtonClicked = {},
+            dropDownMenu = {}
         )
     }
 }
