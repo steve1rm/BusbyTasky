@@ -16,12 +16,12 @@ interface EventService {
 
     @GET(EndPointConstant.EVENT)
     suspend fun getEventWithId(
-        @Query("id") eventId: String
+        @Query("eventId") eventId: String
     ): EventDto
 
     @DELETE(EndPointConstant.EVENT)
     suspend fun deleteEventWithId(
-        @Query("id") eventId: String
+        @Query("eventId") eventId: String
     )
 
     @Multipart

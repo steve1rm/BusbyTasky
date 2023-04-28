@@ -73,6 +73,7 @@ class EventRepositoryImp @Inject constructor(
         val result = checkResult {
             eventDao.deleteEventById(id)
             eventDao.insertSyncEvent(EventSyncEntity(id, SyncAgendaType.DELETE))
+
         }
 
         val responseState = result.fold(
