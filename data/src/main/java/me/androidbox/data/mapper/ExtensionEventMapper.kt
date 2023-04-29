@@ -21,7 +21,7 @@ fun EventEntity.toEvent(): Event {
         remindAt = this.remindAt,
         eventCreatorId = this.eventCreatorId,
         isUserEventCreator = this.isUserEventCreator,
-        isGoing = this.isGoing,
+        host = this.host,
         attendees = this.attendees,
         photos = this.photos
     )
@@ -37,7 +37,7 @@ fun EventDto.toEvent(): Event {
         remindAt = this.remindAt,
         eventCreatorId = this.host,
         isUserEventCreator = this.isUserEventCreator,
-        isGoing = true,
+        host = this.host,
         attendees = this.attendees.map { it.toAttendee() },
         photos = this.photos.map { it.key }
     )
@@ -53,7 +53,6 @@ fun EventDto.toEventEntity(): EventEntity {
         remindAt = this.remindAt,
         eventCreatorId = this.host,
         isUserEventCreator = this.isUserEventCreator,
-        isGoing = true,
         host = this.host,
         attendees = this.attendees.map { attendeeDto -> attendeeDto.toAttendee() },
         photos = this.photos.map { photoDto -> photoDto.key }
@@ -70,8 +69,7 @@ fun Event.toEventEntity(): EventEntity {
         remindAt = this.remindAt,
         eventCreatorId = this.eventCreatorId,
         isUserEventCreator = this.isUserEventCreator,
-        isGoing = this.isGoing,
-        host = "", /** TODO As we get the host as the response in the /event I am not sure when creating events this should be the userId of the logged in user. I have left it empty when create an event */
+        host = this.host,
         attendees = this.attendees,
         photos = this.photos
     )
@@ -99,7 +97,7 @@ fun Event.toUpdateEventDto(): EventUpdateRequestDto {
         remindAt = this.remindAt,
         attendeeIds = this.attendees.map { attendee -> attendee.userId },
         deletedPhotoKeys = listOf(UUID.randomUUID().toString(), UUID.randomUUID().toString(), UUID.randomUUID().toString()), /** TODO These keys are obtained when uploading a created event and the BE will return the key and the url */
-        isGoing = this.isGoing
+        isGoing = true
     )
 }
 

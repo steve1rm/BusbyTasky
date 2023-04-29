@@ -12,7 +12,7 @@ data class Event(
     val endDateTime: Long,
     val eventCreatorId: String,
     val isUserEventCreator: Boolean,
-    val isGoing: Boolean,
+    val host: String,
     val attendees: List<Attendee>,
     val photos: List<String>,
 ) : AgendaItem(

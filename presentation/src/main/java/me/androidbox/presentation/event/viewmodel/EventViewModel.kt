@@ -307,6 +307,7 @@ class EventViewModel @Inject constructor(
                                 endDate = event.endDateTime.toZoneDateTime(),
                                 isUserEventCreator = event.isUserEventCreator,
                                 eventCreatorId = event.eventCreatorId,
+                                host = event.host,
                                 attendees = event.attendees,
                                 listOfPhotoUri = event.photos
                             )
@@ -334,7 +335,7 @@ class EventViewModel @Inject constructor(
             remindAt = remindAt.toEpochSecond(),
             eventCreatorId = preferenceRepository.retrieveCurrentUserOrNull()?.userId ?: "",
             isUserEventCreator = true,
-            isGoing = true,
+            host = "",
             attendees = eventScreenState.value.attendees,
             photos = eventScreenState.value.listOfPhotoUri
         )
