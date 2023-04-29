@@ -109,7 +109,8 @@ class EventViewModel @Inject constructor(
                     _eventScreenState.update { eventScreenState ->
                         eventScreenState.copy(
                             attendees = eventScreenState.attendees - attendee,
-                            filteredVisitors = eventScreenState.filteredVisitors - attendee
+                            filteredVisitorsGoing = eventScreenState.attendees.filter { it.isGoing },
+                            filteredVisitorsNotGoing = eventScreenState.attendees.filter { !it.isGoing }
                         )
                     }
                 }
@@ -177,7 +178,8 @@ class EventViewModel @Inject constructor(
                 _eventScreenState.update { eventScreenState ->
                     eventScreenState.copy(
                         attendees = eventScreenState.attendees + eventScreenEvent.attendee,
-                        filteredVisitors = eventScreenState.attendees + eventScreenEvent.attendee
+                        filteredVisitorsGoing = eventScreenState.attendees.filter { it.isGoing },
+                        filteredVisitorsNotGoing = eventScreenState.attendees.filter { !it.isGoing }
                     )
                 }
             }
@@ -228,7 +230,7 @@ class EventViewModel @Inject constructor(
                 _eventScreenState.update {  eventScreenState ->
                     eventScreenState.copy(
                         selectedVisitorFilterType = eventScreenEvent.visitorFilterType,
-                        filteredVisitors = eventScreenState.attendees.filter { attendee ->
+                        /*filteredVisitors = eventScreenState.attendees.filter { attendee ->
                             when(eventScreenEvent.visitorFilterType) {
                                 VisitorFilterType.GOING -> {
                                     attendee.isGoing
@@ -237,10 +239,18 @@ class EventViewModel @Inject constructor(
                                     !attendee.isGoing
                                 }
                                 VisitorFilterType.ALL -> {
-                                    true
+                                    attendee.isGoing xor !attendee.isGoing
                                 }
                             }
-                        }
+                        }*/
+                    )
+                }
+            }
+            EventScreenEvent.LoadVisitors -> {
+                _eventScreenState.update { eventScreenState ->
+                    eventScreenState.copy(
+                        filteredVisitorsGoing = eventScreenState.attendees.filter { it.isGoing },
+                        filteredVisitorsNotGoing = eventScreenState.attendees.filter { !it.isGoing }
                     )
                 }
             }

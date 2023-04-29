@@ -10,6 +10,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
@@ -50,6 +51,10 @@ fun EventScreen(
     modifier: Modifier = Modifier) {
 
     val calendarStateTimeDate = rememberUseCaseState()
+
+    LaunchedEffect(key1 = eventScreenState.attendees) {
+        eventScreenEvent(EventScreenEvent.LoadVisitors)
+    }
 
     Scaffold(
         modifier = modifier,
@@ -220,7 +225,7 @@ fun EventScreen(
                             Spacer(modifier = Modifier.height(16.dp))
 
                         }
-                        items(eventScreenState.filteredVisitors) { attendee ->
+                        items(eventScreenState.filteredVisitorsGoing) { attendee ->
                             VisitorItem(
                                 initials = attendee.fullName.toInitials(),
                                 userId = attendee.userId,
@@ -245,7 +250,7 @@ fun EventScreen(
                             Spacer(modifier = Modifier.height(16.dp))
                         }
 
-                        items(eventScreenState.filteredVisitors) { attendee ->
+                        items(eventScreenState.filteredVisitorsNotGoing) { attendee ->
                             VisitorItem(
                                 initials = attendee.fullName.toInitials(),
                                 userId = attendee.userId,
