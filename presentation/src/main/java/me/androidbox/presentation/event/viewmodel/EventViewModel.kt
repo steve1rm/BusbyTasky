@@ -177,7 +177,7 @@ class EventViewModel @Inject constructor(
             is EventScreenEvent.OnAttendeeAdded -> {
                 _eventScreenState.update { eventScreenState ->
                     eventScreenState.copy(
-                        attendees = eventScreenState.attendees + eventScreenEvent.attendee,
+                        attendees = eventScreenState.attendees + eventScreenEvent.attendee.copy(isGoing = true),
                         filteredVisitorsGoing = eventScreenState.attendees.filter { it.isGoing },
                         filteredVisitorsNotGoing = eventScreenState.attendees.filter { !it.isGoing }
                     )

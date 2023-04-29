@@ -55,8 +55,8 @@ fun EventDto.toEventEntity(): EventEntity {
         isUserEventCreator = this.isUserEventCreator,
         isGoing = true,
         host = this.host,
-        attendees = this.attendees.map { it.toAttendee() },
-        photos = this.photos.map { it.key }
+        attendees = this.attendees.map { attendeeDto -> attendeeDto.toAttendee() },
+        photos = this.photos.map { photoDto -> photoDto.key }
     )
 }
 
@@ -108,9 +108,9 @@ fun AttendeeDto.toAttendee(): Attendee {
         email = this.email,
         fullName = this.fullName,
         userId = this.userId,
-        eventId = "",
-        isGoing = false,
-        remindAt = 0L)
+        eventId = this.eventId,
+        isGoing = this.isGoing ,
+        remindAt = this.remindAt)
 }
 
 fun SyncAgenda.toSyncAgendaDto(): SyncAgendaDto {
