@@ -20,6 +20,7 @@ import me.androidbox.data.local.dao.TaskDao
 import me.androidbox.data.local.database.BusbyTaskyDatabase
 import me.androidbox.data.local.event.EventRepositoryImp
 import me.androidbox.data.remote.agenda.AgendaRemoteRepositoryImp
+import me.androidbox.data.remote.event.DeleteEventWithIdRemoteUseCaseImp
 import me.androidbox.data.remote.event.VerifyVisitorEmailUseCaseImp
 import me.androidbox.data.remote.preference.PreferenceRepositoryImp
 import me.androidbox.data.worker_manager.AgendaSynchronizerImp
@@ -28,6 +29,7 @@ import me.androidbox.data.worker_manager.UploadEventImp
 import me.androidbox.domain.authentication.preference.PreferenceRepository
 import me.androidbox.domain.authentication.remote.AgendaLocalRepository
 import me.androidbox.domain.authentication.remote.EventRepository
+import me.androidbox.domain.event.usecase.DeleteEventWithIdRemoteUseCase
 import me.androidbox.domain.event.usecase.VerifyVisitorEmailUseCase
 import me.androidbox.domain.repository.AgendaRemoteRepository
 import me.androidbox.domain.work_manager.AgendaSynchronizer
@@ -62,6 +64,10 @@ interface RepositoryModule {
     @Reusable
     @Binds
     fun bindsAgendaRepositoryImp(agendaLocalRepositoryImp: AgendaLocalRepositoryImp): AgendaLocalRepository
+
+    @Reusable
+    @Binds
+    fun bindsDeleteEventWithIdRemoteUseCaseImp(deleteEventWithIdRemoteUseCaseImp: DeleteEventWithIdRemoteUseCaseImp): DeleteEventWithIdRemoteUseCase
 
     companion object {
         private const val SECRET_SHARED_PREFERENCES = "secret_shared_preferences"
