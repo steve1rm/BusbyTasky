@@ -15,6 +15,9 @@ import me.androidbox.domain.authentication.ResponseState
 import me.androidbox.domain.authentication.preference.PreferenceRepository
 import me.androidbox.domain.authentication.remote.AgendaLocalRepository
 import me.androidbox.domain.authentication.remote.EventRepository
+import me.androidbox.domain.authentication.usecase.LogoutUseCase
+import me.androidbox.domain.constant.SyncAgendaType
+import me.androidbox.domain.event.usecase.DeleteEventWithIdRemoteUseCase
 import me.androidbox.domain.work_manager.AgendaSynchronizer
 import me.androidbox.domain.work_manager.FullAgendaSynchronizer
 import me.androidbox.presentation.agenda.screen.AgendaScreenEvent
@@ -27,6 +30,8 @@ import javax.inject.Inject
 class AgendaViewModel @Inject constructor(
     private val preferenceRepository: PreferenceRepository,
     private val eventRepository: EventRepository,
+    private val logoutUseCase: LogoutUseCase,
+    private val deleteEventWithIdRemoteUseCase: DeleteEventWithIdRemoteUseCase,
     private val agendaLocalRepository: AgendaLocalRepository,
     private val agendaSynchronizer: AgendaSynchronizer,
     private val fullAgendaSynchronizer: FullAgendaSynchronizer
@@ -90,6 +95,15 @@ class AgendaViewModel @Inject constructor(
     fun deleteEventById(eventId: String) {
         viewModelScope.launch {
             eventRepository.deleteEventById(eventId)
+
+            when(deleteEventWithIdRemoteUseCase.execute(eventId)) {
+                ResponseState.Loading -> Unit /* TODO Show loading */
+                is ResponseState.Success -> Unit /* Nothing to do here as the event from API was success */
+                is ResponseState.Failure -> {
+                    eventRepository.insertSyncEvent(eventId, SyncAgendaType.DELETE)
+                }
+            }
+            fetchAgendaItems(agendaScreenState.value.selectedDate)
         }
     }
 
@@ -122,6 +136,53 @@ class AgendaViewModel @Inject constructor(
                     agendaScreenState.copy(
                         agendaItemClicked = agendaScreenEvent.agendaItem
                     )
+                }
+            }
+
+            AgendaScreenEvent.OnLogoutClicked -> {
+                logoutCurrentUser()
+            }
+
+            is AgendaScreenEvent.OnOpenLogoutDropDownMenu -> {
+                _agendaScreenState.update { agendaScreenState ->
+                    agendaScreenState.copy(
+                        shouldOpenLogoutDropDownMenu = agendaScreenEvent.shouldOpen
+                    )
+                }
+            }
+        }
+    }
+
+    private fun logoutCurrentUser() {
+        viewModelScope.launch {
+            when(logoutUseCase.execute()) {
+                ResponseState.Loading -> Unit /* TODO Show loading */
+
+                is ResponseState.Success -> {
+                    preferenceRepository.deleteCurrentUser()
+
+                    val eventJob = viewModelScope.launch {
+                        agendaLocalRepository.deleteAllEvents()
+                    }
+                    val taskJob = viewModelScope.launch {
+                        agendaLocalRepository.deleteAllTasks()
+                    }
+                    val reminderJob = viewModelScope.launch {
+                        agendaLocalRepository.deleteAllReminders()
+                    }
+
+                    listOf(eventJob, taskJob, reminderJob).forEach { job ->
+                        job.join()
+                    }
+
+                    _agendaScreenState.update { agendaScreenState ->
+                        agendaScreenState.copy(
+                            deletedCacheCompleted = true
+                        )
+                    }
+                }
+                is ResponseState.Failure -> {
+                    /** TODO show error message in snack bar */
                 }
             }
         }

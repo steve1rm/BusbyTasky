@@ -36,4 +36,8 @@ interface UseCaseModule {
     @Reusable
     @Binds
     fun bindsAuthenticationUserUseCaseImp(authenticateUserUseCaseImp: AuthenticateUserUseCaseImp): AuthenticateUserUseCase
+
+    @Reusable
+    @Binds
+    fun bindsLogoutUseCaseImp(logoutUseCaseImp: LogoutUseCaseImp): LogoutUseCase
 }

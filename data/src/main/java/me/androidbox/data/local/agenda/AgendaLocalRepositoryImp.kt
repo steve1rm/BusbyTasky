@@ -100,6 +100,18 @@ class AgendaLocalRepositoryImp @Inject constructor(
         }
     }
 
+    override suspend fun deleteAllTasks() {
+        taskDao.deleteAllTask()
+    }
+
+    override suspend fun deleteAllEvents() {
+        eventDao.deleteAllEvent()
+    }
+
+    override suspend fun deleteAllReminders() {
+        reminderDao.deleteAllReminder()
+    }
+
     private suspend fun insertAllAgendaItems(agenda: Agenda) {
         supervisorScope {
             val eventJobs = agenda.events.map { event ->
