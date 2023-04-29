@@ -10,12 +10,14 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import me.androidbox.data.local.entity.EventSyncEntity
 import me.androidbox.domain.agenda.usecase.UsersInitialsExtractionUseCase
 import me.androidbox.domain.authentication.ResponseState
 import me.androidbox.domain.authentication.preference.PreferenceRepository
 import me.androidbox.domain.authentication.remote.AgendaLocalRepository
 import me.androidbox.domain.authentication.remote.EventRepository
 import me.androidbox.domain.authentication.usecase.LogoutUseCase
+import me.androidbox.domain.constant.SyncAgendaType
 import me.androidbox.domain.event.usecase.DeleteEventWithIdRemoteUseCase
 import me.androidbox.domain.work_manager.AgendaSynchronizer
 import me.androidbox.domain.work_manager.FullAgendaSynchronizer
@@ -95,7 +97,14 @@ class AgendaViewModel @Inject constructor(
     fun deleteEventById(eventId: String) {
         viewModelScope.launch {
             eventRepository.deleteEventById(eventId)
-            deleteEventWithIdRemoteUseCase.execute(eventId)
+
+            when(deleteEventWithIdRemoteUseCase.execute(eventId)) {
+                ResponseState.Loading -> Unit /* TODO Show loading */
+                is ResponseState.Success -> Unit /* Nothing to do here as the event from API was success */
+                is ResponseState.Failure -> {
+                    eventRepository.insertSyncEvent(eventId, SyncAgendaType.DELETE)
+                }
+            }
             fetchAgendaItems(agendaScreenState.value.selectedDate)
         }
     }

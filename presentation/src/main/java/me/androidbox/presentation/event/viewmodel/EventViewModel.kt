@@ -21,6 +21,7 @@ import me.androidbox.domain.alarm_manager.toAlarmItem
 import me.androidbox.domain.authentication.ResponseState
 import me.androidbox.domain.authentication.preference.PreferenceRepository
 import me.androidbox.domain.authentication.remote.EventRepository
+import me.androidbox.domain.constant.SyncAgendaType
 import me.androidbox.domain.event.usecase.DeleteEventWithIdRemoteUseCase
 import me.androidbox.domain.event.usecase.VerifyVisitorEmailUseCase
 import me.androidbox.domain.work_manager.UploadEvent
@@ -329,7 +330,14 @@ class EventViewModel @Inject constructor(
     private fun deleteEvent(eventId: String) {
         viewModelScope.launch {
             eventRepository.deleteEventById(eventId)
-            deleteEventWithIdRemoteUseCase.execute(eventId)
+
+            when(deleteEventWithIdRemoteUseCase.execute(eventId)) {
+                ResponseState.Loading -> Unit /* TODO Show loading */
+                is ResponseState.Success -> Unit /* Nothing to do here as the event from API was success */
+                is ResponseState.Failure -> {
+                    eventRepository.insertSyncEvent(eventId, SyncAgendaType.DELETE)
+                }
+            }
         }
     }
 }
