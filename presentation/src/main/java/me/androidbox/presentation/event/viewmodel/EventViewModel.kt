@@ -200,6 +200,13 @@ class EventViewModel @Inject constructor(
             is EventScreenEvent.CheckVisitorExists -> {
                 verifyVisitorEmail(eventScreenEvent.visitorEmail)
             }
+            is EventScreenEvent.CheckVisitorAlreadyAdded -> {
+                _eventScreenState.update { eventScreenState ->
+                    eventScreenState.copy(
+                        isAlreadyAdded = eventScreenEvent.isAlreadyAdded
+                    )
+                }
+            }
             is EventScreenEvent.OnVerifyingVisitorEmail -> {
                 _eventScreenState.update { eventScreenState ->
                     eventScreenState.copy(
@@ -237,7 +244,6 @@ class EventViewModel @Inject constructor(
                     )
                 }
             }
-
             is EventScreenEvent.OnAttendeeDeleted -> TODO()
         }
     }

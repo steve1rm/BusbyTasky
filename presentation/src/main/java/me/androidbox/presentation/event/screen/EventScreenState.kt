@@ -17,6 +17,7 @@ data class EventScreenState(
     val selectedVisitorFilterType: VisitorFilterType = VisitorFilterType.ALL,
     val filteredVisitors: List<Attendee> = mutableStateListOf(),
     val isEmailVerified: Boolean = true,
+    val isAlreadyAdded: Boolean = false,
     val isVerifyingVisitorEmail: Boolean = false,
     val eventTitle: String = "New Event",
     val eventDescription: String = "Description",

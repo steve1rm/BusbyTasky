@@ -313,10 +313,23 @@ fun EventScreen(
             },
             isValidInput = false,
             onAddButtonClicked = { visitorEmail ->
-                /** Check if the visitors email does exist */
-                eventScreenEvent(EventScreenEvent.CheckVisitorExists(visitorEmail))
+
+                /** TODO Remove this logic for checking attendees already added to the viewModel */
+                val attendee = eventScreenState.attendees.firstOrNull { attendee ->
+                    attendee.email == visitorEmail
+                }
+                if(attendee == null) {
+                    /** Avoid adding duplicate attendees - check if they have already been added */
+                    eventScreenEvent(EventScreenEvent.CheckVisitorAlreadyAdded(false))
+                    /** Check if the visitors email does exist */
+                    eventScreenEvent(EventScreenEvent.CheckVisitorExists(visitorEmail))
+                }
+                else {
+                    eventScreenEvent(EventScreenEvent.CheckVisitorAlreadyAdded(true))
+                }
             },
             isEmailVerified = eventScreenState.isEmailVerified,
+            isAlreadyAdded = eventScreenState.isAlreadyAdded,
             isLoading = eventScreenState.isVerifyingVisitorEmail
         )
     }

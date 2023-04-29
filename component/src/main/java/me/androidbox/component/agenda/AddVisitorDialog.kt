@@ -1,5 +1,6 @@
 package me.androidbox.component.agenda
 
+import android.provider.CalendarContract.Attendees
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -32,6 +33,7 @@ fun AddVisitorDialog(
     onEmailChanged: (email: String) -> Unit,
     onDialogClose: () -> Unit,
     isValidInput: Boolean,
+    isAlreadyAdded: Boolean,
     onAddButtonClicked: (email: String) -> Unit,
     modifier: Modifier = Modifier,
     isLoading: Boolean = false) {
@@ -74,11 +76,18 @@ fun AddVisitorDialog(
                 }
             )
 
-            if(!isEmailVerified) {
+            if(!isEmailVerified or isAlreadyAdded) {
+                val errorMessage = if(!isEmailVerified) {
+                    stringResource(id = R.string.email_verify_failed)
+                }
+                else {
+                    stringResource(R.string.visitor_already_added)
+                }
+
                 Text(
                     modifier = Modifier.fillMaxWidth(),
                     textAlign = TextAlign.Center,
-                    text = stringResource(R.string.email_verify_failed),
+                    text = errorMessage,
                     fontWeight = FontWeight.Normal,
                     fontSize = 16.sp,
                     color = MaterialTheme.colorScheme.error
@@ -114,6 +123,29 @@ fun PreviewAddVisitorDialog() {
             email = "joeblogs@gmail.com",
             isEmailVerified = true,
             isValidInput = true,
+            isAlreadyAdded = false,
+            onEmailChanged = {},
+            onDialogClose = {},
+            onAddButtonClicked = {}
+        )
+    }
+}
+@Composable
+@Preview(showBackground = true)
+fun PreviewAddVisitorDialogDuplicateVisitor() {
+    BusbyTaskyTheme {
+        AddVisitorDialog(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(
+                    color = MaterialTheme.colorScheme.backgroundWhiteColor,
+                    shape = RoundedCornerShape(16.dp)
+                )
+                .padding(20.dp),
+            email = "joeblogs@gmail.com",
+            isEmailVerified = true,
+            isValidInput = true,
+            isAlreadyAdded = true,
             onEmailChanged = {},
             onDialogClose = {},
             onAddButtonClicked = {}
@@ -135,6 +167,7 @@ fun PreviewAddVisitorDialogErrorMessage() {
                 .padding(20.dp),
             email = "joeblogs@gmail.com",
             isEmailVerified = false,
+            isAlreadyAdded = false,
             isValidInput = true,
             onEmailChanged = {},
             onDialogClose = {},

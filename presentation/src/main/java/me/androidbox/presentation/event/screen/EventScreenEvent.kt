@@ -15,6 +15,7 @@ sealed interface EventScreenEvent {
     data class OnShowVisitorDialog(val shouldShowVisitorDialog: Boolean): EventScreenEvent
     data class CheckVisitorExists(val visitorEmail: String): EventScreenEvent
     /* Visitor Type i.e. All, Going, Not Going */
+    data class CheckVisitorAlreadyAdded(val isAlreadyAdded: Boolean): EventScreenEvent
     data class OnVisitorFilterTypeChanged(val visitorFilterType: VisitorFilterType): EventScreenEvent
     data class OnVerifyingVisitorEmail(val isVerifyingVisitorEmail: Boolean) : EventScreenEvent
     data class OnSelectedAgendaAction(val agendaActionType: AgendaActionType): EventScreenEvent
