@@ -229,21 +229,7 @@ class EventViewModel @Inject constructor(
             is EventScreenEvent.OnVisitorFilterTypeChanged -> {
                 _eventScreenState.update {  eventScreenState ->
                     eventScreenState.copy(
-                        selectedVisitorFilterType = eventScreenEvent.visitorFilterType,
-                        /*filteredVisitors = eventScreenState.attendees.filter { attendee ->
-                            when(eventScreenEvent.visitorFilterType) {
-                                VisitorFilterType.GOING -> {
-                                    attendee.isGoing
-                                }
-                                VisitorFilterType.NOT_GOING -> {
-                                    !attendee.isGoing
-                                }
-                                VisitorFilterType.ALL -> {
-                                    attendee.isGoing xor !attendee.isGoing
-                                }
-                            }
-                        }*/
-                    )
+                        selectedVisitorFilterType = eventScreenEvent.visitorFilterType)
                 }
             }
             EventScreenEvent.LoadVisitors -> {
