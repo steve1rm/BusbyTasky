@@ -90,7 +90,8 @@ fun EventScreen(
                         color = Color.White,
                         shape = RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp)
                     )
-                    .padding(it)
+                    .padding(it),
+                    verticalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
 
                     item {
