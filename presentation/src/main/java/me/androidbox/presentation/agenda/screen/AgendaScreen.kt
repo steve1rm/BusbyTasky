@@ -56,10 +56,6 @@ fun AgendaScreen(
         }
     }
 
-    var selectedDay by remember {
-        mutableStateOf(ZonedDateTime.now())
-    }
-
     Scaffold(
         modifier = modifier,
         topBar = {
@@ -151,7 +147,6 @@ fun AgendaScreen(
                         isSelectedDay = agendaScreenState.selectedDay,
                         onSelected = { day ->
                             agendaScreenEvent(AgendaScreenEvent.OnSelectedDayChanged(day))
-                          //  agendaScreenEvent(AgendaScreenEvent.OnDateChanged(day))
                         })
                 }
 
