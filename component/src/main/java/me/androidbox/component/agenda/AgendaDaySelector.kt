@@ -52,7 +52,7 @@ fun AgendaDaySelector(
         }
 
         Spacer(Modifier.height(34.dp))
-        val selectedDate = if(isSelectedDay.dayOfWeek == date.dayOfWeek) stringResource(R.string.today) else "${date.dayOfMonth} ${date.month} ${date.year}"
+        val selectedDate = if(isSelectedDay.dayOfWeek == ZonedDateTime.now().dayOfWeek) stringResource(R.string.today) else "${isSelectedDay.dayOfMonth} ${isSelectedDay.month} ${isSelectedDay.year}"
         Text(text = selectedDate, fontWeight = FontWeight.Bold, fontSize = 20.sp)
     }
 }
