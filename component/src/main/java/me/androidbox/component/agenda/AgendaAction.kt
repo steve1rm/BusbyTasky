@@ -52,9 +52,9 @@ fun AgendaAction(
                 onActionClicked(agendaActionType)
             },
             text = stringResource(id = agendaActionType.titleRes).uppercase(Locale.getDefault()),
-            fontSize = 16.sp,
-            color = MaterialTheme.colorScheme.visitorTextFontColor,
-            fontWeight = FontWeight.SemiBold)
+            style = MaterialTheme.typography.titleMedium.copy(
+                color = MaterialTheme.colorScheme.visitorTextFontColor
+            ))
 
         Spacer(modifier = Modifier.height(50.dp))
 

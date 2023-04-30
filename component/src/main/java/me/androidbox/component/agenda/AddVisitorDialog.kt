@@ -56,9 +56,9 @@ fun AddVisitorDialog(
                 modifier = Modifier.fillMaxWidth(),
                 textAlign = TextAlign.Center,
                 text = stringResource(R.string.add_visitor),
-                fontWeight = FontWeight.Bold,
-                fontSize = 20.sp,
-                color = MaterialTheme.colorScheme.agendaSubTitleHeaderColor
+                style = MaterialTheme.typography.titleLarge.copy(
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 20.sp)
             )
 
             Spacer(modifier = Modifier.height(30.dp))

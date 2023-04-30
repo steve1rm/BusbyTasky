@@ -21,6 +21,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import me.androidbox.component.ui.theme.BusbyTaskyTheme
+import me.androidbox.component.ui.theme.LightBlue
 import me.androidbox.component.ui.theme.backgroundBackColor
 import me.androidbox.component.ui.theme.topbarButtonBackgroundColor
 import me.androidbox.component.ui.theme.topbarFontColor
@@ -45,9 +46,8 @@ fun AgendaTopBar(
                 onDateClicked()
             },
             text = displayMonth,
-            fontSize = 16.sp,
-            fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colorScheme.topbarFontColor
+            style = MaterialTheme.typography.labelLarge.copy(
+                color = MaterialTheme.colorScheme.topbarFontColor)
         )
 
         Box {
@@ -63,9 +63,9 @@ fun AgendaTopBar(
                 Text(
                     maxLines = 1,
                     text = initials,
-                    fontSize = 13.sp,
-                    fontWeight = FontWeight.SemiBold,
-                )
+                    style = MaterialTheme.typography.bodySmall.copy(
+                        color = LightBlue
+                    ))
             }
 
             dropDownMenu()

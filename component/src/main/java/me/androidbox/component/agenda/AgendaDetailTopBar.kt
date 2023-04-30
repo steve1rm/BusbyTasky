@@ -45,9 +45,8 @@ fun AgendaDetailTopBar(
 
         Text(
             text = displayDate.uppercase(),
-            fontWeight = FontWeight.SemiBold,
-            fontSize = 16.sp,
-            color = MaterialTheme.colorScheme.fontWhiteColor)
+            style = MaterialTheme.typography.titleMedium
+        )
 
         when(editModeType) {
             is EditModeType.EditMode -> {
@@ -66,9 +65,7 @@ fun AgendaDetailTopBar(
                     }) {
                     Text(
                         text = stringResource(id = editModeType.saveRes),
-                        fontWeight = FontWeight.SemiBold,
-                        fontSize = 16.sp,
-                        color = MaterialTheme.colorScheme.fontWhiteColor)
+                        style = MaterialTheme.typography.titleMedium)
                 }
             }
         }

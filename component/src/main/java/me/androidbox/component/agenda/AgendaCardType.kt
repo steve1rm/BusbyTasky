@@ -54,9 +54,11 @@ fun AgendaCard(
 
                     Text(
                         text = title,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 20.sp,
-                        color = agendaCardType.titleTextColor,
+                        style = MaterialTheme.typography.titleLarge.copy(
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 20.sp,
+                            color = agendaCardType.titleTextColor,
+                        ),
                         textDecoration = if(isAgendaCompleted) TextDecoration.LineThrough else TextDecoration.None
                     )
                 }
@@ -70,9 +72,8 @@ fun AgendaCard(
             Text(
                 modifier = Modifier.padding(start = 48.dp),
                 text = subtitle,
-                fontWeight = FontWeight.Normal,
-                fontSize = 14.sp,
-                color = agendaCardType.subTitleTextColor
+                style = MaterialTheme.typography.bodyMedium.copy(
+                    color = agendaCardType.subTitleTextColor)
             )
         }
         Text(
@@ -80,9 +81,8 @@ fun AgendaCard(
                 .padding(bottom = 12.dp, end = 16.dp)
                 .align(alignment = Alignment.BottomEnd),
             text = dateTimeInfo,
-            fontWeight = FontWeight.Normal,
-            fontSize = 14.sp,
-            color = agendaCardType.subTitleTextColor
+            style = MaterialTheme.typography.bodyMedium.copy(
+                color = agendaCardType.subTitleTextColor)
         )
     }
 }

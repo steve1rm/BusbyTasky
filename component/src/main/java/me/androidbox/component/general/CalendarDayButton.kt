@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -43,9 +44,19 @@ fun CalendarDayButton(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally) {
 
-        Text(text = date.dayOfWeek.name.first().toString(), fontSize = 12.sp, color = fontDayColor)
+        Text(
+            text = date.dayOfWeek.name.first().toString(),
+            style = MaterialTheme.typography.labelMedium.copy(
+                color = fontDayColor
+            )
+        )
         Spacer(modifier = Modifier.height(8.dp))
-        Text(text = date.dayOfMonth.toString(), fontSize = 16.sp, color = DarkGray,  fontWeight = FontWeight.Bold)
+        Text(
+            text = date.dayOfMonth.toString(),
+            style = MaterialTheme.typography.labelLarge.copy(
+                color = DarkGray
+            )
+        )
     }
 }
 

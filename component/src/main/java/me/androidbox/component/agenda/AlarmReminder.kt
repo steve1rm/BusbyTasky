@@ -39,9 +39,9 @@ fun AlarmReminder(
 
                 Text(
                     text = reminderText,
-                    fontWeight = FontWeight.Normal,
-                    fontSize = 16.sp,
-                    color = MaterialTheme.colorScheme.agendaBodyTextColor)
+                    style = MaterialTheme.typography.bodyLarge.copy(
+                        color = MaterialTheme.colorScheme.agendaBodyTextColor)
+                    )
             }
 
             Row {

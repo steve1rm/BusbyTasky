@@ -35,7 +35,11 @@ fun PasswordTextField(
             onPasswordChange(newInput)
         },
         placeholder = {
-            Text(text = placeholderText, color = MaterialTheme.colorScheme.placeholderEntry)
+            Text(
+                text = placeholderText,
+                style = MaterialTheme.typography.bodyLarge.copy(
+                    color = MaterialTheme.colorScheme.placeholderEntry)
+            )
         },
         trailingIcon = {
             val visibilityIconId = if(isPasswordVisible) {
