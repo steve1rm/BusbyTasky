@@ -148,10 +148,10 @@ fun AgendaScreen(
                 item {
                     AgendaDaySelector(
                         date = agendaScreenState.selectedDate,
-                        isSelectedDay = selectedDay,
+                        isSelectedDay = agendaScreenState.selectedDay,
                         onSelected = { day ->
-                            selectedDay = day
-                        //   agendaScreenEvent(AgendaScreenEvent.OnDateChanged(selectedDay))
+                            agendaScreenEvent(AgendaScreenEvent.OnSelectedDayChanged(day))
+                          //  agendaScreenEvent(AgendaScreenEvent.OnDateChanged(day))
                         })
                 }
 

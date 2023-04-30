@@ -98,8 +98,8 @@ fun NavigationGraph(
             val agendaScreenState by agendaViewModel.agendaScreenState.collectAsStateWithLifecycle()
 
             /** FIXME There is an issue as insertion, deletion should automatically trigger collectLatest flow */
-            LaunchedEffect(key1 = agendaScreenState.selectedDate) {
-                agendaViewModel.fetchAgendaItems(agendaScreenState.selectedDate)
+            LaunchedEffect(key1 = agendaScreenState.selectedDay) {
+                agendaViewModel.fetchAgendaItems(agendaScreenState.selectedDay)
             }
 
             AgendaScreen(
