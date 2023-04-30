@@ -33,14 +33,14 @@ import me.androidbox.domain.authentication.ResponseState
 @Composable
 fun RegisterScreen(
     modifier: Modifier = Modifier,
-    registerScreenState: State<AuthenticationScreenState<Unit>>,
+    registerScreenState: AuthenticationScreenState<Unit>,
     loginScreenEvent: (AuthenticationScreenEvent) -> Unit,
     onBackArrowClicked: () -> Unit,
     onRegistrationSuccess: () -> Unit)
 {
 
-    LaunchedEffect(key1 = registerScreenState.value) {
-        when(val status = registerScreenState.value.responseState) {
+    LaunchedEffect(key1 = registerScreenState) {
+        when(val status = registerScreenState.responseState) {
             ResponseState.Loading -> {
                 /* TODO Show a loading progress spinner */
             }
@@ -94,7 +94,7 @@ fun RegisterScreen(
                             shape = RoundedCornerShape(10.dp),
                             color = MaterialTheme.colorScheme.backgroundInputEntry
                         ),
-                    inputValue = registerScreenState.value.username,
+                    inputValue = registerScreenState.username,
                     isInputValid = false,
                     placeholderText = stringResource(R.string.name),
                     onInputChange = { newUsername ->
@@ -111,7 +111,7 @@ fun RegisterScreen(
                             shape = RoundedCornerShape(10.dp),
                             color = MaterialTheme.colorScheme.backgroundInputEntry
                         ),
-                    inputValue = registerScreenState.value.email,
+                    inputValue = registerScreenState.email,
                     isInputValid = false,
                     placeholderText = stringResource(R.string.email_address),
                     onInputChange = { newEmail ->
@@ -128,9 +128,9 @@ fun RegisterScreen(
                             shape = RoundedCornerShape(10.dp),
                             color = MaterialTheme.colorScheme.backgroundInputEntry
                         ),
-                    passwordValue = registerScreenState.value.password,
+                    passwordValue = registerScreenState.password,
                     placeholderText = stringResource(R.string.password),
-                    isPasswordVisible = registerScreenState.value.isPasswordVisible,
+                    isPasswordVisible = registerScreenState.isPasswordVisible,
                     onPasswordChange = { newPassword ->
                         loginScreenEvent(AuthenticationScreenEvent.OnPasswordChanged(newPassword))
                     },
@@ -186,12 +186,11 @@ fun RegisterScreen(
 @Preview(showBackground = true)
 fun PreviewRegisterScreen() {
     BusbyTaskyTheme {
-        /** TODO Fix these */
-/*
         RegisterScreen(
             onBackArrowClicked = {},
-            onRegistrationSuccess = {}
+            onRegistrationSuccess = {},
+            loginScreenEvent = {},
+            registerScreenState = AuthenticationScreenState()
         )
-*/
     }
 }

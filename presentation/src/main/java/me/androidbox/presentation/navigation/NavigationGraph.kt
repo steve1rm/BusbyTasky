@@ -48,7 +48,7 @@ fun NavigationGraph(
         ) {
             val loginViewModel: LoginViewModel = hiltViewModel()
             val loginScreenState
-                    = loginViewModel.loginScreenState.collectAsStateWithLifecycle()
+                    by loginViewModel.loginScreenState.collectAsStateWithLifecycle()
 
             LoginScreen(
                 loginScreenEvent = { loginEvent ->
@@ -72,7 +72,7 @@ fun NavigationGraph(
         ) {
             val registerViewModel: RegisterViewModel = hiltViewModel()
             val registerScreenState
-                    = registerViewModel.registerScreenState.collectAsStateWithLifecycle()
+                    by registerViewModel.registerScreenState.collectAsStateWithLifecycle()
 
             RegisterScreen(
                 loginScreenEvent = { loginScreenEvent ->
