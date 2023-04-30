@@ -10,7 +10,7 @@ android {
     compileSdk = 33
 
     defaultConfig {
-        minSdk = 21
+        minSdk = 24
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -85,7 +85,8 @@ dependencies {
 
     // Encrypted shared preferences
     // implementation(libs.security.crypto.ktx)
-    implementation("androidx.security:security-crypto-ktx:1.1.0-alpha05")
+  //  implementation("androidx.security:security-crypto-ktx:1.1.0-alpha05")
+    implementation("androidx.security:security-crypto:1.0.0")
     implementation("androidx.work:work-runtime-ktx:2.8.0")
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:1.1.5")
     implementation("androidx.work:work-runtime-ktx:2.8.0")
