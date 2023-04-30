@@ -40,7 +40,7 @@ fun TaskButton(
         }) {
         Text(
             text = buttonText,
-            style = MaterialTheme.typography.labelLarge
+            style = MaterialTheme.typography.labelLarge.copy(fontSize = textSize)
         )
     }
 }
