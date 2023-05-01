@@ -75,7 +75,7 @@ class EventViewModel @Inject constructor(
                 else -> {
                     _eventScreenState.update { eventScreenState ->
                         eventScreenState.copy(
-                            isEditMode = true,
+                            isEditMode = false,
                             eventId = UUID.randomUUID().toString()
                         )
                     }
