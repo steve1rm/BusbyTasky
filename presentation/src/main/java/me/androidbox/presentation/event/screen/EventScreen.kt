@@ -27,6 +27,7 @@ import me.androidbox.component.ui.theme.backgroundBackColor
 import me.androidbox.component.ui.theme.backgroundWhiteColor
 import me.androidbox.component.ui.theme.dropDownMenuBackgroundColor
 import me.androidbox.domain.DateTimeFormatterProvider.DATE_PATTERN
+import me.androidbox.domain.DateTimeFormatterProvider.LONG_DATE_PATTERN
 import me.androidbox.domain.DateTimeFormatterProvider.TIME_PATTERN
 import me.androidbox.domain.DateTimeFormatterProvider.formatDateTime
 import java.time.ZoneId
@@ -54,7 +55,7 @@ fun EventScreen(
                     .background(color = MaterialTheme.colorScheme.backgroundBackColor)
                     .padding(horizontal = 16.dp),
                 editModeType = if(eventScreenState.isEditMode) { EditModeType.SaveMode() } else { EditModeType.EditMode() },
-                displayDate = "31 March 2023", /* TODO Get the date from the agenda screen that was selected by the user */
+                displayDate = eventScreenState.startDate.formatDateTime(LONG_DATE_PATTERN),
                 onCloseClicked = onCloseClicked,
                 onEditClicked = {
                     eventScreenEvent(EventScreenEvent.OnEditModeChangeStatus(isEditModel = true))
