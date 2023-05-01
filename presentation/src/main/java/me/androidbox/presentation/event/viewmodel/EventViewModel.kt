@@ -75,7 +75,7 @@ class EventViewModel @Inject constructor(
                 else -> {
                     _eventScreenState.update { eventScreenState ->
                         eventScreenState.copy(
-                            isEditMode = false,
+                            isEditMode = true,
                             eventId = UUID.randomUUID().toString()
                         )
                     }
@@ -210,6 +210,14 @@ class EventViewModel @Inject constructor(
             is EventScreenEvent.OnDeleteEvent -> {
                 deleteEvent(eventScreenEvent.eventId)
             }
+
+            is EventScreenEvent.OnEditModeChangeStatus -> {
+                _eventScreenState.update { eventScreenState ->
+                    eventScreenState.copy(
+                        isEditMode = eventScreenEvent.isEditModel
+                    )
+                }
+            }
         }
     }
 
@@ -313,7 +321,7 @@ class EventViewModel @Inject constructor(
                 is ResponseState.Success -> {
                     val alarmItem = event.toAlarmItem(AgendaType.EVENT)
                     alarmScheduler.scheduleAlarmReminder(alarmItem)
-                    uploadEvent.upload(event, isEditMode = false)
+                    uploadEvent.upload(event, isEditMode = eventScreenState.value.isEditMode)
 
                     _eventScreenState.update { eventScreenState ->
                         eventScreenState.copy(isSaved = true)
