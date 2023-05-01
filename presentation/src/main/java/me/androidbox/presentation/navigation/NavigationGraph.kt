@@ -133,11 +133,10 @@ fun NavigationGraph(
                     AgendaType.EVENT -> {
                         when(agendaMenuActionType) {
                             AgendaMenuActionType.OPEN -> {
-                                val open = AgendaMenuActionType.OPEN.name
                                 navHostController.navigate(route = "${Screen.EventScreen.EVENT_SCREEN}/$eventId/${AgendaMenuActionType.OPEN}")
                             }
                             AgendaMenuActionType.EDIT -> {
-                                navHostController.navigate(Screen.EventScreen.route)
+                                navHostController.navigate(route = "${Screen.EventScreen.EVENT_SCREEN}/$eventId/${AgendaMenuActionType.EDIT}")
                             }
                             AgendaMenuActionType.DELETE -> {
                                 agendaViewModel.deleteEventById(eventId)
