@@ -15,6 +15,7 @@ object DateTimeFormatterProvider {
 
     const val DATE_PATTERN = "MMM, dd yyyy"
     const val TIME_PATTERN = "HH:mm"
+    const val LONG_DATE_PATTERN = "d MMMM yyyy"
 
     fun ZonedDateTime.formatDateTime(pattern: String): String {
         return DateTimeFormatter.ofPattern(pattern, Locale.getDefault()).format(this)
