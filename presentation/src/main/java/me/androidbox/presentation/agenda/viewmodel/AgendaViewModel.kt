@@ -152,6 +152,14 @@ class AgendaViewModel @Inject constructor(
                     )
                 }
             }
+
+            is AgendaScreenEvent.OnSelectedDayChanged -> {
+                _agendaScreenState.update { agendaScreenState ->
+                    agendaScreenState.copy(
+                        selectedDay = agendaScreenEvent.day
+                    )
+                }
+            }
         }
     }
 

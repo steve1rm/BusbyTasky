@@ -23,6 +23,7 @@ import com.maxkeppeler.sheets.calendar.models.CalendarStyle
 import me.androidbox.component.R
 import me.androidbox.component.agenda.AgendaCard
 import me.androidbox.component.agenda.AgendaCardType
+import me.androidbox.component.agenda.AgendaDaySelector
 import me.androidbox.component.agenda.AgendaTopBar
 import me.androidbox.component.general.AgendaDropDownMenu
 import me.androidbox.component.general.TaskActionButton
@@ -33,7 +34,9 @@ import me.androidbox.domain.DateTimeFormatterProvider.toDisplayDateTime
 import me.androidbox.domain.DateTimeFormatterProvider.toZoneDateTime
 import me.androidbox.domain.alarm_manager.AgendaType
 import me.androidbox.presentation.agenda.constant.AgendaMenuActionType
+import me.androidbox.presentation.event.screen.EventScreenEvent
 import me.androidbox.presentation.ui.theme.BusbyTaskyTheme
+import java.time.ZonedDateTime
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -134,6 +137,19 @@ fun AgendaScreen(
                 contentPadding = PaddingValues(horizontal = 8.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp)) {
 
+                item {
+                    Spacer(modifier = Modifier.height(12.dp))
+                }
+
+                item {
+                    AgendaDaySelector(
+                        date = agendaScreenState.selectedDate,
+                        isSelectedDay = agendaScreenState.selectedDay,
+                        onSelected = { day ->
+                            agendaScreenEvent(AgendaScreenEvent.OnSelectedDayChanged(day))
+                        })
+                }
+
                 items(agendaScreenState.agendaItems) { agendaItem ->
                     AgendaCard(
                         modifier = Modifier
@@ -186,7 +202,6 @@ fun AgendaScreen(
             yearSelection = true
         ),
         selection = CalendarSelection.Date { localDate ->
-
             agendaScreenEvent(AgendaScreenEvent.OnDateChanged(localDate.toZoneDateTime()))
         }
     )
