@@ -44,7 +44,7 @@ fun AgendaScreen(
     agendaScreenState: AgendaScreenState,
     agendaScreenEvent: (AgendaScreenEvent) -> Unit,
     onSelectedEditAgendaItemClicked: (id: String, AgendaType, agendaMenuActionType: AgendaMenuActionType) -> Unit,
-    onSelectedAgendaItem: (agendaType: Int) -> Unit, /* TODO Check where this is being used */
+    onSelectedAgendaItem: (agendaType: Int) -> Unit,
     onLogout: () -> Unit,
     modifier: Modifier = Modifier) {
 

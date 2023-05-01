@@ -1,16 +1,21 @@
 package me.androidbox.presentation.navigation
 
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavArgs
+import androidx.navigation.NavArgument
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import androidx.navigation.navDeepLink
+import me.androidbox.domain.agenda.model.AgendaItem
 import me.androidbox.presentation.agenda.constant.AgendaMenuActionType
 import me.androidbox.domain.alarm_manager.AgendaType
 import me.androidbox.domain.constant.AgendaDeepLinks
@@ -31,6 +36,9 @@ import me.androidbox.presentation.navigation.Screen.EditScreen.CONTENT
 import me.androidbox.presentation.navigation.Screen.EditScreen.CONTENT_TYPE
 import me.androidbox.presentation.navigation.Screen.EventScreen.EVENT_ID
 import me.androidbox.presentation.navigation.Screen.EventScreen.MENU_ACTION_TYPE
+import me.androidbox.presentation.task.screen.TaskDetailScreen
+import me.androidbox.presentation.task.screen.TaskDetailScreenEvent
+import me.androidbox.presentation.task.viewmodel.TaskDetailViewModel
 
 @Composable
 fun NavigationGraph(
@@ -107,10 +115,18 @@ fun NavigationGraph(
                 agendaScreenEvent = { agendaScreenEvent ->
                     agendaViewModel.onAgendaScreenEvent(agendaScreenEvent)
                 },
-            onSelectedAgendaItem = {
-                /* TODO The item in the dropdown menu should be an enum or a sealed class that will determine which item was clicked
-                *   i.e navHostController.navigate(Screen.TaskScreen.route) */
-                navHostController.navigate(Screen.EventScreen.route)
+            onSelectedAgendaItem = { agendaItem ->
+                when(agendaItem) {
+                    AgendaType.EVENT.ordinal -> {
+                        navHostController.navigate(Screen.EventScreen.route)
+                    }
+                    AgendaType.TASK.ordinal -> {
+                        navHostController.navigate(Screen.TaskDetailScreen.route)
+                    }
+                    AgendaType.REMINDER.ordinal -> {
+
+                    }
+                }
             },
             onSelectedEditAgendaItemClicked = { eventId, agendaType, agendaMenuActionType ->
                 when(agendaType) {
@@ -128,7 +144,19 @@ fun NavigationGraph(
                             }
                         }
                     }
-                    AgendaType.TASK -> TODO()
+                    AgendaType.TASK -> {
+                        when(agendaMenuActionType) {
+                            AgendaMenuActionType.OPEN -> {
+                                navHostController.navigate(route = "${Screen.TaskDetailScreen.TASK_DETAIL_SCREEN}/$eventId/${AgendaMenuActionType.OPEN}")
+                            }
+                            AgendaMenuActionType.EDIT -> {
+                                navHostController.navigate(Screen.TaskDetailScreen.route)
+                            }
+                            AgendaMenuActionType.DELETE -> {
+                                /* agendaViewModel.deleteTaskById(id) */
+                            }
+                        }
+                    }
                     AgendaType.REMINDER -> TODO()
                 }
             },
@@ -194,7 +222,52 @@ fun NavigationGraph(
                 },
             )
         }
-        
+
+        /* Task Detail Screen */
+        composable(
+            route = Screen.TaskDetailScreen.route,
+            arguments = listOf(
+                navArgument(Screen.TaskDetailScreen.TASK_ID) {
+                    type = NavType.StringType
+                    nullable = true
+                    defaultValue = null
+                }, navArgument(Screen.TaskDetailScreen.MENU_ACTION_TYPE) {
+                    type = NavType.StringType
+                    defaultValue = AgendaMenuActionType.OPEN.name
+                }),
+            deepLinks = listOf(navDeepLink {
+                uriPattern = AgendaDeepLinks.TASK_DEEPLINK
+            })
+        ) {
+            val taskDetailViewModel: TaskDetailViewModel = hiltViewModel()
+            val taskDetailScreenState by taskDetailViewModel.taskDetailScreenState.collectAsStateWithLifecycle()
+            val title = it.savedStateHandle.get<String>(ContentType.TITLE.name) ?: "New Event"
+            val description = it.savedStateHandle.get<String>(ContentType.DESCRIPTION.name) ?: "Description"
+
+            LaunchedEffect(key1 = title, key2 = description) {
+                taskDetailViewModel.onTaskDetailScreenEvent(TaskDetailScreenEvent.OnSaveTitleOrDescription(
+                    title = title,
+                    description = description
+                ))
+            }
+
+            TaskDetailScreen(
+                taskDetailScreenState = taskDetailScreenState,
+                taskDetailScreenEvent = { taskDetailScreenEvent ->
+                    taskDetailViewModel.onTaskDetailScreenEvent(taskDetailScreenEvent)
+                },
+                onEditTitleClicked = { title ->
+                    navHostController.navigate(route = "${Screen.EditScreen.EDIT_SCREEN}/$title/${ContentType.TITLE}")
+                },
+                onEditDescriptionClicked = { description ->
+                    navHostController.navigate(route = "${Screen.EditScreen.EDIT_SCREEN}/$description/${ContentType.DESCRIPTION}")
+                },
+                onCloseClicked = {
+                    navHostController.popBackStack()
+                },
+                modifier = Modifier.fillMaxSize())
+        }
+
         /* Edit Screen */
         composable(
             route = Screen.EditScreen.route,

@@ -5,8 +5,8 @@ import java.time.ZoneId
 import java.time.ZonedDateTime
 
 data class TaskDetailScreenState(
-    val taskTitle: String = "",
-    val taskDescription: String = "",
+    val taskTitle: String = "New Event",
+    val taskDescription: String = "Description",
     val from: ZonedDateTime = ZonedDateTime.now(ZoneId.systemDefault()),
     val alarmReminderItem: AlarmReminderItem = AlarmReminderItem.TEN_MINUTES,
     val isEditMode: Boolean = false,
