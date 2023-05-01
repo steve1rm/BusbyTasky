@@ -28,4 +28,5 @@ sealed interface EventScreenEvent {
     data class OnAttendeeAdded(val attendee: Attendee): EventScreenEvent
     data class OnShowDeleteEventAlertDialog(val shouldShowDeleteAlertDialog: Boolean): EventScreenEvent
     data class OnDeleteEvent(val eventId: String): EventScreenEvent
+    data class OnEditModeChangeStatus(val isEditModel: Boolean): EventScreenEvent
 }
