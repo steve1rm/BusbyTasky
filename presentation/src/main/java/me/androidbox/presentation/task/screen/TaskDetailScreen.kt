@@ -59,7 +59,7 @@ fun TaskDetailScreen(
                 editModeType = EditModeType.SaveMode(),
                 displayDate = taskDetailScreenState.from.formatDateTime(LONG_DATE_PATTERN),
                 onCloseClicked = {
-
+                    onCloseClicked()
                 },
                 onEditClicked = {
 

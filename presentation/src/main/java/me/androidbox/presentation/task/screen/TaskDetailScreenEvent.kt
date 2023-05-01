@@ -9,4 +9,5 @@ sealed interface TaskDetailScreenEvent {
     data class OnAlarmReminderChanged(val reminderItem: AlarmReminderItem) : TaskDetailScreenEvent
     data class OnShowDeleteEventAlertDialog(val shouldShowDeleteAlertDialog: Boolean): TaskDetailScreenEvent
     data class OnDeleteTask(val taskId: String) : TaskDetailScreenEvent
+    object OnSaveTaskDetails: TaskDetailScreenEvent
 }

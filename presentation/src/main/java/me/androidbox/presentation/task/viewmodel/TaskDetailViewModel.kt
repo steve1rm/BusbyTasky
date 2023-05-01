@@ -22,6 +22,7 @@ class TaskDetailViewModel @Inject constructor(
             is TaskDetailScreenEvent.OnFromDate -> TODO()
             is TaskDetailScreenEvent.OnSaveTitleOrDescription -> TODO()
             is TaskDetailScreenEvent.OnShowDeleteEventAlertDialog -> TODO()
+            TaskDetailScreenEvent.OnSaveTaskDetails -> TODO()
         }
     }
 }
