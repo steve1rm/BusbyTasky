@@ -34,39 +34,37 @@ fun AlarmReminder(
     isEditMode: Boolean,
     modifier: Modifier = Modifier) {
 
-        Row(modifier = modifier.clickable {
-            onReminderClicked()
-        },
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween) {
+    Row(modifier = modifier.clickable {
+        onReminderClicked()
+    },
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween) {
+        Row {
+            Icon(painter = painterResource(id = R.drawable.bell), contentDescription = "bell")
+
+            Spacer(modifier = Modifier.width(20.dp))
+
+            Text(
+                text = reminderText,
+                fontWeight = FontWeight.Normal,
+                fontSize = 16.sp,
+                color = MaterialTheme.colorScheme.agendaBodyTextColor)
+        }
+
+        if(isEditMode) {
             Row {
-                Icon(painter = painterResource(id = R.drawable.bell), contentDescription = "bell")
-
-                Spacer(modifier = Modifier.width(20.dp))
-
-                Text(
-                    text = reminderText,
-                    fontWeight = FontWeight.Normal,
-                    fontSize = 16.sp,
-                    color = MaterialTheme.colorScheme.agendaBodyTextColor)
-            }
-
-            if(isEditMode) {
-                Row {
-                    if(isEditMode) {
-                        IconButton(onClick = {
-                            onReminderClicked()
-                        }) {
-                            Icon(
-                                painter = painterResource(id = R.drawable.forward_arrow),
-                                contentDescription = stringResource(R.string.forward_arrow),
-                                tint = Color.Black
-                            )
-                        }
-                    }
+                IconButton(onClick = {
+                    onReminderClicked()
+                }) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.forward_arrow),
+                        contentDescription = stringResource(R.string.forward_arrow),
+                        tint = Color.Black
+                    )
                 }
             }
         }
+    }
 }
 
 enum class AlarmReminderItem(@StringRes val stringResId: Int) {
