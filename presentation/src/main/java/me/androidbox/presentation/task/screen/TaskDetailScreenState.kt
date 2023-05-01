@@ -10,4 +10,5 @@ data class TaskDetailScreenState(
     val from: ZonedDateTime = ZonedDateTime.now(ZoneId.systemDefault()),
     val alarmReminderItem: AlarmReminderItem = AlarmReminderItem.TEN_MINUTES,
     val isEditMode: Boolean = false,
+    val shouldOpenDropdown: Boolean = false,
 )

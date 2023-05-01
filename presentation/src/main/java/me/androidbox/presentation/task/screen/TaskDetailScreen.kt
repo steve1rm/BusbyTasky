@@ -23,15 +23,19 @@ import me.androidbox.component.agenda.AgendaDurationSimple
 import me.androidbox.component.agenda.AgendaHeader
 import me.androidbox.component.agenda.AgendaHeaderItem
 import me.androidbox.component.agenda.AlarmReminder
+import me.androidbox.component.agenda.AlarmReminderItem
 import me.androidbox.component.agenda.EditModeType
+import me.androidbox.component.general.AgendaDropDownMenu
 import me.androidbox.component.ui.theme.Black
 import me.androidbox.component.ui.theme.White
 import me.androidbox.component.ui.theme.backgroundBackColor
 import me.androidbox.component.ui.theme.backgroundWhiteColor
+import me.androidbox.component.ui.theme.dropDownMenuBackgroundColor
 import me.androidbox.domain.DateTimeFormatterProvider.DATE_PATTERN
 import me.androidbox.domain.DateTimeFormatterProvider.LONG_DATE_PATTERN
 import me.androidbox.domain.DateTimeFormatterProvider.TIME_PATTERN
 import me.androidbox.domain.DateTimeFormatterProvider.formatDateTime
+import me.androidbox.presentation.event.screen.EventScreenEvent
 import me.androidbox.presentation.ui.theme.BusbyTaskyTheme
 import java.time.ZoneId
 import java.time.ZonedDateTime
@@ -107,6 +111,22 @@ fun TaskDetailScreen(
                     onStartDurationClicked = {
                         calendarStateTimeDate.show()
                     })
+
+                AgendaDropDownMenu(
+                    modifier = Modifier
+                        .background(color = MaterialTheme.colorScheme.dropDownMenuBackgroundColor),
+                    shouldOpenDropdown = taskDetailScreenState.shouldOpenDropdown,
+                    onCloseDropdown = {
+                        taskDetailScreenEvent(TaskDetailScreenEvent.OnShowAlarmReminderDropdown(shouldOpen = false))
+                    },
+                    listOfMenuItemId = AlarmReminderItem.values().map { alarmReminderItem ->
+                        alarmReminderItem.stringResId
+                    },
+                    onSelectedOption = { item ->
+                        taskDetailScreenEvent(TaskDetailScreenEvent.OnAlarmReminderChanged(AlarmReminderItem.values()[item]))
+                        taskDetailScreenEvent(TaskDetailScreenEvent.OnShowAlarmReminderDropdown(shouldOpen = false))
+                    }
+                )
 
                 AlarmReminder(
                     reminderText = stringResource(id = taskDetailScreenState.alarmReminderItem.stringResId),
