@@ -32,6 +32,7 @@ import me.androidbox.component.ui.theme.backgroundBackColor
 import me.androidbox.component.ui.theme.dropDownMenuBackgroundColor
 import me.androidbox.domain.DateTimeFormatterProvider.toDisplayDateTime
 import me.androidbox.domain.DateTimeFormatterProvider.toZoneDateTime
+import me.androidbox.domain.agenda.model.AgendaItem
 import me.androidbox.domain.alarm_manager.AgendaType
 import me.androidbox.presentation.agenda.constant.AgendaMenuActionType
 import me.androidbox.presentation.event.screen.EventScreenEvent
@@ -43,8 +44,8 @@ import java.time.ZonedDateTime
 fun AgendaScreen(
     agendaScreenState: AgendaScreenState,
     agendaScreenEvent: (AgendaScreenEvent) -> Unit,
-    onSelectedEditAgendaItemClicked: (id: String, AgendaType, agendaMenuActionType: AgendaMenuActionType) -> Unit,
-    onSelectedAgendaItem: (agendaType: Int) -> Unit, /* TODO Check where this is being used */
+    onSelectedEditAgendaItemClicked: (agendaItem: AgendaItem, agendaMenuActionType: AgendaMenuActionType) -> Unit,
+    onSelectedAgendaItem: (agendaType: Int) -> Unit,
     onLogout: () -> Unit,
     modifier: Modifier = Modifier) {
 
@@ -184,7 +185,7 @@ fun AgendaScreen(
                         listOfMenuItemId = AgendaMenuActionType.values().map { it.titleId },
                         onSelectedOption = { item ->
                             agendaScreenState.agendaItemClicked?.let { agendaItem ->
-                                onSelectedEditAgendaItemClicked(agendaItem.id, agendaItem.agendaType, AgendaMenuActionType.values()[item])
+                                onSelectedEditAgendaItemClicked(agendaItem, AgendaMenuActionType.values()[item])
                                 agendaScreenEvent(AgendaScreenEvent.OnChangeShowEditAgendaItemDropdownStatus(shouldOpen = false))
                             }
                         }
@@ -220,7 +221,7 @@ fun PreviewAgendaScreen() {
                 .background(
                     color = MaterialTheme.colorScheme.agendaBackgroundColor),
             agendaScreenEvent = {},
-            onSelectedEditAgendaItemClicked = { _, _, _ -> },
+            onSelectedEditAgendaItemClicked = { _, _ -> },
             onSelectedAgendaItem = {},
             onLogout = {}
         )
