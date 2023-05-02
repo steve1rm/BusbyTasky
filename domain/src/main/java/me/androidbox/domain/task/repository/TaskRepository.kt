@@ -1,12 +1,16 @@
 package me.androidbox.domain.task.repository
 
+import kotlinx.coroutines.flow.Flow
 import me.androidbox.domain.agenda.model.Task
 import me.androidbox.domain.authentication.ResponseState
+import me.androidbox.domain.constant.SyncAgendaType
 
 interface TaskRepository {
     suspend fun insertTask(task: Task): ResponseState<Unit>
 
     suspend fun deleteTaskById(taskId: String): ResponseState<Unit>
 
-    suspend fun getTaskById(taskId: String): ResponseState<Task>
+    fun getTaskById(taskId: String): Flow<ResponseState<Task>>
+
+    suspend fun insertSyncTask(taskId: String, syncAgendaType: SyncAgendaType): ResponseState<Unit>
 }

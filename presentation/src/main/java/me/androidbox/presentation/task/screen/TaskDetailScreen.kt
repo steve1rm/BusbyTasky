@@ -70,7 +70,7 @@ fun TaskDetailScreen(
 
                 },
                 onSaveClicked = {
-
+                    taskDetailScreenEvent(TaskDetailScreenEvent.OnSaveTaskDetails(taskDetailScreenState.taskId))
                 })
         }) { paddingValues ->
 

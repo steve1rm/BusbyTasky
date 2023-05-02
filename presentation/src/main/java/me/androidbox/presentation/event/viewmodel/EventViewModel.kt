@@ -319,7 +319,7 @@ class EventViewModel @Inject constructor(
                     /* TODO Show some loading progress */
                 }
                 is ResponseState.Success -> {
-                    val alarmItem = event.toAlarmItem(AgendaType.EVENT)
+                    val alarmItem = event.toAlarmItem()
                     alarmScheduler.scheduleAlarmReminder(alarmItem)
                     uploadEvent.upload(event, isEditMode = eventScreenState.value.isEditMode)
 
