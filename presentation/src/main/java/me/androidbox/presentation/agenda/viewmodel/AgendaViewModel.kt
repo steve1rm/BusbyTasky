@@ -62,7 +62,7 @@ class AgendaViewModel @Inject constructor(
             .minusSeconds(1L)
     }
 
-    fun fetchAgendaItems(agendaDate: ZonedDateTime = ZonedDateTime.now(ZoneId.systemDefault())) {
+    fun fetchAgendaItems(agendaDate: ZonedDateTime = ZonedDateTime.now(ZoneId.systemDefault()), isSwipeToRefresh: Boolean = false) {
         agendaJob?.cancel()
 
         agendaJob = viewModelScope.launch {
@@ -70,10 +70,12 @@ class AgendaViewModel @Inject constructor(
                 .collectLatest { responseState ->
                     when(responseState) {
                         ResponseState.Loading -> {
-                            _agendaScreenState.update { agendaScreenState ->
-                                agendaScreenState.copy(
-                                    isRefreshingAgenda = true
-                                )
+                            if(isSwipeToRefresh) {
+                                _agendaScreenState.update { agendaScreenState ->
+                                    agendaScreenState.copy(
+                                        isRefreshingAgenda = true
+                                    )
+                                }
                             }
                         }
                         is ResponseState.Failure -> {
@@ -172,7 +174,7 @@ class AgendaViewModel @Inject constructor(
             }
 
             is AgendaScreenEvent.OnSwipeToRefreshAgenda -> {
-                fetchAgendaItems(agendaScreenEvent.date)
+                fetchAgendaItems(agendaScreenEvent.date, isSwipeToRefresh = true)
             }
         }
     }
