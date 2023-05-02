@@ -70,11 +70,20 @@ class AgendaViewModel @Inject constructor(
                 .collectLatest { responseState ->
                     when(responseState) {
                         ResponseState.Loading -> {
-                            /* TODO Show some form of loading */
+                            _agendaScreenState.update { agendaScreenState ->
+                                agendaScreenState.copy(
+                                    isRefreshingAgenda = true
+                                )
+                            }
                         }
                         is ResponseState.Failure -> {
                             /* TODO Show a toast or a snack bar message */
                             Log.e("AGENDA_VIEWMODEL", responseState.error.toString())
+                            _agendaScreenState.update { agendaScreenState ->
+                                agendaScreenState.copy(
+                                    isRefreshingAgenda = false
+                                )
+                            }
                         }
                         is ResponseState.Success -> {
                             /* TODO Update the state */
@@ -85,7 +94,8 @@ class AgendaViewModel @Inject constructor(
                                     agendaItem.startDateTime
                                 }
                                 agendaScreenState.copy(
-                                    agendaItems = agendaItems
+                                    agendaItems = agendaItems,
+                                    isRefreshingAgenda = false
                                 )
                             }
                         }
@@ -159,6 +169,10 @@ class AgendaViewModel @Inject constructor(
                         selectedDay = agendaScreenEvent.day
                     )
                 }
+            }
+
+            is AgendaScreenEvent.OnSwipeToRefreshAgenda -> {
+                fetchAgendaItems(agendaScreenEvent.date)
             }
         }
     }

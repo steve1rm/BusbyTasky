@@ -15,5 +15,6 @@ data class AgendaScreenState(
     val agendaItems: List<AgendaItem> = emptyList(),
     val agendaItemClicked: AgendaItem? = null,
     val shouldOpenLogoutDropDownMenu: Boolean = false,
-    val deletedCacheCompleted: Boolean = false
+    val deletedCacheCompleted: Boolean = false,
+    val isRefreshingAgenda: Boolean = false,
 )

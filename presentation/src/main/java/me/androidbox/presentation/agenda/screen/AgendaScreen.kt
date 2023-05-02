@@ -15,6 +15,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.maxkeppeker.sheets.core.models.base.rememberUseCaseState
 import com.maxkeppeler.sheets.calendar.CalendarDialog
 import com.maxkeppeler.sheets.calendar.models.CalendarConfig
@@ -34,9 +36,7 @@ import me.androidbox.domain.DateTimeFormatterProvider.toDisplayDateTime
 import me.androidbox.domain.DateTimeFormatterProvider.toZoneDateTime
 import me.androidbox.domain.alarm_manager.AgendaType
 import me.androidbox.presentation.agenda.constant.AgendaMenuActionType
-import me.androidbox.presentation.event.screen.EventScreenEvent
 import me.androidbox.presentation.ui.theme.BusbyTaskyTheme
-import java.time.ZonedDateTime
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -49,6 +49,7 @@ fun AgendaScreen(
     modifier: Modifier = Modifier) {
 
     val calendarState = rememberUseCaseState()
+    val rememberSwipeRefreshState = rememberSwipeRefreshState(isRefreshing = agendaScreenState.isRefreshingAgenda)
 
     LaunchedEffect(key1 = agendaScreenState.deletedCacheCompleted) {
         if(agendaScreenState.deletedCacheCompleted) {
@@ -131,11 +132,19 @@ fun AgendaScreen(
             .fillMaxSize()
             .padding(paddingValues)) {
 
+            SwipeRefresh(
+                state = rememberSwipeRefreshState,
+                onRefresh = {
+                    agendaScreenEvent(AgendaScreenEvent.OnSwipeToRefreshAgenda(agendaScreenState.selectedDate))
+                }
+            ) {
+
             LazyColumn(
                 Modifier
                     .fillMaxWidth(),
                 contentPadding = PaddingValues(horizontal = 8.dp),
-                verticalArrangement = Arrangement.spacedBy(16.dp)) {
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
 
                 item {
                     Spacer(modifier = Modifier.height(12.dp))
@@ -159,7 +168,7 @@ fun AgendaScreen(
                         title = agendaItem.title,
                         subtitle = agendaItem.description,
                         dateTimeInfo = agendaItem.toDisplayDateTime(),
-                        agendaCardType = when(agendaItem.agendaType) {
+                        agendaCardType = when (agendaItem.agendaType) {
                             AgendaType.EVENT -> AgendaCardType.EVENT
                             AgendaType.TASK -> AgendaCardType.TASK
                             AgendaType.REMINDER -> AgendaCardType.REMINDER
@@ -168,7 +177,11 @@ fun AgendaScreen(
                     ) {
                         println("Event ${agendaItem.id} has been clicked")
                         agendaScreenEvent(AgendaScreenEvent.OnAgendaItemClicked(agendaItem))
-                        agendaScreenEvent(AgendaScreenEvent.OnChangeShowEditAgendaItemDropdownStatus(shouldOpen = true))
+                        agendaScreenEvent(
+                            AgendaScreenEvent.OnChangeShowEditAgendaItemDropdownStatus(
+                                shouldOpen = true
+                            )
+                        )
                     }
 
                     /** Open, Edit, Delete Agenda Items */
@@ -179,18 +192,30 @@ fun AgendaScreen(
                         shouldOpenDropdown = agendaScreenState.shouldOpenEditAgendaDropdown,
                         onCloseDropdown = {
                             agendaScreenEvent(
-                                AgendaScreenEvent.OnChangeShowEditAgendaItemDropdownStatus(shouldOpen = false))
+                                AgendaScreenEvent.OnChangeShowEditAgendaItemDropdownStatus(
+                                    shouldOpen = false
+                                )
+                            )
                         },
                         listOfMenuItemId = AgendaMenuActionType.values().map { it.titleId },
                         onSelectedOption = { item ->
                             agendaScreenState.agendaItemClicked?.let { agendaItem ->
-                                onSelectedEditAgendaItemClicked(agendaItem.id, agendaItem.agendaType, AgendaMenuActionType.values()[item])
-                                agendaScreenEvent(AgendaScreenEvent.OnChangeShowEditAgendaItemDropdownStatus(shouldOpen = false))
+                                onSelectedEditAgendaItemClicked(
+                                    agendaItem.id,
+                                    agendaItem.agendaType,
+                                    AgendaMenuActionType.values()[item]
+                                )
+                                agendaScreenEvent(
+                                    AgendaScreenEvent.OnChangeShowEditAgendaItemDropdownStatus(
+                                        shouldOpen = false
+                                    )
+                                )
                             }
                         }
                     )
                 }
             }
+        }
         }
     }
 
