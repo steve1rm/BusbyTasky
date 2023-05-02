@@ -128,25 +128,25 @@ fun NavigationGraph(
                     }
                 }
             },
-            onSelectedEditAgendaItemClicked = { eventId, agendaType, agendaMenuActionType ->
+            onSelectedEditAgendaItemClicked = { id, agendaType, agendaMenuActionType ->
                 when(agendaType) {
                     AgendaType.EVENT -> {
                         when(agendaMenuActionType) {
                             AgendaMenuActionType.OPEN -> {
-                                navHostController.navigate(route = "${Screen.EventScreen.EVENT_SCREEN}/$eventId/${AgendaMenuActionType.OPEN}")
+                                navHostController.navigate(route = "${Screen.EventScreen.EVENT_SCREEN}/$id/${AgendaMenuActionType.OPEN}")
                             }
                             AgendaMenuActionType.EDIT -> {
-                                navHostController.navigate(route = "${Screen.EventScreen.EVENT_SCREEN}/$eventId/${AgendaMenuActionType.EDIT}")
+                                navHostController.navigate(route = "${Screen.EventScreen.EVENT_SCREEN}/$id/${AgendaMenuActionType.EDIT}")
                             }
                             AgendaMenuActionType.DELETE -> {
-                                agendaViewModel.deleteEventById(eventId)
+                                agendaViewModel.deleteEventById(id)
                             }
                         }
                     }
                     AgendaType.TASK -> {
                         when(agendaMenuActionType) {
                             AgendaMenuActionType.OPEN -> {
-                                navHostController.navigate(route = "${Screen.TaskDetailScreen.TASK_DETAIL_SCREEN}/$eventId/${AgendaMenuActionType.OPEN}")
+                                navHostController.navigate(route = "${Screen.TaskDetailScreen.TASK_DETAIL_SCREEN}/$id/${AgendaMenuActionType.OPEN}")
                             }
                             AgendaMenuActionType.EDIT -> {
                                 navHostController.navigate(Screen.TaskDetailScreen.route)
