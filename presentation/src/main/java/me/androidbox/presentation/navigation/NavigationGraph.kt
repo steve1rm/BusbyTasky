@@ -240,7 +240,7 @@ fun NavigationGraph(
         ) {
             val taskDetailViewModel: TaskDetailViewModel = hiltViewModel()
             val taskDetailScreenState by taskDetailViewModel.taskDetailScreenState.collectAsStateWithLifecycle()
-            val title = it.savedStateHandle.get<String>(ContentType.TITLE.name) ?: "New Event"
+            val title = it.savedStateHandle.get<String>(ContentType.TITLE.name) ?: "New Task"
             val description = it.savedStateHandle.get<String>(ContentType.DESCRIPTION.name) ?: "Description"
 
             LaunchedEffect(key1 = title, key2 = description) {
