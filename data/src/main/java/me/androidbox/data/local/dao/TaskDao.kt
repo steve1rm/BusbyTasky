@@ -20,6 +20,9 @@ interface TaskDao {
     @Upsert(entity = TaskEntity::class)
     suspend fun insertTasks(taskEntities: List<TaskEntity>)
 
+    @Query("SELECT * FROM ${DatabaseConstant.TASK_TABLE} WHERE id = :id")
+    suspend fun getTaskById(id: String): TaskEntity
+
     /** TODO
      * Delete only a single task
      * */
