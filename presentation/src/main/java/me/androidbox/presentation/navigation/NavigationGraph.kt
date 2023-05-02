@@ -16,6 +16,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import androidx.navigation.navDeepLink
 import me.androidbox.domain.agenda.model.AgendaItem
+import me.androidbox.domain.agenda.model.Event
+import me.androidbox.domain.agenda.model.Reminder
+import me.androidbox.domain.agenda.model.Task
 import me.androidbox.presentation.agenda.constant.AgendaMenuActionType
 import me.androidbox.domain.alarm_manager.AgendaType
 import me.androidbox.domain.constant.AgendaDeepLinks
@@ -124,39 +127,36 @@ fun NavigationGraph(
                         navHostController.navigate(Screen.TaskDetailScreen.route)
                     }
                     AgendaType.REMINDER.ordinal -> {
-
+                        TODO("Not Implemented yet")
                     }
                 }
             },
-            onSelectedEditAgendaItemClicked = { id, agendaType, agendaMenuActionType ->
-                when(agendaType) {
-                    AgendaType.EVENT -> {
-                        when(agendaMenuActionType) {
-                            AgendaMenuActionType.OPEN -> {
-                                navHostController.navigate(route = "${Screen.EventScreen.EVENT_SCREEN}/$id/${AgendaMenuActionType.OPEN}")
-                            }
-                            AgendaMenuActionType.EDIT -> {
-                                navHostController.navigate(route = "${Screen.EventScreen.EVENT_SCREEN}/$id/${AgendaMenuActionType.EDIT}")
-                            }
-                            AgendaMenuActionType.DELETE -> {
-                                agendaViewModel.deleteEventById(id)
-                            }
+            onSelectedEditAgendaItemClicked = { agendaItem, agendaMenuActionType ->
+                val routeDestination = when(agendaItem) {
+                    is Event -> {
+                        Screen.EventScreen.EVENT_SCREEN
+                    }
+                    is Task -> {
+                        Screen.TaskDetailScreen.TASK_DETAIL_SCREEN
+                    }
+                    is Reminder -> TODO("Not Implemented yet")
+                }
+
+                if(agendaMenuActionType == AgendaMenuActionType.DELETE) {
+                    when(agendaItem) {
+                        is Event -> {
+                            agendaViewModel.deleteEventById(eventId = agendaItem.id)
+                        }
+                        is Task -> {
+                            // Not implemented yet agendaViewModel.deleteTaskById(taskId = agendaItem.id)
+                        }
+                        is Reminder -> {
+                            // Not implemented yet agendaViewModel.deleteReminderById(taskId = agendaItem.id)
                         }
                     }
-                    AgendaType.TASK -> {
-                        when(agendaMenuActionType) {
-                            AgendaMenuActionType.OPEN -> {
-                                navHostController.navigate(route = "${Screen.TaskDetailScreen.TASK_DETAIL_SCREEN}/$id/${AgendaMenuActionType.OPEN}")
-                            }
-                            AgendaMenuActionType.EDIT -> {
-                                navHostController.navigate(Screen.TaskDetailScreen.route)
-                            }
-                            AgendaMenuActionType.DELETE -> {
-                                /* agendaViewModel.deleteTaskById(id) */
-                            }
-                        }
-                    }
-                    AgendaType.REMINDER -> TODO()
+                }
+                else {
+                    navHostController.navigate(route = "${routeDestination}/${agendaItem.id}/${agendaMenuActionType.name}")
                 }
             },
                 onLogout = {
