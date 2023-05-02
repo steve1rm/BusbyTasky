@@ -143,8 +143,7 @@ fun AgendaScreen(
                 Modifier
                     .fillMaxWidth(),
                 contentPadding = PaddingValues(horizontal = 8.dp),
-                verticalArrangement = Arrangement.spacedBy(16.dp)
-            ) {
+                verticalArrangement = Arrangement.spacedBy(16.dp)) {
 
                 item {
                     Spacer(modifier = Modifier.height(12.dp))
@@ -168,7 +167,7 @@ fun AgendaScreen(
                         title = agendaItem.title,
                         subtitle = agendaItem.description,
                         dateTimeInfo = agendaItem.toDisplayDateTime(),
-                        agendaCardType = when (agendaItem.agendaType) {
+                        agendaCardType = when(agendaItem.agendaType) {
                             AgendaType.EVENT -> AgendaCardType.EVENT
                             AgendaType.TASK -> AgendaCardType.TASK
                             AgendaType.REMINDER -> AgendaCardType.REMINDER
@@ -177,11 +176,7 @@ fun AgendaScreen(
                     ) {
                         println("Event ${agendaItem.id} has been clicked")
                         agendaScreenEvent(AgendaScreenEvent.OnAgendaItemClicked(agendaItem))
-                        agendaScreenEvent(
-                            AgendaScreenEvent.OnChangeShowEditAgendaItemDropdownStatus(
-                                shouldOpen = true
-                            )
-                        )
+                        agendaScreenEvent(AgendaScreenEvent.OnChangeShowEditAgendaItemDropdownStatus(shouldOpen = true))
                     }
 
                     /** Open, Edit, Delete Agenda Items */
@@ -192,24 +187,13 @@ fun AgendaScreen(
                         shouldOpenDropdown = agendaScreenState.shouldOpenEditAgendaDropdown,
                         onCloseDropdown = {
                             agendaScreenEvent(
-                                AgendaScreenEvent.OnChangeShowEditAgendaItemDropdownStatus(
-                                    shouldOpen = false
-                                )
-                            )
+                                AgendaScreenEvent.OnChangeShowEditAgendaItemDropdownStatus(shouldOpen = false))
                         },
                         listOfMenuItemId = AgendaMenuActionType.values().map { it.titleId },
                         onSelectedOption = { item ->
                             agendaScreenState.agendaItemClicked?.let { agendaItem ->
-                                onSelectedEditAgendaItemClicked(
-                                    agendaItem.id,
-                                    agendaItem.agendaType,
-                                    AgendaMenuActionType.values()[item]
-                                )
-                                agendaScreenEvent(
-                                    AgendaScreenEvent.OnChangeShowEditAgendaItemDropdownStatus(
-                                        shouldOpen = false
-                                    )
-                                )
+                                onSelectedEditAgendaItemClicked(agendaItem.id, agendaItem.agendaType, AgendaMenuActionType.values()[item])
+                                agendaScreenEvent(AgendaScreenEvent.OnChangeShowEditAgendaItemDropdownStatus(shouldOpen = false))
                             }
                         }
                     )
