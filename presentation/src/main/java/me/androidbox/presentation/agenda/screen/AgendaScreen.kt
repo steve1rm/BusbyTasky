@@ -15,6 +15,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.maxkeppeker.sheets.core.models.base.rememberUseCaseState
 import com.maxkeppeler.sheets.calendar.CalendarDialog
 import com.maxkeppeler.sheets.calendar.models.CalendarConfig
@@ -35,9 +37,7 @@ import me.androidbox.domain.DateTimeFormatterProvider.toZoneDateTime
 import me.androidbox.domain.agenda.model.AgendaItem
 import me.androidbox.domain.alarm_manager.AgendaType
 import me.androidbox.presentation.agenda.constant.AgendaMenuActionType
-import me.androidbox.presentation.event.screen.EventScreenEvent
 import me.androidbox.presentation.ui.theme.BusbyTaskyTheme
-import java.time.ZonedDateTime
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -50,6 +50,7 @@ fun AgendaScreen(
     modifier: Modifier = Modifier) {
 
     val calendarState = rememberUseCaseState()
+    val rememberSwipeRefreshState = rememberSwipeRefreshState(isRefreshing = agendaScreenState.isRefreshingAgenda)
 
     LaunchedEffect(key1 = agendaScreenState.deletedCacheCompleted) {
         if(agendaScreenState.deletedCacheCompleted) {
@@ -132,6 +133,13 @@ fun AgendaScreen(
             .fillMaxSize()
             .padding(paddingValues)) {
 
+            SwipeRefresh(
+                state = rememberSwipeRefreshState,
+                onRefresh = {
+                    agendaScreenEvent(AgendaScreenEvent.OnSwipeToRefreshAgenda(agendaScreenState.selectedDate))
+                }
+            ) {
+
             LazyColumn(
                 Modifier
                     .fillMaxWidth(),
@@ -192,6 +200,7 @@ fun AgendaScreen(
                     )
                 }
             }
+        }
         }
     }
 

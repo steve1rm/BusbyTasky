@@ -11,4 +11,5 @@ sealed interface AgendaScreenEvent {
     data class OnAgendaItemClicked(val agendaItem: AgendaItem): AgendaScreenEvent
     data class OnOpenLogoutDropDownMenu(val shouldOpen: Boolean) : AgendaScreenEvent
     object OnLogoutClicked: AgendaScreenEvent
+    data class OnSwipeToRefreshAgenda(val date: ZonedDateTime) : AgendaScreenEvent
 }
