@@ -16,7 +16,6 @@ import me.androidbox.domain.agenda.model.Task
 import me.androidbox.domain.alarm_manager.AlarmScheduler
 import me.androidbox.domain.alarm_manager.toAlarmItem
 import me.androidbox.domain.authentication.ResponseState
-import me.androidbox.domain.constant.SyncAgendaType
 import me.androidbox.presentation.agenda.constant.AgendaMenuActionType
 import me.androidbox.presentation.alarm_manager.AlarmReminderProvider
 import me.androidbox.presentation.navigation.Screen.Companion.MENU_ACTION_TYPE
@@ -76,9 +75,23 @@ class TaskDetailViewModel @Inject constructor(
 
     fun onTaskDetailScreenEvent(taskDetailScreenEvent: TaskDetailScreenEvent) {
         when(taskDetailScreenEvent) {
-            is TaskDetailScreenEvent.OnAlarmReminderChanged -> TODO()
-            is TaskDetailScreenEvent.OnDeleteTask -> TODO()
-            is TaskDetailScreenEvent.OnFromDate -> TODO()
+            is TaskDetailScreenEvent.OnAlarmReminderChanged -> {
+                _taskDetailScreenState.update { taskDetailScreenState ->
+                    taskDetailScreenState.copy(
+                        alarmReminderItem = taskDetailScreenEvent.reminderItem
+                    )
+                }
+            }
+            is TaskDetailScreenEvent.OnDeleteTask -> {
+                deleteTask(taskDetailScreenEvent.taskId)
+            }
+            is TaskDetailScreenEvent.OnFromDateChanged -> {
+                _taskDetailScreenState.update { taskDetailScreenState ->
+                    taskDetailScreenState.copy(
+                        from = taskDetailScreenEvent.from
+                    )
+                }
+            }
             is TaskDetailScreenEvent.OnSaveTitleOrDescription -> {
                 _taskDetailScreenState.update { taskDetailScreenState ->
                     taskDetailScreenState.copy(
@@ -87,11 +100,23 @@ class TaskDetailViewModel @Inject constructor(
                     )
                 }
             }
-            is TaskDetailScreenEvent.OnShowDeleteEventAlertDialog -> TODO()
+            is TaskDetailScreenEvent.OnShowDeleteEventAlertDialog -> {
+                _taskDetailScreenState.update { taskDetailScreenState ->
+                    taskDetailScreenState.copy(
+                        shouldShowDeleteAlertDialog = taskDetailScreenEvent.shouldShowDeleteAlertDialog
+                    )
+                }
+            }
             is TaskDetailScreenEvent.OnSaveTaskDetails -> {
                 insertTaskDetails(taskDetailScreenEvent.taskId)
             }
-            is TaskDetailScreenEvent.OnShowAlarmReminderDropdown -> TODO()
+            is TaskDetailScreenEvent.OnShowAlarmReminderDropdown -> {
+                _taskDetailScreenState.update { taskDetailScreenState ->
+                    taskDetailScreenState.copy(
+                        shouldOpenDropdown = taskDetailScreenEvent.shouldOpen
+                    )
+                }
+            }
         }
     }
 
@@ -146,6 +171,12 @@ class TaskDetailViewModel @Inject constructor(
                     }
                 }
             }
+        }
+    }
+
+    private fun deleteTask(taskId: String) {
+        viewModelScope.launch {
+            taskRepositoryImp.deleteTaskById(taskId)
         }
     }
 }
