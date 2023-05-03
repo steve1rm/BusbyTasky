@@ -14,5 +14,6 @@ data class TaskDetailScreenState(
     val taskId: String = "",
     val isDone: Boolean = false,
     val remindAt: Long = 0L,
-    val shouldShowDeleteAlertDialog: Boolean = false
+    val shouldShowDeleteAlertDialog: Boolean = false,
+    val isSaved: Boolean = false
 )

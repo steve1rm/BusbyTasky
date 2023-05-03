@@ -248,6 +248,15 @@ fun NavigationGraph(
                 ))
             }
 
+            /** Once the insertion has completed the state will change to true then
+             *  we will know that the insertion has completed and we can popbackstack
+             *  to go back to the agenda screen */
+            LaunchedEffect(key1 = taskDetailScreenState.isSaved) {
+                if(taskDetailScreenState.isSaved) {
+                    navHostController.popBackStack()
+                }
+            }
+
             TaskDetailScreen(
                 taskDetailScreenState = taskDetailScreenState,
                 taskDetailScreenEvent = { taskDetailScreenEvent ->

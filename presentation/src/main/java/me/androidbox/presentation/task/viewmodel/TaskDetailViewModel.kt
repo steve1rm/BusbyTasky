@@ -134,8 +134,15 @@ class TaskDetailViewModel @Inject constructor(
 
         viewModelScope.launch {
             taskRepositoryImp.insertTask(task)
+
             val alarmItem = task.toAlarmItem()
             alarmScheduler.scheduleAlarmReminder(alarmItem)
+
+            _taskDetailScreenState.update { taskDetailScreenState ->
+                taskDetailScreenState.copy(
+                    isSaved = true
+                )
+            }
 
             when(taskRepositoryImp.uploadTask(task)) {
                 ResponseState.Loading -> TODO()
