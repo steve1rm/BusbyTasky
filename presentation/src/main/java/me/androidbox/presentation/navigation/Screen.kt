@@ -20,7 +20,7 @@ sealed class Screen(val route: String) {
         const val MENU_ACTION_TYPE = "menuActionType"
     }
 
-    object TaskDetailScreen : Screen(route = "task_detail_screen/{id}") {
+    object TaskDetailScreen : Screen(route = "task_detail_screen/{id}/{menuActionType}") {
         const val TASK_DETAIL_SCREEN = "task_detail_screen"
         const val TASK_ID = "id"
         const val MENU_ACTION_TYPE = "menuActionType"

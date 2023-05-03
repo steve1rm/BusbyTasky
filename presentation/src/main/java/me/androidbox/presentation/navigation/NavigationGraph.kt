@@ -39,6 +39,9 @@ import me.androidbox.presentation.navigation.Screen.EditScreen.CONTENT
 import me.androidbox.presentation.navigation.Screen.EditScreen.CONTENT_TYPE
 import me.androidbox.presentation.navigation.Screen.EventScreen.EVENT_ID
 import me.androidbox.presentation.navigation.Screen.EventScreen.MENU_ACTION_TYPE
+import me.androidbox.presentation.navigation.Screen.TaskDetailScreen
+import me.androidbox.presentation.navigation.Screen.TaskDetailScreen.MENU_ACTION_TYPE
+import me.androidbox.presentation.navigation.Screen.TaskDetailScreen.TASK_DETAIL_SCREEN
 import me.androidbox.presentation.task.screen.TaskDetailScreen
 import me.androidbox.presentation.task.screen.TaskDetailScreenEvent
 import me.androidbox.presentation.task.viewmodel.TaskDetailViewModel
@@ -124,9 +127,7 @@ fun NavigationGraph(
                         navHostController.navigate(Screen.EventScreen.route)
                     }
                     AgendaType.TASK.ordinal -> {
-                        // navHostController.navigate(route = "${routeDestination}/${agendaItem.id}/${agendaMenuActionType.name}")
-                       // navHostController.navigate(route = "${Screen.TaskDetailScreen.TASK_DETAIL_SCREEN}/${AgendaMenuActionType.OPEN}")
-                        navHostController.navigate(route = "task_detail_screen")
+                        navHostController.navigate(route = "$TASK_DETAIL_SCREEN?${TaskDetailScreen.MENU_ACTION_TYPE}=${AgendaMenuActionType.OPEN.name}")
                     }
                     AgendaType.REMINDER.ordinal -> {
                         TODO("Not Implemented yet")
@@ -139,7 +140,7 @@ fun NavigationGraph(
                         Screen.EventScreen.EVENT_SCREEN
                     }
                     is Task -> {
-                        Screen.TaskDetailScreen.TASK_DETAIL_SCREEN
+                        TASK_DETAIL_SCREEN
                     }
                     is Reminder -> TODO("Not Implemented yet")
                 }
@@ -226,16 +227,16 @@ fun NavigationGraph(
 
         /* Task Detail Screen */
         composable(
-            route = "task_detail_screen?id={id}",
+            route = "$TASK_DETAIL_SCREEN?id={id}&menuActionType={menuActionType}",
             arguments = listOf(
-                navArgument(Screen.TaskDetailScreen.TASK_ID) {
+                navArgument(TaskDetailScreen.TASK_ID) {
                     type = NavType.StringType
                     nullable = true
                     defaultValue = null
-                }/*, navArgument(Screen.TaskDetailScreen.MENU_ACTION_TYPE) {
+                }, navArgument(TaskDetailScreen.MENU_ACTION_TYPE) {
                     type = NavType.StringType
                     defaultValue = AgendaMenuActionType.OPEN.name
-                }*/),
+                }),
             deepLinks = listOf(navDeepLink {
                 uriPattern = AgendaDeepLinks.TASK_DEEPLINK
             })
