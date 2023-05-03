@@ -7,13 +7,16 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import me.androidbox.data.local.agenda.TaskRepositoryImp
+import me.androidbox.domain.DateTimeFormatterProvider.toZoneDateTime
 import me.androidbox.domain.agenda.model.Task
 import me.androidbox.domain.alarm_manager.AlarmScheduler
 import me.androidbox.domain.alarm_manager.toAlarmItem
 import me.androidbox.domain.authentication.ResponseState
+import me.androidbox.domain.constant.SyncAgendaType
 import me.androidbox.presentation.agenda.constant.AgendaMenuActionType
 import me.androidbox.presentation.alarm_manager.AlarmReminderProvider
 import me.androidbox.presentation.navigation.Screen.Companion.MENU_ACTION_TYPE
@@ -36,36 +39,37 @@ class TaskDetailViewModel @Inject constructor(
 
     init {
         val menuActionType = savedStateHandle.get<String>(MENU_ACTION_TYPE)
-        val taskId = savedStateHandle.get<String>(ID)
+        val taskId = savedStateHandle.get<String>(ID) ?: ""
 
-        if(menuActionType != null && taskId != null) {
+        menuActionType?.let { actionType ->
             /** Actions for opening and editing */
-            when(menuActionType) {
+            when(actionType) {
                 AgendaMenuActionType.OPEN.name -> {
                     _taskDetailScreenState.update { taskDetailScreenState ->
                         taskDetailScreenState.copy(
                             isEditMode = false,
-                            taskId = taskDetailScreenState.taskId
+                            taskId = taskId
                         )
                     }
+                    fetchTaskById(taskId)
                 }
                 AgendaMenuActionType.EDIT.name -> {
                     _taskDetailScreenState.update { taskDetailScreenState ->
                         taskDetailScreenState.copy(
                             isEditMode = true,
-                            taskId = taskDetailScreenState.taskId
+                            taskId = taskId
+                        )
+                    }
+                    fetchTaskById(taskId)
+                }
+                else -> {
+                    _taskDetailScreenState.update { taskDetailScreenState ->
+                        taskDetailScreenState.copy(
+                            isEditMode = false,
+                            taskId = UUID.randomUUID().toString()
                         )
                     }
                 }
-            }
-        }
-        else {
-            /** Creating new tasks */
-            _taskDetailScreenState.update { taskDetailScreenState ->
-                taskDetailScreenState.copy(
-                    isEditMode = false,
-                    taskId = UUID.randomUUID().toString()
-                )
             }
         }
     }
@@ -105,20 +109,43 @@ class TaskDetailViewModel @Inject constructor(
 
         viewModelScope.launch {
             taskRepositoryImp.insertTask(task)
+            val alarmItem = task.toAlarmItem()
+            alarmScheduler.scheduleAlarmReminder(alarmItem)
 
-            when(val responseState = taskRepositoryImp.insertTask(task)) {
+            when(taskRepositoryImp.uploadTask(task)) {
                 ResponseState.Loading -> TODO()
-                is ResponseState.Success -> {
-                    val alarmItem = task.toAlarmItem()
-                    alarmScheduler.scheduleAlarmReminder(alarmItem)
-
-                }
+                is ResponseState.Success -> Unit
                 is ResponseState.Failure -> {
-                    Log.e("TASK_INSERT", "${responseState.error.message}")
-                    /**   */
+                    /** TODO We could display a snackbar or a toast message */
+                    taskRepositoryImp.insertSyncTask(taskId)
                 }
             }
+        }
+    }
 
+    private fun fetchTaskById(taskId: String) {
+        viewModelScope.launch {
+            taskRepositoryImp.getTaskById(taskId).collectLatest { responseState ->
+                when(responseState) {
+                    ResponseState.Loading -> Unit
+                    is ResponseState.Success -> {
+                        val task = responseState.data
+                        _taskDetailScreenState.update { taskDetailScreenState ->
+                            taskDetailScreenState.copy(
+                                taskId = task.id,
+                                taskTitle = task.title,
+                                taskDescription = task.description,
+                                from = task.startDateTime.toZoneDateTime(),
+                                remindAt = task.remindAt,
+                                isDone = task.isDone
+                            )
+                        }
+                    }
+                    is ResponseState.Failure -> {
+                        Log.d("TASK_DETAIL", "${responseState.error.message}")
+                    }
+                }
+            }
         }
     }
 }

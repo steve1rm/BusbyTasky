@@ -4,6 +4,7 @@ import androidx.room.*
 import kotlinx.coroutines.flow.Flow
 import me.androidbox.data.local.DatabaseConstant
 import me.androidbox.data.local.entity.TaskEntity
+import me.androidbox.data.local.entity.TaskSyncEntity
 import me.androidbox.domain.constant.SyncAgendaType
 
 @Dao
@@ -19,6 +20,9 @@ interface TaskDao {
 
     @Upsert(entity = TaskEntity::class)
     suspend fun insertTasks(taskEntities: List<TaskEntity>)
+
+    @Upsert(entity = TaskSyncEntity::class)
+    suspend fun insertSyncEvent(taskSyncEntity: TaskSyncEntity)
 
     @Query("SELECT * FROM ${DatabaseConstant.TASK_TABLE} WHERE id = :id")
     suspend fun getTaskById(id: String): TaskEntity

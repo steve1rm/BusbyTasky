@@ -3,6 +3,7 @@ package me.androidbox.data.local.agenda
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import me.androidbox.data.local.dao.TaskDao
+import me.androidbox.data.local.entity.TaskSyncEntity
 import me.androidbox.data.mapper.toTask
 import me.androidbox.data.mapper.toTaskDto
 import me.androidbox.data.mapper.toTaskEntity
@@ -22,7 +23,6 @@ class TaskRepositoryImp @Inject constructor(
     override suspend fun insertTask(task: Task): ResponseState<Unit> {
         val result = checkResult {
             taskDao.insertTask(task.toTaskEntity())
-            taskService.createTask(task.toTaskDto())
         }
 
         return result.fold(
@@ -68,7 +68,35 @@ class TaskRepositoryImp @Inject constructor(
         }
     }
 
-    override suspend fun insertSyncTask(taskId: String, syncAgendaType: SyncAgendaType): ResponseState<Unit> {
-        TODO()
+    override suspend fun uploadTask(task: Task): ResponseState<Unit> {
+        val result = checkResult {
+            taskService.createTask(task.toTaskDto())
+        }
+
+        return result.fold(
+            onSuccess = {
+                ResponseState.Success(Unit)
+
+            },
+            onFailure = { throwable ->
+                ResponseState.Failure(throwable)
+            }
+        )
+    }
+
+    override suspend fun insertSyncTask(taskId: String): ResponseState<Unit> {
+        val result = checkResult {
+            taskDao.insertSyncEvent(TaskSyncEntity(taskId, SyncAgendaType.CREATE))
+        }
+
+        return result.fold(
+            onSuccess = {
+                ResponseState.Success(Unit)
+
+            },
+            onFailure = { throwable ->
+                ResponseState.Failure(throwable)
+            }
+        )
     }
 }

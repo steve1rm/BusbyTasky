@@ -29,6 +29,7 @@ import me.androidbox.domain.work_manager.UploadEvent
 import me.androidbox.presentation.alarm_manager.AlarmReminderProvider
 import me.androidbox.presentation.event.screen.EventScreenEvent
 import me.androidbox.presentation.event.screen.EventScreenState
+import me.androidbox.presentation.navigation.Screen.Companion.ID
 import me.androidbox.presentation.navigation.Screen.Companion.MENU_ACTION_TYPE
 import java.util.*
 import javax.inject.Inject
@@ -50,7 +51,7 @@ class EventViewModel @Inject constructor(
 
     init {
         val menuActionType = savedStateHandle.get<String>(MENU_ACTION_TYPE)
-        val eventId = savedStateHandle.get<String>(EVENT_ID) ?: ""
+        val eventId = savedStateHandle.get<String>(ID) ?: ""
 
         menuActionType?.let { actionType ->
             when (actionType) {

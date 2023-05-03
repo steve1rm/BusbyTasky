@@ -12,5 +12,7 @@ interface TaskRepository {
 
     fun getTaskById(taskId: String): Flow<ResponseState<Task>>
 
-    suspend fun insertSyncTask(taskId: String, syncAgendaType: SyncAgendaType): ResponseState<Unit>
+    suspend fun uploadTask(task: Task): ResponseState<Unit>
+
+    suspend fun insertSyncTask(taskId: String): ResponseState<Unit>
 }

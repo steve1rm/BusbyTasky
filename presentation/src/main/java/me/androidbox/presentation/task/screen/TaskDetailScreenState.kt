@@ -12,5 +12,6 @@ data class TaskDetailScreenState(
     val isEditMode: Boolean = false,
     val shouldOpenDropdown: Boolean = false,
     val taskId: String = "",
-    val isDone: Boolean = false
+    val isDone: Boolean = false,
+    val remindAt: Long = 0L
 )

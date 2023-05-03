@@ -122,7 +122,7 @@ fun NavigationGraph(
                         navHostController.navigate(Screen.EventScreen.route)
                     }
                     AgendaType.TASK.ordinal -> {
-                        navHostController.navigate(route = "$TASK_DETAIL_SCREEN?${MENU_ACTION_TYPE}=${AgendaMenuActionType.OPEN.name}")
+                        navHostController.navigate(Screen.TaskDetailScreen.route)
                     }
                     AgendaType.REMINDER.ordinal -> {
                         TODO("Not Implemented yet")
@@ -222,7 +222,7 @@ fun NavigationGraph(
 
         /* Task Detail Screen */
         composable(
-            route = "$TASK_DETAIL_SCREEN?id={id}&menuActionType={menuActionType}",
+            route = Screen.TaskDetailScreen.route,
             arguments = listOf(
                 navArgument(ID) {
                     type = NavType.StringType
