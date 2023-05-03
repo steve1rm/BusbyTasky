@@ -7,21 +7,18 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.NavArgs
-import androidx.navigation.NavArgument
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import androidx.navigation.navDeepLink
-import me.androidbox.domain.agenda.model.AgendaItem
 import me.androidbox.domain.agenda.model.Event
 import me.androidbox.domain.agenda.model.Reminder
 import me.androidbox.domain.agenda.model.Task
-import me.androidbox.presentation.agenda.constant.AgendaMenuActionType
 import me.androidbox.domain.alarm_manager.AgendaType
 import me.androidbox.domain.constant.AgendaDeepLinks
+import me.androidbox.presentation.agenda.constant.AgendaMenuActionType
 import me.androidbox.presentation.agenda.screen.AgendaScreen
 import me.androidbox.presentation.agenda.viewmodel.AgendaViewModel
 import me.androidbox.presentation.edit.screen.ContentType
@@ -35,12 +32,10 @@ import me.androidbox.presentation.login.screen.LoginScreen
 import me.androidbox.presentation.login.screen.RegisterScreen
 import me.androidbox.presentation.login.viewmodel.LoginViewModel
 import me.androidbox.presentation.login.viewmodel.RegisterViewModel
+import me.androidbox.presentation.navigation.Screen.Companion.ID
+import me.androidbox.presentation.navigation.Screen.Companion.MENU_ACTION_TYPE
 import me.androidbox.presentation.navigation.Screen.EditScreen.CONTENT
 import me.androidbox.presentation.navigation.Screen.EditScreen.CONTENT_TYPE
-import me.androidbox.presentation.navigation.Screen.EventScreen.EVENT_ID
-import me.androidbox.presentation.navigation.Screen.EventScreen.MENU_ACTION_TYPE
-import me.androidbox.presentation.navigation.Screen.TaskDetailScreen
-import me.androidbox.presentation.navigation.Screen.TaskDetailScreen.MENU_ACTION_TYPE
 import me.androidbox.presentation.navigation.Screen.TaskDetailScreen.TASK_DETAIL_SCREEN
 import me.androidbox.presentation.task.screen.TaskDetailScreen
 import me.androidbox.presentation.task.screen.TaskDetailScreenEvent
@@ -127,7 +122,7 @@ fun NavigationGraph(
                         navHostController.navigate(Screen.EventScreen.route)
                     }
                     AgendaType.TASK.ordinal -> {
-                        navHostController.navigate(route = "$TASK_DETAIL_SCREEN?${TaskDetailScreen.MENU_ACTION_TYPE}=${AgendaMenuActionType.OPEN.name}")
+                        navHostController.navigate(route = "$TASK_DETAIL_SCREEN?${MENU_ACTION_TYPE}=${AgendaMenuActionType.OPEN.name}")
                     }
                     AgendaType.REMINDER.ordinal -> {
                         TODO("Not Implemented yet")
@@ -171,7 +166,7 @@ fun NavigationGraph(
         /* Event Detail Screen */
         composable(
             route = Screen.EventScreen.route,
-            arguments = listOf(navArgument(EVENT_ID) {
+            arguments = listOf(navArgument(ID) {
                 type = NavType.StringType
                 nullable = true
                 defaultValue = null
@@ -229,11 +224,11 @@ fun NavigationGraph(
         composable(
             route = "$TASK_DETAIL_SCREEN?id={id}&menuActionType={menuActionType}",
             arguments = listOf(
-                navArgument(TaskDetailScreen.TASK_ID) {
+                navArgument(ID) {
                     type = NavType.StringType
                     nullable = true
                     defaultValue = null
-                }, navArgument(TaskDetailScreen.MENU_ACTION_TYPE) {
+                }, navArgument(MENU_ACTION_TYPE) {
                     type = NavType.StringType
                     defaultValue = AgendaMenuActionType.OPEN.name
                 }),

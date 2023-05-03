@@ -9,21 +9,17 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import me.androidbox.component.agenda.AgendaActionType
 import me.androidbox.data.local.agenda.TaskRepositoryImp
-import me.androidbox.data.mapper.toTaskEntity
 import me.androidbox.domain.agenda.model.Task
-import me.androidbox.domain.alarm_manager.AgendaType
 import me.androidbox.domain.alarm_manager.AlarmScheduler
 import me.androidbox.domain.alarm_manager.toAlarmItem
 import me.androidbox.domain.authentication.ResponseState
 import me.androidbox.presentation.agenda.constant.AgendaMenuActionType
 import me.androidbox.presentation.alarm_manager.AlarmReminderProvider
-import me.androidbox.presentation.navigation.Screen.TaskDetailScreen.MENU_ACTION_TYPE
-import me.androidbox.presentation.navigation.Screen.TaskDetailScreen.TASK_ID
+import me.androidbox.presentation.navigation.Screen.Companion.MENU_ACTION_TYPE
+import me.androidbox.presentation.navigation.Screen.Companion.ID
 import me.androidbox.presentation.task.screen.TaskDetailScreenEvent
 import me.androidbox.presentation.task.screen.TaskDetailScreenState
-import java.time.ZonedDateTime
 import java.util.UUID
 import javax.inject.Inject
 
@@ -40,7 +36,7 @@ class TaskDetailViewModel @Inject constructor(
 
     init {
         val menuActionType = savedStateHandle.get<String>(MENU_ACTION_TYPE)
-        val taskId = savedStateHandle.get<String>(TASK_ID)
+        val taskId = savedStateHandle.get<String>(ID)
 
         if(menuActionType != null && taskId != null) {
             /** Actions for opening and editing */

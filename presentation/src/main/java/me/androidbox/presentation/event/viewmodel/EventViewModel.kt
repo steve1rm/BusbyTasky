@@ -1,5 +1,6 @@
 package me.androidbox.presentation.event.viewmodel
 
+import android.provider.CalendarContract.Instances.EVENT_ID
 import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -28,8 +29,7 @@ import me.androidbox.domain.work_manager.UploadEvent
 import me.androidbox.presentation.alarm_manager.AlarmReminderProvider
 import me.androidbox.presentation.event.screen.EventScreenEvent
 import me.androidbox.presentation.event.screen.EventScreenState
-import me.androidbox.presentation.navigation.Screen.EventScreen.EVENT_ID
-import me.androidbox.presentation.navigation.Screen.EventScreen.MENU_ACTION_TYPE
+import me.androidbox.presentation.navigation.Screen.Companion.MENU_ACTION_TYPE
 import java.util.*
 import javax.inject.Inject
 
