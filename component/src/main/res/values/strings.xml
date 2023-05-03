@@ -38,7 +38,6 @@
     <string name="open">Open</string>
     <string name="edit">Edit</string>
     <string name="delete">Delete</string>
-    <string name="empty"></string>
     <string name="add_photos">Add photos</string>
     <string name="photos">Photos</string>
     <string name="selected_image">Selected image</string>
