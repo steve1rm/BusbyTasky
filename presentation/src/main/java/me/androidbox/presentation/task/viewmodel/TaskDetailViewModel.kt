@@ -110,8 +110,6 @@ class TaskDetailViewModel @Inject constructor(
         viewModelScope.launch {
             taskRepositoryImp.insertTask(task)
 
-
-
             when(val responseState = taskRepositoryImp.insertTask(task)) {
                 ResponseState.Loading -> TODO()
                 is ResponseState.Success -> {

@@ -124,7 +124,9 @@ fun NavigationGraph(
                         navHostController.navigate(Screen.EventScreen.route)
                     }
                     AgendaType.TASK.ordinal -> {
-                        navHostController.navigate(Screen.TaskDetailScreen.route)
+                        // navHostController.navigate(route = "${routeDestination}/${agendaItem.id}/${agendaMenuActionType.name}")
+                       // navHostController.navigate(route = "${Screen.TaskDetailScreen.TASK_DETAIL_SCREEN}/${AgendaMenuActionType.OPEN}")
+                        navHostController.navigate(route = "task_detail_screen")
                     }
                     AgendaType.REMINDER.ordinal -> {
                         TODO("Not Implemented yet")
@@ -224,16 +226,16 @@ fun NavigationGraph(
 
         /* Task Detail Screen */
         composable(
-            route = Screen.TaskDetailScreen.route,
+            route = "task_detail_screen?id={id}",
             arguments = listOf(
                 navArgument(Screen.TaskDetailScreen.TASK_ID) {
                     type = NavType.StringType
                     nullable = true
                     defaultValue = null
-                }, navArgument(Screen.TaskDetailScreen.MENU_ACTION_TYPE) {
+                }/*, navArgument(Screen.TaskDetailScreen.MENU_ACTION_TYPE) {
                     type = NavType.StringType
                     defaultValue = AgendaMenuActionType.OPEN.name
-                }),
+                }*/),
             deepLinks = listOf(navDeepLink {
                 uriPattern = AgendaDeepLinks.TASK_DEEPLINK
             })

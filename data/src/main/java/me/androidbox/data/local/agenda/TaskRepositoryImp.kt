@@ -4,6 +4,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import me.androidbox.data.local.dao.TaskDao
 import me.androidbox.data.mapper.toTask
+import me.androidbox.data.mapper.toTaskDto
 import me.androidbox.data.mapper.toTaskEntity
 import me.androidbox.data.remote.network.event.EventService
 import me.androidbox.data.remote.network.task.TaskService
@@ -21,6 +22,7 @@ class TaskRepositoryImp @Inject constructor(
     override suspend fun insertTask(task: Task): ResponseState<Unit> {
         val result = checkResult {
             taskDao.insertTask(task.toTaskEntity())
+            taskService.createTask(task.toTaskDto())
         }
 
         return result.fold(
