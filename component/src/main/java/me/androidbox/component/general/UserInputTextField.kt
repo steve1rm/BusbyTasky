@@ -49,7 +49,7 @@ fun UserInputTextField(
                 MaterialTheme.colorScheme.errorEmailEntry
             },
             unfocusedBorderColor = Color.Transparent,
-            textColor = MaterialTheme.colorScheme.inputTextColor),
+            focusedTextColor = MaterialTheme.colorScheme.inputTextColor),
         shape = RoundedCornerShape(10.dp)
     )
 }
