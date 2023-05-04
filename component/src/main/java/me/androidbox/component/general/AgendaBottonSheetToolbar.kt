@@ -16,12 +16,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import me.androidbox.component.R
+import me.androidbox.component.ui.theme.Black
 import me.androidbox.component.ui.theme.BusbyTaskyTheme
 import me.androidbox.component.ui.theme.White
+import me.androidbox.component.ui.theme.agendaBodyTextColor
 
 @Composable
 fun AgendaBottomSheetToolbar(
@@ -34,7 +38,9 @@ fun AgendaBottomSheetToolbar(
             modifier = Modifier.fillMaxWidth(),
             textAlign = TextAlign.Center,
             text = stringResource(id = title),
-            style = MaterialTheme.typography.titleMedium,
+            fontWeight = FontWeight.Bold,
+            fontSize = 20.sp,
+            color = MaterialTheme.colorScheme.agendaBodyTextColor
         )
 
         IconButton(
@@ -48,7 +54,7 @@ fun AgendaBottomSheetToolbar(
             Icon(
                 painterResource(id = R.drawable.close),
                 contentDescription = "Close the bottom sheet",
-                tint = Color.Black,
+                tint = Black,
             )
         }
     }

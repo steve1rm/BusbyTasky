@@ -1,6 +1,5 @@
 package me.androidbox.component.general
 
-import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Spacer
@@ -8,7 +7,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Divider
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
@@ -26,7 +24,8 @@ import me.androidbox.component.R
 import me.androidbox.component.ui.theme.BusbyTaskyTheme
 import me.androidbox.component.ui.theme.Gray
 import me.androidbox.component.ui.theme.White
-import me.androidbox.component.ui.theme.dropDownMenuBackgroundColor
+import me.androidbox.component.ui.theme.agendaBodyTextColor
+import me.androidbox.component.ui.theme.backgroundWhiteColor
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -39,6 +38,7 @@ fun AgendaBottomSheet(
     topBar: @Composable () -> Unit) {
 
     ModalBottomSheet(
+        containerColor = MaterialTheme.colorScheme.backgroundWhiteColor,
         sheetState = sheetState,
         modifier = modifier,
         onDismissRequest = {
@@ -53,11 +53,11 @@ fun AgendaBottomSheet(
                     .padding(horizontal = 16.dp, vertical = 16.dp)
                     .clickable {
                         onSelectedOption(index)
-                },
+                    },
                 text = stringResource(id = itemId),
-                fontWeight = FontWeight.Medium,
+                fontWeight = FontWeight.SemiBold,
                 fontSize = 16.sp,
-                color = White)
+                color = MaterialTheme.colorScheme.agendaBodyTextColor)
 
             if(index < listOfMenuItemId.count() - 1) {
                 Divider(color = Gray)
@@ -74,7 +74,7 @@ fun AgendaBottomSheet(
 fun PreviewAgendaBottomSheet() {
     BusbyTaskyTheme {
         AgendaBottomSheet(
-            modifier = Modifier.background(color = MaterialTheme.colorScheme.dropDownMenuBackgroundColor),
+            modifier = Modifier.background(color = MaterialTheme.colorScheme.backgroundWhiteColor),
             listOfMenuItemId = listOf(
                 R.string.ten_minutes_before,
                 R.string.thirty_minutes_before,
