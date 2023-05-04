@@ -128,24 +128,7 @@ fun EventScreen(
                     )
 
                     Spacer(modifier = modifier.height(26.dp))
-
-                     AgendaDropDownMenu(
-                        modifier = Modifier
-                            .background(color = MaterialTheme.colorScheme.dropDownMenuBackgroundColor),
-                        shouldOpenDropdown = eventScreenState.shouldOpenDropdown,
-                        onCloseDropdown = {
-                            eventScreenEvent(
-                                EventScreenEvent.OnShowAlarmReminderDropdown(shouldOpen = false))
-                        },
-                        listOfMenuItemId = AlarmReminderItem.values().map { alarmReminderItem ->
-                            alarmReminderItem.stringResId
-                        },
-                         onSelectedOption = { item ->
-                             eventScreenEvent(EventScreenEvent.OnAlarmReminderChanged(AlarmReminderItem.values()[item]))
-                             eventScreenEvent(EventScreenEvent.OnShowAlarmReminderDropdown(shouldOpen = false))
-                         }
-                     )
-
+                    
                     AlarmReminder(
                         reminderText = stringResource(id = eventScreenState.alarmReminderItem.stringResId),
                         modifier = Modifier
