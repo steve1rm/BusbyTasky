@@ -18,10 +18,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import me.androidbox.component.R
 import me.androidbox.component.ui.theme.BusbyTaskyTheme
 import me.androidbox.component.ui.theme.agendaBodyTextColor
@@ -44,12 +42,12 @@ fun AlarmReminder(
 
             Spacer(modifier = Modifier.width(20.dp))
 
-            Text(
-                text = reminderText,
-                fontWeight = FontWeight.Normal,
-                fontSize = 16.sp,
-                color = MaterialTheme.colorScheme.agendaBodyTextColor)
-        }
+                Text(
+                    text = reminderText,
+                    style = MaterialTheme.typography.bodyLarge.copy(
+                        color = MaterialTheme.colorScheme.agendaBodyTextColor)
+                    )
+            }
 
         if(isEditMode) {
             Row {

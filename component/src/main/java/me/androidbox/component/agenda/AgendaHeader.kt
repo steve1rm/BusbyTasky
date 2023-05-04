@@ -40,9 +40,9 @@ fun AgendaHeader(
 
             Text(
                 text = stringResource(agendaHeaderItem.titleRes),
-                fontWeight = FontWeight.Bold,
-                fontSize = 16.sp,
-                color = MaterialTheme.colorScheme.agendaTitleHeaderColor
+                style = MaterialTheme.typography.titleMedium.copy(
+                    color = MaterialTheme.colorScheme.agendaTitleHeaderColor
+                )
             )
         }
 
@@ -60,10 +60,9 @@ fun AgendaHeader(
 
                 Text(
                     text = subTitle,
-                    fontWeight = FontWeight.SemiBold,
-                    fontSize = 26.sp,
-                    color = MaterialTheme.colorScheme.agendaSubTitleHeaderColor
-                )
+                    style = MaterialTheme.typography.headlineMedium.copy(
+                        fontSize = 26.sp, color = Black
+                    ))
             }
             
             Row(modifier = Modifier.weight(1F),
@@ -97,9 +96,7 @@ fun AgendaHeader(
         horizontalArrangement = Arrangement.SpaceBetween) {
             Text(
                 text = description,
-                fontWeight = FontWeight.Normal,
-                fontSize = 16.sp,
-                color = MaterialTheme.colorScheme.agendaSubTitleHeaderColor
+                style = MaterialTheme.typography.bodyLarge
             )
 
             Spacer(modifier = Modifier.width(14.dp))

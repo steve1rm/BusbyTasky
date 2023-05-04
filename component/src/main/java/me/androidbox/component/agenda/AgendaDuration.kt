@@ -32,16 +32,16 @@ fun AgendaDuration(
             Text(
                 modifier = Modifier.padding(start = 10.dp),
                 text = stringResource(R.string.from_duration).format(startTime),
-                    fontWeight = FontWeight.Normal,
-                    fontSize = 16.sp,
-                    color = MaterialTheme.colorScheme.agendaBodyTextColor)
+                style = MaterialTheme.typography.bodyMedium.copy(
+                    color = MaterialTheme.colorScheme.agendaBodyTextColor
+                ))
 
             Text(
                 modifier = Modifier.padding(end = 10.dp),
                 text = startDate,
-                fontWeight = FontWeight.Normal,
-                fontSize = 16.sp,
-                color = MaterialTheme.colorScheme.agendaBodyTextColor)
+                style = MaterialTheme.typography.bodyMedium.copy(
+                    color = MaterialTheme.colorScheme.agendaBodyTextColor)
+            )
 
             if(isEditMode) {
                 IconButton(onClick = {
@@ -72,16 +72,16 @@ fun AgendaDuration(
             Text(
                 modifier = Modifier.padding(start = 10.dp),
                 text = stringResource(id = R.string.to_duration).format(endTime),
-                fontWeight = FontWeight.Normal,
-                fontSize = 16.sp,
-                color = MaterialTheme.colorScheme.agendaBodyTextColor)
+                style = MaterialTheme.typography.bodyMedium.copy(
+                    color = MaterialTheme.colorScheme.agendaBodyTextColor)
+            )
 
             Text(
                 modifier = Modifier.padding(end = 10.dp),
                 text = endDate,
-                fontWeight = FontWeight.Normal,
-                fontSize = 16.sp,
-                color = MaterialTheme.colorScheme.agendaBodyTextColor)
+                style = MaterialTheme.typography.bodyMedium.copy(
+                    color = MaterialTheme.colorScheme.agendaBodyTextColor)
+            )
 
             if(isEditMode) {
                 IconButton(onClick = {

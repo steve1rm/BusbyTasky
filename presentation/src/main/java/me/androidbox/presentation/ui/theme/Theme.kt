@@ -3,6 +3,7 @@ package me.androidbox.presentation.ui.theme
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import me.androidbox.component.ui.theme.Typography
 
 private val DarkColorPalette = darkColorScheme(
     primary = Purple200,

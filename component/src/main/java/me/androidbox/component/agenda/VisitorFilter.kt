@@ -33,9 +33,9 @@ fun VisitorFilter(
         verticalAlignment = Alignment.CenterVertically) {
             Text(
                 text = stringResource(R.string.visitors),
-                fontWeight = FontWeight.Bold,
-                fontSize = 20.sp,
-                color = MaterialTheme.colorScheme.agendaBodyTextColor)
+                style = MaterialTheme.typography.titleLarge.copy(
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 20.sp))
 
             Spacer(modifier = Modifier.width(18.dp))
 

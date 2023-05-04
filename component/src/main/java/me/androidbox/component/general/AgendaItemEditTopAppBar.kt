@@ -35,12 +35,13 @@ fun AgendaItemEditTopAppBar(
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically) {
                 Text(
-                    style = TextStyle(textAlign = TextAlign.Center),
+                    textAlign = TextAlign.Center,
+                    style = MaterialTheme.typography.titleMedium.copy(
+                        fontSize = 18.sp,
+                        color =  MaterialTheme.colorScheme.agendaBodyTextColor
+                    ),
                     modifier = Modifier.weight(1F),
-                    text = title.uppercase(),
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.SemiBold,
-                    color = MaterialTheme.colorScheme.agendaBodyTextColor
+                    text = title.uppercase()
                 )
 
                 TextButton(
@@ -50,10 +51,9 @@ fun AgendaItemEditTopAppBar(
                     content = {
                         Text(
                             text = stringResource(R.string.save),
-                            fontSize = 16.sp,
-                            fontWeight = FontWeight.SemiBold,
-                            color = MaterialTheme.colorScheme.topbarText,
-                            )
+                            style = MaterialTheme.typography.titleMedium.copy(
+                                color = MaterialTheme.colorScheme.topbarText
+                            ))
                     }
                 )
             }

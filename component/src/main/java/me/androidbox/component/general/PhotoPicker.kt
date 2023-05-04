@@ -85,9 +85,8 @@ fun AddFirstPhoto(
         Spacer(modifier = Modifier.width(14.dp))
         Text(
             text = stringResource(R.string.add_photos),
-            fontWeight = FontWeight.SemiBold,
-            fontSize = 16.sp,
-            color = MaterialTheme.colorScheme.photoTextColor
+            style = MaterialTheme.typography.titleMedium.copy(
+                color = MaterialTheme.colorScheme.photoTextColor)
         )
     }
 }
@@ -100,8 +99,8 @@ fun AddSequentialPhoto(modifier: Modifier, selectedImageUri: List<String>, onAdd
 
         Text(
             text = stringResource(R.string.photos),
-            fontSize = 20.sp,
-            fontWeight = FontWeight.SemiBold
+            style = MaterialTheme.typography.titleLarge.copy(
+                fontSize = 20.sp)
         )
 
         Spacer(modifier = Modifier.height(20.dp))

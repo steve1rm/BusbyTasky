@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -53,7 +54,13 @@ fun AgendaDaySelector(
 
         Spacer(Modifier.height(34.dp))
         val selectedDate = if(isSelectedDay.dayOfWeek == ZonedDateTime.now().dayOfWeek) stringResource(R.string.today) else "${isSelectedDay.dayOfMonth} ${isSelectedDay.month} ${isSelectedDay.year}"
-        Text(text = selectedDate, fontWeight = FontWeight.Bold, fontSize = 20.sp)
+        Text(
+            text = selectedDate,
+            style = MaterialTheme.typography.titleLarge.copy(
+                fontWeight = FontWeight.Bold,
+                fontSize = 20.sp
+            )
+        )
     }
 }
 

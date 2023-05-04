@@ -73,9 +73,7 @@ fun LoginScreen(
         Text(
             modifier = Modifier.fillMaxWidth(),
             text = stringResource(me.androidbox.presentation.R.string.welcome_back),
-            color = Color.White,
-            fontSize = 28.sp,
-            fontWeight = FontWeight.Bold,
+            style = MaterialTheme.typography.headlineMedium,
             textAlign = TextAlign.Center
         )
 
