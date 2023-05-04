@@ -62,7 +62,7 @@ class AgendaViewModel @Inject constructor(
             .minusSeconds(1L)
     }
 
-    fun fetchAgendaItems(agendaDate: ZonedDateTime = ZonedDateTime.now(ZoneId.systemDefault())) {
+    fun fetchAgendaItems(agendaDate: ZonedDateTime = ZonedDateTime.now(ZoneId.systemDefault()), isSwipeToRefresh: Boolean = false) {
         agendaJob?.cancel()
 
         agendaJob = viewModelScope.launch {
@@ -70,11 +70,22 @@ class AgendaViewModel @Inject constructor(
                 .collectLatest { responseState ->
                     when(responseState) {
                         ResponseState.Loading -> {
-                            /* TODO Show some form of loading */
+                            if(isSwipeToRefresh) {
+                                _agendaScreenState.update { agendaScreenState ->
+                                    agendaScreenState.copy(
+                                        isRefreshingAgenda = true
+                                    )
+                                }
+                            }
                         }
                         is ResponseState.Failure -> {
                             /* TODO Show a toast or a snack bar message */
                             Log.e("AGENDA_VIEWMODEL", responseState.error.toString())
+                            _agendaScreenState.update { agendaScreenState ->
+                                agendaScreenState.copy(
+                                    isRefreshingAgenda = false
+                                )
+                            }
                         }
                         is ResponseState.Success -> {
                             /* TODO Update the state */
@@ -85,7 +96,8 @@ class AgendaViewModel @Inject constructor(
                                     agendaItem.startDateTime
                                 }
                                 agendaScreenState.copy(
-                                    agendaItems = agendaItems
+                                    agendaItems = agendaItems,
+                                    isRefreshingAgenda = false
                                 )
                             }
                         }
@@ -151,6 +163,18 @@ class AgendaViewModel @Inject constructor(
                         shouldOpenLogoutDropDownMenu = agendaScreenEvent.shouldOpen
                     )
                 }
+            }
+
+            is AgendaScreenEvent.OnSelectedDayChanged -> {
+                _agendaScreenState.update { agendaScreenState ->
+                    agendaScreenState.copy(
+                        selectedDay = agendaScreenEvent.day
+                    )
+                }
+            }
+
+            is AgendaScreenEvent.OnSwipeToRefreshAgenda -> {
+                fetchAgendaItems(agendaScreenEvent.date, isSwipeToRefresh = true)
             }
         }
     }

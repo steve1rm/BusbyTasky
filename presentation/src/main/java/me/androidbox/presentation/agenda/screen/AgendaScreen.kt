@@ -15,6 +15,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.maxkeppeker.sheets.core.models.base.rememberUseCaseState
 import com.maxkeppeler.sheets.calendar.CalendarDialog
 import com.maxkeppeler.sheets.calendar.models.CalendarConfig
@@ -23,6 +25,7 @@ import com.maxkeppeler.sheets.calendar.models.CalendarStyle
 import me.androidbox.component.R
 import me.androidbox.component.agenda.AgendaCard
 import me.androidbox.component.agenda.AgendaCardType
+import me.androidbox.component.agenda.AgendaDaySelector
 import me.androidbox.component.agenda.AgendaTopBar
 import me.androidbox.component.general.AgendaDropDownMenu
 import me.androidbox.component.general.TaskActionButton
@@ -31,6 +34,7 @@ import me.androidbox.component.ui.theme.backgroundBackColor
 import me.androidbox.component.ui.theme.dropDownMenuBackgroundColor
 import me.androidbox.domain.DateTimeFormatterProvider.toDisplayDateTime
 import me.androidbox.domain.DateTimeFormatterProvider.toZoneDateTime
+import me.androidbox.domain.agenda.model.AgendaItem
 import me.androidbox.domain.alarm_manager.AgendaType
 import me.androidbox.presentation.agenda.constant.AgendaMenuActionType
 import me.androidbox.presentation.ui.theme.BusbyTaskyTheme
@@ -40,12 +44,13 @@ import me.androidbox.presentation.ui.theme.BusbyTaskyTheme
 fun AgendaScreen(
     agendaScreenState: AgendaScreenState,
     agendaScreenEvent: (AgendaScreenEvent) -> Unit,
-    onSelectedEditAgendaItemClicked: (id: String, AgendaType, agendaMenuActionType: AgendaMenuActionType) -> Unit,
-    onSelectedAgendaItem: (agendaType: Int) -> Unit, /* TODO Check where this is being used */
+    onSelectedEditAgendaItemClicked: (agendaItem: AgendaItem, agendaMenuActionType: AgendaMenuActionType) -> Unit,
+    onSelectedAgendaItem: (agendaType: Int) -> Unit,
     onLogout: () -> Unit,
     modifier: Modifier = Modifier) {
 
     val calendarState = rememberUseCaseState()
+    val rememberSwipeRefreshState = rememberSwipeRefreshState(isRefreshing = agendaScreenState.isRefreshingAgenda)
 
     LaunchedEffect(key1 = agendaScreenState.deletedCacheCompleted) {
         if(agendaScreenState.deletedCacheCompleted) {
@@ -128,11 +133,31 @@ fun AgendaScreen(
             .fillMaxSize()
             .padding(paddingValues)) {
 
+            SwipeRefresh(
+                state = rememberSwipeRefreshState,
+                onRefresh = {
+                    agendaScreenEvent(AgendaScreenEvent.OnSwipeToRefreshAgenda(agendaScreenState.selectedDate))
+                }
+            ) {
+
             LazyColumn(
                 Modifier
                     .fillMaxWidth(),
                 contentPadding = PaddingValues(horizontal = 8.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp)) {
+
+                item {
+                    Spacer(modifier = Modifier.height(12.dp))
+                }
+
+                item {
+                    AgendaDaySelector(
+                        date = agendaScreenState.selectedDate,
+                        isSelectedDay = agendaScreenState.selectedDay,
+                        onSelected = { day ->
+                            agendaScreenEvent(AgendaScreenEvent.OnSelectedDayChanged(day))
+                        })
+                }
 
                 items(agendaScreenState.agendaItems) { agendaItem ->
                     AgendaCard(
@@ -168,13 +193,14 @@ fun AgendaScreen(
                         listOfMenuItemId = AgendaMenuActionType.values().map { it.titleId },
                         onSelectedOption = { item ->
                             agendaScreenState.agendaItemClicked?.let { agendaItem ->
-                                onSelectedEditAgendaItemClicked(agendaItem.id, agendaItem.agendaType, AgendaMenuActionType.values()[item])
+                                onSelectedEditAgendaItemClicked(agendaItem, AgendaMenuActionType.values()[item])
                                 agendaScreenEvent(AgendaScreenEvent.OnChangeShowEditAgendaItemDropdownStatus(shouldOpen = false))
                             }
                         }
                     )
                 }
             }
+        }
         }
     }
 
@@ -186,7 +212,6 @@ fun AgendaScreen(
             yearSelection = true
         ),
         selection = CalendarSelection.Date { localDate ->
-
             agendaScreenEvent(AgendaScreenEvent.OnDateChanged(localDate.toZoneDateTime()))
         }
     )
@@ -205,7 +230,7 @@ fun PreviewAgendaScreen() {
                 .background(
                     color = MaterialTheme.colorScheme.agendaBackgroundColor),
             agendaScreenEvent = {},
-            onSelectedEditAgendaItemClicked = { _, _, _ -> },
+            onSelectedEditAgendaItemClicked = { _, _ -> },
             onSelectedAgendaItem = {},
             onLogout = {}
         )

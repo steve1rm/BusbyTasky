@@ -1,7 +1,6 @@
 package me.androidbox.presentation.event.screen
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -27,6 +26,7 @@ import me.androidbox.component.ui.theme.backgroundBackColor
 import me.androidbox.component.ui.theme.backgroundWhiteColor
 import me.androidbox.component.ui.theme.dropDownMenuBackgroundColor
 import me.androidbox.domain.DateTimeFormatterProvider.DATE_PATTERN
+import me.androidbox.domain.DateTimeFormatterProvider.LONG_DATE_PATTERN
 import me.androidbox.domain.DateTimeFormatterProvider.TIME_PATTERN
 import me.androidbox.domain.DateTimeFormatterProvider.formatDateTime
 import java.time.ZoneId
@@ -53,11 +53,11 @@ fun EventScreen(
                     .fillMaxWidth()
                     .background(color = MaterialTheme.colorScheme.backgroundBackColor)
                     .padding(horizontal = 16.dp),
-                editModeType = EditModeType.SaveMode(),
-                displayDate = "31 March 2023", /* TODO Get the date from the agenda screen that was selected by the user */
+                editModeType = if(eventScreenState.isEditMode) { EditModeType.SaveMode() } else { EditModeType.EditMode() },
+                displayDate = eventScreenState.startDate.formatDateTime(LONG_DATE_PATTERN),
                 onCloseClicked = onCloseClicked,
                 onEditClicked = {
-
+                    eventScreenEvent(EventScreenEvent.OnEditModeChangeStatus(isEditModel = true))
                 },
                 onSaveClicked = {
                     eventScreenEvent(EventScreenEvent.OnSaveEventDetails)
@@ -84,7 +84,7 @@ fun EventScreen(
                         agendaHeaderItem = AgendaHeaderItem.EVENT,
                         subTitle = eventScreenState.eventTitle,
                         description = eventScreenState.eventDescription,
-                        isEditMode = true,
+                        isEditMode = eventScreenState.isEditMode,
                         onEditTitleClicked = { newTitle ->
                             onEditTitleClicked(newTitle)
                         },
@@ -102,7 +102,7 @@ fun EventScreen(
 
                     Spacer(modifier = modifier.height(26.dp))
                     AgendaDuration(
-                        isEditMode = true,
+                        isEditMode = eventScreenState.isEditMode,
                         startTime = eventScreenState.startTime.formatDateTime(TIME_PATTERN),
                         endTime = eventScreenState.endTime.formatDateTime(TIME_PATTERN),
                         startDate = eventScreenState.startDate.formatDateTime(DATE_PATTERN),
@@ -142,6 +142,7 @@ fun EventScreen(
                         modifier = Modifier
                             .fillMaxWidth()
                             .background(color = MaterialTheme.colorScheme.backgroundWhiteColor),
+                        isEditMode = eventScreenState.isEditMode,
                         onReminderClicked = {
                             eventScreenEvent(EventScreenEvent.OnShowAlarmReminderDropdown(shouldOpen = true))
                         }
@@ -242,10 +243,29 @@ fun EventScreen(
 
 @Composable
 @Preview(showBackground = true)
-fun PreviewEventScreen() {
+fun PreviewEventScreenEditMode() {
     BusbyTaskyTheme {
         EventScreen(
-            eventScreenState = EventScreenState(),
+            eventScreenState = EventScreenState(
+                isEditMode = false
+            ),
+            eventScreenEvent = {},
+            modifier = Modifier.fillMaxWidth(),
+            onEditDescriptionClicked = {},
+            onEditTitleClicked = {},
+            onCloseClicked = {}
+        )
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+fun PreviewEventScreenSaveMode() {
+    BusbyTaskyTheme {
+        EventScreen(
+            eventScreenState = EventScreenState(
+                isEditMode = true
+            ),
             eventScreenEvent = {},
             modifier = Modifier.fillMaxWidth(),
             onEditDescriptionClicked = {},
