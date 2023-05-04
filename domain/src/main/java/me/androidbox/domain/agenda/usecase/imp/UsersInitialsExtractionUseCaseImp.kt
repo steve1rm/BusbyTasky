@@ -5,7 +5,7 @@ import java.util.*
 import javax.inject.Inject
 
 class UsersInitialsExtractionUseCaseImp @Inject constructor() : UsersInitialsExtractionUseCase {
-    override fun execute(fullName: String): String { val listOfName = fullName.split(" ")
+    override fun execute(fullName: String): String { val listOfName = fullName.trim().split(" ")
         var initials = ""
 
         listOfName.forEach { name ->

@@ -25,6 +25,7 @@ val Brown = Color(0xff40492D)
 val Green = Color(0xFF279F70)
 val LightGreen = Color(0xFFCAEF45)
 val Background = Color(0xFFF5F5F5)
+val Orange = Color(0xFFFDEFA8)
 
 val ColorScheme.placeholderEntry: Color
     @Composable

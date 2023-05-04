@@ -23,9 +23,9 @@ import java.util.*
 
 @Composable
 fun VisitorFilter(
-    selectedVisitorType: VisitorType,
+    selectedVisitorType: VisitorFilterType,
     modifier: Modifier = Modifier,
-    onSelectedTypeClicked: (VisitorType) -> Unit,
+    onSelectedTypeClicked: (VisitorFilterType) -> Unit,
     onAddVisitorClicked: () -> Unit) {
 
     Column(modifier = modifier) {
@@ -54,7 +54,7 @@ fun VisitorFilter(
 
         Row(modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween) {
-            VisitorType.values().forEach { visitorType ->
+            VisitorFilterType.values().forEach { visitorType ->
                 val backgroundColor = getBackgroundColor(selectedVisitorType, visitorType)
                 val textColor = getTextColor(selectedVisitorType, visitorType)
 
@@ -79,8 +79,8 @@ fun VisitorFilter(
 
 @Composable
 private fun getTextColor(
-    selectedVisitorType: VisitorType,
-    visitorType: VisitorType
+    selectedVisitorType: VisitorFilterType,
+    visitorType: VisitorFilterType
 ) : Color {
     return if (selectedVisitorType == visitorType) {
         MaterialTheme.colorScheme.fontWhiteColor
@@ -91,8 +91,8 @@ private fun getTextColor(
 
 @Composable
 private fun getBackgroundColor(
-    selectedVisitorType: VisitorType,
-    visitorType: VisitorType
+    selectedVisitorType: VisitorFilterType,
+    visitorType: VisitorFilterType
 ): Color {
     return if (selectedVisitorType == visitorType) {
         MaterialTheme.colorScheme.buttonColor
@@ -101,7 +101,7 @@ private fun getBackgroundColor(
     }
 }
 
-enum class VisitorType(@StringRes val titleRes: Int) {
+enum class VisitorFilterType(@StringRes val titleRes: Int) {
     ALL(titleRes = R.string.all),
     GOING(titleRes = R.string.going),
     NOT_GOING(titleRes = R.string.not_going)
@@ -112,7 +112,7 @@ enum class VisitorType(@StringRes val titleRes: Int) {
 fun PreviewVisitorFilter() {
 
     var rememberVisitorType by remember {
-        mutableStateOf(VisitorType.ALL)
+        mutableStateOf(VisitorFilterType.ALL)
     }
 
     BusbyTaskyTheme {

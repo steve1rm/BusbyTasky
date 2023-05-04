@@ -33,6 +33,7 @@ class AgendaLocalRepositoryImp @Inject constructor(
 
     override fun fetchAgenda(startTimeStamp: Long, endTimeStamp: Long): Flow<ResponseState<Agenda>> {
         return flow<ResponseState<Agenda>> {
+            emit(ResponseState.Loading)
 
             /* Fetch all the events, tasks, and reminders from the DB and return to populate the agenda screen */
             val events = fetchEventsFromLocal(startTimeStamp, endTimeStamp)
@@ -98,6 +99,18 @@ class AgendaLocalRepositoryImp @Inject constructor(
         return reminderEntity.map { reminderEntity ->
             reminderEntity.toReminder()
         }
+    }
+
+    override suspend fun deleteAllTasks() {
+        taskDao.deleteAllTask()
+    }
+
+    override suspend fun deleteAllEvents() {
+        eventDao.deleteAllEvent()
+    }
+
+    override suspend fun deleteAllReminders() {
+        reminderDao.deleteAllReminder()
     }
 
     private suspend fun insertAllAgendaItems(agenda: Agenda) {

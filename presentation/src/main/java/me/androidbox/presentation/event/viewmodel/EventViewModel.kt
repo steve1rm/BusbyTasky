@@ -21,6 +21,8 @@ import me.androidbox.domain.alarm_manager.toAlarmItem
 import me.androidbox.domain.authentication.ResponseState
 import me.androidbox.domain.authentication.preference.PreferenceRepository
 import me.androidbox.domain.authentication.remote.EventRepository
+import me.androidbox.domain.constant.SyncAgendaType
+import me.androidbox.domain.event.usecase.DeleteEventWithIdRemoteUseCase
 import me.androidbox.domain.event.usecase.VerifyVisitorEmailUseCase
 import me.androidbox.domain.work_manager.UploadEvent
 import me.androidbox.presentation.alarm_manager.AlarmReminderProvider
@@ -36,6 +38,7 @@ class EventViewModel @Inject constructor(
     private val eventRepository: EventRepository,
     private val usersInitialsExtractionUseCase: UsersInitialsExtractionUseCase,
     private val verifyVisitorEmailUseCase: VerifyVisitorEmailUseCase,
+    private val deleteEventWithIdRemoteUseCase: DeleteEventWithIdRemoteUseCase,
     private val preferenceRepository: PreferenceRepository,
     private val alarmScheduler: AlarmScheduler,
     private val uploadEvent: UploadEvent,
@@ -197,6 +200,24 @@ class EventViewModel @Inject constructor(
             is EventScreenEvent.CheckVisitorExists -> {
                 verifyVisitorEmail(eventScreenEvent.visitorEmail)
             }
+            is EventScreenEvent.OnShowDeleteEventAlertDialog -> {
+                _eventScreenState.update { eventScreenState ->
+                    eventScreenState.copy(
+                        shouldShowDeleteAlertDialog = eventScreenEvent.shouldShowDeleteAlertDialog
+                    )
+                }
+            }
+            is EventScreenEvent.OnDeleteEvent -> {
+                deleteEvent(eventScreenEvent.eventId)
+            }
+
+            is EventScreenEvent.OnEditModeChangeStatus -> {
+                _eventScreenState.update { eventScreenState ->
+                    eventScreenState.copy(
+                        isEditMode = eventScreenEvent.isEditModel
+                    )
+                }
+            }
         }
     }
 
@@ -261,7 +282,7 @@ class EventViewModel @Inject constructor(
                                 eventDescription = event.description,
                                 startDate = event.startDateTime.toZoneDateTime(),
                                 endDate = event.endDateTime.toZoneDateTime(),
-                                /** TODO Adding the rest */
+                                isUserEventCreator = event.isUserEventCreator
                             )
                         }
                     }
@@ -286,7 +307,7 @@ class EventViewModel @Inject constructor(
             endDateTime = endDateTime.toEpochSecond(),
             remindAt = remindAt.toEpochSecond(),
             eventCreatorId = preferenceRepository.retrieveCurrentUserOrNull()?.userId ?: "",
-            isUserEventCreator = false,
+            isUserEventCreator = true,
             isGoing = true,
             attendees = eventScreenState.value.attendees,
             photos = eventScreenState.value.listOfPhotoUri
@@ -300,7 +321,7 @@ class EventViewModel @Inject constructor(
                 is ResponseState.Success -> {
                     val alarmItem = event.toAlarmItem(AgendaType.EVENT)
                     alarmScheduler.scheduleAlarmReminder(alarmItem)
-                    uploadEvent.upload(event, isEditMode = false)
+                    uploadEvent.upload(event, isEditMode = eventScreenState.value.isEditMode)
 
                     _eventScreenState.update { eventScreenState ->
                         eventScreenState.copy(isSaved = true)
@@ -309,6 +330,20 @@ class EventViewModel @Inject constructor(
                 is ResponseState.Failure -> {
                     Log.e("EVENT_INSERT", "${responseState.error.message}")
                    /* TODO Show some kink of snack bar or toast message */
+                }
+            }
+        }
+    }
+
+    private fun deleteEvent(eventId: String) {
+        viewModelScope.launch {
+            eventRepository.deleteEventById(eventId)
+
+            when(deleteEventWithIdRemoteUseCase.execute(eventId)) {
+                ResponseState.Loading -> Unit /* TODO Show loading */
+                is ResponseState.Success -> Unit /* Nothing to do here as the event from API was success */
+                is ResponseState.Failure -> {
+                    eventRepository.insertSyncEvent(eventId, SyncAgendaType.DELETE)
                 }
             }
         }

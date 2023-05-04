@@ -1,5 +1,6 @@
 package me.androidbox.data.local.event
 
+import androidx.room.Database
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
@@ -71,7 +72,23 @@ class EventRepositoryImp @Inject constructor(
     override suspend fun deleteEventById(id: String): ResponseState<Unit> {
         val result = checkResult {
             eventDao.deleteEventById(id)
-            eventDao.insertSyncEvent(EventSyncEntity(id, SyncAgendaType.DELETE))
+        }
+
+        val responseState = result.fold(
+            onSuccess = {
+                ResponseState.Success(Unit)
+            },
+            onFailure = { throwable ->
+                ResponseState.Failure(throwable)
+            }
+        )
+
+        return responseState
+    }
+
+    override suspend fun insertSyncEvent(eventId: String, syncAgendaType: SyncAgendaType): ResponseState<Unit> {
+        val result = checkResult {
+            eventDao.insertSyncEvent(EventSyncEntity(eventId, SyncAgendaType.DELETE))
         }
 
         val responseState = result.fold(

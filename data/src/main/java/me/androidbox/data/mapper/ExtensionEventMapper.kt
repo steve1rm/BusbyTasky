@@ -49,24 +49,19 @@ fun EventDto.toEvent(): Event {
     )
 }
 
-fun TaskDto.toTask(): Task {
-    return Task(
+fun EventDto.toEventEntity(): EventEntity {
+    return EventEntity(
         id = this.id,
         title = this.title,
         description = this.description,
-        startDateTime = this.time,
+        startDateTime = this.from,
+        endDateTime = this.to,
         remindAt = this.remindAt,
-        isDone = this.isDone
-    )
-}
-
-fun ReminderDto.toReminder(): Reminder {
-    return Reminder(
-        id = this.id,
-        title = this.title,
-        description = this.description,
-        startDateTime = this.time,
-        remindAt = this.remindAt,
+        eventCreatorId = this.host,
+        isUserEventCreator = this.isUserEventCreator,
+        isGoing = true,
+        attendees = this.attendees.map { it.toAttendee() },
+        photos = this.photos.map { it.key }
     )
 }
 
@@ -83,48 +78,6 @@ fun Event.toEventEntity(): EventEntity {
         isGoing = this.isGoing,
         attendees = this.attendees,
         photos = this.photos
-    )
-}
-
-fun Task.toTaskEntity(): TaskEntity {
-    return TaskEntity(
-        id = this.id,
-        title = this.title,
-        description = this.description,
-        time = this.startDateTime,
-        remindAt = this.remindAt,
-        isDone = this.isDone
-    )
-}
-
-fun TaskEntity.toTask(): Task {
-    return Task(
-        id = this.id,
-        title = this.title,
-        description = this.description,
-        startDateTime = this.time,
-        remindAt = this.remindAt,
-        isDone = this.isDone
-    )
-}
-
-fun Reminder.toReminderEntity(): ReminderEntity {
-    return ReminderEntity(
-        id = this.id,
-        title = this.title,
-        description = this.description,
-        remindAt = this.remindAt,
-        time = this.startDateTime
-    )
-}
-
-fun ReminderEntity.toReminder(): Reminder {
-    return Reminder(
-        id = this.id,
-        title = this.title,
-        description = this.description,
-        remindAt = this.remindAt,
-        startDateTime = this.time
     )
 }
 

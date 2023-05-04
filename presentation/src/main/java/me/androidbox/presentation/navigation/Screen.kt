@@ -20,6 +20,12 @@ sealed class Screen(val route: String) {
         const val MENU_ACTION_TYPE = "menuActionType"
     }
 
+    object TaskDetailScreen : Screen(route = "task_detail_screen/{id}/menuActionType}") {
+        const val TASK_DETAIL_SCREEN = "task_detail_screen"
+        const val TASK_ID = "id"
+        const val MENU_ACTION_TYPE = "menuActionType"
+    }
+
     object PhotoScreen : Screen(route = "photo_screen/{imagePath}") {
         const val PHOTO_SCREEN = "photo_screen"
         const val PHOTO_IMAGE_PATH = "imagePath"
