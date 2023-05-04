@@ -5,28 +5,18 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Check
-import androidx.compose.material.icons.rounded.Close
-import androidx.compose.material3.CenterAlignedTopAppBar
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.maxkeppeker.sheets.core.models.base.rememberUseCaseState
 import com.maxkeppeler.sheets.date_time.DateTimeDialog
 import com.maxkeppeler.sheets.date_time.models.DateTimeSelection
@@ -34,6 +24,7 @@ import kotlinx.coroutines.launch
 import me.androidbox.component.R
 import me.androidbox.component.agenda.*
 import me.androidbox.component.general.AgendaBottomSheet
+import me.androidbox.component.general.AgendaBottomSheetToolbar
 import me.androidbox.component.general.AgendaDropDownMenu
 import me.androidbox.component.general.PhotoPicker
 import me.androidbox.component.ui.theme.BusbyTaskyTheme
@@ -41,7 +32,6 @@ import me.androidbox.component.ui.theme.White
 import me.androidbox.component.ui.theme.backgroundBackColor
 import me.androidbox.component.ui.theme.backgroundWhiteColor
 import me.androidbox.component.ui.theme.dropDownMenuBackgroundColor
-import me.androidbox.component.ui.theme.dropDownMenuColor
 import me.androidbox.domain.DateTimeFormatterProvider.DATE_PATTERN
 import me.androidbox.domain.DateTimeFormatterProvider.LONG_DATE_PATTERN
 import me.androidbox.domain.DateTimeFormatterProvider.TIME_PATTERN
@@ -181,6 +171,7 @@ fun EventScreen(
                             },
                         ) {
                             AgendaBottomSheet(
+                                titleRes = R.string.alarm_reminder,
                                 listOfMenuItemId = AlarmReminderItem.values()
                                     .map { alarmReminderItem ->
                                         alarmReminderItem.stringResId
@@ -191,12 +182,30 @@ fun EventScreen(
                                             AlarmReminderItem.values()[item]
                                         )
                                     )
+                                    scope.launch {
+                                        sheetState.hide()
+                                    }
                                     //        eventScreenEvent(EventScreenEvent.OnShowAlarmReminderDropdown(shouldOpen = false))
                                 },
                                 onCloseDropdown = {
-
+                                    scope.launch {
+                                        sheetState.hide()
+                                    }
                                 },
-                                sheetState = sheetState
+                                sheetState = sheetState,
+                                topBar = {
+                                    AgendaBottomSheetToolbar(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .background(color = White)
+                                            .padding(vertical = 16.dp, horizontal = 16.dp),
+                                        title = R.string.alarm_reminder,
+                                        onCloseClicked = {
+                                            scope.launch {
+                                                sheetState.hide()
+                                            }
+                                        })
+                                }
                             )
                         }
                     }
