@@ -15,7 +15,7 @@ import me.androidbox.domain.constant.SyncAgendaType
 import me.androidbox.domain.task.repository.TaskRepository
 import javax.inject.Inject
 
-class TaskRepository @Inject constructor(
+class TaskRepositoryImp @Inject constructor(
     private val taskDao: TaskDao,
     private val taskService: TaskService
 ) : TaskRepository {

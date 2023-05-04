@@ -13,6 +13,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import me.androidbox.data.local.DatabaseConstant.DATABASE_NAME
 import me.androidbox.data.local.agenda.AgendaLocalRepositoryImp
+import me.androidbox.data.local.agenda.TaskRepositoryImp
 import me.androidbox.data.local.converter.EventConverter
 import me.androidbox.data.local.dao.EventDao
 import me.androidbox.data.local.dao.ReminderDao
@@ -75,7 +76,7 @@ interface RepositoryModule {
 
     @Reusable
     @Binds
-    fun bindsTaskRepositoryImp(taskRepositoryImp: me.androidbox.data.local.agenda.TaskRepository): TaskRepository
+    fun bindsTaskRepositoryImp(taskRepositoryImp: TaskRepositoryImp): TaskRepository
 
     companion object {
         private const val SECRET_SHARED_PREFERENCES = "secret_shared_preferences"
