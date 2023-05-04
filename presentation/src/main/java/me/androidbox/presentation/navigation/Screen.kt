@@ -20,7 +20,7 @@ sealed class Screen(val route: String) {
     }
 
     object EventScreen : Screen(route = "event_screen/{id}/{menuActionType}") {
-        const val EVENT_SCREEN = "event_screen"
+        const val EVENT_DETAIL_SCREEN = "event_screen"
     }
 
     object TaskDetailScreen : Screen(route = "task_detail_screen/{id}/{menuActionType}") {

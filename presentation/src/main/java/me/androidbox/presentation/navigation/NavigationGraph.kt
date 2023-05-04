@@ -132,7 +132,7 @@ fun NavigationGraph(
             onSelectedEditAgendaItemClicked = { agendaItem, agendaMenuActionType ->
                 val routeDestination = when(agendaItem) {
                     is Event -> {
-                        Screen.EventScreen.EVENT_SCREEN
+                        Screen.EventScreen.EVENT_DETAIL_SCREEN
                     }
                     is Task -> {
                         TASK_DETAIL_SCREEN
