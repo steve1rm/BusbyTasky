@@ -10,6 +10,8 @@ import me.androidbox.data.mapper.toTaskEntity
 import me.androidbox.data.remote.network.task.TaskService
 import me.androidbox.data.remote.util.CheckResult.checkResult
 import me.androidbox.domain.agenda.model.Task
+import me.androidbox.domain.alarm_manager.AlarmScheduler
+import me.androidbox.domain.alarm_manager.toAlarmItem
 import me.androidbox.domain.authentication.ResponseState
 import me.androidbox.domain.constant.SyncAgendaType
 import me.androidbox.domain.task.repository.TaskRepository
@@ -17,11 +19,17 @@ import javax.inject.Inject
 
 class TaskRepositoryImp @Inject constructor(
     private val taskDao: TaskDao,
-    private val taskService: TaskService
+    private val taskService: TaskService,
+    private val alarmScheduler: AlarmScheduler,
 ) : TaskRepository {
     override suspend fun insertTask(task: Task): ResponseState<Unit> {
+        taskDao.insertTask(task.toTaskEntity())
+        val alarmItem = task.toAlarmItem()
+        alarmScheduler.scheduleAlarmReminder(alarmItem)
+
         val result = checkResult {
-            taskDao.insertTask(task.toTaskEntity())
+            /** If we fail here insert the CREATE into the sync table */
+            taskService.createTask(task.toTaskDto())
         }
 
         return result.fold(
@@ -29,6 +37,7 @@ class TaskRepositoryImp @Inject constructor(
                 ResponseState.Success(Unit)
             },
             onFailure = { throwable ->
+                insertSyncTask(task.id)
                 ResponseState.Failure(throwable)
             }
         )

@@ -134,24 +134,18 @@ class TaskDetailViewModel @Inject constructor(
             isDone = taskDetailScreenState.value.isDone)
 
         viewModelScope.launch {
-            taskRepository.insertTask(task)
-
-            val alarmItem = task.toAlarmItem()
-            alarmScheduler.scheduleAlarmReminder(alarmItem)
+            when(taskRepository.insertTask(task)) {
+                ResponseState.Loading -> TODO()
+                is ResponseState.Success -> Unit
+                is ResponseState.Failure -> {
+                    /** TODO We could display a snackbar or a toast message */
+                }
+            }
 
             _taskDetailScreenState.update { taskDetailScreenState ->
                 taskDetailScreenState.copy(
                     isSaved = true
                 )
-            }
-
-            when(taskRepository.uploadTask(task)) {
-                ResponseState.Loading -> TODO()
-                is ResponseState.Success -> Unit
-                is ResponseState.Failure -> {
-                    /** TODO We could display a snackbar or a toast message */
-                    taskRepository.insertSyncTask(taskId)
-                }
             }
         }
     }
