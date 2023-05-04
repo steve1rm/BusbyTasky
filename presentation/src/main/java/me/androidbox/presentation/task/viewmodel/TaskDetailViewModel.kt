@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import me.androidbox.data.local.agenda.TaskRepositoryImp
+import me.androidbox.data.local.agenda.TaskRepository
 import me.androidbox.domain.DateTimeFormatterProvider.toZoneDateTime
 import me.androidbox.domain.agenda.model.Task
 import me.androidbox.domain.alarm_manager.AlarmScheduler
@@ -28,7 +28,7 @@ import javax.inject.Inject
 @HiltViewModel
 class TaskDetailViewModel @Inject constructor(
     private val alarmScheduler: AlarmScheduler,
-    private val taskRepositoryImp: TaskRepositoryImp,
+    private val taskRepository: TaskRepository,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
     private val _taskDetailScreenState: MutableStateFlow<TaskDetailScreenState> = MutableStateFlow(
@@ -133,7 +133,7 @@ class TaskDetailViewModel @Inject constructor(
             isDone = taskDetailScreenState.value.isDone)
 
         viewModelScope.launch {
-            taskRepositoryImp.insertTask(task)
+            taskRepository.insertTask(task)
 
             val alarmItem = task.toAlarmItem()
             alarmScheduler.scheduleAlarmReminder(alarmItem)
@@ -144,12 +144,12 @@ class TaskDetailViewModel @Inject constructor(
                 )
             }
 
-            when(taskRepositoryImp.uploadTask(task)) {
+            when(taskRepository.uploadTask(task)) {
                 ResponseState.Loading -> TODO()
                 is ResponseState.Success -> Unit
                 is ResponseState.Failure -> {
                     /** TODO We could display a snackbar or a toast message */
-                    taskRepositoryImp.insertSyncTask(taskId)
+                    taskRepository.insertSyncTask(taskId)
                 }
             }
         }
@@ -157,7 +157,7 @@ class TaskDetailViewModel @Inject constructor(
 
     private fun fetchTaskById(taskId: String) {
         viewModelScope.launch {
-            taskRepositoryImp.getTaskById(taskId).collectLatest { responseState ->
+            taskRepository.getTaskById(taskId).collectLatest { responseState ->
                 when(responseState) {
                     ResponseState.Loading -> Unit
                     is ResponseState.Success -> {
@@ -183,7 +183,7 @@ class TaskDetailViewModel @Inject constructor(
 
     private fun deleteTask(taskId: String) {
         viewModelScope.launch {
-            taskRepositoryImp.deleteTaskById(taskId)
+            taskRepository.deleteTaskById(taskId)
         }
     }
 }

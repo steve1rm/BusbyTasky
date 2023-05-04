@@ -7,7 +7,6 @@ import me.androidbox.data.local.entity.TaskSyncEntity
 import me.androidbox.data.mapper.toTask
 import me.androidbox.data.mapper.toTaskDto
 import me.androidbox.data.mapper.toTaskEntity
-import me.androidbox.data.remote.network.event.EventService
 import me.androidbox.data.remote.network.task.TaskService
 import me.androidbox.data.remote.util.CheckResult.checkResult
 import me.androidbox.domain.agenda.model.Task
@@ -16,7 +15,7 @@ import me.androidbox.domain.constant.SyncAgendaType
 import me.androidbox.domain.task.repository.TaskRepository
 import javax.inject.Inject
 
-class TaskRepositoryImp @Inject constructor(
+class TaskRepository @Inject constructor(
     private val taskDao: TaskDao,
     private val taskService: TaskService
 ) : TaskRepository {
