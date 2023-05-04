@@ -74,13 +74,13 @@ fun EventScreen(
         },
         content = {
             Column(modifier = Modifier
-                .verticalScroll(rememberScrollState())
                 .padding(it)
                 .fillMaxWidth()
                 .background(Color.Black)) {
 
                 Column (modifier = modifier
-                    .fillMaxWidth()
+                    .verticalScroll(rememberScrollState())
+                    .fillMaxSize()
                     .background(
                         color = Color.White,
                         shape = RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp)

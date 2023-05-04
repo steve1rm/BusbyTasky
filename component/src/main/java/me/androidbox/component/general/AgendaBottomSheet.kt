@@ -2,6 +2,7 @@ package me.androidbox.component.general
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -47,19 +48,16 @@ fun AgendaBottomSheet(
         topBar()
 
         listOfMenuItemId.forEachIndexed { index, itemId, ->
-            DropdownMenuItem(
-                modifier = Modifier.padding(horizontal = 16.dp),
-                text = {
-                    Text(
-                        text = stringResource(id = itemId),
-                        fontWeight = FontWeight.Medium,
-                        fontSize = 16.sp,
-                        color = White)
+            Text(
+                modifier = Modifier
+                    .padding(horizontal = 16.dp, vertical = 16.dp)
+                    .clickable {
+                        onSelectedOption(index)
                 },
-                onClick = {
-                    onSelectedOption(index)
-                }
-            )
+                text = stringResource(id = itemId),
+                fontWeight = FontWeight.Medium,
+                fontSize = 16.sp,
+                color = White)
 
             if(index < listOfMenuItemId.count() - 1) {
                 Divider(color = Gray)
