@@ -23,7 +23,6 @@ import com.maxkeppeler.sheets.date_time.DateTimeDialog
 import com.maxkeppeler.sheets.date_time.models.DateTimeSelection
 import me.androidbox.component.R
 import me.androidbox.component.agenda.*
-import me.androidbox.component.event.VisitorInfo
 import me.androidbox.component.event.VisitorItem
 import me.androidbox.component.general.AgendaDropDownMenu
 import me.androidbox.component.general.PhotoPicker
