@@ -22,6 +22,7 @@ import me.androidbox.domain.authentication.ResponseState
 import me.androidbox.domain.authentication.preference.PreferenceRepository
 import me.androidbox.domain.authentication.remote.EventRepository
 import me.androidbox.domain.constant.SyncAgendaType
+import me.androidbox.domain.constant.UpdateModeType
 import me.androidbox.domain.event.usecase.DeleteEventWithIdRemoteUseCase
 import me.androidbox.domain.event.usecase.VerifyVisitorEmailUseCase
 import me.androidbox.domain.work_manager.UploadEvent
@@ -58,6 +59,7 @@ class EventViewModel @Inject constructor(
                     _eventScreenState.update { eventScreenState ->
                         eventScreenState.copy(
                             isEditMode = false,
+                            updateModeType = UpdateModeType.UPDATE,
                             eventId = eventId
                         )
                     }
@@ -67,6 +69,7 @@ class EventViewModel @Inject constructor(
                     _eventScreenState.update { eventScreenState ->
                         eventScreenState.copy(
                             isEditMode = true,
+                            updateModeType = UpdateModeType.UPDATE,
                             eventId = eventId
                         )
                     }
@@ -75,7 +78,8 @@ class EventViewModel @Inject constructor(
                 else -> {
                     _eventScreenState.update { eventScreenState ->
                         eventScreenState.copy(
-                            isEditMode = false,
+                            isEditMode = true,
+                            updateModeType = UpdateModeType.CREATE,
                             eventId = UUID.randomUUID().toString()
                         )
                     }
@@ -123,7 +127,7 @@ class EventViewModel @Inject constructor(
                 }
             }
             is EventScreenEvent.OnSaveEventDetails -> {
-                insertEventDetails(eventScreenState.value.eventId)
+                insertEventDetails()
             }
             is EventScreenEvent.OnStartTimeDuration -> {
                 _eventScreenState.update { eventScreenState ->
@@ -294,13 +298,13 @@ class EventViewModel @Inject constructor(
         }
     }
 
-    private fun insertEventDetails(eventId: String) {
+    private fun insertEventDetails() {
         val startDateTime = AlarmReminderProvider.getCombinedDateTime(eventScreenState.value.startTime, eventScreenState.value.startDate)
         val endDateTime = AlarmReminderProvider.getCombinedDateTime(eventScreenState.value.endTime, eventScreenState.value.endDate)
         val remindAt = AlarmReminderProvider.getRemindAt(eventScreenState.value.alarmReminderItem, startDateTime)
 
         val event = Event(
-            id = eventId,
+            id = eventScreenState.value.eventId,
             title = eventScreenState.value.eventTitle,
             description = eventScreenState.value.eventDescription,
             startDateTime = startDateTime.toEpochSecond(),
@@ -321,7 +325,7 @@ class EventViewModel @Inject constructor(
                 is ResponseState.Success -> {
                     val alarmItem = event.toAlarmItem(AgendaType.EVENT)
                     alarmScheduler.scheduleAlarmReminder(alarmItem)
-                    uploadEvent.upload(event, isEditMode = eventScreenState.value.isEditMode)
+                    uploadEvent.upload(event, updateModeType = eventScreenState.value.updateModeType)
 
                     _eventScreenState.update { eventScreenState ->
                         eventScreenState.copy(isSaved = true)

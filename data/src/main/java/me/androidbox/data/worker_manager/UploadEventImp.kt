@@ -7,6 +7,7 @@ import me.androidbox.data.mapper.toUpdateEventDto
 import me.androidbox.data.remote.model.request.EventCreateRequestDto
 import me.androidbox.data.remote.model.request.EventUpdateRequestDto
 import me.androidbox.domain.agenda.model.Event
+import me.androidbox.domain.constant.UpdateModeType
 import me.androidbox.domain.work_manager.UploadEvent
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
@@ -23,22 +24,25 @@ class UploadEventImp @Inject constructor(
         const val ERROR = "error"
     }
 
-    override fun upload(event: Event, isEditMode: Boolean) {
+    override fun upload(event: Event, updateModeType: UpdateModeType) {
         /** Serialize the event to json */
-        val eventRequestJson = if(isEditMode) {
-            /** request for update eventRequestDto */
-            val jsonAdapter = moshi.adapter(EventUpdateRequestDto::class.java)
-            jsonAdapter.toJson(event.toUpdateEventDto())
-        }
-        else {
-            /** request for Create eventRequestDto */
-            val jsonAdapter = moshi.adapter(EventCreateRequestDto::class.java)
-            jsonAdapter.toJson(event.toCreateEventDto())
+        val eventRequestJson: String = when(updateModeType) {
+            UpdateModeType.CREATE -> {
+                /** request for Create eventRequestDto */
+                val jsonAdapter = moshi.adapter(EventCreateRequestDto::class.java)
+                jsonAdapter.toJson(event.toCreateEventDto())
+            }
+
+            UpdateModeType.UPDATE -> {
+                /** request for update eventRequestDto */
+                val jsonAdapter = moshi.adapter(EventUpdateRequestDto::class.java)
+                jsonAdapter.toJson(event.toUpdateEventDto())
+            }
         }
 
         /** Create input data to send to the work that will be retrieved */
         val eventInputData = workDataOf(
-            IS_EDIT_MODE to isEditMode,
+            IS_EDIT_MODE to (updateModeType == UpdateModeType.UPDATE),
             EVENT to eventRequestJson,
             EVENT_PHOTOS to event.photos.toTypedArray())
 
