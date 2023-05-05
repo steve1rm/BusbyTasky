@@ -241,6 +241,14 @@ class EventViewModel @Inject constructor(
                 }
             }
             is EventScreenEvent.OnAttendeeDeleted -> TODO()
+
+            is EventScreenEvent.OnEditModeChangeStatus -> {
+                _eventScreenState.update { eventScreenState ->
+                    eventScreenState.copy(
+                        isEditMode = eventScreenEvent.isEditModel
+                    )
+                }
+            }
         }
     }
 

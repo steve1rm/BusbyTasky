@@ -97,7 +97,7 @@ dependencies {
     implementation("io.coil-kt:coil-compose:1.4.0")
     implementation("androidx.work:work-runtime-ktx:2.8.0")
     implementation("androidx.hilt:hilt-work:1.0.0")
-
+    implementation("com.google.accompanist:accompanist-swiperefresh:0.27.0")
     debugImplementation(tests.ui.tooling)
     debugImplementation(tests.ui.test.manifest)
 
