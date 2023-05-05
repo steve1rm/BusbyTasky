@@ -22,9 +22,9 @@ import me.androidbox.component.ui.theme.backgroundWhiteColor
 fun AgendaBottomSheet(
     onCloseDropdown: () -> Unit,
     bottomSheetState: SheetState,
-    modifier: Modifier = Modifier,
     topBar: @Composable () -> Unit,
-    content: @Composable () -> Unit) {
+    content: @Composable () -> Unit,
+    modifier: Modifier = Modifier) {
 
     ModalBottomSheet(
         containerColor = MaterialTheme.colorScheme.backgroundWhiteColor,

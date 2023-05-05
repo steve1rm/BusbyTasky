@@ -128,7 +128,7 @@ fun EventScreen(
                     )
 
                     Spacer(modifier = modifier.height(26.dp))
-                    
+
                     AlarmReminder(
                         reminderText = stringResource(id = eventScreenState.alarmReminderItem.stringResId),
                         modifier = Modifier
