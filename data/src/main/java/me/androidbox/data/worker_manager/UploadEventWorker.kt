@@ -43,10 +43,10 @@ class UploadEventWorker @AssistedInject constructor(
                 createPhotoMultipart.createMultipartPhotos(listOfPhoto.toList())
             } ?: listOf()
 
-            if(runAttemptCount > RETRY_COUNT) {
+          /*  if(runAttemptCount < RETRY_COUNT) {
                 Result.failure()
             }
-
+*/
             val responseResult = checkResult {
                 if(isEditMode) {
                     eventService.updateEvent(
@@ -72,7 +72,7 @@ class UploadEventWorker @AssistedInject constructor(
                     }
                 },
                 onFailure = { _ ->
-                    Result.retry()
+                    Result.failure()
                 }
             )
 

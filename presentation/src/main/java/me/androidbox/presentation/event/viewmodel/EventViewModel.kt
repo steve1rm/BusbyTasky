@@ -31,6 +31,7 @@ import me.androidbox.presentation.event.screen.EventScreenEvent
 import me.androidbox.presentation.event.screen.EventScreenState
 import me.androidbox.presentation.navigation.Screen.EventScreen.EVENT_ID
 import me.androidbox.presentation.navigation.Screen.EventScreen.MENU_ACTION_TYPE
+import java.time.ZonedDateTime
 import java.util.*
 import javax.inject.Inject
 
@@ -70,17 +71,32 @@ class EventViewModel @Inject constructor(
                         eventScreenState.copy(
                             isEditMode = true,
                             updateModeType = UpdateModeType.UPDATE,
-                            eventId = eventId
+                            eventId = eventId,
+                            attendees = eventScreenState.attendees + Attendee(
+                                email = "bee@mail.com",
+                                fullName = "bee ant",
+                                userId = preferenceRepository.retrieveCurrentUserOrNull()?.userId ?: "",
+                                eventId = eventId,
+                                isGoing = true,
+                                remindAt = ZonedDateTime.now().toEpochSecond())
                         )
                     }
                     fetchEventById(eventId)
                 }
                 else -> {
                     _eventScreenState.update { eventScreenState ->
+                        val eventId = UUID.randomUUID().toString()
                         eventScreenState.copy(
                             isEditMode = true,
                             updateModeType = UpdateModeType.CREATE,
-                            eventId = UUID.randomUUID().toString()
+                            eventId = eventId,
+                            attendees = eventScreenState.attendees + Attendee(
+                                email = "bee@mail.com",
+                                fullName = "bee ant",
+                                userId = preferenceRepository.retrieveCurrentUserOrNull()?.userId ?: "",
+                                eventId = eventId,
+                                isGoing = true,
+                                remindAt = ZonedDateTime.now().toEpochSecond())
                         )
                     }
                 }
