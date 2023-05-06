@@ -74,12 +74,12 @@ class EventViewModel @Inject constructor(
                     fetchEventById(eventId)
                 }
                 else -> {
+                    /** User is creating a new event */
                     _eventScreenState.update { eventScreenState ->
-                        val eventId = UUID.randomUUID().toString()
                         eventScreenState.copy(
                             isEditMode = true,
                             updateModeType = UpdateModeType.CREATE,
-                            eventId = eventId)
+                            eventId = UUID.randomUUID().toString())
                     }
                 }
             }
