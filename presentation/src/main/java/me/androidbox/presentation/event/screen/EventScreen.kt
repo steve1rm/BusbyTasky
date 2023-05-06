@@ -1,5 +1,6 @@
 package me.androidbox.presentation.event.screen
 
+import android.net.Uri
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -41,6 +42,7 @@ fun EventScreen(
     onEditTitleClicked: (title: String) -> Unit,
     onEditDescriptionClicked: (description: String) -> Unit,
     onCloseClicked: () -> Unit,
+    onPhotoClicked: (photo: String) -> Unit,
     modifier: Modifier = Modifier) {
 
     val calendarStateTimeDate = rememberUseCaseState()
@@ -97,6 +99,9 @@ fun EventScreen(
                         listOfPhotoUri = eventScreenState.listOfPhotoUri,
                         onPhotoUriSelected = { uri ->
                             eventScreenEvent(EventScreenEvent.OnPhotoUriAdded(uri.toString()))
+                        },
+                        onOpenPhoto = { uri ->
+                            onPhotoClicked(uri)
                         }
                     )
 
@@ -253,7 +258,8 @@ fun PreviewEventScreenEditMode() {
             modifier = Modifier.fillMaxWidth(),
             onEditDescriptionClicked = {},
             onEditTitleClicked = {},
-            onCloseClicked = {}
+            onCloseClicked = {},
+            onPhotoClicked = {}
         )
     }
 }
@@ -270,7 +276,8 @@ fun PreviewEventScreenSaveMode() {
             modifier = Modifier.fillMaxWidth(),
             onEditDescriptionClicked = {},
             onEditTitleClicked = {},
-            onCloseClicked = {}
+            onCloseClicked = {},
+            onPhotoClicked = {}
         )
     }
 }
