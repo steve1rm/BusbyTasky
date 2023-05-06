@@ -28,8 +28,9 @@ import me.androidbox.presentation.ui.theme.BusbyTaskyTheme
 fun PhotoScreen(
     photoScreenState: PhotoScreenState,
     photoScreenEvent: (PhotoScreenEvent) -> Unit,
+    onCloseClicked: () -> Unit,
+    onSelectedPhotoForDeletion: (photo: String) -> Unit,
     modifier: Modifier = Modifier,
-    onCloseClicked: () -> Unit
 ) {
 
     Column(modifier = modifier) {
@@ -52,7 +53,8 @@ fun PhotoScreen(
                 fontWeight = FontWeight.SemiBold)
 
             IconButton(onClick = {
-                photoScreenEvent(PhotoScreenEvent.OnPhotoDelete(photoScreenState.photoSelected))
+              //  photoScreenEvent(PhotoScreenEvent.OnPhotoDelete(photoScreenState.photoSelected))
+                onSelectedPhotoForDeletion(photoScreenState.photoSelected)
             }) {
                 Icon(
                     painter = painterResource(id = R.drawable.bin),
@@ -79,7 +81,8 @@ fun PreviewPhotoScreen() {
             modifier = Modifier.background(color = MaterialTheme.colorScheme.background),
             photoScreenState = PhotoScreenState(),
             photoScreenEvent = {},
-            onCloseClicked = {}
+            onCloseClicked = {},
+            onSelectedPhotoForDeletion = {}
         )
     }
 }

@@ -187,6 +187,7 @@ fun NavigationGraph(
             val eventScreenState by eventViewModel.eventScreenState.collectAsStateWithLifecycle()
             val title = it.savedStateHandle.get<String>(ContentType.TITLE.name) ?: "New Event"
             val description = it.savedStateHandle.get<String>(ContentType.DESCRIPTION.name) ?: "New Description"
+            val selectedPhoto = it.savedStateHandle.get<String>(PHOTO_IMAGE_PATH)
 
             LaunchedEffect(key1 = title, key2 = description) {
                 eventViewModel.onEventScreenEvent(
@@ -195,6 +196,16 @@ fun NavigationGraph(
                         description
                     )
                 )
+            }
+
+            LaunchedEffect(key1 = selectedPhoto) {
+                if(selectedPhoto != null) {
+                    eventViewModel.onEventScreenEvent(
+                        EventScreenEvent.OnPhotoDeletion(
+                            photo = selectedPhoto
+                        )
+                    )
+                }
             }
 
             /** Once the insertion has completed the state will change to true then
@@ -323,7 +334,7 @@ fun NavigationGraph(
             route = Screen.PhotoScreen.route,
             arguments = listOf(navArgument(PHOTO_IMAGE_PATH) {
                 this.type = NavType.StringType
-                this.defaultValue = ""
+                this.defaultValue = null
                 this.nullable = true
             })
         ) {
@@ -337,6 +348,11 @@ fun NavigationGraph(
                     photoScreenViewModel.onPhotoScreenEvent(photoScreenEvent)
                 },
                 onCloseClicked = {
+                    navHostController.previousBackStackEntry?.savedStateHandle?.clearSavedStateProvider(PHOTO_IMAGE_PATH)
+                    navHostController.popBackStack()
+                },
+                onSelectedPhotoForDeletion = { selectedPhoto ->
+                    navHostController.previousBackStackEntry?.savedStateHandle?.set(PHOTO_IMAGE_PATH, selectedPhoto)
                     navHostController.popBackStack()
                 }
             )
