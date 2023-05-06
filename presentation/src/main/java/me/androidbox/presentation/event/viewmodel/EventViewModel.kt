@@ -93,6 +93,15 @@ class EventViewModel @Inject constructor(
                     )
                 }
             }
+
+            is EventScreenEvent.OnPhotoDeletion -> {
+                _eventScreenState.update { eventScreenState ->
+                    eventScreenState.copy(
+                        listOfPhotoUri = eventScreenState.listOfPhotoUri - eventScreenEvent.photo
+                    )
+                }
+            }
+
             is EventScreenEvent.OnSelectedVisitorType -> {
                 _eventScreenState.update { eventScreenState ->
                     eventScreenState.copy(
