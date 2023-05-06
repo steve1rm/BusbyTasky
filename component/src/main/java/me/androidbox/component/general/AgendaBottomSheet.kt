@@ -1,5 +1,6 @@
 package me.androidbox.component.general
 
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -8,6 +9,7 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
@@ -57,7 +59,9 @@ fun PreviewAgendaBottomSheet() {
             onCloseDropdown = {},
             content = {
                 AlarmReminderOptions(
+                    title = stringResource(id = R.string.alarm_reminder),
                     modifier = Modifier
+                        .fillMaxWidth()
                         .padding(horizontal = 16.dp, vertical = 16.dp),
                     listOfMenuItemId = listOf(
                         R.string.ten_minutes_before,

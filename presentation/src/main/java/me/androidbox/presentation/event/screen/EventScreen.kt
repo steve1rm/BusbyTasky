@@ -195,6 +195,7 @@ fun EventScreen(
         },
         content = {
             AlarmReminderOptions(
+                title = stringResource(id = R.string.alarm_reminder),
                 modifier = Modifier
                     .padding(horizontal = 16.dp, vertical = 16.dp),
                 listOfMenuItemId = AlarmReminderItem.values()
