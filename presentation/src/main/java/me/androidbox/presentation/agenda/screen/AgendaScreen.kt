@@ -177,7 +177,7 @@ fun AgendaScreen(
                         onMenuOptionClicked = {
                             println("Event ${agendaItem.id} has been clicked")
                             agendaScreenEvent(AgendaScreenEvent.OnAgendaItemClicked(agendaItem))
-                            agendaScreenEvent(AgendaScreenEvent.OnChangeShowEditAgendaItemDropdownStatus(shouldOpen = true))
+                            agendaScreenEvent(AgendaScreenEvent.OnChangeShowEditAgendaItemDropdownStatus(shouldOpen = true, agendaItem = agendaItem))
                         },
                         dropDownMenu = {
                             /** Open, Edit, Delete Agenda Items */
@@ -185,16 +185,16 @@ fun AgendaScreen(
                                 modifier = Modifier
                                     .background(color = MaterialTheme.colorScheme.dropDownMenuBackgroundColor)
                                     .align(Alignment.TopStart),
-                                shouldOpenDropdown = agendaScreenState.shouldOpenEditAgendaDropdown,
+                                shouldOpenDropdown = agendaItem == agendaScreenState.agendaItemWithOperationBeingSelected && agendaScreenState.shouldOpenEditAgendaDropdown,
                                 onCloseDropdown = {
                                     agendaScreenEvent(
-                                        AgendaScreenEvent.OnChangeShowEditAgendaItemDropdownStatus(shouldOpen = false))
+                                        AgendaScreenEvent.OnChangeShowEditAgendaItemDropdownStatus(shouldOpen = false,  agendaItem = agendaItem))
                                 },
                                 listOfMenuItemId = AgendaMenuActionType.values().map { it.titleId },
                                 onSelectedOption = { item ->
                                     agendaScreenState.agendaItemClicked?.let { agendaItem ->
                                         onSelectedEditAgendaItemClicked(agendaItem, AgendaMenuActionType.values()[item])
-                                        agendaScreenEvent(AgendaScreenEvent.OnChangeShowEditAgendaItemDropdownStatus(shouldOpen = false))
+                                        agendaScreenEvent(AgendaScreenEvent.OnChangeShowEditAgendaItemDropdownStatus(shouldOpen = false,  agendaItem = agendaItem))
                                     }
                                 }
                             )
