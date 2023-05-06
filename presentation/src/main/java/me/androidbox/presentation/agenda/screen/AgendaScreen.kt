@@ -173,31 +173,33 @@ fun AgendaScreen(
                             AgendaType.TASK -> AgendaCardType.TASK
                             AgendaType.REMINDER -> AgendaCardType.REMINDER
                         },
-                        isAgendaCompleted = false
-                    ) {
-                        println("Event ${agendaItem.id} has been clicked")
-                        agendaScreenEvent(AgendaScreenEvent.OnAgendaItemClicked(agendaItem))
-                        agendaScreenEvent(AgendaScreenEvent.OnChangeShowEditAgendaItemDropdownStatus(shouldOpen = true))
-                    }
-
-                    /** Open, Edit, Delete Agenda Items */
-                    AgendaDropDownMenu(
-                        modifier = Modifier
-                            .background(color = MaterialTheme.colorScheme.dropDownMenuBackgroundColor)
-                            .align(Alignment.BottomEnd),
-                        shouldOpenDropdown = agendaScreenState.shouldOpenEditAgendaDropdown,
-                        onCloseDropdown = {
-                            agendaScreenEvent(
-                                AgendaScreenEvent.OnChangeShowEditAgendaItemDropdownStatus(shouldOpen = false))
+                        isAgendaCompleted = false,
+                        onMenuOptionClicked = {
+                            println("Event ${agendaItem.id} has been clicked")
+                            agendaScreenEvent(AgendaScreenEvent.OnAgendaItemClicked(agendaItem))
+                            agendaScreenEvent(AgendaScreenEvent.OnChangeShowEditAgendaItemDropdownStatus(shouldOpen = true))
                         },
-                        listOfMenuItemId = AgendaMenuActionType.values().map { it.titleId },
-                        onSelectedOption = { item ->
-                            agendaScreenState.agendaItemClicked?.let { agendaItem ->
-                                onSelectedEditAgendaItemClicked(agendaItem, AgendaMenuActionType.values()[item])
-                                agendaScreenEvent(AgendaScreenEvent.OnChangeShowEditAgendaItemDropdownStatus(shouldOpen = false))
-                            }
+                        dropDownMenu = {
+                            /** Open, Edit, Delete Agenda Items */
+                            AgendaDropDownMenu(
+                                modifier = Modifier
+                                    .background(color = MaterialTheme.colorScheme.dropDownMenuBackgroundColor)
+                                    .align(Alignment.TopStart),
+                                shouldOpenDropdown = agendaScreenState.shouldOpenEditAgendaDropdown,
+                                onCloseDropdown = {
+                                    agendaScreenEvent(
+                                        AgendaScreenEvent.OnChangeShowEditAgendaItemDropdownStatus(shouldOpen = false))
+                                },
+                                listOfMenuItemId = AgendaMenuActionType.values().map { it.titleId },
+                                onSelectedOption = { item ->
+                                    agendaScreenState.agendaItemClicked?.let { agendaItem ->
+                                        onSelectedEditAgendaItemClicked(agendaItem, AgendaMenuActionType.values()[item])
+                                        agendaScreenEvent(AgendaScreenEvent.OnChangeShowEditAgendaItemDropdownStatus(shouldOpen = false))
+                                    }
+                                }
+                            )
                         }
-                    )
+                     )
                 }
             }
         }
