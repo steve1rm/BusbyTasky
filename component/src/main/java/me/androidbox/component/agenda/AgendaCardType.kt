@@ -43,9 +43,7 @@ fun AgendaCard(
         Column {
             Box(modifier = Modifier
                 .fillMaxWidth()) {
-                Row(modifier = Modifier
-                    .padding(start = 16.dp, top = 16.dp)
-                    .align(Alignment.TopStart),
+                Row(modifier = Modifier.padding(start = 16.dp, top = 16.dp).align(Alignment.TopStart),
                     verticalAlignment = Alignment.CenterVertically) {
                     val agendaStatusIcon = if (isAgendaCompleted) {
                         painterResource(id = R.drawable.completed)
