@@ -41,7 +41,6 @@ import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.util.*
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EventScreen(
     eventScreenState: EventScreenState,
@@ -53,8 +52,6 @@ fun EventScreen(
     modifier: Modifier = Modifier) {
 
     val calendarStateTimeDate = rememberUseCaseState()
-    val bottomSheetState = rememberModalBottomSheetState()
-    val bottomSheetScope = rememberCoroutineScope()
 
     Scaffold(
         modifier = modifier,
@@ -141,9 +138,12 @@ fun EventScreen(
                             .background(color = MaterialTheme.colorScheme.backgroundWhiteColor),
                         isEditMode = eventScreenState.isEditMode,
                         onReminderClicked = {
+                            eventScreenEvent(EventScreenEvent.OnShowAlarmReminderDropdown(shouldOpen = true))
+/*
                             bottomSheetScope.launch {
                                 bottomSheetState.show()
                             }
+*/
                         }
                     )
                     Spacer(modifier = modifier.height(26.dp))
@@ -182,47 +182,28 @@ fun EventScreen(
         }
     )
 
-    if (bottomSheetState.isVisible) {
-        AgendaBottomSheet(
-            onCloseDropdown = {
-                bottomSheetScope.launch {
-                    bottomSheetState.hide()
-                }
-            },
-            bottomSheetState = bottomSheetState,
-            topBar = {
-                AgendaBottomSheetToolbar(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .background(color = White)
-                        .padding(vertical = 16.dp, horizontal = 16.dp),
-                    title = R.string.alarm_reminder,
-                    onCloseClicked = {
-                        bottomSheetScope.launch {
-                            bottomSheetState.hide()
-                        }
-                    })
-            },
-            content = {
-                AlarmReminderOptions(
-                    modifier = Modifier
-                        .padding(horizontal = 16.dp, vertical = 16.dp),
-                    listOfMenuItemId = AlarmReminderItem.values()
-                        .map { alarmReminderItem ->
-                            alarmReminderItem.stringResId
-                        },
-                    onSelectedOption = { item ->
-                        eventScreenEvent(
-                            EventScreenEvent.OnAlarmReminderChanged(
-                                AlarmReminderItem.values()[item]
-                            )
+    AgendaBottomSheet(
+        shouldOpenBottomSheet = eventScreenState.shouldOpenDropdown,
+        onCloseDropdown = {
+            eventScreenEvent(EventScreenEvent.OnShowAlarmReminderDropdown(shouldOpen = false))
+        },
+        content = {
+            AlarmReminderOptions(
+                modifier = Modifier
+                    .padding(horizontal = 16.dp, vertical = 16.dp),
+                listOfMenuItemId = AlarmReminderItem.values()
+                    .map { alarmReminderItem ->
+                        alarmReminderItem.stringResId
+                    },
+                onSelectedOption = { item ->
+                    eventScreenEvent(
+                        EventScreenEvent.OnAlarmReminderChanged(
+                            AlarmReminderItem.values()[item]
                         )
-                        bottomSheetScope.launch {
-                            bottomSheetState.hide()
-                        }
-                    })
-            })
-    }
+                    )
+                    eventScreenEvent(EventScreenEvent.OnShowAlarmReminderDropdown(shouldOpen = false))
+                })
+        })
 
     if(eventScreenState.shouldShowVisitorDialog) {
         AddVisitorDialog(
