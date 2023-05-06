@@ -11,10 +11,8 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import me.androidbox.domain.DateTimeFormatterProvider.toZoneDateTime
-import me.androidbox.presentation.agenda.constant.AgendaMenuActionType
 import me.androidbox.domain.agenda.model.Attendee
 import me.androidbox.domain.agenda.model.Event
-import me.androidbox.domain.agenda.usecase.UsersInitialsExtractionUseCase
 import me.androidbox.domain.alarm_manager.AgendaType
 import me.androidbox.domain.alarm_manager.AlarmScheduler
 import me.androidbox.domain.alarm_manager.toAlarmItem
@@ -26,19 +24,18 @@ import me.androidbox.domain.constant.UpdateModeType
 import me.androidbox.domain.event.usecase.DeleteEventWithIdRemoteUseCase
 import me.androidbox.domain.event.usecase.VerifyVisitorEmailUseCase
 import me.androidbox.domain.work_manager.UploadEvent
+import me.androidbox.presentation.agenda.constant.AgendaMenuActionType
 import me.androidbox.presentation.alarm_manager.AlarmReminderProvider
 import me.androidbox.presentation.event.screen.EventScreenEvent
 import me.androidbox.presentation.event.screen.EventScreenState
 import me.androidbox.presentation.navigation.Screen.EventScreen.EVENT_ID
 import me.androidbox.presentation.navigation.Screen.EventScreen.MENU_ACTION_TYPE
-import java.time.ZonedDateTime
-import java.util.*
+import java.util.UUID
 import javax.inject.Inject
 
 @HiltViewModel
 class EventViewModel @Inject constructor(
     private val eventRepository: EventRepository,
-    private val usersInitialsExtractionUseCase: UsersInitialsExtractionUseCase,
     private val verifyVisitorEmailUseCase: VerifyVisitorEmailUseCase,
     private val deleteEventWithIdRemoteUseCase: DeleteEventWithIdRemoteUseCase,
     private val preferenceRepository: PreferenceRepository,
@@ -71,14 +68,7 @@ class EventViewModel @Inject constructor(
                         eventScreenState.copy(
                             isEditMode = true,
                             updateModeType = UpdateModeType.UPDATE,
-                            eventId = eventId,
-                            attendees = eventScreenState.attendees + Attendee(
-                                email = "bee@mail.com",
-                                fullName = "bee ant",
-                                userId = preferenceRepository.retrieveCurrentUserOrNull()?.userId ?: "",
-                                eventId = eventId,
-                                isGoing = true,
-                                remindAt = ZonedDateTime.now().toEpochSecond())
+                            eventId = eventId
                         )
                     }
                     fetchEventById(eventId)
@@ -89,15 +79,7 @@ class EventViewModel @Inject constructor(
                         eventScreenState.copy(
                             isEditMode = true,
                             updateModeType = UpdateModeType.CREATE,
-                            eventId = eventId,
-                            attendees = eventScreenState.attendees + Attendee(
-                                email = "bee@mail.com",
-                                fullName = "bee ant",
-                                userId = preferenceRepository.retrieveCurrentUserOrNull()?.userId ?: "",
-                                eventId = eventId,
-                                isGoing = true,
-                                remindAt = ZonedDateTime.now().toEpochSecond())
-                        )
+                            eventId = eventId)
                     }
                 }
             }
@@ -319,39 +301,48 @@ class EventViewModel @Inject constructor(
         val endDateTime = AlarmReminderProvider.getCombinedDateTime(eventScreenState.value.endTime, eventScreenState.value.endDate)
         val remindAt = AlarmReminderProvider.getRemindAt(eventScreenState.value.alarmReminderItem, startDateTime)
 
-        val event = Event(
-            id = eventScreenState.value.eventId,
-            title = eventScreenState.value.eventTitle,
-            description = eventScreenState.value.eventDescription,
-            startDateTime = startDateTime.toEpochSecond(),
-            endDateTime = endDateTime.toEpochSecond(),
-            remindAt = remindAt.toEpochSecond(),
-            eventCreatorId = preferenceRepository.retrieveCurrentUserOrNull()?.userId ?: "",
-            isUserEventCreator = true,
-            isGoing = true,
-            attendees = eventScreenState.value.attendees,
-            photos = eventScreenState.value.listOfPhotoUri
-        )
+        preferenceRepository.retrieveCurrentUserOrNull()?.userId?.let { userId ->
+            val event = Event(
+                id = eventScreenState.value.eventId,
+                title = eventScreenState.value.eventTitle,
+                description = eventScreenState.value.eventDescription,
+                startDateTime = startDateTime.toEpochSecond(),
+                endDateTime = endDateTime.toEpochSecond(),
+                remindAt = remindAt.toEpochSecond(),
+                eventCreatorId = userId,
+                isUserEventCreator = true,
+                isGoing = true,
+                attendees = eventScreenState.value.attendees,
+                photos = eventScreenState.value.listOfPhotoUri
+            )
 
-        viewModelScope.launch {
-            when(val responseState = eventRepository.insertEvent(event)) {
-                ResponseState.Loading -> {
-                    /* TODO Show some loading progress */
-                }
-                is ResponseState.Success -> {
-                    val alarmItem = event.toAlarmItem(AgendaType.EVENT)
-                    alarmScheduler.scheduleAlarmReminder(alarmItem)
-                    uploadEvent.upload(event, updateModeType = eventScreenState.value.updateModeType)
+            viewModelScope.launch {
+                when (val responseState = eventRepository.insertEvent(event)) {
+                    ResponseState.Loading -> {
+                        /* TODO Show some loading progress */
+                    }
 
-                    _eventScreenState.update { eventScreenState ->
-                        eventScreenState.copy(isSaved = true)
+                    is ResponseState.Success -> {
+                        val alarmItem = event.toAlarmItem(AgendaType.EVENT)
+                        alarmScheduler.scheduleAlarmReminder(alarmItem)
+                        uploadEvent.upload(
+                            event,
+                            updateModeType = eventScreenState.value.updateModeType
+                        )
+
+                        _eventScreenState.update { eventScreenState ->
+                            eventScreenState.copy(isSaved = true)
+                        }
+                    }
+
+                    is ResponseState.Failure -> {
+                        Log.e("EVENT_INSERT", "${responseState.error.message}")
+                        /* TODO Show some kink of snack bar or toast message */
                     }
                 }
-                is ResponseState.Failure -> {
-                    Log.e("EVENT_INSERT", "${responseState.error.message}")
-                   /* TODO Show some kink of snack bar or toast message */
-                }
             }
+        } ?: run {
+            /** TODO Display a snackbar or toast detailing some thing went wrong */
         }
     }
 
