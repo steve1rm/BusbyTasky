@@ -37,6 +37,7 @@ import me.androidbox.domain.task.repository.TaskRepository
 import me.androidbox.domain.task.usecase.DeleteTaskByIdUseCaseImp
 import me.androidbox.domain.task.usecase.GetTaskByIdUseCaseImp
 import me.androidbox.domain.task.usecase.InsertTaskUseCaseImp
+import me.androidbox.domain.task.usecase.UpdateTaskByIdUseCaseImp
 import me.androidbox.domain.work_manager.AgendaSynchronizer
 import me.androidbox.domain.work_manager.FullAgendaSynchronizer
 import me.androidbox.domain.work_manager.UploadEvent
@@ -144,6 +145,12 @@ interface RepositoryModule {
         @Provides
         fun providesDeleteTaskByIdUseCaseImp(taskRepository: TaskRepository): DeleteTaskByIdUseCaseImp {
             return DeleteTaskByIdUseCaseImp(taskRepository)
+        }
+
+        @Reusable
+        @Provides
+        fun providesUpdateTaskByIdUseCaseImp(taskRepository: TaskRepository): UpdateTaskByIdUseCaseImp {
+            return UpdateTaskByIdUseCaseImp(taskRepository)
         }
     }
 }

@@ -10,18 +10,15 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import me.androidbox.data.local.agenda.TaskRepositoryImp
 import me.androidbox.domain.DateTimeFormatterProvider.toZoneDateTime
 import me.androidbox.domain.agenda.model.Task
-import me.androidbox.domain.alarm_manager.AlarmScheduler
-import me.androidbox.domain.alarm_manager.toAlarmItem
 import me.androidbox.domain.authentication.ResponseState
 import me.androidbox.domain.constant.UpdateModeType
 import me.androidbox.domain.task.repository.TaskRepository
 import me.androidbox.presentation.agenda.constant.AgendaMenuActionType
 import me.androidbox.presentation.alarm_manager.AlarmReminderProvider
-import me.androidbox.presentation.navigation.Screen.Companion.MENU_ACTION_TYPE
 import me.androidbox.presentation.navigation.Screen.Companion.ID
+import me.androidbox.presentation.navigation.Screen.Companion.MENU_ACTION_TYPE
 import me.androidbox.presentation.task.screen.TaskDetailScreenEvent
 import me.androidbox.presentation.task.screen.TaskDetailScreenState
 import java.util.UUID
@@ -29,7 +26,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 class TaskDetailViewModel @Inject constructor(
-    private val alarmScheduler: AlarmScheduler,
     private val taskRepository: TaskRepository,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
@@ -146,7 +142,15 @@ class TaskDetailViewModel @Inject constructor(
             isDone = taskDetailScreenState.value.isDone)
 
         viewModelScope.launch {
-            when(taskRepository.insertTask(task)) {
+            val responseState = when(taskDetailScreenState.value.updateModeType) {
+                UpdateModeType.UPDATE -> {
+                    taskRepository.updateTask(task)
+                }
+                UpdateModeType.CREATE -> {
+                    taskRepository.insertTask(task)
+                }
+            }
+            when(responseState) {
                 ResponseState.Loading -> TODO()
                 is ResponseState.Success -> Unit
                 is ResponseState.Failure -> {
@@ -191,6 +195,12 @@ class TaskDetailViewModel @Inject constructor(
     private fun deleteTask(taskId: String) {
         viewModelScope.launch {
             taskRepository.deleteTaskById(taskId)
+        }
+    }
+
+    private fun updateTask(task: Task) {
+        viewModelScope.launch {
+            taskRepository.updateTask(task)
         }
     }
 }
