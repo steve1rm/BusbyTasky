@@ -160,7 +160,6 @@ fun AgendaScreen(
                 }
 
                 items(agendaScreenState.agendaItems) { agendaItem ->
-                    Box(modifier = Modifier.fillMaxWidth()) {
                         AgendaCard(
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -219,7 +218,6 @@ fun AgendaScreen(
                                 )
                             }
                         )
-                    }
                 }
             }
         }
