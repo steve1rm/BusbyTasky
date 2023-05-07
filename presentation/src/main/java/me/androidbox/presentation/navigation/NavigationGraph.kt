@@ -1,6 +1,9 @@
 package me.androidbox.presentation.navigation
 
+import android.net.Uri
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -36,7 +39,10 @@ import me.androidbox.presentation.navigation.Screen.Companion.ID
 import me.androidbox.presentation.navigation.Screen.Companion.MENU_ACTION_TYPE
 import me.androidbox.presentation.navigation.Screen.EditScreen.CONTENT
 import me.androidbox.presentation.navigation.Screen.EditScreen.CONTENT_TYPE
+import me.androidbox.presentation.navigation.Screen.PhotoScreen.PHOTO_IMAGE_PATH
 import me.androidbox.presentation.navigation.Screen.TaskDetailScreen.TASK_DETAIL_SCREEN
+import me.androidbox.presentation.photo.screen.PhotoScreen
+import me.androidbox.presentation.photo.viewmodel.PhotoScreenViewModel
 import me.androidbox.presentation.task.screen.TaskDetailScreen
 import me.androidbox.presentation.task.screen.TaskDetailScreenEvent
 import me.androidbox.presentation.task.viewmodel.TaskDetailViewModel
@@ -182,6 +188,7 @@ fun NavigationGraph(
             val eventScreenState by eventViewModel.eventScreenState.collectAsStateWithLifecycle()
             val title = it.savedStateHandle.get<String>(ContentType.TITLE.name) ?: "New Event"
             val description = it.savedStateHandle.get<String>(ContentType.DESCRIPTION.name) ?: "New Description"
+            val selectedPhoto = it.savedStateHandle.get<String>(PHOTO_IMAGE_PATH)
 
             LaunchedEffect(key1 = title, key2 = description) {
                 eventViewModel.onEventScreenEvent(
@@ -190,6 +197,16 @@ fun NavigationGraph(
                         description
                     )
                 )
+            }
+
+            LaunchedEffect(key1 = selectedPhoto) {
+                if(selectedPhoto != null) {
+                    eventViewModel.onEventScreenEvent(
+                        EventScreenEvent.OnPhotoDeletion(
+                            photo = selectedPhoto
+                        )
+                    )
+                }
             }
 
             /** Once the insertion has completed the state will change to true then
@@ -217,6 +234,10 @@ fun NavigationGraph(
                 onCloseClicked = {
                     navHostController.popBackStack()
                 },
+                onPhotoClicked = { photoImage ->
+                    val encodedImagePath = Uri.encode(photoImage)
+                    navHostController.navigate(route = "${Screen.PhotoScreen.PHOTO_SCREEN}/${encodedImagePath}")
+                }
             )
         }
 
@@ -313,6 +334,35 @@ fun NavigationGraph(
                 },
                 onSaveClicked = { content, contentType ->
                     navHostController.previousBackStackEntry?.savedStateHandle?.set(contentType.name, content)
+                    navHostController.popBackStack()
+                }
+            )
+        }
+
+        /** Photo Screen */
+        composable(
+            route = Screen.PhotoScreen.route,
+            arguments = listOf(navArgument(PHOTO_IMAGE_PATH) {
+                this.type = NavType.StringType
+                this.defaultValue = null
+                this.nullable = true
+            })
+        ) {
+            val photoScreenViewModel: PhotoScreenViewModel = hiltViewModel()
+            val photoScreenState by photoScreenViewModel.photoScreenState.collectAsStateWithLifecycle()
+
+            PhotoScreen(
+                modifier = Modifier.background(color = MaterialTheme.colorScheme.background),
+                photoScreenState = photoScreenState,
+                photoScreenEvent = { photoScreenEvent ->
+                    photoScreenViewModel.onPhotoScreenEvent(photoScreenEvent)
+                },
+                onCloseClicked = {
+                    navHostController.previousBackStackEntry?.savedStateHandle?.clearSavedStateProvider(PHOTO_IMAGE_PATH)
+                    navHostController.popBackStack()
+                },
+                onSelectedPhotoForDeletion = { selectedPhoto ->
+                    navHostController.previousBackStackEntry?.savedStateHandle?.set(PHOTO_IMAGE_PATH, selectedPhoto)
                     navHostController.popBackStack()
                 }
             )
