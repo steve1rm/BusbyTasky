@@ -15,6 +15,7 @@ import me.androidbox.data.local.entity.TaskEntity
 import me.androidbox.data.mapper.toTaskDto
 import me.androidbox.data.remote.network.task.TaskService
 import me.androidbox.data.remote.util.CheckResult.checkResult
+import me.androidbox.data.worker_manager.constant.Constant.RETRY_COUNT
 import me.androidbox.domain.constant.SyncAgendaType
 
 @HiltWorker
@@ -38,6 +39,13 @@ class TaskCreateSynchronizerWorker @AssistedInject constructor(
         }
 
         val result = if (createdTasks.await().isNotEmpty()) {
+            if(runAttemptCount > RETRY_COUNT) {
+                Result.failure()
+            }
+            else {
+                Result.retry()
+            }
+
             val responseState = checkResult{
                 val createdTasksEntity = createdTasks.await()
 
@@ -61,6 +69,7 @@ class TaskCreateSynchronizerWorker @AssistedInject constructor(
             )
         }
         else {
+            /** There was nothing to sync as the sync table was empty */
             Result.success()
         }
 
