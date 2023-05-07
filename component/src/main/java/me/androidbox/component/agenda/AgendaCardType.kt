@@ -43,7 +43,9 @@ fun AgendaCard(
         Column {
             Box(modifier = Modifier
                 .fillMaxWidth()) {
-                Row(modifier = Modifier.padding(start = 16.dp, top = 16.dp).align(Alignment.TopStart),
+                Row(modifier = Modifier
+                    .padding(start = 16.dp, top = 16.dp)
+                    .align(Alignment.TopStart),
                     verticalAlignment = Alignment.CenterVertically) {
                     val agendaStatusIcon = if (isAgendaCompleted) {
                         painterResource(id = R.drawable.completed)
@@ -61,13 +63,19 @@ fun AgendaCard(
                         textDecoration = if(isAgendaCompleted) TextDecoration.LineThrough else TextDecoration.None
                     )
                 }
-                OptionButton(
-                    modifier = Modifier.padding(top = 16.dp, end = 16.dp).align(Alignment.CenterEnd).clickable {
-                        onMenuOptionClicked()
-                    },
-                    dotColor = agendaCardType.dotColor)
+                Box(
+                    modifier = Modifier.align(Alignment.CenterEnd)) {
+                    dropDownMenu()
 
-                dropDownMenu()
+                    OptionButton(
+                        modifier = Modifier
+                            .padding(top = 16.dp, end = 16.dp)
+                            .align(Alignment.CenterEnd)
+                            .clickable {
+                                onMenuOptionClicked()
+                            },
+                        dotColor = agendaCardType.dotColor)
+                }
             }
             Spacer(modifier = Modifier.height(14.dp))
             Text(
