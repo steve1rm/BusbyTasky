@@ -14,5 +14,5 @@ interface TaskRepository {
 
     suspend fun uploadTask(task: Task): ResponseState<Unit>
 
-    suspend fun insertSyncTask(taskId: String): ResponseState<Unit>
+    suspend fun insertSyncTask(taskId: String, syncAgendaType: SyncAgendaType): ResponseState<Unit>
 }

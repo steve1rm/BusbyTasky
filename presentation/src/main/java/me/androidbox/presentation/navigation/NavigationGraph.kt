@@ -152,7 +152,7 @@ fun NavigationGraph(
                             agendaViewModel.deleteEventById(eventId = agendaItem.id)
                         }
                         is Task -> {
-                            // Not implemented yet agendaViewModel.deleteTaskById(taskId = agendaItem.id)
+                            agendaViewModel.deleteTaskById(taskId = agendaItem.id)
                         }
                         is Reminder -> {
                             // Not implemented yet agendaViewModel.deleteReminderById(taskId = agendaItem.id)

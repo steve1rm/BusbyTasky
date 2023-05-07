@@ -19,6 +19,7 @@ import me.androidbox.domain.authentication.remote.EventRepository
 import me.androidbox.domain.authentication.usecase.LogoutUseCase
 import me.androidbox.domain.constant.SyncAgendaType
 import me.androidbox.domain.event.usecase.DeleteEventWithIdRemoteUseCase
+import me.androidbox.domain.task.repository.TaskRepository
 import me.androidbox.domain.work_manager.AgendaSynchronizer
 import me.androidbox.domain.work_manager.FullAgendaSynchronizer
 import me.androidbox.presentation.agenda.screen.AgendaScreenEvent
@@ -32,6 +33,7 @@ class AgendaViewModel @Inject constructor(
     private val preferenceRepository: PreferenceRepository,
     private val usersInitialsExtractionUseCase: UsersInitialsExtractionUseCase,
     private val eventRepository: EventRepository,
+    private val taskRepository: TaskRepository,
     private val logoutUseCase: LogoutUseCase,
     private val deleteEventWithIdRemoteUseCase: DeleteEventWithIdRemoteUseCase,
     private val agendaLocalRepository: AgendaLocalRepository,
@@ -118,6 +120,14 @@ class AgendaViewModel @Inject constructor(
                 }
             }
             fetchAgendaItems(agendaScreenState.value.selectedDate)
+        }
+    }
+
+    fun deleteTaskById(taskId: String) {
+        viewModelScope.launch {
+            taskRepository.deleteTaskById(taskId)
+
+
         }
     }
 
