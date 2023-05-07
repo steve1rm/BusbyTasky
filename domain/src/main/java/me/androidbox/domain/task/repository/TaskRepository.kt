@@ -8,11 +8,13 @@ import me.androidbox.domain.constant.SyncAgendaType
 interface TaskRepository {
     suspend fun insertTask(task: Task): ResponseState<Unit>
 
+    suspend fun updateTask(task: Task): ResponseState<Unit>
+
     suspend fun deleteTaskById(taskId: String): ResponseState<Unit>
 
     fun getTaskById(taskId: String): Flow<ResponseState<Task>>
 
     suspend fun uploadTask(task: Task): ResponseState<Unit>
 
-    suspend fun insertSyncTask(taskId: String): ResponseState<Unit>
+    suspend fun insertSyncTask(taskId: String, syncAgendaType: SyncAgendaType): ResponseState<Unit>
 }

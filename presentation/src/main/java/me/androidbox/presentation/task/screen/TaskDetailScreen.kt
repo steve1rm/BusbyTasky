@@ -63,13 +63,13 @@ fun TaskDetailScreen(
                     .fillMaxWidth()
                     .background(color = MaterialTheme.colorScheme.backgroundBackColor)
                     .padding(horizontal = 16.dp),
-                editModeType = EditModeType.SaveMode(),
+                editModeType = if(taskDetailScreenState.isEditMode) { EditModeType.SaveMode() } else { EditModeType.EditMode() },
                 displayDate = taskDetailScreenState.from.formatDateTime(LONG_DATE_PATTERN),
                 onCloseClicked = {
                     onCloseClicked()
                 },
                 onEditClicked = {
-
+                    taskDetailScreenEvent(TaskDetailScreenEvent.OnEditModeChangeStatus(isEditMode = true))
                 },
                 onSaveClicked = {
                     taskDetailScreenEvent(TaskDetailScreenEvent.OnSaveTaskDetails(taskDetailScreenState.taskId))
@@ -77,13 +77,13 @@ fun TaskDetailScreen(
         }) { paddingValues ->
 
         Column(modifier = Modifier
-            .verticalScroll(rememberScrollState())
             .padding(paddingValues)
             .fillMaxWidth()
             .background(Black)) {
 
             Column (modifier = modifier
                 .fillMaxWidth()
+                .verticalScroll(rememberScrollState())
                 .background(
                     color = White,
                     shape = RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp)
@@ -114,22 +114,6 @@ fun TaskDetailScreen(
                     onStartDurationClicked = {
                         calendarStateTimeDate.show()
                     })
-
-                AgendaDropDownMenu(
-                    modifier = Modifier
-                        .background(color = MaterialTheme.colorScheme.dropDownMenuBackgroundColor),
-                    shouldOpenDropdown = taskDetailScreenState.shouldOpenDropdown,
-                    onCloseDropdown = {
-                        taskDetailScreenEvent(TaskDetailScreenEvent.OnShowAlarmReminderDropdown(shouldOpen = false))
-                    },
-                    listOfMenuItemId = AlarmReminderItem.values().map { alarmReminderItem ->
-                        alarmReminderItem.stringResId
-                    },
-                    onSelectedOption = { item ->
-                        taskDetailScreenEvent(TaskDetailScreenEvent.OnAlarmReminderChanged(AlarmReminderItem.values()[item]))
-                        taskDetailScreenEvent(TaskDetailScreenEvent.OnShowAlarmReminderDropdown(shouldOpen = false))
-                    }
-                )
 
                 AgendaDropDownMenu(
                     modifier = Modifier

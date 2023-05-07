@@ -1,6 +1,7 @@
 package me.androidbox.presentation.task.screen
 
 import me.androidbox.component.agenda.AlarmReminderItem
+import me.androidbox.domain.constant.UpdateModeType
 import java.time.ZoneId
 import java.time.ZonedDateTime
 
@@ -15,5 +16,6 @@ data class TaskDetailScreenState(
     val isDone: Boolean = false,
     val remindAt: Long = 0L,
     val shouldShowDeleteAlertDialog: Boolean = false,
-    val isSaved: Boolean = false
+    val isSaved: Boolean = false,
+    val updateModeType: UpdateModeType = UpdateModeType.CREATE
 )

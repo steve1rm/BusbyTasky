@@ -24,7 +24,7 @@ interface TaskService {
     suspend fun getTask(
         @Query("taskId") taskId: String): TaskDto
 
-    @DELETE
+    @DELETE("/task")
     suspend fun deleteTask(
         @Query("taskId") taskId: String
     )
