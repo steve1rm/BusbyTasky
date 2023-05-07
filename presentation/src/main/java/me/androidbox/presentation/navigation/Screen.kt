@@ -2,6 +2,11 @@ package me.androidbox.presentation.navigation
 
 sealed class Screen(val route: String) {
 
+    companion object {
+        const val ID = "id"
+        const val MENU_ACTION_TYPE = "menuActionType"
+    }
+
     object LoginScreen : Screen(route = "login_screen")
 
     object RegisterScreen : Screen(route = "register_screen")
@@ -15,15 +20,11 @@ sealed class Screen(val route: String) {
     }
 
     object EventScreen : Screen(route = "event_screen/{id}/{menuActionType}") {
-        const val EVENT_SCREEN = "event_screen"
-        const val EVENT_ID = "id"
-        const val MENU_ACTION_TYPE = "menuActionType"
+        const val EVENT_DETAIL_SCREEN = "event_screen"
     }
 
-    object TaskDetailScreen : Screen(route = "task_detail_screen/{id}/menuActionType}") {
+    object TaskDetailScreen : Screen(route = "task_detail_screen/{id}/{menuActionType}") {
         const val TASK_DETAIL_SCREEN = "task_detail_screen"
-        const val TASK_ID = "id"
-        const val MENU_ACTION_TYPE = "menuActionType"
     }
 
     object PhotoScreen : Screen(route = "photo_screen/{imagePath}") {

@@ -11,4 +11,9 @@ data class TaskDetailScreenState(
     val alarmReminderItem: AlarmReminderItem = AlarmReminderItem.TEN_MINUTES,
     val isEditMode: Boolean = false,
     val shouldOpenDropdown: Boolean = false,
+    val taskId: String = "",
+    val isDone: Boolean = false,
+    val remindAt: Long = 0L,
+    val shouldShowDeleteAlertDialog: Boolean = false,
+    val isSaved: Boolean = false
 )

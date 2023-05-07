@@ -35,11 +35,12 @@ import me.androidbox.presentation.login.screen.LoginScreen
 import me.androidbox.presentation.login.screen.RegisterScreen
 import me.androidbox.presentation.login.viewmodel.LoginViewModel
 import me.androidbox.presentation.login.viewmodel.RegisterViewModel
+import me.androidbox.presentation.navigation.Screen.Companion.ID
+import me.androidbox.presentation.navigation.Screen.Companion.MENU_ACTION_TYPE
 import me.androidbox.presentation.navigation.Screen.EditScreen.CONTENT
 import me.androidbox.presentation.navigation.Screen.EditScreen.CONTENT_TYPE
-import me.androidbox.presentation.navigation.Screen.EventScreen.EVENT_ID
-import me.androidbox.presentation.navigation.Screen.EventScreen.MENU_ACTION_TYPE
 import me.androidbox.presentation.navigation.Screen.PhotoScreen.PHOTO_IMAGE_PATH
+import me.androidbox.presentation.navigation.Screen.TaskDetailScreen.TASK_DETAIL_SCREEN
 import me.androidbox.presentation.photo.screen.PhotoScreen
 import me.androidbox.presentation.photo.viewmodel.PhotoScreenViewModel
 import me.androidbox.presentation.task.screen.TaskDetailScreen
@@ -137,10 +138,10 @@ fun NavigationGraph(
             onSelectedEditAgendaItemClicked = { agendaItem, agendaMenuActionType ->
                 val routeDestination = when(agendaItem) {
                     is Event -> {
-                        Screen.EventScreen.EVENT_SCREEN
+                        Screen.EventScreen.EVENT_DETAIL_SCREEN
                     }
                     is Task -> {
-                        Screen.TaskDetailScreen.TASK_DETAIL_SCREEN
+                        TASK_DETAIL_SCREEN
                     }
                     is Reminder -> TODO("Not Implemented yet")
                 }
@@ -171,7 +172,7 @@ fun NavigationGraph(
         /* Event Detail Screen */
         composable(
             route = Screen.EventScreen.route,
-            arguments = listOf(navArgument(EVENT_ID) {
+            arguments = listOf(navArgument(ID) {
                 type = NavType.StringType
                 nullable = true
                 defaultValue = null
@@ -244,11 +245,11 @@ fun NavigationGraph(
         composable(
             route = Screen.TaskDetailScreen.route,
             arguments = listOf(
-                navArgument(Screen.TaskDetailScreen.TASK_ID) {
+                navArgument(ID) {
                     type = NavType.StringType
                     nullable = true
                     defaultValue = null
-                }, navArgument(Screen.TaskDetailScreen.MENU_ACTION_TYPE) {
+                }, navArgument(MENU_ACTION_TYPE) {
                     type = NavType.StringType
                     defaultValue = AgendaMenuActionType.OPEN.name
                 }),
@@ -266,6 +267,15 @@ fun NavigationGraph(
                     title = title,
                     description = description
                 ))
+            }
+
+            /** Once the insertion has completed the state will change to true then
+             *  we will know that the insertion has completed and we can popbackstack
+             *  to go back to the agenda screen */
+            LaunchedEffect(key1 = taskDetailScreenState.isSaved) {
+                if(taskDetailScreenState.isSaved) {
+                    navHostController.popBackStack()
+                }
             }
 
             TaskDetailScreen(

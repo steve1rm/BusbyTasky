@@ -1,6 +1,7 @@
 package me.androidbox.presentation.task.screen
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -15,6 +16,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -70,7 +72,7 @@ fun TaskDetailScreen(
 
                 },
                 onSaveClicked = {
-
+                    taskDetailScreenEvent(TaskDetailScreenEvent.OnSaveTaskDetails(taskDetailScreenState.taskId))
                 })
         }) { paddingValues ->
 
@@ -129,6 +131,23 @@ fun TaskDetailScreen(
                     }
                 )
 
+                AgendaDropDownMenu(
+                    modifier = Modifier
+                        .background(color = MaterialTheme.colorScheme.dropDownMenuBackgroundColor),
+                    shouldOpenDropdown = taskDetailScreenState.shouldOpenDropdown,
+                    onCloseDropdown = {
+                        taskDetailScreenEvent(
+                            TaskDetailScreenEvent.OnShowAlarmReminderDropdown(shouldOpen = false))
+                    },
+                    listOfMenuItemId = AlarmReminderItem.values().map { alarmReminderItem ->
+                        alarmReminderItem.stringResId
+                    },
+                    onSelectedOption = { item ->
+                        taskDetailScreenEvent(TaskDetailScreenEvent.OnAlarmReminderChanged(AlarmReminderItem.values()[item]))
+                        taskDetailScreenEvent(TaskDetailScreenEvent.OnShowAlarmReminderDropdown(shouldOpen = false))
+                    }
+                )
+
                 AlarmReminder(
                     reminderText = stringResource(id = taskDetailScreenState.alarmReminderItem.stringResId),
                     isEditMode = taskDetailScreenState.isEditMode,
@@ -136,9 +155,10 @@ fun TaskDetailScreen(
                         .fillMaxWidth()
                         .background(color = MaterialTheme.colorScheme.backgroundWhiteColor),
                     onReminderClicked = {
-
+                        taskDetailScreenEvent(TaskDetailScreenEvent.OnShowAlarmReminderDropdown(shouldOpen = true))
                     }
                 )
+
                 Spacer(modifier = modifier.height(26.dp))
             }
         }
