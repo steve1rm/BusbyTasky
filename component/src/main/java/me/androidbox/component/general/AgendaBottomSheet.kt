@@ -36,16 +36,13 @@ fun AgendaBottomSheet(
             onDismissRequest = {
                 bottomSheetScope.launch {
                     bottomSheetState.hide()
-                }.invokeOnCompletion {
-                    if(!bottomSheetState.isVisible) {
-                        onCloseDropdown()
-                    }
+                    onCloseDropdown()
                 }
             },
         ) {
             content()
         }
-    }
+ //   }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
