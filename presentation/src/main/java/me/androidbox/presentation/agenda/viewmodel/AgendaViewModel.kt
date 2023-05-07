@@ -126,8 +126,7 @@ class AgendaViewModel @Inject constructor(
     fun deleteTaskById(taskId: String) {
         viewModelScope.launch {
             taskRepository.deleteTaskById(taskId)
-
-
+            fetchAgendaItems(agendaScreenState.value.selectedDate)
         }
     }
 
