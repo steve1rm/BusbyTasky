@@ -63,13 +63,13 @@ fun TaskDetailScreen(
                     .fillMaxWidth()
                     .background(color = MaterialTheme.colorScheme.backgroundBackColor)
                     .padding(horizontal = 16.dp),
-                editModeType = EditModeType.SaveMode(),
+                editModeType = if(taskDetailScreenState.isEditMode) { EditModeType.SaveMode() } else { EditModeType.EditMode() },
                 displayDate = taskDetailScreenState.from.formatDateTime(LONG_DATE_PATTERN),
                 onCloseClicked = {
                     onCloseClicked()
                 },
                 onEditClicked = {
-
+                    taskDetailScreenEvent(TaskDetailScreenEvent.OnEditModeChangeStatus(isEditMode = true))
                 },
                 onSaveClicked = {
                     taskDetailScreenEvent(TaskDetailScreenEvent.OnSaveTaskDetails(taskDetailScreenState.taskId))

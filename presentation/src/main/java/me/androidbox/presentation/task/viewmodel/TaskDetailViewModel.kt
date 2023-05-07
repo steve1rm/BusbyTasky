@@ -16,6 +16,7 @@ import me.androidbox.domain.agenda.model.Task
 import me.androidbox.domain.alarm_manager.AlarmScheduler
 import me.androidbox.domain.alarm_manager.toAlarmItem
 import me.androidbox.domain.authentication.ResponseState
+import me.androidbox.domain.constant.UpdateModeType
 import me.androidbox.domain.task.repository.TaskRepository
 import me.androidbox.presentation.agenda.constant.AgendaMenuActionType
 import me.androidbox.presentation.alarm_manager.AlarmReminderProvider
@@ -48,6 +49,7 @@ class TaskDetailViewModel @Inject constructor(
                     _taskDetailScreenState.update { taskDetailScreenState ->
                         taskDetailScreenState.copy(
                             isEditMode = false,
+                            updateModeType = UpdateModeType.UPDATE,
                             taskId = taskId
                         )
                     }
@@ -57,6 +59,7 @@ class TaskDetailViewModel @Inject constructor(
                     _taskDetailScreenState.update { taskDetailScreenState ->
                         taskDetailScreenState.copy(
                             isEditMode = true,
+                            updateModeType = UpdateModeType.UPDATE,
                             taskId = taskId
                         )
                     }
@@ -65,7 +68,8 @@ class TaskDetailViewModel @Inject constructor(
                 else -> {
                     _taskDetailScreenState.update { taskDetailScreenState ->
                         taskDetailScreenState.copy(
-                            isEditMode = false,
+                            isEditMode = true,
+                            updateModeType = UpdateModeType.CREATE,
                             taskId = UUID.randomUUID().toString()
                         )
                     }
@@ -115,6 +119,14 @@ class TaskDetailViewModel @Inject constructor(
                 _taskDetailScreenState.update { taskDetailScreenState ->
                     taskDetailScreenState.copy(
                         shouldOpenDropdown = taskDetailScreenEvent.shouldOpen
+                    )
+                }
+            }
+
+            is TaskDetailScreenEvent.OnEditModeChangeStatus -> {
+                _taskDetailScreenState.update { taskDetailScreenState ->
+                    taskDetailScreenState.copy(
+                        isEditMode = taskDetailScreenEvent.isEditMode
                     )
                 }
             }
