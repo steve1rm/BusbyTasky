@@ -59,3 +59,14 @@ fun TaskEntity.toTask(): Task {
         isDone = this.isDone
     )
 }
+
+fun TaskEntity.toTaskDto(): TaskDto {
+    return TaskDto(
+        id = this.id,
+        title = this.title,
+        description = this.description,
+        time = this.time,
+        remindAt = this.remindAt,
+        isDone = this.isDone
+    )
+}
