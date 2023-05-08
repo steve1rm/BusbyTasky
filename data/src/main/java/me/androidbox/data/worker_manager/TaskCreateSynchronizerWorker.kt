@@ -82,16 +82,10 @@ class TaskCreateSynchronizerWorker @AssistedInject constructor(
             }
         }
 
-        createdTasks.await()
-        updatedTasks.await()
-        createdReminders.await()
-        updatedReminders.await()
-
-
         val responseState = checkResult{
             supervisorScope {
-                val createTaskJob = launch {
-                    createdTasks.map { taskEntity ->
+                    createdTasks.await().map { taskEntity ->
+                        launch {
                         /* Create the task on remote */
                         taskService.createTask(taskEntity.toTaskDto())
                         /* If success will run this delete - else if loop next next one */
@@ -100,7 +94,10 @@ class TaskCreateSynchronizerWorker @AssistedInject constructor(
                 }
 
                 val updateTaskJob = launch {
-
+                    updatedTasks.await().forEach { taskEntity ->  
+                        taskService.updateTask(taskEntity.toTaskDto())
+                        taskDao.deleteSyncTaskById(taskEntity.id)
+                    }
                 }
 
                 val createReminderJob = launch {
