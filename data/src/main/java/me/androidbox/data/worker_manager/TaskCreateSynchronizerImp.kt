@@ -22,7 +22,7 @@ class TaskCreateSynchronizerImp @Inject constructor(
     }
 
     override fun sync(): UUID {
-        val taskCreateSynWorkerRequest = PeriodicWorkRequestBuilder<TaskCreateSynchronizerWorker>(
+        val taskCreateSynWorkerRequest = PeriodicWorkRequestBuilder<AgendaSynchronizerWorker>(
             repeatInterval = SYNC_INTERVAL,
             repeatIntervalTimeUnit = TimeUnit.MINUTES)
             .setConstraints(Constraints(Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build()))
