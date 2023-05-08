@@ -9,9 +9,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
@@ -20,6 +23,8 @@ import androidx.compose.ui.unit.dp
 import com.maxkeppeker.sheets.core.models.base.rememberUseCaseState
 import com.maxkeppeler.sheets.date_time.DateTimeDialog
 import com.maxkeppeler.sheets.date_time.models.DateTimeSelection
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 import me.androidbox.component.R
 import me.androidbox.component.agenda.AddVisitorDialog
 import me.androidbox.component.agenda.AgendaAction
@@ -47,6 +52,7 @@ import me.androidbox.domain.DateTimeFormatterProvider.formatDateTime
 import java.time.ZoneId
 import java.time.ZonedDateTime
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EventScreen(
     eventScreenState: EventScreenState,
@@ -58,6 +64,8 @@ fun EventScreen(
     modifier: Modifier = Modifier) {
 
     val calendarStateTimeDate = rememberUseCaseState()
+    val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    val bottomSheetScope = rememberCoroutineScope()
 
     Scaffold(
         modifier = modifier,
@@ -145,11 +153,9 @@ fun EventScreen(
                         isEditMode = eventScreenState.isEditMode,
                         onReminderClicked = {
                             eventScreenEvent(EventScreenEvent.OnShowAlarmReminderDropdown(shouldOpen = true))
-/*
                             bottomSheetScope.launch {
                                 bottomSheetState.show()
                             }
-*/
                         }
                     )
                     Spacer(modifier = modifier.height(26.dp))
@@ -190,6 +196,8 @@ fun EventScreen(
 
     AgendaBottomSheet(
         shouldOpenBottomSheet = eventScreenState.shouldOpenDropdown,
+        bottomSheetState = bottomSheetState,
+        coroutineScope = bottomSheetScope,
         onCloseDropdown = {
             eventScreenEvent(EventScreenEvent.OnShowAlarmReminderDropdown(shouldOpen = false))
         },
@@ -208,7 +216,10 @@ fun EventScreen(
                             AlarmReminderItem.values()[item]
                         )
                     )
-                    eventScreenEvent(EventScreenEvent.OnShowAlarmReminderDropdown(shouldOpen = false))
+                    bottomSheetScope.launch {
+                        bottomSheetState.hide()
+                        eventScreenEvent(EventScreenEvent.OnShowAlarmReminderDropdown(shouldOpen = false))
+                    }
                 })
         })
 

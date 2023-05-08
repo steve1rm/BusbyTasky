@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.SheetState
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
@@ -12,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import me.androidbox.component.R
 import me.androidbox.component.ui.theme.BusbyTaskyTheme
@@ -22,11 +24,10 @@ import me.androidbox.component.ui.theme.backgroundWhiteColor
 fun AgendaBottomSheet(
     shouldOpenBottomSheet: Boolean,
     onCloseDropdown: () -> Unit,
+    bottomSheetState: SheetState,
+    coroutineScope: CoroutineScope,
     content: @Composable () -> Unit,
     modifier: Modifier = Modifier) {
-
-    val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
-    val bottomSheetScope = rememberCoroutineScope()
 
     if(shouldOpenBottomSheet) {
         ModalBottomSheet(
@@ -34,7 +35,7 @@ fun AgendaBottomSheet(
             sheetState = bottomSheetState,
             modifier = modifier,
             onDismissRequest = {
-                bottomSheetScope.launch {
+                coroutineScope.launch {
                     bottomSheetState.hide()
                     onCloseDropdown()
                 }
@@ -42,7 +43,7 @@ fun AgendaBottomSheet(
         ) {
             content()
         }
- //   }
+    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -52,6 +53,8 @@ fun PreviewAgendaBottomSheet() {
     BusbyTaskyTheme {
         AgendaBottomSheet(
             modifier = Modifier,
+            bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
+            coroutineScope = rememberCoroutineScope(),
             shouldOpenBottomSheet = false,
             onCloseDropdown = {},
             content = {
