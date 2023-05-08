@@ -90,32 +90,48 @@ class TaskCreateSynchronizerWorker @AssistedInject constructor(
         val responseState = checkResult {
             supervisorScope {
                 val createTaskJob = launch {
-                    createdTasks.await().map { taskEntity ->
+                    createdTasks.await().forEach { taskEntity ->
                         /* Create the task on remote */
-                        taskService.createTask(taskEntity.toTaskDto())
-                        /* If success will run this delete - else if loop next next one */
-                        taskDao.deleteSyncTaskById(taskEntity.id)
+                        val result = checkResult {
+                            taskService.createTask(taskEntity.toTaskDto())
+                        }
+                        if(result.isSuccess) {
+                            /* If success will run this delete - else if loop next next one */
+                            taskDao.deleteSyncTaskById(taskEntity.id)
+                        }
                     }
                 }
 
                 val updateTaskJob = launch {
                     updatedTasks.await().forEach { taskEntity ->
-                        taskService.updateTask(taskEntity.toTaskDto())
-                        taskDao.deleteSyncTaskById(taskEntity.id)
+                        val result = checkResult {
+                            taskService.updateTask(taskEntity.toTaskDto())
+                        }
+                        if(result.isSuccess) {
+                            taskDao.deleteSyncTaskById(taskEntity.id)
+                        }
                     }
                 }
 
                 val createReminderJob = launch {
                     createdReminders.await().forEach { reminderEntity ->
-                        reminderService.createReminder(reminderEntity.toReminderDto())
-                        reminderDao.deleteSyncReminderById(reminderEntity.id)
+                        val result = checkResult {
+                            reminderService.createReminder(reminderEntity.toReminderDto())
+                        }
+                        if(result.isSuccess) {
+                            reminderDao.deleteSyncReminderById(reminderEntity.id)
+                        }
                     }
                 }
 
                 val updateReminderJob = launch {
                     updatedReminders.await().forEach { reminderEntity ->
-                        reminderService.updateReminder(reminderEntity.toReminderDto())
-                        reminderDao.deleteReminderById(reminderEntity.id)
+                        val result = checkResult {
+                            reminderService.updateReminder(reminderEntity.toReminderDto())
+                        }
+                        if(result.isSuccess) {
+                            reminderDao.deleteReminderById(reminderEntity.id)
+                        }
                     }
                 }
 
