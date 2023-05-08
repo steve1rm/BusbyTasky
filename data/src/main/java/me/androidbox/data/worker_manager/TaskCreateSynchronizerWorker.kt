@@ -8,6 +8,7 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.supervisorScope
+import me.androidbox.data.local.dao.ReminderDao
 import me.androidbox.data.local.dao.TaskDao
 import me.androidbox.data.mapper.toTaskDto
 import me.androidbox.data.remote.network.task.TaskService
@@ -20,7 +21,9 @@ class TaskCreateSynchronizerWorker @AssistedInject constructor(
     @Assisted private val context: Context,
     @Assisted private val workerParameters: WorkerParameters,
     private val taskService: TaskService,
-    private val taskDao: TaskDao
+    private val taskDao: TaskDao,
+    private val reminderService: reminderService,
+    private val reminderDao: ReminderDao,
 ) : CoroutineWorker(context, workerParameters) {
 
     override suspend fun doWork(): Result {
