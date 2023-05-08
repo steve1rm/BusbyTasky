@@ -27,32 +27,25 @@ class TaskCreateSynchronizerWorker @AssistedInject constructor(
 ) : CoroutineWorker(context, workerParameters) {
 
     override suspend fun doWork(): Result {
-        val createdTasks: Deferred<List<TaskEntity>>
 
-        /** Get all the created tasks */
-        supervisorScope {
-            createdTasks = async {
-                taskDao.getAllTasksBySyncType(SyncAgendaType.CREATE).map {
-                    it.task
-                }
-            }
+        if(runAttemptCount > RETRY_COUNT) {
+            Result.failure()
+        }
+        else {
+            Result.retry()
         }
 
-        val result = if (createdTasks.await().isNotEmpty()) {
-            if(runAttemptCount > RETRY_COUNT) {
-                Result.failure()
-            }
-            else {
-                Result.retry()
-            }
+        /** Get all the created tasks */
+        val createdTasks = taskDao.getAllTasksBySyncType(SyncAgendaType.CREATE)
 
+        if (createdTasks.isNotEmpty()) {
             val responseState = checkResult{
-                val createdTasksEntity = createdTasks.await()
+                val createdTasksEntity = createdTasks
 
                 supervisorScope {
                     createdTasksEntity.map { taskEntity ->
                         launch {
-                            taskService.createTask(taskEntity.toTaskDto())
+           //                 taskService.createTask(taskEntity.toTaskDto())
                         }
                     }.forEach { it.join() }
                 }
@@ -73,6 +66,6 @@ class TaskCreateSynchronizerWorker @AssistedInject constructor(
             Result.success()
         }
 
-        return result
+        return Result.success()
     }
 }
