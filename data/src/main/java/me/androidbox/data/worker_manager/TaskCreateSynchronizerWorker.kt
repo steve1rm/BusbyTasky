@@ -82,10 +82,10 @@ class TaskCreateSynchronizerWorker @AssistedInject constructor(
             }
         }
 
-        val responseState = checkResult{
+        val responseState = checkResult {
             supervisorScope {
+                val createTaskJob = launch {
                     createdTasks.await().map { taskEntity ->
-                        launch {
                         /* Create the task on remote */
                         taskService.createTask(taskEntity.toTaskDto())
                         /* If success will run this delete - else if loop next next one */
@@ -94,18 +94,24 @@ class TaskCreateSynchronizerWorker @AssistedInject constructor(
                 }
 
                 val updateTaskJob = launch {
-                    updatedTasks.await().forEach { taskEntity ->  
+                    updatedTasks.await().forEach { taskEntity ->
                         taskService.updateTask(taskEntity.toTaskDto())
                         taskDao.deleteSyncTaskById(taskEntity.id)
                     }
                 }
 
                 val createReminderJob = launch {
-
+                    createdReminders.await().forEach { reminderEntity ->
+                        reminderService.createReminder(reminderEntity)
+                        reminderDao.deleteSyncReminderById(reminderEntity.id)
+                    }
                 }
 
                 val updateReminderJob = launch {
-
+                    updatedReminders.await().forEach { reminderEntity ->
+                        reminderService.updateReminder(reminderEntity)
+                        reminderDao.deleteReminderById(reminderEntity.id)
+                    }
                 }
 
                 createTaskJob.join()
@@ -115,38 +121,17 @@ class TaskCreateSynchronizerWorker @AssistedInject constructor(
             }
         }
 
-        if (createdTasks.isNotEmpty()) {
-            val responseState = checkResult{
-
-                supervisorScope {
-                    launch {
-                        createdTasks.map { taskEntity ->
-                            /* Create the task on remote */
-                            taskService.createTask(taskEntity.toTaskDto())
-                            /* If success will run this delete - else if loop next next one */
-                            taskDao.deleteSyncTaskById(taskEntity.id)
-                        }
-                    }
-                }
+        return  responseState.fold(
+            onSuccess = {
+                taskDao.deleteSyncTasksBySyncType(SyncAgendaType.CREATE)
+                taskDao.deleteSyncTasksBySyncType(SyncAgendaType.UPDATE)
+                reminderDao.deleteSyncRemindersBySyncType(SyncAgendaType.CREATE)
+                reminderDao.deleteSyncRemindersBySyncType(SyncAgendaType.UPDATE)
+                Result.success()
+            },
+            onFailure = {
+                Result.retry()
             }
-
-            responseState.fold(
-                onSuccess = {
-                    taskDao.deleteSyncTasksBySyncType(SyncAgendaType.CREATE)
-                    taskDao.deleteSyncTasksBySyncType(SyncAgendaType.UPDATE)
-
-                    Result.success()
-                },
-                onFailure = {
-                    Result.retry()
-                }
-            )
-        }
-        else {
-            /** There was nothing to sync as the sync table was empty */
-            Result.success()
-        }
-
-        return Result.success()
+        )
     }
 }
