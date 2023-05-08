@@ -21,6 +21,9 @@ interface ReminderDao {
     @Upsert(entity = ReminderEntity::class)
     suspend fun insertReminders(reminders: List<ReminderEntity>)
 
+    @Query("SELECT * FROM ${DatabaseConstant.REMINDER_TABLE} WHERE id = :id")
+    suspend fun getReminderById(id: String): ReminderEntity
+
     /**
      * TODO Delete only a single reminder
      * */
