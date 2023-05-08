@@ -11,21 +11,21 @@ import retrofit2.http.Query
 interface ReminderService {
 
     @POST("/reminder")
-    suspend fun createTask(
+    suspend fun createReminder(
         @Body reminderDto: ReminderDto
     )
 
     @PUT("/reminder")
-    suspend fun updateTask(
+    suspend fun updateReminder(
         @Body reminderDto: ReminderDto
     )
 
     @GET("/reminder")
-    suspend fun getTask(
+    suspend fun getReminder(
         @Query("reminderId") reminderId: String): ReminderDto
 
     @DELETE("/reminder")
-    suspend fun deleteTask(
+    suspend fun deleteReminder(
         @Query("reminderId") reminderId: String
     )
 }
