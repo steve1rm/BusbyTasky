@@ -6,12 +6,9 @@ import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
-import kotlinx.coroutines.Deferred
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.supervisorScope
 import me.androidbox.data.local.dao.TaskDao
-import me.androidbox.data.local.entity.TaskEntity
 import me.androidbox.data.mapper.toTaskDto
 import me.androidbox.data.remote.network.task.TaskService
 import me.androidbox.data.remote.util.CheckResult.checkResult
@@ -40,14 +37,16 @@ class TaskCreateSynchronizerWorker @AssistedInject constructor(
 
         if (createdTasks.isNotEmpty()) {
             val responseState = checkResult{
-                val createdTasksEntity = createdTasks
 
                 supervisorScope {
-                    createdTasksEntity.map { taskEntity ->
-                        launch {
+                    launch {
+                        createdTasks.map { taskEntity ->
+                            /* Create the task on remote */
                             taskService.createTask(taskEntity.toTaskDto())
+                            /* If success will run this delete - else if loop next next one */
+                            taskDao.deleteSyncTaskById(taskEntity.id)
                         }
-                    }.forEach { it.join() }
+                    }
                 }
             }
 
