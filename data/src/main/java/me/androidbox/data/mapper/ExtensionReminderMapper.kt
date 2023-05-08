@@ -44,3 +44,13 @@ fun ReminderEntity.toReminder(): Reminder {
         startDateTime = this.time
     )
 }
+
+fun ReminderEntity.toReminderDto(): ReminderDto {
+    return ReminderDto(
+        id = this.id,
+        title = this.title,
+        description = this.description,
+        remindAt = this.remindAt,
+        time = this.time
+    )
+}

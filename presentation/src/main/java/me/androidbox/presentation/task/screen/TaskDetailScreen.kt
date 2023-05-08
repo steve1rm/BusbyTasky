@@ -1,6 +1,7 @@
 package me.androidbox.presentation.task.screen
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -15,6 +16,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -61,27 +63,27 @@ fun TaskDetailScreen(
                     .fillMaxWidth()
                     .background(color = MaterialTheme.colorScheme.backgroundBackColor)
                     .padding(horizontal = 16.dp),
-                editModeType = EditModeType.SaveMode(),
+                editModeType = if(taskDetailScreenState.isEditMode) { EditModeType.SaveMode() } else { EditModeType.EditMode() },
                 displayDate = taskDetailScreenState.from.formatDateTime(LONG_DATE_PATTERN),
                 onCloseClicked = {
                     onCloseClicked()
                 },
                 onEditClicked = {
-
+                    taskDetailScreenEvent(TaskDetailScreenEvent.OnEditModeChangeStatus(isEditMode = true))
                 },
                 onSaveClicked = {
-
+                    taskDetailScreenEvent(TaskDetailScreenEvent.OnSaveTaskDetails(taskDetailScreenState.taskId))
                 })
         }) { paddingValues ->
 
         Column(modifier = Modifier
-            .verticalScroll(rememberScrollState())
             .padding(paddingValues)
             .fillMaxWidth()
             .background(Black)) {
 
             Column (modifier = modifier
                 .fillMaxWidth()
+                .verticalScroll(rememberScrollState())
                 .background(
                     color = White,
                     shape = RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp)
@@ -118,7 +120,8 @@ fun TaskDetailScreen(
                         .background(color = MaterialTheme.colorScheme.dropDownMenuBackgroundColor),
                     shouldOpenDropdown = taskDetailScreenState.shouldOpenDropdown,
                     onCloseDropdown = {
-                        taskDetailScreenEvent(TaskDetailScreenEvent.OnShowAlarmReminderDropdown(shouldOpen = false))
+                        taskDetailScreenEvent(
+                            TaskDetailScreenEvent.OnShowAlarmReminderDropdown(shouldOpen = false))
                     },
                     listOfMenuItemId = AlarmReminderItem.values().map { alarmReminderItem ->
                         alarmReminderItem.stringResId
@@ -136,9 +139,10 @@ fun TaskDetailScreen(
                         .fillMaxWidth()
                         .background(color = MaterialTheme.colorScheme.backgroundWhiteColor),
                     onReminderClicked = {
-
+                        taskDetailScreenEvent(TaskDetailScreenEvent.OnShowAlarmReminderDropdown(shouldOpen = true))
                     }
                 )
+
                 Spacer(modifier = modifier.height(26.dp))
             }
         }

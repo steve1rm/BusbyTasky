@@ -13,6 +13,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import me.androidbox.data.local.DatabaseConstant.DATABASE_NAME
 import me.androidbox.data.local.agenda.AgendaLocalRepositoryImp
+import me.androidbox.data.local.agenda.TaskRepositoryImp
 import me.androidbox.data.local.converter.EventConverter
 import me.androidbox.data.local.dao.EventDao
 import me.androidbox.data.local.dao.ReminderDao
@@ -32,6 +33,11 @@ import me.androidbox.domain.authentication.remote.EventRepository
 import me.androidbox.domain.event.usecase.DeleteEventWithIdRemoteUseCase
 import me.androidbox.domain.event.usecase.VerifyVisitorEmailUseCase
 import me.androidbox.domain.repository.AgendaRemoteRepository
+import me.androidbox.domain.task.repository.TaskRepository
+import me.androidbox.domain.task.usecase.DeleteTaskByIdUseCaseImp
+import me.androidbox.domain.task.usecase.GetTaskByIdUseCaseImp
+import me.androidbox.domain.task.usecase.InsertTaskUseCaseImp
+import me.androidbox.domain.task.usecase.UpdateTaskByIdUseCaseImp
 import me.androidbox.domain.work_manager.AgendaSynchronizer
 import me.androidbox.domain.work_manager.FullAgendaSynchronizer
 import me.androidbox.domain.work_manager.UploadEvent
@@ -68,6 +74,10 @@ interface RepositoryModule {
     @Reusable
     @Binds
     fun bindsDeleteEventWithIdRemoteUseCaseImp(deleteEventWithIdRemoteUseCaseImp: DeleteEventWithIdRemoteUseCaseImp): DeleteEventWithIdRemoteUseCase
+
+    @Reusable
+    @Binds
+    fun bindsTaskRepositoryImp(taskRepositoryImp: TaskRepositoryImp): TaskRepository
 
     companion object {
         private const val SECRET_SHARED_PREFERENCES = "secret_shared_preferences"
@@ -117,6 +127,30 @@ interface RepositoryModule {
         @Provides
         fun providesWorkManager(@ApplicationContext context: Context): WorkManager {
             return WorkManager.getInstance(context)
+        }
+
+        @Reusable
+        @Provides
+        fun providesInsertTaskUseCaseImp(taskRepository: TaskRepository): InsertTaskUseCaseImp {
+            return InsertTaskUseCaseImp(taskRepository)
+        }
+
+        @Reusable
+        @Provides
+        fun providesGetTaskByIdUseCaseImp(taskRepository: TaskRepository): GetTaskByIdUseCaseImp {
+            return GetTaskByIdUseCaseImp(taskRepository)
+        }
+
+        @Reusable
+        @Provides
+        fun providesDeleteTaskByIdUseCaseImp(taskRepository: TaskRepository): DeleteTaskByIdUseCaseImp {
+            return DeleteTaskByIdUseCaseImp(taskRepository)
+        }
+
+        @Reusable
+        @Provides
+        fun providesUpdateTaskByIdUseCaseImp(taskRepository: TaskRepository): UpdateTaskByIdUseCaseImp {
+            return UpdateTaskByIdUseCaseImp(taskRepository)
         }
     }
 }
