@@ -145,17 +145,6 @@ class AgendaSynchronizerWorker @AssistedInject constructor(
 
         return responseState.fold(
             onSuccess = {
-                /** TODO Success we can delete all these from the sync table
-                 *  However, I don't think I need to do this now if
-                 *  1) I am already deleting the items individually when create/updated
-                 *  2) If the worker is success, but i.e. some reminders failed to create it will empty them
-                 *     and when the worker runs again, there will be nothing to fetch.
-                 *  */
-                taskDao.deleteSyncTasksBySyncType(SyncAgendaType.CREATE)
-                taskDao.deleteSyncTasksBySyncType(SyncAgendaType.UPDATE)
-                reminderDao.deleteSyncRemindersBySyncType(SyncAgendaType.CREATE)
-                reminderDao.deleteSyncRemindersBySyncType(SyncAgendaType.UPDATE)
-
                 Result.success()
             },
             onFailure = {
