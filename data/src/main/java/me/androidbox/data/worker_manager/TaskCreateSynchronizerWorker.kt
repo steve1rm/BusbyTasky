@@ -45,7 +45,7 @@ class TaskCreateSynchronizerWorker @AssistedInject constructor(
                 supervisorScope {
                     createdTasksEntity.map { taskEntity ->
                         launch {
-           //                 taskService.createTask(taskEntity.toTaskDto())
+                            taskService.createTask(taskEntity.toTaskDto())
                         }
                     }.forEach { it.join() }
                 }
