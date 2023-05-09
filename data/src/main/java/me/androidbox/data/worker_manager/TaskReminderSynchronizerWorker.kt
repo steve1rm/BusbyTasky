@@ -24,7 +24,7 @@ import me.androidbox.domain.constant.SyncAgendaType
 
 @HiltWorker
 /** TODO Rename to something more readable as this is not just related to tasks */
-class AgendaSynchronizerWorker @AssistedInject constructor(
+class TaskReminderSynchronizerWorker @AssistedInject constructor(
     @Assisted private val context: Context,
     @Assisted private val workerParameters: WorkerParameters,
     private val taskService: TaskService,

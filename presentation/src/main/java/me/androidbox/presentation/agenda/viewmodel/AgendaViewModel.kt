@@ -22,6 +22,7 @@ import me.androidbox.domain.event.usecase.DeleteEventWithIdRemoteUseCase
 import me.androidbox.domain.task.repository.TaskRepository
 import me.androidbox.domain.work_manager.AgendaSynchronizer
 import me.androidbox.domain.work_manager.FullAgendaSynchronizer
+import me.androidbox.domain.work_manager.TaskReminderSynchronizer
 import me.androidbox.presentation.agenda.screen.AgendaScreenEvent
 import me.androidbox.presentation.agenda.screen.AgendaScreenState
 import java.time.ZoneId
@@ -38,7 +39,8 @@ class AgendaViewModel @Inject constructor(
     private val deleteEventWithIdRemoteUseCase: DeleteEventWithIdRemoteUseCase,
     private val agendaLocalRepository: AgendaLocalRepository,
     private val agendaSynchronizer: AgendaSynchronizer,
-    private val fullAgendaSynchronizer: FullAgendaSynchronizer
+    private val fullAgendaSynchronizer: FullAgendaSynchronizer,
+    private val taskReminderSynchronizer: TaskReminderSynchronizer
 ) : ViewModel() {
     private var agendaJob: Job? = null
 
@@ -50,6 +52,7 @@ class AgendaViewModel @Inject constructor(
         fetchAgendaItems(ZonedDateTime.now())
         syncAgendaItems()
         syncFullAgendaItems()
+        synAgendaTasksReminders()
     }
 
     private fun getStartOffCurrentDay(agendaDate: ZonedDateTime = ZonedDateTime.now(ZoneId.systemDefault())): ZonedDateTime {
@@ -210,6 +213,8 @@ class AgendaViewModel @Inject constructor(
                         job.join()
                     }
 
+                    cancelAllWorkers()
+
                     _agendaScreenState.update { agendaScreenState ->
                         agendaScreenState.copy(
                             deletedCacheCompleted = true
@@ -241,5 +246,15 @@ class AgendaViewModel @Inject constructor(
 
     private fun syncFullAgendaItems() {
         fullAgendaSynchronizer.sync()
+    }
+
+    private fun synAgendaTasksReminders() {
+        taskReminderSynchronizer.sync()
+    }
+
+    private fun cancelAllWorkers() {
+        agendaSynchronizer.cancel()
+        fullAgendaSynchronizer.cancel()
+        taskReminderSynchronizer.cancel()
     }
 }

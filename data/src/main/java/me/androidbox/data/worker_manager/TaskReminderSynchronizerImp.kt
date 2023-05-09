@@ -7,14 +7,14 @@ import androidx.work.NetworkType
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.WorkRequest
-import me.androidbox.domain.work_manager.TaskCreateSynchronizer
+import me.androidbox.domain.work_manager.TaskReminderSynchronizer
 import java.util.UUID
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
-class TaskCreateSynchronizerImp @Inject constructor(
+class TaskReminderSynchronizerImp @Inject constructor(
     private val workManager: WorkManager
-) : TaskCreateSynchronizer {
+) : TaskReminderSynchronizer {
 
     companion object {
         const val SYNC_INTERVAL = 30L
@@ -22,7 +22,7 @@ class TaskCreateSynchronizerImp @Inject constructor(
     }
 
     override fun sync(): UUID {
-        val taskCreateSynWorkerRequest = PeriodicWorkRequestBuilder<AgendaSynchronizerWorker>(
+        val taskCreateSynWorkerRequest = PeriodicWorkRequestBuilder<TaskReminderSynchronizerWorker>(
             repeatInterval = SYNC_INTERVAL,
             repeatIntervalTimeUnit = TimeUnit.MINUTES)
             .setConstraints(Constraints(Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build()))
