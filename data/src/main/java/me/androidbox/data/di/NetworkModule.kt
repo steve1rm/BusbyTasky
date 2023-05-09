@@ -12,6 +12,7 @@ import me.androidbox.data.remote.interceptor.TokenInterceptor
 import me.androidbox.data.remote.network.agenda.AgendaService
 import me.androidbox.data.remote.network.authentication.AuthenticationService
 import me.androidbox.data.remote.network.event.EventService
+import me.androidbox.data.remote.network.reminder.ReminderService
 import me.androidbox.data.remote.network.task.TaskService
 import me.androidbox.domain.authentication.preference.PreferenceRepository
 import okhttp3.OkHttpClient
@@ -100,6 +101,12 @@ object NetworkModule {
     @Provides
     fun providesTaskService(retrofit: Retrofit): TaskService {
         return retrofit.create(TaskService::class.java)
+    }
+
+    @Singleton
+    @Provides
+    fun providesReminderService(retrofit: Retrofit): ReminderService {
+        return retrofit.create(ReminderService::class.java)
     }
 
     @Singleton
