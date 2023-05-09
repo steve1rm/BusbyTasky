@@ -1,14 +1,20 @@
 package me.androidbox.presentation.event.screen
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
@@ -17,21 +23,34 @@ import androidx.compose.ui.unit.dp
 import com.maxkeppeker.sheets.core.models.base.rememberUseCaseState
 import com.maxkeppeler.sheets.date_time.DateTimeDialog
 import com.maxkeppeler.sheets.date_time.models.DateTimeSelection
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 import me.androidbox.component.R
-import me.androidbox.component.agenda.*
-import me.androidbox.component.general.AgendaDropDownMenu
+import me.androidbox.component.agenda.AddVisitorDialog
+import me.androidbox.component.agenda.AgendaAction
+import me.androidbox.component.agenda.AgendaActionType
+import me.androidbox.component.agenda.AgendaDetailTopBar
+import me.androidbox.component.agenda.AgendaDuration
+import me.androidbox.component.agenda.AgendaHeader
+import me.androidbox.component.agenda.AgendaHeaderItem
+import me.androidbox.component.agenda.AlarmReminder
+import me.androidbox.component.agenda.AlarmReminderItem
+import me.androidbox.component.agenda.DeleteEventAlertDialog
+import me.androidbox.component.agenda.EditModeType
+import me.androidbox.component.agenda.VisitorFilter
+import me.androidbox.component.agenda.VisitorFilterType
+import me.androidbox.component.general.AgendaBottomSheet
+import me.androidbox.component.general.AlarmReminderOptions
 import me.androidbox.component.general.PhotoPicker
 import me.androidbox.component.ui.theme.BusbyTaskyTheme
 import me.androidbox.component.ui.theme.backgroundBackColor
 import me.androidbox.component.ui.theme.backgroundWhiteColor
-import me.androidbox.component.ui.theme.dropDownMenuBackgroundColor
 import me.androidbox.domain.DateTimeFormatterProvider.DATE_PATTERN
 import me.androidbox.domain.DateTimeFormatterProvider.LONG_DATE_PATTERN
 import me.androidbox.domain.DateTimeFormatterProvider.TIME_PATTERN
 import me.androidbox.domain.DateTimeFormatterProvider.formatDateTime
 import java.time.ZoneId
 import java.time.ZonedDateTime
-import java.util.*
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -45,6 +64,8 @@ fun EventScreen(
     modifier: Modifier = Modifier) {
 
     val calendarStateTimeDate = rememberUseCaseState()
+    val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    val bottomSheetScope = rememberCoroutineScope()
 
     Scaffold(
         modifier = modifier,
@@ -124,23 +145,6 @@ fun EventScreen(
 
                     Spacer(modifier = modifier.height(26.dp))
 
-                     AgendaDropDownMenu(
-                        modifier = Modifier
-                            .background(color = MaterialTheme.colorScheme.dropDownMenuBackgroundColor),
-                        shouldOpenDropdown = eventScreenState.shouldOpenDropdown,
-                        onCloseDropdown = {
-                            eventScreenEvent(
-                                EventScreenEvent.OnShowAlarmReminderDropdown(shouldOpen = false))
-                        },
-                        listOfMenuItemId = AlarmReminderItem.values().map { alarmReminderItem ->
-                            alarmReminderItem.stringResId
-                        },
-                        onSelectedOption = { item ->
-                            eventScreenEvent(EventScreenEvent.OnAlarmReminderChanged(AlarmReminderItem.values()[item]))
-                            eventScreenEvent(EventScreenEvent.OnShowAlarmReminderDropdown(shouldOpen = false))
-                        }
-                    )
-
                     AlarmReminder(
                         reminderText = stringResource(id = eventScreenState.alarmReminderItem.stringResId),
                         modifier = Modifier
@@ -149,6 +153,9 @@ fun EventScreen(
                         isEditMode = eventScreenState.isEditMode,
                         onReminderClicked = {
                             eventScreenEvent(EventScreenEvent.OnShowAlarmReminderDropdown(shouldOpen = true))
+                            bottomSheetScope.launch {
+                                bottomSheetState.show()
+                            }
                         }
                     )
                     Spacer(modifier = modifier.height(26.dp))
@@ -186,6 +193,35 @@ fun EventScreen(
             }
         }
     )
+
+    AgendaBottomSheet(
+        shouldOpenBottomSheet = eventScreenState.shouldOpenDropdown,
+        bottomSheetState = bottomSheetState,
+        coroutineScope = bottomSheetScope,
+        onCloseDropdown = {
+            eventScreenEvent(EventScreenEvent.OnShowAlarmReminderDropdown(shouldOpen = false))
+        },
+        content = {
+            AlarmReminderOptions(
+                title = stringResource(id = R.string.alarm_reminder),
+                modifier = Modifier
+                    .padding(horizontal = 16.dp, vertical = 16.dp),
+                listOfMenuItemId = AlarmReminderItem.values()
+                    .map { alarmReminderItem ->
+                        alarmReminderItem.stringResId
+                    },
+                onSelectedOption = { item ->
+                    eventScreenEvent(
+                        EventScreenEvent.OnAlarmReminderChanged(
+                            AlarmReminderItem.values()[item]
+                        )
+                    )
+                    bottomSheetScope.launch {
+                        bottomSheetState.hide()
+                        eventScreenEvent(EventScreenEvent.OnShowAlarmReminderDropdown(shouldOpen = false))
+                    }
+                })
+        })
 
     if(eventScreenState.shouldShowVisitorDialog) {
         AddVisitorDialog(
