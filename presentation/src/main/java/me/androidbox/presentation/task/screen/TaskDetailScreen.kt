@@ -74,7 +74,6 @@ fun TaskDetailScreen(
                     duration = SnackbarDuration.Short
                 )
             }
-            taskDetailScreenEvent(TaskDetailScreenEvent.OnShowSnackBar(showSnackBar = false))
         }
     }
 
@@ -102,9 +101,11 @@ fun TaskDetailScreen(
             AgendaSnackbar(
                 snackbarHostState = snackbarHostState,
                 onAction = {
-
-                }) {
-            }
+                    taskDetailScreenEvent(TaskDetailScreenEvent.OnSaveTaskDetails(taskDetailScreenState.taskId))
+                },
+                onDismiss = {
+                    taskDetailScreenEvent(TaskDetailScreenEvent.OnShowSnackBar(showSnackBar = false))
+            })
         }
         ) { paddingValues ->
 

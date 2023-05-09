@@ -18,12 +18,14 @@ import me.androidbox.component.ui.theme.BusbyTaskyTheme
 @Composable
 fun AgendaSnackbar(
     snackbarHostState: SnackbarHostState,
-    modifier: Modifier = Modifier,
     onAction: () -> Unit,
-    onDismiss: () -> Unit
+    onDismiss: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
-    SnackbarHost(snackbarHostState) { data ->
-        // custom snackbar with the custom action button color and border
+    SnackbarHost(
+        hostState = snackbarHostState,
+        modifier = modifier) { data ->
+
         val isError = true
         val buttonColor = if (isError) {
             ButtonDefaults.textButtonColors(
@@ -42,17 +44,17 @@ fun AgendaSnackbar(
             action = {
                 TextButton(
                     onClick = {
-                        if (isError)
-                            data.dismiss()
-                        else
-                            data.performAction()
+                        onAction()
                     },
                     colors = buttonColor
                 ) {
                     Text(text = data.visuals.actionLabel ?: "") }
+            },
+            dismissAction = {
+                onDismiss()
             }
         ) {
-            Text(data.visuals.message)
+            Text(text = data.visuals.message)
         }
     }
 }
