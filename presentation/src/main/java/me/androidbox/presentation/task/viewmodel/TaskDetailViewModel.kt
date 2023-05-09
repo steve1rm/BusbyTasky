@@ -177,8 +177,6 @@ class TaskDetailViewModel @Inject constructor(
                         snackbarDisplayMessage = responseState.error.message ?: "Oops, something went wrong",
                         snackbarActionMessage = "Try Again"
                     ))
-
-                    println("Failed to upload task ${responseState.error}")
                 }
             }
         }
