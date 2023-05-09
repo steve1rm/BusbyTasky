@@ -62,12 +62,10 @@ fun TaskDetailScreen(
         SnackbarHostState()
     }
     val coroutineScope = rememberCoroutineScope()
-    var snackbarJob: Job? = null
 
     LaunchedEffect(key1 = taskDetailScreenState.showSnackBar) {
         if(taskDetailScreenState.showSnackBar) {
-            snackbarJob?.cancel()
-            snackbarJob = coroutineScope.launch {
+            coroutineScope.launch {
                 snackbarHostState.showSnackbar(
                     message = taskDetailScreenState.snackbarDisplayMessage,
                     actionLabel = taskDetailScreenState.snackbarActionMessage,
