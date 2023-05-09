@@ -1,11 +1,8 @@
 package me.androidbox.presentation.task.screen
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -15,13 +12,19 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.maxkeppeker.sheets.core.models.base.rememberUseCaseState
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 import me.androidbox.component.agenda.AgendaDetailTopBar
 import me.androidbox.component.agenda.AgendaDurationSimple
 import me.androidbox.component.agenda.AgendaHeader
@@ -30,6 +33,7 @@ import me.androidbox.component.agenda.AlarmReminder
 import me.androidbox.component.agenda.AlarmReminderItem
 import me.androidbox.component.agenda.EditModeType
 import me.androidbox.component.general.AgendaDropDownMenu
+import me.androidbox.component.general.AgendaSnackbar
 import me.androidbox.component.ui.theme.Black
 import me.androidbox.component.ui.theme.White
 import me.androidbox.component.ui.theme.backgroundBackColor
@@ -54,6 +58,25 @@ fun TaskDetailScreen(
     modifier: Modifier = Modifier
 ) {
     val calendarStateTimeDate = rememberUseCaseState()
+    val snackbarHostState = remember {
+        SnackbarHostState()
+    }
+    val coroutineScope = rememberCoroutineScope()
+    var snackbarJob: Job? = null
+
+    LaunchedEffect(key1 = taskDetailScreenState.showSnackBar) {
+        if(taskDetailScreenState.showSnackBar) {
+            snackbarJob?.cancel()
+            snackbarJob = coroutineScope.launch {
+                snackbarHostState.showSnackbar(
+                    message = taskDetailScreenState.snackbarDisplayMessage,
+                    actionLabel = taskDetailScreenState.snackbarActionMessage,
+                    duration = SnackbarDuration.Short
+                )
+            }
+            taskDetailScreenEvent(TaskDetailScreenEvent.OnShowSnackBar(showSnackBar = false))
+        }
+    }
 
     Scaffold(
         modifier = modifier,
@@ -74,7 +97,16 @@ fun TaskDetailScreen(
                 onSaveClicked = {
                     taskDetailScreenEvent(TaskDetailScreenEvent.OnSaveTaskDetails(taskDetailScreenState.taskId))
                 })
-        }) { paddingValues ->
+        },
+        snackbarHost = {
+            AgendaSnackbar(
+                snackbarHostState = snackbarHostState,
+                onAction = {
+
+                }) {
+            }
+        }
+        ) { paddingValues ->
 
         Column(modifier = Modifier
             .padding(paddingValues)

@@ -126,6 +126,16 @@ class TaskDetailViewModel @Inject constructor(
                     )
                 }
             }
+
+            is TaskDetailScreenEvent.OnShowSnackBar -> {
+                _taskDetailScreenState.update { taskDetailScreenState ->
+                    taskDetailScreenState.copy(
+                        showSnackBar = taskDetailScreenEvent.showSnackBar,
+                        snackbarDisplayMessage = taskDetailScreenState.snackbarDisplayMessage,
+                        snackbarActionMessage = taskDetailScreenEvent.snackbarActionMessage
+                    )
+                }
+            }
         }
     }
 
@@ -151,17 +161,25 @@ class TaskDetailViewModel @Inject constructor(
                 }
             }
             when(responseState) {
-                ResponseState.Loading -> TODO()
-                is ResponseState.Success -> Unit
-                is ResponseState.Failure -> {
-                    /** TODO We could display a snackbar or a toast message */
+                ResponseState.Loading -> {
+                    println("Show Loading spinner...")
                 }
-            }
+                is ResponseState.Success -> {
+                    _taskDetailScreenState.update { taskDetailScreenState ->
+                        taskDetailScreenState.copy(
+                            isSaved = true
+                        )
+                    }
+                }
+                is ResponseState.Failure -> {
+                    onTaskDetailScreenEvent(TaskDetailScreenEvent.OnShowSnackBar(
+                        showSnackBar = true,
+                        snackbarDisplayMessage = responseState.error.message ?: "",
+                        snackbarActionMessage = "Try Again"
+                    ))
 
-            _taskDetailScreenState.update { taskDetailScreenState ->
-                taskDetailScreenState.copy(
-                    isSaved = true
-                )
+                    println("Failed to upload task ${responseState.error}")
+                }
             }
         }
     }
