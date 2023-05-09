@@ -108,7 +108,7 @@ object NetworkModule {
     fun providesReminderService(retrofit: Retrofit): ReminderService {
         return retrofit.create(ReminderService::class.java)
     }
-    
+
     @Singleton
     @Provides
     fun providesAgendaService(retrofit: Retrofit): AgendaService {
