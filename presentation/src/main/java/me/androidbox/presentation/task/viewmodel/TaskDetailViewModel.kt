@@ -126,6 +126,16 @@ class TaskDetailViewModel @Inject constructor(
                     )
                 }
             }
+
+            is TaskDetailScreenEvent.OnShowSnackBar -> {
+                _taskDetailScreenState.update { taskDetailScreenState ->
+                    taskDetailScreenState.copy(
+                        showSnackBar = taskDetailScreenEvent.showSnackBar,
+                        snackbarDisplayMessage = taskDetailScreenEvent.snackbarDisplayMessage,
+                        snackbarActionMessage = taskDetailScreenEvent.snackbarActionMessage
+                    )
+                }
+            }
         }
     }
 
@@ -151,17 +161,23 @@ class TaskDetailViewModel @Inject constructor(
                 }
             }
             when(responseState) {
-                ResponseState.Loading -> TODO()
-                is ResponseState.Success -> Unit
-                is ResponseState.Failure -> {
-                    /** TODO We could display a snackbar or a toast message */
+                ResponseState.Loading -> {
+                    println("Show Loading spinner...")
                 }
-            }
-
-            _taskDetailScreenState.update { taskDetailScreenState ->
-                taskDetailScreenState.copy(
-                    isSaved = true
-                )
+                is ResponseState.Success -> {
+                    _taskDetailScreenState.update { taskDetailScreenState ->
+                        taskDetailScreenState.copy(
+                            isSaved = true
+                        )
+                    }
+                }
+                is ResponseState.Failure -> {
+                    onTaskDetailScreenEvent(TaskDetailScreenEvent.OnShowSnackBar(
+                        showSnackBar = true,
+                        snackbarDisplayMessage = responseState.error.message ?: "Oops, something went wrong",
+                        snackbarActionMessage = "Try Again"
+                    ))
+                }
             }
         }
     }

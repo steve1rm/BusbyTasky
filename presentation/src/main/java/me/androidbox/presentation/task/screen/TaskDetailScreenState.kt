@@ -17,5 +17,8 @@ data class TaskDetailScreenState(
     val remindAt: Long = 0L,
     val shouldShowDeleteAlertDialog: Boolean = false,
     val isSaved: Boolean = false,
-    val updateModeType: UpdateModeType = UpdateModeType.CREATE
+    val updateModeType: UpdateModeType = UpdateModeType.CREATE,
+    val showSnackBar: Boolean = false,
+    val snackbarDisplayMessage: String = "",
+    val snackbarActionMessage: String = ""
 )

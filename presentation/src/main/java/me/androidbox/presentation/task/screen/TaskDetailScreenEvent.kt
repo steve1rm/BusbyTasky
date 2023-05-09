@@ -12,4 +12,5 @@ sealed interface TaskDetailScreenEvent {
     data class OnSaveTaskDetails(val taskId: String): TaskDetailScreenEvent
     data class OnShowAlarmReminderDropdown(val shouldOpen: Boolean) : TaskDetailScreenEvent
     data class OnEditModeChangeStatus(val isEditMode: Boolean = true) : TaskDetailScreenEvent
+    data class OnShowSnackBar(val showSnackBar: Boolean, val snackbarDisplayMessage: String = "", val snackbarActionMessage: String = ""): TaskDetailScreenEvent
 }
