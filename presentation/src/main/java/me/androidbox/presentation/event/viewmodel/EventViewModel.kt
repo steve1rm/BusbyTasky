@@ -10,17 +10,16 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import me.androidbox.component.agenda.VisitorFilterType
 import me.androidbox.domain.DateTimeFormatterProvider.toZoneDateTime
 import me.androidbox.domain.agenda.model.Attendee
 import me.androidbox.domain.agenda.model.Event
-import me.androidbox.domain.alarm_manager.AgendaType
 import me.androidbox.domain.alarm_manager.AlarmScheduler
 import me.androidbox.domain.alarm_manager.toAlarmItem
 import me.androidbox.domain.authentication.ResponseState
 import me.androidbox.domain.authentication.preference.PreferenceRepository
 import me.androidbox.domain.authentication.remote.EventRepository
 import me.androidbox.domain.constant.SyncAgendaType
+import me.androidbox.domain.constant.UpdateModeType
 import me.androidbox.domain.event.usecase.DeleteEventWithIdRemoteUseCase
 import me.androidbox.domain.event.usecase.VerifyVisitorEmailUseCase
 import me.androidbox.domain.work_manager.UploadEvent
@@ -28,8 +27,8 @@ import me.androidbox.presentation.agenda.constant.AgendaMenuActionType
 import me.androidbox.presentation.alarm_manager.AlarmReminderProvider
 import me.androidbox.presentation.event.screen.EventScreenEvent
 import me.androidbox.presentation.event.screen.EventScreenState
-import me.androidbox.presentation.navigation.Screen.EventScreen.EVENT_ID
-import me.androidbox.presentation.navigation.Screen.EventScreen.MENU_ACTION_TYPE
+import me.androidbox.presentation.navigation.Screen.Companion.ID
+import me.androidbox.presentation.navigation.Screen.Companion.MENU_ACTION_TYPE
 import java.util.UUID
 import javax.inject.Inject
 
@@ -49,7 +48,7 @@ class EventViewModel @Inject constructor(
 
     init {
         val menuActionType = savedStateHandle.get<String>(MENU_ACTION_TYPE)
-        val eventId = savedStateHandle.get<String>(EVENT_ID) ?: ""
+        val eventId = savedStateHandle.get<String>(ID) ?: ""
 
         menuActionType?.let { actionType ->
             when (actionType) {
@@ -57,6 +56,7 @@ class EventViewModel @Inject constructor(
                     _eventScreenState.update { eventScreenState ->
                         eventScreenState.copy(
                             isEditMode = false,
+                            updateModeType = UpdateModeType.UPDATE,
                             eventId = eventId
                         )
                     }
@@ -66,17 +66,19 @@ class EventViewModel @Inject constructor(
                     _eventScreenState.update { eventScreenState ->
                         eventScreenState.copy(
                             isEditMode = true,
+                            updateModeType = UpdateModeType.UPDATE,
                             eventId = eventId
                         )
                     }
                     fetchEventById(eventId)
                 }
                 else -> {
+                    /** User is creating a new event */
                     _eventScreenState.update { eventScreenState ->
                         eventScreenState.copy(
-                            isEditMode = false,
-                            eventId = UUID.randomUUID().toString()
-                        )
+                            isEditMode = true,
+                            updateModeType = UpdateModeType.CREATE,
+                            eventId = UUID.randomUUID().toString())
                     }
                 }
             }
@@ -92,6 +94,15 @@ class EventViewModel @Inject constructor(
                     )
                 }
             }
+
+            is EventScreenEvent.OnPhotoDeletion -> {
+                _eventScreenState.update { eventScreenState ->
+                    eventScreenState.copy(
+                        listOfPhotoUri = eventScreenState.listOfPhotoUri - eventScreenEvent.photo
+                    )
+                }
+            }
+
             is EventScreenEvent.OnSaveTitleOrDescription -> {
                 _eventScreenState.update { eventScreenState ->
                     eventScreenState.copy(
@@ -123,7 +134,7 @@ class EventViewModel @Inject constructor(
                 }
             }
             is EventScreenEvent.OnSaveEventDetails -> {
-                insertEventDetails(eventScreenState.value.eventId)
+                insertEventDetails()
             }
             is EventScreenEvent.OnStartTimeDuration -> {
                 _eventScreenState.update { eventScreenState ->
@@ -329,44 +340,53 @@ class EventViewModel @Inject constructor(
         }
     }
 
-    private fun insertEventDetails(eventId: String) {
+    private fun insertEventDetails() {
         val startDateTime = AlarmReminderProvider.getCombinedDateTime(eventScreenState.value.startTime, eventScreenState.value.startDate)
         val endDateTime = AlarmReminderProvider.getCombinedDateTime(eventScreenState.value.endTime, eventScreenState.value.endDate)
         val remindAt = AlarmReminderProvider.getRemindAt(eventScreenState.value.alarmReminderItem, startDateTime)
 
-        val event = Event(
-            id = eventId,
-            title = eventScreenState.value.eventTitle,
-            description = eventScreenState.value.eventDescription,
-            startDateTime = startDateTime.toEpochSecond(),
-            endDateTime = endDateTime.toEpochSecond(),
-            remindAt = remindAt.toEpochSecond(),
-            eventCreatorId = preferenceRepository.retrieveCurrentUserOrNull()?.userId ?: "",
-            isUserEventCreator = true,
-            host = "",
-            attendees = eventScreenState.value.attendees,
-            photos = eventScreenState.value.listOfPhotoUri
-        )
+        preferenceRepository.retrieveCurrentUserOrNull()?.userId?.let { userId ->
+            val event = Event(
+                id = eventScreenState.value.eventId,
+                title = eventScreenState.value.eventTitle,
+                description = eventScreenState.value.eventDescription,
+                startDateTime = startDateTime.toEpochSecond(),
+                endDateTime = endDateTime.toEpochSecond(),
+                remindAt = remindAt.toEpochSecond(),
+                eventCreatorId = userId,
+                isUserEventCreator = true,
+                host = "",
+                attendees = eventScreenState.value.attendees,
+                photos = eventScreenState.value.listOfPhotoUri
+            )
 
-        viewModelScope.launch {
-            when(val responseState = eventRepository.insertEvent(event)) {
-                ResponseState.Loading -> {
-                    /* TODO Show some loading progress */
-                }
-                is ResponseState.Success -> {
-                    val alarmItem = event.toAlarmItem(AgendaType.EVENT)
-                    alarmScheduler.scheduleAlarmReminder(alarmItem)
-                    uploadEvent.upload(event, isEditMode = eventScreenState.value.isEditMode)
+            viewModelScope.launch {
+                when (val responseState = eventRepository.insertEvent(event)) {
+                    ResponseState.Loading -> {
+                        /* TODO Show some loading progress */
+                    }
 
-                    _eventScreenState.update { eventScreenState ->
-                        eventScreenState.copy(isSaved = true)
+                    is ResponseState.Success -> {
+                        val alarmItem = event.toAlarmItem()
+                        alarmScheduler.scheduleAlarmReminder(alarmItem)
+                        uploadEvent.upload(
+                            event,
+                            updateModeType = eventScreenState.value.updateModeType
+                        )
+
+                        _eventScreenState.update { eventScreenState ->
+                            eventScreenState.copy(isSaved = true)
+                        }
+                    }
+
+                    is ResponseState.Failure -> {
+                        Log.e("EVENT_INSERT", "${responseState.error.message}")
+                        /* TODO Show some kink of snack bar or toast message */
                     }
                 }
-                is ResponseState.Failure -> {
-                    Log.e("EVENT_INSERT", "${responseState.error.message}")
-                   /* TODO Show some kink of snack bar or toast message */
-                }
             }
+        } ?: run {
+            /** TODO Display a snackbar or toast detailing some thing went wrong */
         }
     }
 

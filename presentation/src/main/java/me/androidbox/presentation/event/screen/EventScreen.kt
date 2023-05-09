@@ -9,8 +9,10 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
@@ -21,15 +23,16 @@ import androidx.compose.ui.unit.sp
 import com.maxkeppeker.sheets.core.models.base.rememberUseCaseState
 import com.maxkeppeler.sheets.date_time.DateTimeDialog
 import com.maxkeppeler.sheets.date_time.models.DateTimeSelection
+import kotlinx.coroutines.launch
 import me.androidbox.component.R
 import me.androidbox.component.agenda.*
 import me.androidbox.component.event.VisitorItem
-import me.androidbox.component.general.AgendaDropDownMenu
+import me.androidbox.component.general.AgendaBottomSheet
+import me.androidbox.component.general.AlarmReminderOptions
 import me.androidbox.component.general.PhotoPicker
 import me.androidbox.component.ui.theme.BusbyTaskyTheme
 import me.androidbox.component.ui.theme.backgroundBackColor
 import me.androidbox.component.ui.theme.backgroundWhiteColor
-import me.androidbox.component.ui.theme.dropDownMenuBackgroundColor
 import me.androidbox.component.ui.theme.visitorTextFontColor
 import me.androidbox.domain.DateTimeFormatterProvider.DATE_PATTERN
 import me.androidbox.domain.DateTimeFormatterProvider.LONG_DATE_PATTERN
@@ -38,7 +41,6 @@ import me.androidbox.domain.DateTimeFormatterProvider.formatDateTime
 import me.androidbox.domain.agenda.usecase.toInitials
 import java.time.ZoneId
 import java.time.ZonedDateTime
-import java.util.*
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -48,9 +50,12 @@ fun EventScreen(
     onEditTitleClicked: (title: String) -> Unit,
     onEditDescriptionClicked: (description: String) -> Unit,
     onCloseClicked: () -> Unit,
+    onPhotoClicked: (photo: String) -> Unit,
     modifier: Modifier = Modifier) {
 
     val calendarStateTimeDate = rememberUseCaseState()
+    val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    val bottomSheetScope = rememberCoroutineScope()
 
     LaunchedEffect(key1 = eventScreenState.attendees) {
         eventScreenEvent(EventScreenEvent.LoadVisitors)
@@ -111,13 +116,16 @@ fun EventScreen(
                     }
 
                     item {
-                       PhotoPicker(
+                        PhotoPicker(
                             listOfPhotoUri = eventScreenState.listOfPhotoUri,
                             onPhotoUriSelected = { uri ->
                                 eventScreenEvent(EventScreenEvent.OnPhotoUriAdded(uri.toString()))
+                            },
+                            onOpenPhoto = { uri ->
+                                onPhotoClicked(uri)
                             }
                         )
-                   }
+                    }
 
                     item {
                       Spacer(modifier = modifier.height(26.dp))
@@ -148,35 +156,6 @@ fun EventScreen(
                     }
 
                     item {
-                        Spacer(modifier = modifier.height(26.dp))
-                        AgendaDropDownMenu(
-                            modifier = Modifier
-                                .background(color = MaterialTheme.colorScheme.dropDownMenuBackgroundColor),
-                            shouldOpenDropdown = eventScreenState.shouldOpenDropdown,
-                            onCloseDropdown = {
-                                eventScreenEvent(
-                                    EventScreenEvent.OnShowAlarmReminderDropdown(shouldOpen = false)
-                                )
-                            },
-                            listOfMenuItemId = AlarmReminderItem.values().map { alarmReminderItem ->
-                                alarmReminderItem.stringResId
-                            },
-                            onSelectedOption = { item ->
-                                eventScreenEvent(
-                                    EventScreenEvent.OnAlarmReminderChanged(
-                                        AlarmReminderItem.values()[item]
-                                    )
-                                )
-                                eventScreenEvent(
-                                    EventScreenEvent.OnShowAlarmReminderDropdown(
-                                        shouldOpen = false
-                                    )
-                                )
-                            }
-                        )
-                    }
-
-                    item {
                         AlarmReminder(
                             reminderText = stringResource(id = eventScreenState.alarmReminderItem.stringResId),
                             modifier = Modifier
@@ -184,11 +163,9 @@ fun EventScreen(
                                 .background(color = MaterialTheme.colorScheme.backgroundWhiteColor),
                             isEditMode = eventScreenState.isEditMode,
                             onReminderClicked = {
-                                eventScreenEvent(
-                                    EventScreenEvent.OnShowAlarmReminderDropdown(
-                                        shouldOpen = true
-                                    )
-                                )
+                                bottomSheetScope.launch {
+                                    bottomSheetState.show()
+                                }
                             }
                         )
                     }
@@ -306,6 +283,35 @@ fun EventScreen(
         }
     )
 
+    AgendaBottomSheet(
+        shouldOpenBottomSheet = eventScreenState.shouldOpenDropdown,
+        bottomSheetState = bottomSheetState,
+        coroutineScope = bottomSheetScope,
+        onCloseDropdown = {
+            eventScreenEvent(EventScreenEvent.OnShowAlarmReminderDropdown(shouldOpen = false))
+        },
+        content = {
+            AlarmReminderOptions(
+                title = stringResource(id = R.string.alarm_reminder),
+                modifier = Modifier
+                    .padding(horizontal = 16.dp, vertical = 16.dp),
+                listOfMenuItemId = AlarmReminderItem.values()
+                    .map { alarmReminderItem ->
+                        alarmReminderItem.stringResId
+                    },
+                onSelectedOption = { item ->
+                    eventScreenEvent(
+                        EventScreenEvent.OnAlarmReminderChanged(
+                            AlarmReminderItem.values()[item]
+                        )
+                    )
+                    bottomSheetScope.launch {
+                        bottomSheetState.hide()
+                        eventScreenEvent(EventScreenEvent.OnShowAlarmReminderDropdown(shouldOpen = false))
+                    }
+                })
+        })
+
     if(eventScreenState.shouldShowVisitorDialog) {
         AddVisitorDialog(
             modifier = Modifier
@@ -391,7 +397,8 @@ fun PreviewEventScreenEditMode() {
             modifier = Modifier.fillMaxWidth(),
             onEditDescriptionClicked = {},
             onEditTitleClicked = {},
-            onCloseClicked = {}
+            onCloseClicked = {},
+            onPhotoClicked = {}
         )
     }
 }
@@ -408,7 +415,8 @@ fun PreviewEventScreenSaveMode() {
             modifier = Modifier.fillMaxWidth(),
             onEditDescriptionClicked = {},
             onEditTitleClicked = {},
-            onCloseClicked = {}
+            onCloseClicked = {},
+            onPhotoClicked = {}
         )
     }
 }

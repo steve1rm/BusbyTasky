@@ -6,6 +6,7 @@ import me.androidbox.component.agenda.AlarmReminderItem
 import me.androidbox.component.agenda.VisitorFilterType
 import me.androidbox.component.event.VisitorInfo
 import me.androidbox.domain.agenda.model.Attendee
+import me.androidbox.domain.constant.UpdateModeType
 import java.time.ZoneId
 import java.time.ZonedDateTime
 
@@ -35,7 +36,8 @@ data class EventScreenState(
     val isSaved: Boolean = false,
     val isEditMode: Boolean = false,
     val isUserEventCreator: Boolean = true,
+    val shouldShowDeleteAlertDialog: Boolean = false,
+    val updateModeType: UpdateModeType = UpdateModeType.CREATE,
     val eventCreatorId: String = "",
     val host: String = "",
-    val shouldShowDeleteAlertDialog: Boolean = false,
 )

@@ -1,27 +1,27 @@
 package me.androidbox.presentation.navigation
 
+import android.net.Uri
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.NavArgs
-import androidx.navigation.NavArgument
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import androidx.navigation.navDeepLink
-import me.androidbox.domain.agenda.model.AgendaItem
 import me.androidbox.domain.agenda.model.Event
 import me.androidbox.domain.agenda.model.Reminder
 import me.androidbox.domain.agenda.model.Task
-import me.androidbox.presentation.agenda.constant.AgendaMenuActionType
 import me.androidbox.domain.alarm_manager.AgendaType
 import me.androidbox.domain.constant.AgendaDeepLinks
+import me.androidbox.presentation.agenda.constant.AgendaMenuActionType
 import me.androidbox.presentation.agenda.screen.AgendaScreen
 import me.androidbox.presentation.agenda.viewmodel.AgendaViewModel
 import me.androidbox.presentation.edit.screen.ContentType
@@ -35,10 +35,14 @@ import me.androidbox.presentation.login.screen.LoginScreen
 import me.androidbox.presentation.login.screen.RegisterScreen
 import me.androidbox.presentation.login.viewmodel.LoginViewModel
 import me.androidbox.presentation.login.viewmodel.RegisterViewModel
+import me.androidbox.presentation.navigation.Screen.Companion.ID
+import me.androidbox.presentation.navigation.Screen.Companion.MENU_ACTION_TYPE
 import me.androidbox.presentation.navigation.Screen.EditScreen.CONTENT
 import me.androidbox.presentation.navigation.Screen.EditScreen.CONTENT_TYPE
-import me.androidbox.presentation.navigation.Screen.EventScreen.EVENT_ID
-import me.androidbox.presentation.navigation.Screen.EventScreen.MENU_ACTION_TYPE
+import me.androidbox.presentation.navigation.Screen.PhotoScreen.PHOTO_IMAGE_PATH
+import me.androidbox.presentation.navigation.Screen.TaskDetailScreen.TASK_DETAIL_SCREEN
+import me.androidbox.presentation.photo.screen.PhotoScreen
+import me.androidbox.presentation.photo.viewmodel.PhotoScreenViewModel
 import me.androidbox.presentation.task.screen.TaskDetailScreen
 import me.androidbox.presentation.task.screen.TaskDetailScreenEvent
 import me.androidbox.presentation.task.viewmodel.TaskDetailViewModel
@@ -134,10 +138,10 @@ fun NavigationGraph(
             onSelectedEditAgendaItemClicked = { agendaItem, agendaMenuActionType ->
                 val routeDestination = when(agendaItem) {
                     is Event -> {
-                        Screen.EventScreen.EVENT_SCREEN
+                        Screen.EventScreen.EVENT_DETAIL_SCREEN
                     }
                     is Task -> {
-                        Screen.TaskDetailScreen.TASK_DETAIL_SCREEN
+                        TASK_DETAIL_SCREEN
                     }
                     is Reminder -> TODO("Not Implemented yet")
                 }
@@ -148,7 +152,7 @@ fun NavigationGraph(
                             agendaViewModel.deleteEventById(eventId = agendaItem.id)
                         }
                         is Task -> {
-                            // Not implemented yet agendaViewModel.deleteTaskById(taskId = agendaItem.id)
+                            agendaViewModel.deleteTaskById(taskId = agendaItem.id)
                         }
                         is Reminder -> {
                             // Not implemented yet agendaViewModel.deleteReminderById(taskId = agendaItem.id)
@@ -168,7 +172,7 @@ fun NavigationGraph(
         /* Event Detail Screen */
         composable(
             route = Screen.EventScreen.route,
-            arguments = listOf(navArgument(EVENT_ID) {
+            arguments = listOf(navArgument(ID) {
                 type = NavType.StringType
                 nullable = true
                 defaultValue = null
@@ -184,6 +188,7 @@ fun NavigationGraph(
             val eventScreenState by eventViewModel.eventScreenState.collectAsStateWithLifecycle()
             val title = it.savedStateHandle.get<String>(ContentType.TITLE.name) ?: "New Event"
             val description = it.savedStateHandle.get<String>(ContentType.DESCRIPTION.name) ?: "New Description"
+            val selectedPhoto = it.savedStateHandle.get<String>(PHOTO_IMAGE_PATH)
 
             LaunchedEffect(key1 = title, key2 = description) {
                 eventViewModel.onEventScreenEvent(
@@ -192,6 +197,16 @@ fun NavigationGraph(
                         description
                     )
                 )
+            }
+
+            LaunchedEffect(key1 = selectedPhoto) {
+                if(selectedPhoto != null) {
+                    eventViewModel.onEventScreenEvent(
+                        EventScreenEvent.OnPhotoDeletion(
+                            photo = selectedPhoto
+                        )
+                    )
+                }
             }
 
             /** Once the insertion has completed the state will change to true then
@@ -219,6 +234,10 @@ fun NavigationGraph(
                 onCloseClicked = {
                     navHostController.popBackStack()
                 },
+                onPhotoClicked = { photoImage ->
+                    val encodedImagePath = Uri.encode(photoImage)
+                    navHostController.navigate(route = "${Screen.PhotoScreen.PHOTO_SCREEN}/${encodedImagePath}")
+                }
             )
         }
 
@@ -226,11 +245,11 @@ fun NavigationGraph(
         composable(
             route = Screen.TaskDetailScreen.route,
             arguments = listOf(
-                navArgument(Screen.TaskDetailScreen.TASK_ID) {
+                navArgument(ID) {
                     type = NavType.StringType
                     nullable = true
                     defaultValue = null
-                }, navArgument(Screen.TaskDetailScreen.MENU_ACTION_TYPE) {
+                }, navArgument(MENU_ACTION_TYPE) {
                     type = NavType.StringType
                     defaultValue = AgendaMenuActionType.OPEN.name
                 }),
@@ -248,6 +267,15 @@ fun NavigationGraph(
                     title = title,
                     description = description
                 ))
+            }
+
+            /** Once the insertion has completed the state will change to true then
+             *  we will know that the insertion has completed and we can popbackstack
+             *  to go back to the agenda screen */
+            LaunchedEffect(key1 = taskDetailScreenState.isSaved) {
+                if(taskDetailScreenState.isSaved) {
+                    navHostController.popBackStack()
+                }
             }
 
             TaskDetailScreen(
@@ -306,6 +334,35 @@ fun NavigationGraph(
                 },
                 onSaveClicked = { content, contentType ->
                     navHostController.previousBackStackEntry?.savedStateHandle?.set(contentType.name, content)
+                    navHostController.popBackStack()
+                }
+            )
+        }
+
+        /** Photo Screen */
+        composable(
+            route = Screen.PhotoScreen.route,
+            arguments = listOf(navArgument(PHOTO_IMAGE_PATH) {
+                this.type = NavType.StringType
+                this.defaultValue = null
+                this.nullable = true
+            })
+        ) {
+            val photoScreenViewModel: PhotoScreenViewModel = hiltViewModel()
+            val photoScreenState by photoScreenViewModel.photoScreenState.collectAsStateWithLifecycle()
+
+            PhotoScreen(
+                modifier = Modifier.background(color = MaterialTheme.colorScheme.background),
+                photoScreenState = photoScreenState,
+                photoScreenEvent = { photoScreenEvent ->
+                    photoScreenViewModel.onPhotoScreenEvent(photoScreenEvent)
+                },
+                onCloseClicked = {
+                    navHostController.previousBackStackEntry?.savedStateHandle?.clearSavedStateProvider(PHOTO_IMAGE_PATH)
+                    navHostController.popBackStack()
+                },
+                onSelectedPhotoForDeletion = { selectedPhoto ->
+                    navHostController.previousBackStackEntry?.savedStateHandle?.set(PHOTO_IMAGE_PATH, selectedPhoto)
                     navHostController.popBackStack()
                 }
             )

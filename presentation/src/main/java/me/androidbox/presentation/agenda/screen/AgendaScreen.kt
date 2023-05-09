@@ -160,44 +160,64 @@ fun AgendaScreen(
                 }
 
                 items(agendaScreenState.agendaItems) { agendaItem ->
-                    AgendaCard(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(120.dp)
-                            .clip(shape = RoundedCornerShape(22.dp)),
-                        title = agendaItem.title,
-                        subtitle = agendaItem.description,
-                        dateTimeInfo = agendaItem.toDisplayDateTime(),
-                        agendaCardType = when(agendaItem.agendaType) {
-                            AgendaType.EVENT -> AgendaCardType.EVENT
-                            AgendaType.TASK -> AgendaCardType.TASK
-                            AgendaType.REMINDER -> AgendaCardType.REMINDER
-                        },
-                        isAgendaCompleted = false
-                    ) {
-                        println("Event ${agendaItem.id} has been clicked")
-                        agendaScreenEvent(AgendaScreenEvent.OnAgendaItemClicked(agendaItem))
-                        agendaScreenEvent(AgendaScreenEvent.OnChangeShowEditAgendaItemDropdownStatus(shouldOpen = true))
-                    }
-
-                    /** Open, Edit, Delete Agenda Items */
-                    AgendaDropDownMenu(
-                        modifier = Modifier
-                            .background(color = MaterialTheme.colorScheme.dropDownMenuBackgroundColor)
-                            .align(Alignment.BottomEnd),
-                        shouldOpenDropdown = agendaScreenState.shouldOpenEditAgendaDropdown,
-                        onCloseDropdown = {
-                            agendaScreenEvent(
-                                AgendaScreenEvent.OnChangeShowEditAgendaItemDropdownStatus(shouldOpen = false))
-                        },
-                        listOfMenuItemId = AgendaMenuActionType.values().map { it.titleId },
-                        onSelectedOption = { item ->
-                            agendaScreenState.agendaItemClicked?.let { agendaItem ->
-                                onSelectedEditAgendaItemClicked(agendaItem, AgendaMenuActionType.values()[item])
-                                agendaScreenEvent(AgendaScreenEvent.OnChangeShowEditAgendaItemDropdownStatus(shouldOpen = false))
+                        AgendaCard(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(120.dp)
+                                .clip(shape = RoundedCornerShape(22.dp)),
+                            title = agendaItem.title,
+                            subtitle = agendaItem.description,
+                            dateTimeInfo = agendaItem.toDisplayDateTime(),
+                            agendaCardType = when (agendaItem.agendaType) {
+                                AgendaType.EVENT -> AgendaCardType.EVENT
+                                AgendaType.TASK -> AgendaCardType.TASK
+                                AgendaType.REMINDER -> AgendaCardType.REMINDER
+                            },
+                            isAgendaCompleted = false,
+                            onMenuOptionClicked = {
+                                println("Event ${agendaItem.id} has been clicked")
+                                agendaScreenEvent(AgendaScreenEvent.OnAgendaItemClicked(agendaItem))
+                                agendaScreenEvent(
+                                    AgendaScreenEvent.OnChangeShowEditAgendaItemDropdownStatus(
+                                        shouldOpen = true,
+                                        agendaItem = agendaItem
+                                    )
+                                )
+                            },
+                            dropDownMenu = {
+                                /** Open, Edit, Delete Agenda Items */
+                                AgendaDropDownMenu(
+                                    modifier = Modifier
+                                        .background(color = MaterialTheme.colorScheme.dropDownMenuBackgroundColor)
+                                        .align(Alignment.BottomEnd),
+                                    shouldOpenDropdown = agendaItem == agendaScreenState.agendaItemWithOperationBeingSelected && agendaScreenState.shouldOpenEditAgendaDropdown,
+                                    onCloseDropdown = {
+                                        agendaScreenEvent(
+                                            AgendaScreenEvent.OnChangeShowEditAgendaItemDropdownStatus(
+                                                shouldOpen = false,
+                                                agendaItem = agendaItem
+                                            )
+                                        )
+                                    },
+                                    listOfMenuItemId = AgendaMenuActionType.values()
+                                        .map { it.titleId },
+                                    onSelectedOption = { item ->
+                                        agendaScreenState.agendaItemClicked?.let { agendaItem ->
+                                            onSelectedEditAgendaItemClicked(
+                                                agendaItem,
+                                                AgendaMenuActionType.values()[item]
+                                            )
+                                            agendaScreenEvent(
+                                                AgendaScreenEvent.OnChangeShowEditAgendaItemDropdownStatus(
+                                                    shouldOpen = false,
+                                                    agendaItem = agendaItem
+                                                )
+                                            )
+                                        }
+                                    }
+                                )
                             }
-                        }
-                    )
+                        )
                 }
             }
         }

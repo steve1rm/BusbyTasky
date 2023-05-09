@@ -33,6 +33,10 @@ object AlarmReminderProvider {
     fun getCombinedDateTime(time: ZonedDateTime, date: ZonedDateTime): ZonedDateTime {
         return ZonedDateTime.of(date.toLocalDate(), time.toLocalTime(), ZoneId.systemDefault())
     }
+
+    fun getCombinedFromDate(date: ZonedDateTime): ZonedDateTime {
+        return ZonedDateTime.of(date.toLocalDate(), date.toLocalTime(), ZoneId.systemDefault())
+    }
 }
 
 

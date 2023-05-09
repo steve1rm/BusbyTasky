@@ -3,8 +3,6 @@ package me.androidbox.presentation.task.screen
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -14,12 +12,19 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.maxkeppeker.sheets.core.models.base.rememberUseCaseState
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 import me.androidbox.component.agenda.AgendaDetailTopBar
 import me.androidbox.component.agenda.AgendaDurationSimple
 import me.androidbox.component.agenda.AgendaHeader
@@ -28,6 +33,7 @@ import me.androidbox.component.agenda.AlarmReminder
 import me.androidbox.component.agenda.AlarmReminderItem
 import me.androidbox.component.agenda.EditModeType
 import me.androidbox.component.general.AgendaDropDownMenu
+import me.androidbox.component.general.AgendaSnackbar
 import me.androidbox.component.ui.theme.Black
 import me.androidbox.component.ui.theme.White
 import me.androidbox.component.ui.theme.backgroundBackColor
@@ -52,6 +58,22 @@ fun TaskDetailScreen(
     modifier: Modifier = Modifier
 ) {
     val calendarStateTimeDate = rememberUseCaseState()
+    val snackbarHostState = remember {
+        SnackbarHostState()
+    }
+    val coroutineScope = rememberCoroutineScope()
+
+    LaunchedEffect(key1 = taskDetailScreenState.showSnackBar) {
+        if(taskDetailScreenState.showSnackBar) {
+            coroutineScope.launch {
+                snackbarHostState.showSnackbar(
+                    message = taskDetailScreenState.snackbarDisplayMessage,
+                    actionLabel = taskDetailScreenState.snackbarActionMessage,
+                    duration = SnackbarDuration.Long
+                )
+            }
+        }
+    }
 
     Scaffold(
         modifier = modifier,
@@ -61,27 +83,38 @@ fun TaskDetailScreen(
                     .fillMaxWidth()
                     .background(color = MaterialTheme.colorScheme.backgroundBackColor)
                     .padding(horizontal = 16.dp),
-                editModeType = EditModeType.SaveMode(),
+                editModeType = if(taskDetailScreenState.isEditMode) { EditModeType.SaveMode() } else { EditModeType.EditMode() },
                 displayDate = taskDetailScreenState.from.formatDateTime(LONG_DATE_PATTERN),
                 onCloseClicked = {
                     onCloseClicked()
                 },
                 onEditClicked = {
-
+                    taskDetailScreenEvent(TaskDetailScreenEvent.OnEditModeChangeStatus(isEditMode = true))
                 },
                 onSaveClicked = {
-
+                    taskDetailScreenEvent(TaskDetailScreenEvent.OnSaveTaskDetails(taskDetailScreenState.taskId))
                 })
-        }) { paddingValues ->
+        },
+        snackbarHost = {
+            AgendaSnackbar(
+                snackbarHostState = snackbarHostState,
+                onAction = {
+                    taskDetailScreenEvent(TaskDetailScreenEvent.OnSaveTaskDetails(taskDetailScreenState.taskId))
+                },
+                onDismiss = {
+                    taskDetailScreenEvent(TaskDetailScreenEvent.OnShowSnackBar(showSnackBar = false))
+            })
+        }
+        ) { paddingValues ->
 
         Column(modifier = Modifier
-            .verticalScroll(rememberScrollState())
             .padding(paddingValues)
             .fillMaxWidth()
             .background(Black)) {
 
             Column (modifier = modifier
                 .fillMaxWidth()
+                .verticalScroll(rememberScrollState())
                 .background(
                     color = White,
                     shape = RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp)
@@ -118,7 +151,8 @@ fun TaskDetailScreen(
                         .background(color = MaterialTheme.colorScheme.dropDownMenuBackgroundColor),
                     shouldOpenDropdown = taskDetailScreenState.shouldOpenDropdown,
                     onCloseDropdown = {
-                        taskDetailScreenEvent(TaskDetailScreenEvent.OnShowAlarmReminderDropdown(shouldOpen = false))
+                        taskDetailScreenEvent(
+                            TaskDetailScreenEvent.OnShowAlarmReminderDropdown(shouldOpen = false))
                     },
                     listOfMenuItemId = AlarmReminderItem.values().map { alarmReminderItem ->
                         alarmReminderItem.stringResId
@@ -136,9 +170,10 @@ fun TaskDetailScreen(
                         .fillMaxWidth()
                         .background(color = MaterialTheme.colorScheme.backgroundWhiteColor),
                     onReminderClicked = {
-
+                        taskDetailScreenEvent(TaskDetailScreenEvent.OnShowAlarmReminderDropdown(shouldOpen = true))
                     }
                 )
+
                 Spacer(modifier = modifier.height(26.dp))
             }
         }
