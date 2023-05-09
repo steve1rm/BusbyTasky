@@ -71,7 +71,7 @@ fun TaskDetailScreen(
                 snackbarHostState.showSnackbar(
                     message = taskDetailScreenState.snackbarDisplayMessage,
                     actionLabel = taskDetailScreenState.snackbarActionMessage,
-                    duration = SnackbarDuration.Short
+                    duration = SnackbarDuration.Long
                 )
             }
         }
