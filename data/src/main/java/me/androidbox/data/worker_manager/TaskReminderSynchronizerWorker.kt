@@ -8,6 +8,7 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
+import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.supervisorScope
 import me.androidbox.data.local.dao.ReminderDao
@@ -35,7 +36,6 @@ class TaskReminderSynchronizerWorker @AssistedInject constructor(
 
     override suspend fun doWork(): Result {
 
-        /** TODO is this the correct place to have this check and to retry or fail */
         if(runAttemptCount > RETRY_COUNT) {
             Result.failure()
         }
@@ -89,7 +89,7 @@ class TaskReminderSynchronizerWorker @AssistedInject constructor(
          *  My checkResult will run everything in this block */
         val responseState = checkResult {
             supervisorScope {
-                val createTaskJob = launch {
+                val syncedJobs = listOf(launch {
                     createdTasks.await().forEach { taskEntity ->
                         /* Create the task on remote */
                         val result = checkResult {
@@ -100,9 +100,9 @@ class TaskReminderSynchronizerWorker @AssistedInject constructor(
                             taskDao.deleteSyncTaskById(taskEntity.id)
                         }
                     }
-                }
+                },
 
-                val updateTaskJob = launch {
+                launch {
                     updatedTasks.await().forEach { taskEntity ->
                         val result = checkResult {
                             taskService.updateTask(taskEntity.toTaskDto())
@@ -111,9 +111,9 @@ class TaskReminderSynchronizerWorker @AssistedInject constructor(
                             taskDao.deleteSyncTaskById(taskEntity.id)
                         }
                     }
-                }
+                },
 
-                val createReminderJob = launch {
+                launch {
                     createdReminders.await().forEach { reminderEntity ->
                         val result = checkResult {
                             reminderService.createReminder(reminderEntity.toReminderDto())
@@ -122,9 +122,9 @@ class TaskReminderSynchronizerWorker @AssistedInject constructor(
                             reminderDao.deleteSyncReminderById(reminderEntity.id)
                         }
                     }
-                }
+                },
 
-                val updateReminderJob = launch {
+                launch {
                     updatedReminders.await().forEach { reminderEntity ->
                         val result = checkResult {
                             reminderService.updateReminder(reminderEntity.toReminderDto())
@@ -133,13 +133,10 @@ class TaskReminderSynchronizerWorker @AssistedInject constructor(
                             reminderDao.deleteReminderById(reminderEntity.id)
                         }
                     }
-                }
+                })
 
                 /** TODO Waiting for all jobs to complete */
-                createTaskJob.join()
-                updateTaskJob.join()
-                createReminderJob.join()
-                updateReminderJob.join()
+                syncedJobs.joinAll()
             }
         }
 
