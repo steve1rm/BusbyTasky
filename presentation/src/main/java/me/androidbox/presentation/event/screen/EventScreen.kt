@@ -252,13 +252,12 @@ fun EventScreen(
                             agendaActionType = if (eventScreenState.isUserEventCreator) {
                                 AgendaActionType.DELETE_EVENT
                             } else {
-                                /** If attendee chooses to leave the event, next time show the join button instead */
-
                                 /** Based on if the attendee has updated isGoing status
-                                 * isGoing = true => LEAVE_EVENT
-                                 * isGoing = false => JOIN_EVENT */
+                                 * isGoing = true ==> LEAVE_EVENT
+                                 * isGoing = false ==> JOIN_EVENT
+                                 * */
 
-                                /* Find the attendee and check their status - TODO Consider a help method for this */
+                                /* Find the attendee and check their status - TODO Consider a helper method for this */
                                 val isAttendeeGoing = eventScreenState.attendees.firstOrNull { attendee ->
                                     attendee.userId == eventScreenState.currentLoggedInUserId
                                 }?.isGoing ?: false
@@ -279,18 +278,36 @@ fun EventScreen(
                                     }
 
                                     AgendaActionType.JOIN_EVENT -> {
+                                        /** Set the attendee to going */
+                                        eventScreenState.attendees.firstOrNull { attendee ->
+                                            attendee.userId == eventScreenState.currentLoggedInUserId
+                                        }?.let { attendee ->
+                                            val updatedAttendee = attendee.copy(
+                                                isGoing = true
+                                            )
 
+                                            eventScreenEvent(EventScreenEvent.OnAttendeeStatusUpdated(updatedAttendee))
+                                        }
                                     }
 
                                     AgendaActionType.LEAVE_EVENT -> {
-                                        /** Default what attendees will see */
+                                        /** Set the attendee to not going */
+                                        val attendee = eventScreenState.attendees.firstOrNull { attendee ->
+                                            attendee.userId == eventScreenState.currentLoggedInUserId
+                                        }
+
+                                        if(attendee != null) {
+                                            val updatedAttendee = attendee.copy(
+                                                isGoing = false
+                                            )
+                                            eventScreenEvent(EventScreenEvent.OnAttendeeStatusUpdated(updatedAttendee))
+                                        }
                                     }
 
                                     else -> Unit
                                 }
                             }
                         )
-
                     }
                 }
        //     }

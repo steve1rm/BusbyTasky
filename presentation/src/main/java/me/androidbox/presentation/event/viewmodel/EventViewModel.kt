@@ -201,6 +201,25 @@ class EventViewModel @Inject constructor(
                     )
                 }
             }
+            is EventScreenEvent.OnAttendeeStatusUpdated -> {
+                _eventScreenState.update { eventScreenState ->
+                    val index = eventScreenState.attendees.indexOfFirst { attendee ->
+                        attendee.userId == eventScreenEvent.attendee.userId
+                    }
+                    
+                    val updatedAttendee = eventScreenState.attendees.toMutableList()
+                    updatedAttendee[index] = eventScreenEvent.attendee
+
+                    eventScreenState.copy(
+                        attendees = updatedAttendee.toList(),
+                        filteredVisitorsGoing = eventScreenState.attendees.filter { it.isGoing },
+                        filteredVisitorsNotGoing = eventScreenState.attendees.filter { !it.isGoing }
+                    )
+                }
+
+                println(eventScreenState.value.attendees)
+            }
+
             is EventScreenEvent.OnVisitorEmailChanged -> {
                 _eventScreenState.update { eventScreenState ->
                     eventScreenState.copy(
