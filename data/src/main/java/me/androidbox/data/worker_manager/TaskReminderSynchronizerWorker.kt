@@ -110,9 +110,6 @@ class TaskReminderSynchronizerWorker @AssistedInject constructor(
             }
         }
 
-        /** TODO I am using supervisor scope to launch so if one fails the other will still run
-         *  However, will the worker return failure if a single one fails even though some failed?
-         *  My checkResult will run everything in this block */
         val responseState = checkResult {
             supervisorScope {
                 val syncedJobs = listOf(
