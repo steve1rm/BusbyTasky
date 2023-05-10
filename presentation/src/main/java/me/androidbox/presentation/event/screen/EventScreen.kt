@@ -262,10 +262,7 @@ fun EventScreen(
                                     attendee.userId == eventScreenState.currentLoggedInUserId
                                 }?.isGoing ?: false
 
-                                if(isAttendeeGoing)
-                                    AgendaActionType.LEAVE_EVENT
-                                else
-                                    AgendaActionType.JOIN_EVENT
+                                if(isAttendeeGoing) AgendaActionType.LEAVE_EVENT else AgendaActionType.JOIN_EVENT
                             },
                             onActionClicked = { agendaActionType ->
                                 when (agendaActionType) {
