@@ -279,27 +279,12 @@ fun EventScreen(
 
                                     AgendaActionType.JOIN_EVENT -> {
                                         /** Set the attendee to going */
-                                        eventScreenState.attendees.firstOrNull { attendee ->
-                                            attendee.userId == eventScreenState.currentLoggedInUserId
-                                        }?.let { attendee ->
-                                            val updatedAttendee = attendee.copy(
-                                                isGoing = true
-                                            )
-
-                                            eventScreenEvent(EventScreenEvent.OnAttendeeStatusUpdated(updatedAttendee))
-                                        }
+                                        eventScreenEvent(EventScreenEvent.OnAttendeeStatusUpdate(isGoing = true))
                                     }
 
                                     AgendaActionType.LEAVE_EVENT -> {
                                         /** Set the attendee to not going */
-                                        eventScreenState.attendees.firstOrNull { attendee ->
-                                            attendee.userId == eventScreenState.currentLoggedInUserId
-                                        }?.let { attendee ->
-                                            val updatedAttendee = attendee.copy(
-                                                isGoing = false
-                                            )
-                                            eventScreenEvent(EventScreenEvent.OnAttendeeStatusUpdated(updatedAttendee))
-                                        }
+                                        eventScreenEvent(EventScreenEvent.OnAttendeeStatusUpdate(isGoing = false))
                                     }
 
                                     else -> Unit

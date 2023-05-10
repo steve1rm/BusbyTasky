@@ -201,16 +201,16 @@ class EventViewModel @Inject constructor(
                     )
                 }
             }
-            is EventScreenEvent.OnAttendeeStatusUpdated -> {
+            is EventScreenEvent.OnAttendeeStatusUpdate -> {
                 val index = eventScreenState.value.attendees.indexOfFirst { attendee ->
-                    attendee.userId == eventScreenEvent.attendee.userId
+                    attendee.userId == eventScreenState.value.currentLoggedInUserId
                 }
 
                 if(index > -1) {
                     _eventScreenState.update { eventScreenState ->
                         /** Update the attendee in the list with the updated attendee i.e status of going or not going */
                         val updatedAttendee = eventScreenState.attendees.toMutableList()
-                        updatedAttendee[index] = eventScreenEvent.attendee
+                        updatedAttendee[index] = eventScreenState.attendees[index].copy(isGoing = eventScreenEvent.isGoing)
 
                         eventScreenState.copy(
                             attendees = updatedAttendee.toList(),

@@ -11,7 +11,7 @@ sealed interface EventScreenEvent {
     data class OnPhotoDeletion(val photo: String): EventScreenEvent
     data class OnSaveTitleOrDescription(val title: String, val description: String): EventScreenEvent
     data class OnDeleteVisitor(val userId: String): EventScreenEvent
-    data class OnAttendeeStatusUpdated(val attendee: Attendee): EventScreenEvent
+    data class OnAttendeeStatusUpdate(val isGoing: Boolean): EventScreenEvent
     data class OnVisitorEmailChanged(val visitorEmail: String): EventScreenEvent
     data class OnShowVisitorDialog(val shouldShowVisitorDialog: Boolean): EventScreenEvent
     data class CheckVisitorExists(val visitorEmail: String): EventScreenEvent
