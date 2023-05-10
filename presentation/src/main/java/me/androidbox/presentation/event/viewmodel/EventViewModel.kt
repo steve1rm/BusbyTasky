@@ -206,7 +206,7 @@ class EventViewModel @Inject constructor(
                     attendee.userId == eventScreenState.value.currentLoggedInUserId
                 }
 
-                if(index > -1) {
+                if(index != -1) {
                     _eventScreenState.update { eventScreenState ->
                         /** Update the attendee in the list with the updated attendee i.e status of going or not going */
                         val updatedAttendee = eventScreenState.attendees.toMutableList()
