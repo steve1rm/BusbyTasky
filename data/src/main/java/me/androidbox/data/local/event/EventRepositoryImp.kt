@@ -39,14 +39,8 @@ class EventRepositoryImp @Inject constructor(
             }
     }
 
-    override fun getEventById(id: String): Flow<ResponseState<Event>> {
-        return eventDao.getEventById(id)
-            .map { eventEntity ->
-                ResponseState.Success(eventEntity.toEvent())
-            }
-            .catch { throwable ->
-                ResponseState.Failure(throwable)
-            }
+    override suspend fun getEventById(id: String): ResponseState<Event> {
+        return ResponseState.Success(eventDao.getEventById(id).toEvent())
     }
 
     override suspend fun insertEvent(event: Event): ResponseState<Unit> {

@@ -16,7 +16,7 @@ interface EventDao {
     suspend fun getEventsFromTimeStampFullAgenda(startTimeStamp: Long, endTimeStamp: Long): List<EventEntity>
 
     @Query("SELECT * FROM ${DatabaseConstant.EVENT_TABLE} WHERE `id` = :id")
-    fun getEventById(id: String): Flow<EventEntity>
+    suspend fun getEventById(id: String): EventEntity
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertEvent(eventEntity: EventEntity)
