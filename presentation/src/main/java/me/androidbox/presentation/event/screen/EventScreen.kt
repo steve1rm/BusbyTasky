@@ -204,18 +204,17 @@ fun EventScreen(
                             Spacer(modifier = Modifier.height(16.dp))
 
                         }
-                        if(eventScreenState.filteredVisitorsGoing.isNotEmpty()) {
-                            items(eventScreenState.filteredVisitorsGoing) { attendee ->
-                                VisitorItem(
-                                    initials = attendee.fullName.toInitials(),
-                                    userId = attendee.userId,
-                                    fullName = attendee.fullName,
-                                    onDeleteClicked = { userId ->
-                                        eventScreenEvent(EventScreenEvent.OnDeleteVisitor(userId))
-                                    },
-                                    isCreator = eventScreenState.host == attendee.userId
-                                )
-                            }
+
+                        items(eventScreenState.filteredVisitorsGoing) { attendee ->
+                            VisitorItem(
+                                initials = attendee.fullName.toInitials(),
+                                userId = attendee.userId,
+                                fullName = attendee.fullName,
+                                onDeleteClicked = { userId ->
+                                    eventScreenEvent(EventScreenEvent.OnDeleteVisitor(userId))
+                                },
+                                isCreator = eventScreenState.host == attendee.userId
+                            )
                         }
                     }
 
@@ -231,18 +230,16 @@ fun EventScreen(
                             Spacer(modifier = Modifier.height(16.dp))
                         }
 
-                        if(eventScreenState.filteredVisitorsNotGoing.isNotEmpty()) {
-                            items(eventScreenState.filteredVisitorsNotGoing) { attendee ->
-                                VisitorItem(
-                                    initials = attendee.fullName.toInitials(),
-                                    userId = attendee.userId,
-                                    fullName = attendee.fullName,
-                                    isCreator = eventScreenState.host == attendee.userId,
-                                    onDeleteClicked = { userId ->
-                                        eventScreenEvent(EventScreenEvent.OnDeleteVisitor(userId))
-                                    }
-                                )
-                            }
+                        items(eventScreenState.filteredVisitorsNotGoing) { attendee ->
+                            VisitorItem(
+                                initials = attendee.fullName.toInitials(),
+                                userId = attendee.userId,
+                                fullName = attendee.fullName,
+                                isCreator = eventScreenState.host == attendee.userId,
+                                onDeleteClicked = { userId ->
+                                    eventScreenEvent(EventScreenEvent.OnDeleteVisitor(userId))
+                                }
+                            )
                         }
                     }
 
