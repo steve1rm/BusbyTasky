@@ -35,14 +35,17 @@ fun AgendaCard(
     agendaCardType: AgendaCardType,
     modifier: Modifier = Modifier,
     isAgendaCompleted: Boolean = false,
-    onMenuOptionClicked: () -> Unit
+    onMenuOptionClicked: () -> Unit,
+    dropDownMenu: @Composable () -> Unit
 ) {
     Box(modifier = modifier
         .background(color = agendaCardType.backgroundColor())) {
         Column {
             Box(modifier = Modifier
                 .fillMaxWidth()) {
-                Row(modifier = Modifier.padding(start = 16.dp, top = 16.dp).align(Alignment.TopStart),
+                Row(modifier = Modifier
+                    .padding(start = 16.dp, top = 16.dp)
+                    .align(Alignment.TopStart),
                     verticalAlignment = Alignment.CenterVertically) {
                     val agendaStatusIcon = if (isAgendaCompleted) {
                         painterResource(id = R.drawable.completed)
@@ -60,11 +63,19 @@ fun AgendaCard(
                         textDecoration = if(isAgendaCompleted) TextDecoration.LineThrough else TextDecoration.None
                     )
                 }
-                OptionButton(
-                    modifier = Modifier.padding(top = 16.dp, end = 16.dp).align(Alignment.CenterEnd).clickable {
-                        onMenuOptionClicked()
-                    },
-                    dotColor = agendaCardType.dotColor)
+                Box(
+                    modifier = Modifier.align(Alignment.CenterEnd)) {
+                    dropDownMenu()
+
+                    OptionButton(
+                        modifier = Modifier
+                            .padding(top = 16.dp, end = 16.dp)
+                            .align(Alignment.CenterEnd)
+                            .clickable {
+                                onMenuOptionClicked()
+                            },
+                        dotColor = agendaCardType.dotColor)
+                }
             }
             Spacer(modifier = Modifier.height(14.dp))
             Text(
@@ -134,9 +145,11 @@ fun PreviewTaskCardIsCompleted() {
             title = "Develop UI",
             subtitle = "Implement all agenda cards",
             dateTimeInfo = "Mar 5, 10:00",
-            isAgendaCompleted = true)  {
-            Log.d("AGENDA_ITEM", "Agenda Item has been tapped")
-        }
+            isAgendaCompleted = true,
+            dropDownMenu = {},
+            onMenuOptionClicked = {
+                Log.d("AGENDA_ITEM", "Agenda Item has been tapped")
+            })
     }
 }
 
@@ -153,9 +166,11 @@ fun PreviewEventCardNotCompleted() {
             title = "Meeting",
             subtitle = "Adjust timeline and goals of project",
             dateTimeInfo = "Mar 5, 10:30 - Mar 5, 11:00",
-            isAgendaCompleted = false)  {
-            Log.d("AGENDA_ITEM", "Agenda Item has been tapped")
-        }
+            isAgendaCompleted = false,
+            dropDownMenu = {},
+            onMenuOptionClicked = {
+                Log.d("AGENDA_ITEM", "Agenda Item has been tapped")
+            })
     }
 }
 
@@ -172,8 +187,10 @@ fun PreviewReminderCardCompleted() {
             title = "Lunch break",
             subtitle = "Continue to work during your lunch period",
             dateTimeInfo = "Mar 5, 13:00",
-            isAgendaCompleted = true) {
-            Log.d("AGENDA_ITEM", "Agenda Item has been tapped")
-        }
+            isAgendaCompleted = true,
+            dropDownMenu = {},
+            onMenuOptionClicked = {
+                Log.d("AGENDA_ITEM", "Agenda Item has been tapped")
+            })
     }
 }

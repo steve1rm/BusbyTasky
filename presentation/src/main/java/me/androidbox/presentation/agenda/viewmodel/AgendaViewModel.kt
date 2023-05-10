@@ -150,7 +150,8 @@ class AgendaViewModel @Inject constructor(
             is AgendaScreenEvent.OnChangeShowEditAgendaItemDropdownStatus -> {
                 _agendaScreenState.update { agendaScreenState ->
                     agendaScreenState.copy(
-                        shouldOpenEditAgendaDropdown = agendaScreenEvent.shouldOpen
+                        shouldOpenEditAgendaDropdown = agendaScreenEvent.shouldOpen,
+                        agendaItemWithOperationBeingSelected = agendaScreenEvent.agendaItem
                     )
                 }
             }
