@@ -76,7 +76,7 @@ fun AddVisitorDialog(
                 }
             )
 
-            if(!isEmailVerified or isAlreadyAdded) {
+            if(!isEmailVerified || isAlreadyAdded) {
                 val errorMessage = if(!isEmailVerified) {
                     stringResource(id = R.string.email_verify_failed)
                 }
