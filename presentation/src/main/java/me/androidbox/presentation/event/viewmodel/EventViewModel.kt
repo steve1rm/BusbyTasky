@@ -83,6 +83,13 @@ class EventViewModel @Inject constructor(
                 }
             }
         }
+
+        preferenceRepository.retrieveCurrentUserOrNull()?.let { authenticatedUser ->
+        _eventScreenState.update { eventScreenState ->
+                eventScreenState.copy(
+                    currentLoggedInUserId = authenticatedUser.userId)
+            }
+        }
     }
 
     fun onEventScreenEvent(eventScreenEvent: EventScreenEvent) {
@@ -345,48 +352,43 @@ class EventViewModel @Inject constructor(
         val endDateTime = AlarmReminderProvider.getCombinedDateTime(eventScreenState.value.endTime, eventScreenState.value.endDate)
         val remindAt = AlarmReminderProvider.getRemindAt(eventScreenState.value.alarmReminderItem, startDateTime)
 
-        preferenceRepository.retrieveCurrentUserOrNull()?.userId?.let { userId ->
-            val event = Event(
-                id = eventScreenState.value.eventId,
-                title = eventScreenState.value.eventTitle,
-                description = eventScreenState.value.eventDescription,
-                startDateTime = startDateTime.toEpochSecond(),
-                endDateTime = endDateTime.toEpochSecond(),
-                remindAt = remindAt.toEpochSecond(),
-                eventCreatorId = userId,
-                isUserEventCreator = true,
-                host = "",
-                attendees = eventScreenState.value.attendees,
-                photos = eventScreenState.value.listOfPhotoUri
-            )
+        val event = Event(
+            id = eventScreenState.value.eventId,
+            title = eventScreenState.value.eventTitle,
+            description = eventScreenState.value.eventDescription,
+            startDateTime = startDateTime.toEpochSecond(),
+            endDateTime = endDateTime.toEpochSecond(),
+            remindAt = remindAt.toEpochSecond(),
+            eventCreatorId = eventScreenState.value.currentLoggedInUserId,
+            isUserEventCreator = true,
+            host = "",
+            attendees = eventScreenState.value.attendees,
+            photos = eventScreenState.value.listOfPhotoUri)
 
-            viewModelScope.launch {
-                when (val responseState = eventRepository.insertEvent(event)) {
-                    ResponseState.Loading -> {
-                        /* TODO Show some loading progress */
-                    }
+        viewModelScope.launch {
+            when (val responseState = eventRepository.insertEvent(event)) {
+                ResponseState.Loading -> {
+                    /* TODO Show some loading progress */
+                }
 
-                    is ResponseState.Success -> {
-                        val alarmItem = event.toAlarmItem()
-                        alarmScheduler.scheduleAlarmReminder(alarmItem)
-                        uploadEvent.upload(
-                            event,
-                            updateModeType = eventScreenState.value.updateModeType
-                        )
+                is ResponseState.Success -> {
+                    val alarmItem = event.toAlarmItem()
+                    alarmScheduler.scheduleAlarmReminder(alarmItem)
+                    uploadEvent.upload(
+                        event,
+                        updateModeType = eventScreenState.value.updateModeType
+                    )
 
-                        _eventScreenState.update { eventScreenState ->
-                            eventScreenState.copy(isSaved = true)
-                        }
-                    }
-
-                    is ResponseState.Failure -> {
-                        Log.e("EVENT_INSERT", "${responseState.error.message}")
-                        /* TODO Show some kink of snack bar or toast message */
+                    _eventScreenState.update { eventScreenState ->
+                        eventScreenState.copy(isSaved = true)
                     }
                 }
+
+                is ResponseState.Failure -> {
+                    Log.e("EVENT_INSERT", "${responseState.error.message}")
+                    /* TODO Show some kink of snack bar or toast message */
+                }
             }
-        } ?: run {
-            /** TODO Display a snackbar or toast detailing some thing went wrong */
         }
     }
 

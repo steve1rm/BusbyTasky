@@ -40,4 +40,5 @@ data class EventScreenState(
     val updateModeType: UpdateModeType = UpdateModeType.CREATE,
     val eventCreatorId: String = "",
     val host: String = "",
+    val currentLoggedInUserId: String = ""
 )

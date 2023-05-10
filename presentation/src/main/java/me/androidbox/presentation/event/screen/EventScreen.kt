@@ -252,7 +252,21 @@ fun EventScreen(
                             agendaActionType = if (eventScreenState.isUserEventCreator) {
                                 AgendaActionType.DELETE_EVENT
                             } else {
-                                AgendaActionType.JOIN_EVENT
+                                /** If attendee chooses to leave the event, next time show the join button instead */
+
+                                /** Based on if the attendee has updated isGoing status
+                                 * isGoing = true => LEAVE_EVENT
+                                 * isGoing = false => JOIN_EVENT */
+
+                                /* Find the attendee and check their status - TODO Consider a help method for this */
+                                val isAttendeeGoing = eventScreenState.attendees.firstOrNull { attendee ->
+                                    attendee.userId == eventScreenState.currentLoggedInUserId
+                                }?.isGoing ?: false
+
+                                if(isAttendeeGoing)
+                                    AgendaActionType.LEAVE_EVENT
+                                else
+                                    AgendaActionType.JOIN_EVENT
                             },
                             onActionClicked = { agendaActionType ->
                                 when (agendaActionType) {
@@ -269,7 +283,7 @@ fun EventScreen(
                                     }
 
                                     AgendaActionType.LEAVE_EVENT -> {
-
+                                        /** Default what attendees will see */
                                     }
 
                                     else -> Unit
