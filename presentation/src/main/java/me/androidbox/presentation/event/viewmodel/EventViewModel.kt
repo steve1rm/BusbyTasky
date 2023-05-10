@@ -202,22 +202,24 @@ class EventViewModel @Inject constructor(
                 }
             }
             is EventScreenEvent.OnAttendeeStatusUpdated -> {
-                _eventScreenState.update { eventScreenState ->
-                    val index = eventScreenState.attendees.indexOfFirst { attendee ->
-                        attendee.userId == eventScreenEvent.attendee.userId
-                    }
-                    
-                    val updatedAttendee = eventScreenState.attendees.toMutableList()
-                    updatedAttendee[index] = eventScreenEvent.attendee
-
-                    eventScreenState.copy(
-                        attendees = updatedAttendee.toList(),
-                        filteredVisitorsGoing = eventScreenState.attendees.filter { it.isGoing },
-                        filteredVisitorsNotGoing = eventScreenState.attendees.filter { !it.isGoing }
-                    )
+                val index = eventScreenState.value.attendees.indexOfFirst { attendee ->
+                    attendee.userId == eventScreenEvent.attendee.userId
                 }
 
-                println(eventScreenState.value.attendees)
+                if(index > -1) {
+                    _eventScreenState.update { eventScreenState ->
+                        /** Update the attendee in the list with the updated attendee i.e status of going or not going */
+                        val updatedAttendee = eventScreenState.attendees.toMutableList()
+                        updatedAttendee[index] = eventScreenEvent.attendee
+
+                        eventScreenState.copy(
+                            attendees = updatedAttendee.toList(),
+                            /** TODO Move this to a helper method as this is done in a few places */
+                            filteredVisitorsGoing = eventScreenState.attendees.filter { it.isGoing },
+                            filteredVisitorsNotGoing = eventScreenState.attendees.filter { !it.isGoing }
+                        )
+                    }
+                }
             }
 
             is EventScreenEvent.OnVisitorEmailChanged -> {

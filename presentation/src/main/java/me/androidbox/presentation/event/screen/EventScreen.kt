@@ -292,11 +292,9 @@ fun EventScreen(
 
                                     AgendaActionType.LEAVE_EVENT -> {
                                         /** Set the attendee to not going */
-                                        val attendee = eventScreenState.attendees.firstOrNull { attendee ->
+                                        eventScreenState.attendees.firstOrNull { attendee ->
                                             attendee.userId == eventScreenState.currentLoggedInUserId
-                                        }
-
-                                        if(attendee != null) {
+                                        }?.let { attendee ->
                                             val updatedAttendee = attendee.copy(
                                                 isGoing = false
                                             )
