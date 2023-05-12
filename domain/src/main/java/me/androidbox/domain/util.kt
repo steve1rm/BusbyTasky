@@ -1,4 +1,4 @@
-package me.androidbox.domain.agenda.usecase
+package me.androidbox.domain
 
 import java.util.Locale
 

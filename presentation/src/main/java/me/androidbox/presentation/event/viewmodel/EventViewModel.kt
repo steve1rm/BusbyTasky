@@ -22,6 +22,7 @@ import me.androidbox.domain.constant.SyncAgendaType
 import me.androidbox.domain.constant.UpdateModeType
 import me.androidbox.domain.event.usecase.DeleteEventWithIdRemoteUseCase
 import me.androidbox.domain.event.usecase.VerifyVisitorEmailUseCase
+import me.androidbox.domain.toInitials
 import me.androidbox.domain.work_manager.UploadEvent
 import me.androidbox.presentation.agenda.constant.AgendaMenuActionType
 import me.androidbox.presentation.alarm_manager.AlarmReminderProvider
@@ -127,8 +128,8 @@ class EventViewModel @Inject constructor(
                     _eventScreenState.update { eventScreenState ->
                         eventScreenState.copy(
                             attendees = eventScreenState.attendees - attendee,
-                            filteredVisitorsGoing = eventScreenState.attendees.filter { it.isGoing },
-                            filteredVisitorsNotGoing = eventScreenState.attendees.filter { !it.isGoing }
+                            filteredVisitorsGoing = listOfAttendeeGoing(eventScreenState.attendees),
+                            filteredVisitorsNotGoing = listOfAttendeeNotGoing(eventScreenState.attendees)
                         )
                     }
                 }
@@ -196,8 +197,8 @@ class EventViewModel @Inject constructor(
                 _eventScreenState.update { eventScreenState ->
                     eventScreenState.copy(
                         attendees = eventScreenState.attendees + eventScreenEvent.attendee.copy(isGoing = true),
-                        filteredVisitorsGoing = eventScreenState.attendees.filter { it.isGoing },
-                        filteredVisitorsNotGoing = eventScreenState.attendees.filter { !it.isGoing }
+                        filteredVisitorsGoing = listOfAttendeeGoing(eventScreenState.attendees),
+                        filteredVisitorsNotGoing = listOfAttendeeNotGoing(eventScreenState.attendees)
                     )
                 }
             }
@@ -214,9 +215,8 @@ class EventViewModel @Inject constructor(
 
                         eventScreenState.copy(
                             attendees = updatedAttendee.toList(),
-                            /** TODO Move this to a helper method as this is done in a few places */
-                            filteredVisitorsGoing = eventScreenState.attendees.filter { it.isGoing },
-                            filteredVisitorsNotGoing = eventScreenState.attendees.filter { !it.isGoing }
+                            filteredVisitorsGoing = listOfAttendeeGoing(eventScreenState.attendees),
+                            filteredVisitorsNotGoing = listOfAttendeeNotGoing(eventScreenState.attendees)
                         )
                     }
                 }
@@ -274,8 +274,8 @@ class EventViewModel @Inject constructor(
             EventScreenEvent.LoadVisitors -> {
                 _eventScreenState.update { eventScreenState ->
                     eventScreenState.copy(
-                        filteredVisitorsGoing = eventScreenState.attendees.filter { it.isGoing },
-                        filteredVisitorsNotGoing = eventScreenState.attendees.filter { !it.isGoing }
+                        filteredVisitorsGoing = listOfAttendeeGoing(eventScreenState.attendees),
+                        filteredVisitorsNotGoing = listOfAttendeeNotGoing(eventScreenState.attendees)
                     )
                 }
             }
@@ -289,6 +289,24 @@ class EventViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    private fun listOfAttendeeGoing(listOfAttendee: List<Attendee>): List<Attendee> {
+       return listOfAttendee
+            .filter { it.isGoing }
+            .map { attendee ->
+                attendee.fullName.toInitials()
+                attendee
+            }
+    }
+
+    private fun listOfAttendeeNotGoing(listOfAttendee: List<Attendee>): List<Attendee> {
+        return listOfAttendee
+            .filter { !it.isGoing }
+            .map { attendee ->
+                attendee.fullName.toInitials()
+                attendee
+            }
     }
 
     private fun verifyVisitorEmail(visitorEmail: String) {

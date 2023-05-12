@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import me.androidbox.domain.agenda.usecase.toInitials
+import me.androidbox.domain.toInitials
 import me.androidbox.domain.authentication.ResponseState
 import me.androidbox.domain.authentication.preference.PreferenceRepository
 import me.androidbox.domain.authentication.remote.AgendaLocalRepository
