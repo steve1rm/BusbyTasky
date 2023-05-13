@@ -38,7 +38,7 @@ import me.androidbox.domain.DateTimeFormatterProvider.DATE_PATTERN
 import me.androidbox.domain.DateTimeFormatterProvider.LONG_DATE_PATTERN
 import me.androidbox.domain.DateTimeFormatterProvider.TIME_PATTERN
 import me.androidbox.domain.DateTimeFormatterProvider.formatDateTime
-import me.androidbox.domain.agenda.usecase.toInitials
+import me.androidbox.domain.toInitials
 import java.time.ZoneId
 import java.time.ZonedDateTime
 
@@ -81,13 +81,11 @@ fun EventScreen(
 
         },
         content = {
-/*
             Column(modifier = Modifier
-                .verticalScroll(rememberScrollState())
                 .padding(it)
                 .fillMaxWidth()
                 .background(Color.Black)) {
-*/
+
 
                 LazyColumn (modifier = modifier
                     .fillMaxWidth()
@@ -287,7 +285,7 @@ fun EventScreen(
                         )
                     }
                 }
-       //     }
+            }
         }
     )
 
