@@ -76,23 +76,27 @@ fun AddVisitorDialog(
                 }
             )
 
-            if(!isEmailVerified || isAlreadyAdded) {
-                val errorMessage = if(!isEmailVerified) {
-                    stringResource(id = R.string.email_verify_failed)
-                }
-                else {
+            val errorMessage = when {
+                isAlreadyAdded -> {
                     stringResource(R.string.visitor_already_added)
                 }
-
-                Text(
-                    modifier = Modifier.fillMaxWidth(),
-                    textAlign = TextAlign.Center,
-                    text = errorMessage,
-                    fontWeight = FontWeight.Normal,
-                    fontSize = 16.sp,
-                    color = MaterialTheme.colorScheme.error
-                )
+                !isEmailVerified -> {
+                    stringResource(id = R.string.email_verify_failed)
+                }
+                else -> {
+                    null
+                }
             }
+
+            Spacer(modifier = Modifier.height(16.dp))
+            Text(
+                modifier = Modifier.fillMaxWidth(),
+                textAlign = TextAlign.Center,
+                text = errorMessage ?: "",
+                fontWeight = FontWeight.Normal,
+                fontSize = 16.sp,
+                color = MaterialTheme.colorScheme.error
+            )
 
             Spacer(modifier = Modifier.height(30.dp))
 
