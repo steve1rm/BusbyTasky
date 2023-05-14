@@ -55,7 +55,6 @@ import me.androidbox.domain.DateTimeFormatterProvider.DATE_PATTERN
 import me.androidbox.domain.DateTimeFormatterProvider.LONG_DATE_PATTERN
 import me.androidbox.domain.DateTimeFormatterProvider.TIME_PATTERN
 import me.androidbox.domain.DateTimeFormatterProvider.formatDateTime
-import me.androidbox.domain.toInitials
 import java.time.ZoneId
 import java.time.ZonedDateTime
 
@@ -68,6 +67,7 @@ fun EventScreen(
     onEditDescriptionClicked: (description: String) -> Unit,
     onCloseClicked: () -> Unit,
     onPhotoClicked: (photo: String) -> Unit,
+    toInitials: (fullName: String) -> String,
     modifier: Modifier = Modifier) {
 
     val calendarStateTimeDate = rememberUseCaseState()
@@ -232,7 +232,7 @@ fun EventScreen(
                             ) { attendee ->
                             VisitorItem(
                                 modifier = Modifier.padding(horizontal = 16.dp),
-                                initials = attendee.fullName.toInitials(),
+                                initials = toInitials(attendee.fullName),
                                 userId = attendee.userId,
                                 fullName = attendee.fullName,
                                 onDeleteClicked = { userId ->
@@ -258,7 +258,7 @@ fun EventScreen(
 
                         items(eventScreenState.filteredVisitorsNotGoing) { attendee ->
                             VisitorItem(
-                                initials = attendee.fullName.toInitials(),
+                                initials = toInitials(attendee.fullName),
                                 userId = attendee.userId,
                                 fullName = attendee.fullName,
                                 isCreator = eventScreenState.host == attendee.userId,
@@ -432,7 +432,8 @@ fun PreviewEventScreenEditMode() {
             onEditDescriptionClicked = {},
             onEditTitleClicked = {},
             onCloseClicked = {},
-            onPhotoClicked = {}
+            onPhotoClicked = {},
+            toInitials = { it }
         )
     }
 }
@@ -450,7 +451,8 @@ fun PreviewEventScreenSaveMode() {
             onEditDescriptionClicked = {},
             onEditTitleClicked = {},
             onCloseClicked = {},
-            onPhotoClicked = {}
+            onPhotoClicked = {},
+            toInitials = { it }
         )
     }
 }

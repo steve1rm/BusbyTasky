@@ -21,6 +21,7 @@ import me.androidbox.domain.agenda.model.Reminder
 import me.androidbox.domain.agenda.model.Task
 import me.androidbox.domain.alarm_manager.AgendaType
 import me.androidbox.domain.constant.AgendaDeepLinks
+import me.androidbox.domain.toInitials
 import me.androidbox.presentation.agenda.constant.AgendaMenuActionType
 import me.androidbox.presentation.agenda.screen.AgendaScreen
 import me.androidbox.presentation.agenda.viewmodel.AgendaViewModel
@@ -237,6 +238,9 @@ fun NavigationGraph(
                 onPhotoClicked = { photoImage ->
                     val encodedImagePath = Uri.encode(photoImage)
                     navHostController.navigate(route = "${Screen.PhotoScreen.PHOTO_SCREEN}/${encodedImagePath}")
+                },
+                toInitials = { fullName ->
+                    fullName.toInitials()
                 }
             )
         }
