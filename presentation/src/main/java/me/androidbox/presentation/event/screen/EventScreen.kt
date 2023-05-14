@@ -1,6 +1,7 @@
 package me.androidbox.presentation.event.screen
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -107,7 +108,8 @@ fun EventScreen(
                     .background(
                         color = Color.White,
                         shape = RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp)
-                    )
+                    ),
+                    verticalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
 
                     item {
@@ -146,7 +148,9 @@ fun EventScreen(
                             endTime = eventScreenState.endTime.formatDateTime(TIME_PATTERN),
                             startDate = eventScreenState.startDate.formatDateTime(DATE_PATTERN),
                             endDate = eventScreenState.endDate.formatDateTime(DATE_PATTERN),
-                            modifier = Modifier.fillMaxWidth(),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 16.dp),
                             onStartDurationClicked = {
                                 eventScreenEvent(
                                     EventScreenEvent.OnStartDateTimeChanged(
@@ -171,7 +175,8 @@ fun EventScreen(
                             reminderText = stringResource(id = eventScreenState.alarmReminderItem.stringResId),
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .background(color = MaterialTheme.colorScheme.backgroundWhiteColor),
+                                .background(color = MaterialTheme.colorScheme.backgroundWhiteColor)
+                                .padding(horizontal = 16.dp),
                             isEditMode = eventScreenState.isEditMode,
                             onReminderClicked = {
                                 bottomSheetScope.launch {
@@ -184,7 +189,9 @@ fun EventScreen(
                     item {
                         Spacer(modifier = modifier.height(26.dp))
                         VisitorFilter(
-                            modifier = Modifier.fillMaxWidth(),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 16.dp),
                             selectedVisitorType = eventScreenState.selectedVisitorFilterType,
                             onSelectedTypeClicked = { visitorFilterType ->
                                 eventScreenEvent(
@@ -203,10 +210,15 @@ fun EventScreen(
                         )
                     }
 
+                    item {
+                        Spacer(modifier = Modifier.height(20.dp))
+                    }
+
                     if(eventScreenState.selectedVisitorFilterType == VisitorFilterType.ALL || eventScreenState.selectedVisitorFilterType == VisitorFilterType.GOING) {
                         /** Going section */
                         item {
                             Text(
+                                modifier = Modifier.padding(start = 16.dp),
                                 text = stringResource(id = R.string.going),
                                 fontWeight = FontWeight.Medium,
                                 fontSize = 16.sp,
@@ -216,8 +228,10 @@ fun EventScreen(
 
                         }
 
-                        items(eventScreenState.filteredVisitorsGoing) { attendee ->
+                        items(eventScreenState.filteredVisitorsGoing,
+                            ) { attendee ->
                             VisitorItem(
+                                modifier = Modifier.padding(horizontal = 16.dp),
                                 initials = attendee.fullName.toInitials(),
                                 userId = attendee.userId,
                                 fullName = attendee.fullName,
@@ -233,6 +247,7 @@ fun EventScreen(
                     if(eventScreenState.selectedVisitorFilterType == VisitorFilterType.ALL || eventScreenState.selectedVisitorFilterType == VisitorFilterType.NOT_GOING) {
                         item {
                             Text(
+                                modifier = Modifier.padding(start = 16.dp),
                                 text = stringResource(id = R.string.not_going),
                                 fontWeight = FontWeight.Medium,
                                 fontSize = 16.sp,
