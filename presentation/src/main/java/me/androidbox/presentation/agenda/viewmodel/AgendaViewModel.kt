@@ -10,8 +10,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import me.androidbox.data.local.entity.EventSyncEntity
-import me.androidbox.domain.agenda.usecase.UsersInitialsExtractionUseCase
+import me.androidbox.domain.toInitials
 import me.androidbox.domain.authentication.ResponseState
 import me.androidbox.domain.authentication.preference.PreferenceRepository
 import me.androidbox.domain.authentication.remote.AgendaLocalRepository
@@ -31,7 +30,6 @@ import javax.inject.Inject
 @HiltViewModel
 class AgendaViewModel @Inject constructor(
     private val preferenceRepository: PreferenceRepository,
-    private val usersInitialsExtractionUseCase: UsersInitialsExtractionUseCase,
     private val eventRepository: EventRepository,
     private val taskRepository: TaskRepository,
     private val logoutUseCase: LogoutUseCase,
@@ -229,7 +227,7 @@ class AgendaViewModel @Inject constructor(
             preferenceRepository.retrieveCurrentUserOrNull()?.let { authenticatedUser ->
                 _agendaScreenState.update { agendaScreenState ->
                     agendaScreenState.copy(
-                        usersInitials = usersInitialsExtractionUseCase.execute(authenticatedUser.fullName)
+                        usersInitials = authenticatedUser.fullName.toInitials()
                     )
                 }
             }

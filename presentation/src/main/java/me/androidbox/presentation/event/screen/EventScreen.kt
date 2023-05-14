@@ -1,29 +1,33 @@
 package me.androidbox.presentation.event.screen
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.maxkeppeker.sheets.core.models.base.rememberUseCaseState
 import com.maxkeppeler.sheets.date_time.DateTimeDialog
 import com.maxkeppeler.sheets.date_time.models.DateTimeSelection
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import me.androidbox.component.R
 import me.androidbox.component.agenda.AddVisitorDialog
@@ -39,12 +43,14 @@ import me.androidbox.component.agenda.DeleteEventAlertDialog
 import me.androidbox.component.agenda.EditModeType
 import me.androidbox.component.agenda.VisitorFilter
 import me.androidbox.component.agenda.VisitorFilterType
+import me.androidbox.component.event.VisitorItem
 import me.androidbox.component.general.AgendaBottomSheet
 import me.androidbox.component.general.AlarmReminderOptions
 import me.androidbox.component.general.PhotoPicker
 import me.androidbox.component.ui.theme.BusbyTaskyTheme
 import me.androidbox.component.ui.theme.backgroundBackColor
 import me.androidbox.component.ui.theme.backgroundWhiteColor
+import me.androidbox.component.ui.theme.visitorTextFontColor
 import me.androidbox.domain.DateTimeFormatterProvider.DATE_PATTERN
 import me.androidbox.domain.DateTimeFormatterProvider.LONG_DATE_PATTERN
 import me.androidbox.domain.DateTimeFormatterProvider.TIME_PATTERN
@@ -61,11 +67,16 @@ fun EventScreen(
     onEditDescriptionClicked: (description: String) -> Unit,
     onCloseClicked: () -> Unit,
     onPhotoClicked: (photo: String) -> Unit,
+    toInitials: (fullName: String) -> String,
     modifier: Modifier = Modifier) {
 
     val calendarStateTimeDate = rememberUseCaseState()
     val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val bottomSheetScope = rememberCoroutineScope()
+
+    LaunchedEffect(key1 = eventScreenState.attendees) {
+        eventScreenEvent(EventScreenEvent.LoadVisitors)
+    }
 
     Scaffold(
         modifier = modifier,
@@ -86,109 +97,221 @@ fun EventScreen(
                 })
 
         },
-        content = {
+        content = { paddingValues ->
             Column(modifier = Modifier
-                .verticalScroll(rememberScrollState())
-                .padding(it)
+                .padding(paddingValues)
                 .fillMaxWidth()
                 .background(Color.Black)) {
 
-                Column (modifier = modifier
+                LazyColumn (modifier = modifier
                     .fillMaxWidth()
                     .background(
                         color = Color.White,
                         shape = RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp)
-                    )
-                    .padding(horizontal = 16.dp)
+                    ),
+                    verticalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
-                    Spacer(modifier = modifier.height(30.dp))
-                    AgendaHeader(
-                        agendaHeaderItem = AgendaHeaderItem.EVENT,
-                        subTitle = eventScreenState.eventTitle,
-                        description = eventScreenState.eventDescription,
-                        isEditMode = eventScreenState.isEditMode,
-                        onEditTitleClicked = { newTitle ->
-                            onEditTitleClicked(newTitle)
-                        },
-                        onEditDescriptionClicked = { newDescription ->
-                            onEditDescriptionClicked(newDescription)
-                        }
-                    )
 
-                    PhotoPicker(
-                        listOfPhotoUri = eventScreenState.listOfPhotoUri,
-                        onPhotoUriSelected = { uri ->
-                            eventScreenEvent(EventScreenEvent.OnPhotoUriAdded(uri.toString()))
-                        },
-                        onOpenPhoto = { uri ->
-                            onPhotoClicked(uri)
-                        }
-                    )
-
-                    Spacer(modifier = modifier.height(26.dp))
-                    AgendaDuration(
-                        isEditMode = eventScreenState.isEditMode,
-                        startTime = eventScreenState.startTime.formatDateTime(TIME_PATTERN),
-                        endTime = eventScreenState.endTime.formatDateTime(TIME_PATTERN),
-                        startDate = eventScreenState.startDate.formatDateTime(DATE_PATTERN),
-                        endDate = eventScreenState.endDate.formatDateTime(DATE_PATTERN),
-                        modifier = Modifier.fillMaxWidth(),
-                        onStartDurationClicked = {
-                            eventScreenEvent(EventScreenEvent.OnStartDateTimeChanged(isStartDateTime = true))
-                            calendarStateTimeDate.show()
-                        },
-                        onEndDurationClicked = {
-                            eventScreenEvent(EventScreenEvent.OnStartDateTimeChanged(isStartDateTime = false))
-                            calendarStateTimeDate.show()
-                        }
-                    )
-
-                    Spacer(modifier = modifier.height(26.dp))
-
-                    AlarmReminder(
-                        reminderText = stringResource(id = eventScreenState.alarmReminderItem.stringResId),
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .background(color = MaterialTheme.colorScheme.backgroundWhiteColor),
-                        isEditMode = eventScreenState.isEditMode,
-                        onReminderClicked = {
-                            eventScreenEvent(EventScreenEvent.OnShowAlarmReminderDropdown(shouldOpen = true))
-                            bottomSheetScope.launch {
-                                bottomSheetState.show()
+                    item {
+                        AgendaHeader(
+                            modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 32.dp),
+                            agendaHeaderItem = AgendaHeaderItem.EVENT,
+                            subTitle = eventScreenState.eventTitle,
+                            description = eventScreenState.eventDescription,
+                            isEditMode = true,
+                            onEditTitleClicked = { newTitle ->
+                                onEditTitleClicked(newTitle)
+                            },
+                            onEditDescriptionClicked = { newDescription ->
+                                onEditDescriptionClicked(newDescription)
                             }
-                        }
-                    )
-                    Spacer(modifier = modifier.height(26.dp))
+                        )
+                    }
 
-                    VisitorFilter(
-                        modifier = Modifier.fillMaxWidth(),
-                        selectedVisitorType = VisitorFilterType.ALL,
-                        onSelectedTypeClicked = {},
-                        onAddVisitorClicked = {
-                            eventScreenEvent(EventScreenEvent.OnShowVisitorDialog(shouldShowVisitorDialog = true))
-                        }
-                    )
-
-                    Spacer(modifier = modifier.height(26.dp))
-
-                    AgendaAction(
-                        agendaActionType = if(eventScreenState.isUserEventCreator) { AgendaActionType.DELETE_EVENT } else { AgendaActionType.JOIN_EVENT },
-                        onActionClicked = { agendaActionType ->
-                            when(agendaActionType) {
-                                AgendaActionType.DELETE_EVENT -> {
-                                    eventScreenEvent(EventScreenEvent.OnShowDeleteEventAlertDialog(shouldShowDeleteAlertDialog = true))
-                                }
-                                AgendaActionType.JOIN_EVENT -> {
-
-                                }
-                                AgendaActionType.LEAVE_EVENT -> {
-
-                                }
-                                else -> Unit
+                    item {
+                        PhotoPicker(
+                            listOfPhotoUri = eventScreenState.listOfPhotoUri,
+                            onPhotoUriSelected = { uri ->
+                                eventScreenEvent(EventScreenEvent.OnPhotoUriAdded(uri.toString()))
+                            },
+                            onOpenPhoto = { uri ->
+                                onPhotoClicked(uri)
                             }
+                        )
+                    }
+
+                    item {
+                      Spacer(modifier = modifier.height(26.dp))
+                        AgendaDuration(
+                            isEditMode = true,
+                            startTime = eventScreenState.startTime.formatDateTime(TIME_PATTERN),
+                            endTime = eventScreenState.endTime.formatDateTime(TIME_PATTERN),
+                            startDate = eventScreenState.startDate.formatDateTime(DATE_PATTERN),
+                            endDate = eventScreenState.endDate.formatDateTime(DATE_PATTERN),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 16.dp),
+                            onStartDurationClicked = {
+                                eventScreenEvent(
+                                    EventScreenEvent.OnStartDateTimeChanged(
+                                        isStartDateTime = true
+                                    )
+                                )
+                                calendarStateTimeDate.show()
+                            },
+                            onEndDurationClicked = {
+                                eventScreenEvent(
+                                    EventScreenEvent.OnStartDateTimeChanged(
+                                        isStartDateTime = false
+                                    )
+                                )
+                                calendarStateTimeDate.show()
+                            }
+                        )
+                    }
+
+                    item {
+                        AlarmReminder(
+                            reminderText = stringResource(id = eventScreenState.alarmReminderItem.stringResId),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .background(color = MaterialTheme.colorScheme.backgroundWhiteColor)
+                                .padding(horizontal = 16.dp),
+                            isEditMode = eventScreenState.isEditMode,
+                            onReminderClicked = {
+                                bottomSheetScope.launch {
+                                    bottomSheetState.show()
+                                }
+                            }
+                        )
+                    }
+
+                    item {
+                        Spacer(modifier = modifier.height(26.dp))
+                        VisitorFilter(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 16.dp),
+                            selectedVisitorType = eventScreenState.selectedVisitorFilterType,
+                            onSelectedTypeClicked = { visitorFilterType ->
+                                eventScreenEvent(
+                                    EventScreenEvent.OnVisitorFilterTypeChanged(
+                                        visitorFilterType
+                                    )
+                                )
+                            },
+                            onAddVisitorClicked = {
+                                eventScreenEvent(
+                                    EventScreenEvent.OnShowVisitorDialog(
+                                        shouldShowVisitorDialog = true
+                                    )
+                                )
+                            }
+                        )
+                    }
+
+                    item {
+                        Spacer(modifier = Modifier.height(20.dp))
+                    }
+
+                    if(eventScreenState.selectedVisitorFilterType == VisitorFilterType.ALL || eventScreenState.selectedVisitorFilterType == VisitorFilterType.GOING) {
+                        /** Going section */
+                        item {
+                            Text(
+                                modifier = Modifier.padding(start = 16.dp),
+                                text = stringResource(id = R.string.going),
+                                fontWeight = FontWeight.Medium,
+                                fontSize = 16.sp,
+                                color = MaterialTheme.colorScheme.visitorTextFontColor
+                            )
+                            Spacer(modifier = Modifier.height(16.dp))
 
                         }
-                    )
+
+                        items(eventScreenState.filteredVisitorsGoing,
+                            ) { attendee ->
+                            VisitorItem(
+                                modifier = Modifier.padding(horizontal = 16.dp),
+                                initials = toInitials(attendee.fullName),
+                                userId = attendee.userId,
+                                fullName = attendee.fullName,
+                                onDeleteClicked = { userId ->
+                                    eventScreenEvent(EventScreenEvent.OnDeleteVisitor(userId))
+                                },
+                                isCreator = eventScreenState.host == attendee.userId
+                            )
+                        }
+                    }
+
+                    /** Not going section */
+                    if(eventScreenState.selectedVisitorFilterType == VisitorFilterType.ALL || eventScreenState.selectedVisitorFilterType == VisitorFilterType.NOT_GOING) {
+                        item {
+                            Text(
+                                modifier = Modifier.padding(start = 16.dp),
+                                text = stringResource(id = R.string.not_going),
+                                fontWeight = FontWeight.Medium,
+                                fontSize = 16.sp,
+                                color = MaterialTheme.colorScheme.visitorTextFontColor
+                            )
+                            Spacer(modifier = Modifier.height(16.dp))
+                        }
+
+                        items(eventScreenState.filteredVisitorsNotGoing) { attendee ->
+                            VisitorItem(
+                                initials = toInitials(attendee.fullName),
+                                userId = attendee.userId,
+                                fullName = attendee.fullName,
+                                isCreator = eventScreenState.host == attendee.userId,
+                                onDeleteClicked = { userId ->
+                                    eventScreenEvent(EventScreenEvent.OnDeleteVisitor(userId))
+                                }
+                            )
+                        }
+                    }
+
+                    item {
+                        Spacer(modifier = modifier.height(26.dp))
+                        AgendaAction(
+                            agendaActionType = if (eventScreenState.isUserEventCreator) {
+                                AgendaActionType.DELETE_EVENT
+                            } else {
+                                /** Based on if the attendee has updated isGoing status
+                                 * isGoing = true ==> LEAVE_EVENT
+                                 * isGoing = false ==> JOIN_EVENT
+                                 * */
+
+                                /* Find the attendee and check their status - TODO Consider a helper method for this */
+                                val isAttendeeGoing = eventScreenState.attendees.firstOrNull { attendee ->
+                                    attendee.userId == eventScreenState.currentLoggedInUserId
+                                }?.isGoing ?: false
+
+                                if(isAttendeeGoing) AgendaActionType.LEAVE_EVENT else AgendaActionType.JOIN_EVENT
+                            },
+                            onActionClicked = { agendaActionType ->
+                                when (agendaActionType) {
+                                    AgendaActionType.DELETE_EVENT -> {
+                                        eventScreenEvent(
+                                            EventScreenEvent.OnShowDeleteEventAlertDialog(
+                                                shouldShowDeleteAlertDialog = true
+                                            )
+                                        )
+                                    }
+
+                                    AgendaActionType.JOIN_EVENT -> {
+                                        /** Set the attendee to going */
+                                        eventScreenEvent(EventScreenEvent.OnAttendeeStatusUpdate(isGoing = true))
+                                    }
+
+                                    AgendaActionType.LEAVE_EVENT -> {
+                                        /** Set the attendee to not going */
+                                        eventScreenEvent(EventScreenEvent.OnAttendeeStatusUpdate(isGoing = false))
+                                    }
+
+                                    else -> Unit
+                                }
+                            }
+                        )
+                    }
                 }
             }
         }
@@ -241,9 +364,24 @@ fun EventScreen(
             },
             isValidInput = false,
             onAddButtonClicked = { visitorEmail ->
-                eventScreenEvent(EventScreenEvent.CheckVisitorExists(visitorEmail))
+
+                /** TODO Remove this logic for checking attendees already added to the viewModel */
+                val attendee = eventScreenState.attendees.firstOrNull { attendee ->
+                    attendee.email == visitorEmail
+                }
+                if(attendee == null) {
+                    /** Avoid adding duplicate attendees - check if they have already been added */
+                    eventScreenEvent(EventScreenEvent.CheckVisitorAlreadyAdded(false))
+                    /** Check if the visitors email does exist */
+                    eventScreenEvent(EventScreenEvent.CheckVisitorExists(visitorEmail))
+                }
+                else {
+                    eventScreenEvent(EventScreenEvent.CheckVisitorAlreadyAdded(true))
+                }
             },
-            isEmailVerified = eventScreenState.isEmailVerified
+            isEmailVerified = eventScreenState.isEmailVerified,
+            isAlreadyAdded = eventScreenState.isAlreadyAdded,
+            isLoading = eventScreenState.isVerifyingVisitorEmail
         )
     }
 
@@ -294,7 +432,8 @@ fun PreviewEventScreenEditMode() {
             onEditDescriptionClicked = {},
             onEditTitleClicked = {},
             onCloseClicked = {},
-            onPhotoClicked = {}
+            onPhotoClicked = {},
+            toInitials = { it }
         )
     }
 }
@@ -312,7 +451,8 @@ fun PreviewEventScreenSaveMode() {
             onEditDescriptionClicked = {},
             onEditTitleClicked = {},
             onCloseClicked = {},
-            onPhotoClicked = {}
+            onPhotoClicked = {},
+            toInitials = { it }
         )
     }
 }

@@ -1,5 +1,6 @@
 package me.androidbox.component.agenda
 
+import android.provider.CalendarContract.Attendees
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -32,8 +33,10 @@ fun AddVisitorDialog(
     onEmailChanged: (email: String) -> Unit,
     onDialogClose: () -> Unit,
     isValidInput: Boolean,
+    isAlreadyAdded: Boolean,
     onAddButtonClicked: (email: String) -> Unit,
-    modifier: Modifier = Modifier) {
+    modifier: Modifier = Modifier,
+    isLoading: Boolean = false) {
 
     Dialog(onDismissRequest = { onDialogClose() }) {
         Column(
@@ -73,22 +76,35 @@ fun AddVisitorDialog(
                 }
             )
 
-            if(!isEmailVerified) {
-                Text(
-                    modifier = Modifier.fillMaxWidth(),
-                    textAlign = TextAlign.Center,
-                    text = stringResource(R.string.email_verify_failed),
-                    fontWeight = FontWeight.Normal,
-                    fontSize = 16.sp,
-                    color = MaterialTheme.colorScheme.error
-                )
+            /** TODO https://github.com/steve1rm/BusbyTasky/pull/52#discussion_r1190085164 */
+            val errorMessage = when {
+                isAlreadyAdded -> {
+                    stringResource(R.string.visitor_already_added)
+                }
+                !isEmailVerified -> {
+                    stringResource(id = R.string.email_verify_failed)
+                }
+                else -> {
+                    null
+                }
             }
+
+            Spacer(modifier = Modifier.height(16.dp))
+            Text(
+                modifier = Modifier.fillMaxWidth(),
+                textAlign = TextAlign.Center,
+                text = errorMessage ?: "",
+                fontWeight = FontWeight.Normal,
+                fontSize = 16.sp,
+                color = MaterialTheme.colorScheme.error
+            )
 
             Spacer(modifier = Modifier.height(30.dp))
 
             TaskButton(
                 modifier = Modifier.fillMaxWidth(),
                 buttonText = stringResource(R.string.add),
+                isLoading = isLoading,
                 onButtonClick = {
                     onAddButtonClicked(email)
                 }
@@ -112,6 +128,29 @@ fun PreviewAddVisitorDialog() {
             email = "joeblogs@gmail.com",
             isEmailVerified = true,
             isValidInput = true,
+            isAlreadyAdded = false,
+            onEmailChanged = {},
+            onDialogClose = {},
+            onAddButtonClicked = {}
+        )
+    }
+}
+@Composable
+@Preview(showBackground = true)
+fun PreviewAddVisitorDialogDuplicateVisitor() {
+    BusbyTaskyTheme {
+        AddVisitorDialog(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(
+                    color = MaterialTheme.colorScheme.backgroundWhiteColor,
+                    shape = RoundedCornerShape(16.dp)
+                )
+                .padding(20.dp),
+            email = "joeblogs@gmail.com",
+            isEmailVerified = true,
+            isValidInput = true,
+            isAlreadyAdded = true,
             onEmailChanged = {},
             onDialogClose = {},
             onAddButtonClicked = {}
@@ -133,6 +172,7 @@ fun PreviewAddVisitorDialogErrorMessage() {
                 .padding(20.dp),
             email = "joeblogs@gmail.com",
             isEmailVerified = false,
+            isAlreadyAdded = false,
             isValidInput = true,
             onEmailChanged = {},
             onDialogClose = {},

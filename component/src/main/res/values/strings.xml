@@ -47,4 +47,5 @@
     <string name="dismiss">Dismiss</string>
     <string name="today">Today</string>
     <string name="alarm_reminder">Alarm Reminder</string>
+    <string name="visitor_already_added">Visitor already added</string>
 </resources>

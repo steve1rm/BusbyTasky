@@ -6,16 +6,8 @@ import dagger.Module
 import dagger.Reusable
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
-import me.androidbox.domain.agenda.usecase.UsersInitialsExtractionUseCase
-import me.androidbox.domain.agenda.usecase.imp.UsersInitialsExtractionUseCaseImp
 import me.androidbox.domain.authentication.usecase.*
 import me.androidbox.domain.authentication.usecase.imp.*
-import me.androidbox.domain.authentication.usecase.AuthenticateUserUseCase
-import me.androidbox.domain.authentication.usecase.LoginUseCase
-import me.androidbox.domain.authentication.usecase.RegisterUseCase
-import me.androidbox.domain.authentication.usecase.imp.AuthenticateUserUseCaseImp
-import me.androidbox.domain.authentication.usecase.imp.LoginUseCaseImp
-import me.androidbox.domain.authentication.usecase.imp.RegisterUseCaseImp
 
 @InstallIn(ViewModelComponent::class)
 @Module
@@ -48,8 +40,4 @@ interface UseCaseModule {
     @Reusable
     @Binds
     fun bindsLogoutUseCaseImp(logoutUseCaseImp: LogoutUseCaseImp): LogoutUseCase
-
-    @Reusable
-    @Binds
-    fun bindsUsersInitialsExtractionUseCaseImp(usersInitialsExtractionUseCaseImp: UsersInitialsExtractionUseCaseImp): UsersInitialsExtractionUseCase
 }

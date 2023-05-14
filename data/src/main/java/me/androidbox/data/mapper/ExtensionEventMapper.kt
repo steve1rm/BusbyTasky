@@ -1,21 +1,15 @@
 package me.androidbox.data.mapper
 
 import me.androidbox.data.local.entity.EventEntity
-import me.androidbox.data.local.entity.ReminderEntity
-import me.androidbox.data.local.entity.TaskEntity
 import me.androidbox.data.remote.model.request.EventCreateRequestDto
 import me.androidbox.data.remote.model.request.EventUpdateRequestDto
 import me.androidbox.data.remote.model.request.SyncAgendaDto
 import me.androidbox.data.remote.model.response.AttendeeDto
 import me.androidbox.data.remote.model.response.EventDto
-import me.androidbox.data.remote.model.response.ReminderDto
-import me.androidbox.data.remote.model.response.TaskDto
 import me.androidbox.domain.agenda.model.Attendee
 import me.androidbox.domain.agenda.model.Event
-import me.androidbox.domain.agenda.model.Reminder
-import me.androidbox.domain.agenda.model.Task
 import me.androidbox.domain.agenda.model.SyncAgenda
-import java.util.*
+import java.util.UUID
 
 fun EventEntity.toEvent(): Event {
     return Event(
@@ -27,7 +21,7 @@ fun EventEntity.toEvent(): Event {
         remindAt = this.remindAt,
         eventCreatorId = this.eventCreatorId,
         isUserEventCreator = this.isUserEventCreator,
-        isGoing = this.isGoing,
+        host = this.host,
         attendees = this.attendees,
         photos = this.photos
     )
@@ -43,7 +37,7 @@ fun EventDto.toEvent(): Event {
         remindAt = this.remindAt,
         eventCreatorId = this.host,
         isUserEventCreator = this.isUserEventCreator,
-        isGoing = true,
+        host = this.host,
         attendees = this.attendees.map { it.toAttendee() },
         photos = this.photos.map { it.key }
     )
@@ -59,9 +53,9 @@ fun EventDto.toEventEntity(): EventEntity {
         remindAt = this.remindAt,
         eventCreatorId = this.host,
         isUserEventCreator = this.isUserEventCreator,
-        isGoing = true,
-        attendees = this.attendees.map { it.toAttendee() },
-        photos = this.photos.map { it.key }
+        host = this.host,
+        attendees = this.attendees.map { attendeeDto -> attendeeDto.toAttendee() },
+        photos = this.photos.map { photoDto -> photoDto.key }
     )
 }
 
@@ -75,7 +69,7 @@ fun Event.toEventEntity(): EventEntity {
         remindAt = this.remindAt,
         eventCreatorId = this.eventCreatorId,
         isUserEventCreator = this.isUserEventCreator,
-        isGoing = this.isGoing,
+        host = this.host,
         attendees = this.attendees,
         photos = this.photos
     )
@@ -103,7 +97,7 @@ fun Event.toUpdateEventDto(): EventUpdateRequestDto {
         remindAt = this.remindAt,
         attendeeIds = this.attendees.map { attendee -> attendee.userId },
         deletedPhotoKeys = listOf(UUID.randomUUID().toString(), UUID.randomUUID().toString(), UUID.randomUUID().toString()), /** TODO These keys are obtained when uploading a created event and the BE will return the key and the url */
-        isGoing = this.isGoing
+        isGoing = true
     )
 }
 
@@ -112,9 +106,9 @@ fun AttendeeDto.toAttendee(): Attendee {
         email = this.email,
         fullName = this.fullName,
         userId = this.userId,
-        eventId = "",
-        isGoing = false,
-        remindAt = 0L)
+        eventId = this.eventId,
+        isGoing = this.isGoing ,
+        remindAt = this.remindAt)
 }
 
 fun SyncAgenda.toSyncAgendaDto(): SyncAgendaDto {
