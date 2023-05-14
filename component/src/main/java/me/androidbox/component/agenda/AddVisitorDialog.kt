@@ -76,6 +76,7 @@ fun AddVisitorDialog(
                 }
             )
 
+            /** TODO https://github.com/steve1rm/BusbyTasky/pull/52#discussion_r1190085164 */
             val errorMessage = when {
                 isAlreadyAdded -> {
                     stringResource(R.string.visitor_already_added)
