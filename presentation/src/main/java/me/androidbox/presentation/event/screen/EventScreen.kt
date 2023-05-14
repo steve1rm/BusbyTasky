@@ -1,7 +1,11 @@
 package me.androidbox.presentation.event.screen
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -25,7 +29,19 @@ import com.maxkeppeler.sheets.date_time.DateTimeDialog
 import com.maxkeppeler.sheets.date_time.models.DateTimeSelection
 import kotlinx.coroutines.launch
 import me.androidbox.component.R
-import me.androidbox.component.agenda.*
+import me.androidbox.component.agenda.AddVisitorDialog
+import me.androidbox.component.agenda.AgendaAction
+import me.androidbox.component.agenda.AgendaActionType
+import me.androidbox.component.agenda.AgendaDetailTopBar
+import me.androidbox.component.agenda.AgendaDuration
+import me.androidbox.component.agenda.AgendaHeader
+import me.androidbox.component.agenda.AgendaHeaderItem
+import me.androidbox.component.agenda.AlarmReminder
+import me.androidbox.component.agenda.AlarmReminderItem
+import me.androidbox.component.agenda.DeleteEventAlertDialog
+import me.androidbox.component.agenda.EditModeType
+import me.androidbox.component.agenda.VisitorFilter
+import me.androidbox.component.agenda.VisitorFilterType
 import me.androidbox.component.event.VisitorItem
 import me.androidbox.component.general.AgendaBottomSheet
 import me.androidbox.component.general.AlarmReminderOptions
@@ -80,12 +96,11 @@ fun EventScreen(
                 })
 
         },
-        content = {
+        content = { paddingValues ->
             Column(modifier = Modifier
-                .padding(it)
+                .padding(paddingValues)
                 .fillMaxWidth()
                 .background(Color.Black)) {
-
 
                 LazyColumn (modifier = modifier
                     .fillMaxWidth()
@@ -93,13 +108,11 @@ fun EventScreen(
                         color = Color.White,
                         shape = RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp)
                     )
-                    .padding(it),
-                    verticalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
 
                     item {
-                        Spacer(modifier = modifier.height(30.dp))
                         AgendaHeader(
+                            modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 32.dp),
                             agendaHeaderItem = AgendaHeaderItem.EVENT,
                             subTitle = eventScreenState.eventTitle,
                             description = eventScreenState.eventDescription,
