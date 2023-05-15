@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -38,12 +39,11 @@ fun AlarmReminder(
     isEditMode: Boolean,
     modifier: Modifier = Modifier) {
 
-    Row(modifier = modifier.clickable {
-        onReminderClicked()
-    },
+    Row(
+        modifier = modifier,
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween) {
-        Row(modifier = Modifier.padding(vertical = 10.dp)) {
+        Row {
             Icon(
                 painter = painterResource(id = R.drawable.bell),
                 contentDescription = "bell",
@@ -60,7 +60,9 @@ fun AlarmReminder(
         }
 
         if(isEditMode) {
-            IconButton(onClick = {
+            IconButton(
+                modifier = Modifier.size(16.dp),
+                onClick = {
                 onReminderClicked()
             }) {
                 Icon(
@@ -91,7 +93,7 @@ fun PreviewAlarmReminderNonEditMode() {
             modifier = Modifier
                 .fillMaxWidth()
                 .background(color = MaterialTheme.colorScheme.backgroundWhiteColor)
-                .padding(horizontal = 16.dp, vertical = 16.dp),
+                .padding(horizontal = 32.dp, vertical = 16.dp),
             onReminderClicked = {}
         )
     }
@@ -107,7 +109,7 @@ fun PreviewAlarmReminderEditMode() {
             modifier = Modifier
                 .fillMaxWidth()
                 .background(color = MaterialTheme.colorScheme.backgroundWhiteColor)
-                .padding(horizontal = 16.dp, vertical = 16.dp),
+                .padding(horizontal = 32.dp, vertical = 16.dp),
             onReminderClicked = {}
         )
     }
