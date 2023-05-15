@@ -355,33 +355,21 @@ class EventViewModel @Inject constructor(
 
     private fun fetchEventById(eventId: String) {
         viewModelScope.launch {
-            eventRepository.getEventById(eventId).collectLatest { responseState ->
-                when(responseState) {
-                    ResponseState.Loading -> {
-                        /** TODO Show loading */
-                    }
-                    is ResponseState.Success -> {
-                        /* Update the state */
-                        val event = responseState.data
-                        _eventScreenState.update { eventScreenState ->
-                            eventScreenState.copy(
-                                eventId = event.id,
-                                eventTitle = event.title,
-                                eventDescription = event.description,
-                                startDate = event.startDateTime.toZoneDateTime(),
-                                endDate = event.endDateTime.toZoneDateTime(),
-                                isUserEventCreator = event.isUserEventCreator,
-                                eventCreatorId = event.eventCreatorId,
-                                host = event.host,
-                                attendees = event.attendees,
-                                listOfPhotoUri = event.photos
-                            )
-                        }
-                    }
-                    is ResponseState.Failure -> {
-                        Log.d("EVENT_DETAIL", "${responseState.error.message}")
-                    }
-                }
+            val event = eventRepository.getEventById(eventId)
+
+            _eventScreenState.update { eventScreenState ->
+                eventScreenState.copy(
+                    eventId = event.id,
+                    eventTitle = event.title,
+                    eventDescription = event.description,
+                    startDate = event.startDateTime.toZoneDateTime(),
+                    endDate = event.endDateTime.toZoneDateTime(),
+                    isUserEventCreator = event.isUserEventCreator,
+                    eventCreatorId = event.eventCreatorId,
+                    host = event.host,
+                    attendees = event.attendees,
+                    listOfPhotoUri = event.photos
+                )
             }
         }
     }
