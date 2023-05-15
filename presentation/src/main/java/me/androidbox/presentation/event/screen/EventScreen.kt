@@ -176,7 +176,7 @@ fun EventScreen(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .background(color = MaterialTheme.colorScheme.backgroundWhiteColor)
-                                .padding(horizontal = 16.dp),
+                                .padding(horizontal = 16.dp, vertical = 16.dp),
                             isEditMode = eventScreenState.isEditMode,
                             onReminderClicked = {
                                 bottomSheetScope.launch {

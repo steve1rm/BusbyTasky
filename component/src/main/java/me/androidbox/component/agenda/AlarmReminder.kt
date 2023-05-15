@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Icon
@@ -25,6 +26,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import me.androidbox.component.R
+import me.androidbox.component.ui.theme.Black
 import me.androidbox.component.ui.theme.BusbyTaskyTheme
 import me.androidbox.component.ui.theme.agendaBodyTextColor
 import me.androidbox.component.ui.theme.backgroundWhiteColor
@@ -41,8 +43,12 @@ fun AlarmReminder(
     },
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween) {
-        Row {
-            Icon(painter = painterResource(id = R.drawable.bell), contentDescription = "bell")
+        Row(modifier = Modifier.padding(vertical = 10.dp)) {
+            Icon(
+                painter = painterResource(id = R.drawable.bell),
+                contentDescription = "bell",
+                tint = Black
+            )
 
             Spacer(modifier = Modifier.width(20.dp))
 
@@ -54,11 +60,15 @@ fun AlarmReminder(
         }
 
         if(isEditMode) {
-            Icon(
-                painter = painterResource(id = R.drawable.forward_arrow),
-                contentDescription = stringResource(R.string.forward_arrow),
-                tint = Color.Black
-            )
+            IconButton(onClick = {
+                onReminderClicked()
+            }) {
+                Icon(
+                    painter = painterResource(id = R.drawable.forward_arrow),
+                    contentDescription = stringResource(R.string.forward_arrow),
+                    tint = Color.Black
+                )
+            }
         }
     }
 }
@@ -81,7 +91,7 @@ fun PreviewAlarmReminderNonEditMode() {
             modifier = Modifier
                 .fillMaxWidth()
                 .background(color = MaterialTheme.colorScheme.backgroundWhiteColor)
-                .padding(vertical = 16.dp),
+                .padding(horizontal = 16.dp, vertical = 16.dp),
             onReminderClicked = {}
         )
     }
@@ -97,7 +107,7 @@ fun PreviewAlarmReminderEditMode() {
             modifier = Modifier
                 .fillMaxWidth()
                 .background(color = MaterialTheme.colorScheme.backgroundWhiteColor)
-                .padding(vertical = 16.dp),
+                .padding(horizontal = 16.dp, vertical = 16.dp),
             onReminderClicked = {}
         )
     }
