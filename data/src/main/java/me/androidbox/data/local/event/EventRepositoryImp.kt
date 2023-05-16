@@ -39,8 +39,8 @@ class EventRepositoryImp @Inject constructor(
             }
     }
 
-    override suspend fun getEventById(id: String): ResponseState<Event> {
-        return ResponseState.Success(eventDao.getEventById(id).toEvent())
+    override suspend fun getEventById(id: String): Event {
+        return eventDao.getEventById(id).toEvent()
     }
 
     override suspend fun insertEvent(event: Event): ResponseState<Unit> {

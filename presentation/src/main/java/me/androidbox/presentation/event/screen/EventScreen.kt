@@ -176,10 +176,11 @@ fun EventScreen(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .background(color = MaterialTheme.colorScheme.backgroundWhiteColor)
-                                .padding(horizontal = 16.dp),
+                                .padding(horizontal = 32.dp, vertical = 16.dp),
                             isEditMode = eventScreenState.isEditMode,
                             onReminderClicked = {
                                 bottomSheetScope.launch {
+                                    eventScreenEvent(EventScreenEvent.OnShowAlarmReminderDropdown(shouldOpen = true))
                                     bottomSheetState.show()
                                 }
                             }
