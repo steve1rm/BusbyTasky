@@ -139,21 +139,23 @@ fun AddSequentialPhoto(modifier: Modifier, selectedImageUri: List<String>, onAdd
                 )
             }
 
-            item {
-                AsyncImage(
-                    model = R.drawable.add_photo,
-                    contentDescription = stringResource(R.string.selected_image),
-                    modifier = Modifier
-                        .size(60.dp)
-                        .border(
-                            width = 2.dp,
-                            color = MaterialTheme.colorScheme.photoPickerBorderColor,
-                            shape = RoundedCornerShape(5.dp)
-                        )
-                        .clip(shape = RoundedCornerShape(5.dp)).
-                        clickable {
-                            onAddPhotosClicked()
-                        })
+            /** Only allows a maximum of 10 image to be added, the add button will be hidden to avoid adding more */
+            if(selectedImageUri.count() < 10) {
+                item {
+                    AsyncImage(
+                        model = R.drawable.add_photo,
+                        contentDescription = stringResource(R.string.selected_image),
+                        modifier = Modifier
+                            .size(60.dp)
+                            .border(
+                                width = 2.dp,
+                                color = MaterialTheme.colorScheme.photoPickerBorderColor,
+                                shape = RoundedCornerShape(5.dp)
+                            )
+                            .clip(shape = RoundedCornerShape(5.dp)).clickable {
+                                onAddPhotosClicked()
+                            })
+                }
             }
         }
 
