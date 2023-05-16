@@ -133,7 +133,8 @@ fun EventScreen(
                         PhotoPicker(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .background(color = MaterialTheme.colorScheme.photoBackgroundColor),
+                                .background(color = MaterialTheme.colorScheme.photoBackgroundColor)
+                                .padding(horizontal = 20.dp),
                             listOfPhotoUri = eventScreenState.listOfPhotoUri,
                             onPhotoUriSelected = { uri ->
                                 eventScreenEvent(EventScreenEvent.OnPhotoUriAdded(uri.toString()))
