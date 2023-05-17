@@ -50,6 +50,7 @@ import me.androidbox.component.general.PhotoPicker
 import me.androidbox.component.ui.theme.BusbyTaskyTheme
 import me.androidbox.component.ui.theme.backgroundBackColor
 import me.androidbox.component.ui.theme.backgroundWhiteColor
+import me.androidbox.component.ui.theme.photoBackgroundColor
 import me.androidbox.component.ui.theme.visitorTextFontColor
 import me.androidbox.domain.DateTimeFormatterProvider.DATE_PATTERN
 import me.androidbox.domain.DateTimeFormatterProvider.LONG_DATE_PATTERN
@@ -130,6 +131,10 @@ fun EventScreen(
 
                     item {
                         PhotoPicker(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .background(color = MaterialTheme.colorScheme.photoBackgroundColor)
+                                .padding(horizontal = 20.dp),
                             listOfPhotoUri = eventScreenState.listOfPhotoUri,
                             onPhotoUriSelected = { uri ->
                                 eventScreenEvent(EventScreenEvent.OnPhotoUriAdded(uri.toString()))
