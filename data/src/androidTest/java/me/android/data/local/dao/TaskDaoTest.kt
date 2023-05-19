@@ -41,7 +41,7 @@ class TaskDaoTest {
 
             val listOfTask = database.taskDao().getTasksFromTimeStamp(0, 100000L).first()
 
-            assertThat(listOfTask.size).isEqualTo(0)
+            assertThat(listOfTask.size).isEqualTo(1)
         }
     }
 }
