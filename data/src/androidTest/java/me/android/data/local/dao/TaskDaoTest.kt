@@ -6,6 +6,8 @@ import androidx.test.core.app.ApplicationProvider
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.test.runTest
 import me.androidbox.data.local.database.BusbyTaskyDatabase
 import me.androidbox.data.local.entity.TaskEntity
 import org.junit.Before
@@ -26,8 +28,8 @@ class TaskDaoTest {
     }
 
     @Test
-    fun `insert_a_task_into_the_task_table`() {
-        runBlocking {
+    fun insert_a_task_into_the_task_table() {
+        runTest {
             val task = TaskEntity(
                 id = UUID.randomUUID().toString(),
                 title = UUID.randomUUID().toString(),
