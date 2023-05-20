@@ -25,6 +25,7 @@ import java.util.*
 fun VisitorFilter(
     selectedVisitorType: VisitorFilterType,
     modifier: Modifier = Modifier,
+    isEditMode: Boolean,
     onSelectedTypeClicked: (VisitorFilterType) -> Unit,
     onAddVisitorClicked: () -> Unit) {
 
@@ -39,15 +40,16 @@ fun VisitorFilter(
 
             Spacer(modifier = Modifier.width(18.dp))
 
-            IconButton(onClick = {
-                onAddVisitorClicked()
-            }) {
-                Image(
-                    painter = painterResource(id = R.drawable.add_photo),
-                    contentDescription = stringResource(id = R.string.add_photos)
-                )
+            if(isEditMode) {
+                IconButton(onClick = {
+                    onAddVisitorClicked()
+                }) {
+                    Image(
+                        painter = painterResource(id = R.drawable.add_photo),
+                        contentDescription = stringResource(id = R.string.add_photos)
+                    )
+                }
             }
-
         }
 
         Spacer(modifier = Modifier.height(36.dp))
@@ -109,7 +111,7 @@ enum class VisitorFilterType(@StringRes val titleRes: Int) {
 
 @Composable
 @Preview(showBackground = true)
-fun PreviewVisitorFilter() {
+fun PreviewVisitorFilterIsNotEditMode() {
 
     var rememberVisitorType by remember {
         mutableStateOf(VisitorFilterType.ALL)
@@ -118,10 +120,32 @@ fun PreviewVisitorFilter() {
     BusbyTaskyTheme {
         VisitorFilter(
             modifier = Modifier.fillMaxWidth(),
+            isEditMode = false,
             selectedVisitorType = rememberVisitorType,
             onAddVisitorClicked = {},
             onSelectedTypeClicked = { visitorType ->
                rememberVisitorType = visitorType
+            }
+        )
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+fun PreviewVisitorFilterIsEditMode() {
+
+    var rememberVisitorType by remember {
+        mutableStateOf(VisitorFilterType.ALL)
+    }
+
+    BusbyTaskyTheme {
+        VisitorFilter(
+            modifier = Modifier.fillMaxWidth(),
+            isEditMode = true,
+            selectedVisitorType = rememberVisitorType,
+            onAddVisitorClicked = {},
+            onSelectedTypeClicked = { visitorType ->
+                rememberVisitorType = visitorType
             }
         )
     }
