@@ -21,6 +21,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import me.androidbox.component.R
+import me.androidbox.component.ui.theme.Black
 import me.androidbox.component.ui.theme.BusbyTaskyTheme
 import me.androidbox.component.ui.theme.creatorTextFontColor
 import me.androidbox.component.ui.theme.visitorBackgroundColor
@@ -80,7 +81,8 @@ fun VisitorItem(
             }) {
                 Icon(
                     painter = painterResource(id = R.drawable.bin),
-                    contentDescription = "delete from agenda"
+                    contentDescription = "delete from agenda",
+                    tint = Black
                 )
             }
         }
