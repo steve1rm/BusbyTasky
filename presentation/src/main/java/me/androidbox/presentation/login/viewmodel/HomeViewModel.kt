@@ -15,7 +15,7 @@ class HomeViewModel @Inject constructor(
     private val authenticateUserUseCase: AuthenticateUserUseCase
 ) : ViewModel() {
 
-    private val authenticationMutableState: MutableStateFlow<ResponseState<Unit>?> = MutableStateFlow(null)
+    private val authenticationMutableState: MutableStateFlow<ResponseState<Unit>> = MutableStateFlow(ResponseState.Loading)
     val authenticationState = authenticationMutableState.asStateFlow()
 
     init {
