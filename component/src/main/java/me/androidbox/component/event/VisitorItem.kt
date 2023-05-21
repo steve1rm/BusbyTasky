@@ -21,6 +21,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import me.androidbox.component.R
+import me.androidbox.component.ui.theme.Black
 import me.androidbox.component.ui.theme.BusbyTaskyTheme
 import me.androidbox.component.ui.theme.creatorTextFontColor
 import me.androidbox.component.ui.theme.visitorBackgroundColor
@@ -58,6 +59,7 @@ fun VisitorItem(
 
         Text(
             modifier = Modifier
+                .fillMaxWidth()
                 .weight(1F)
                 .padding(start = 16.dp),
             text = fullName,
@@ -67,7 +69,7 @@ fun VisitorItem(
 
         if (isCreator) {
             Text(
-                modifier = modifier.padding(end = 16.dp),
+                modifier = modifier.padding(end = 4.dp),
                 text = stringResource(R.string.creator),
                 fontSize = 14.sp,
                 color = MaterialTheme.colorScheme.creatorTextFontColor,
@@ -80,7 +82,8 @@ fun VisitorItem(
             }) {
                 Icon(
                     painter = painterResource(id = R.drawable.bin),
-                    contentDescription = "delete from agenda"
+                    contentDescription = "delete from agenda",
+                    tint = Black
                 )
             }
         }
@@ -93,7 +96,7 @@ fun PreviewVisitorIsCreator() {
     BusbyTaskyTheme {
         VisitorItem(
             initials = "SM",
-            fullName = "Steve Mason",
+            fullName = "Bee",
             userId = UUID.randomUUID().toString(),
             isCreator = true,
             onDeleteClicked = {}

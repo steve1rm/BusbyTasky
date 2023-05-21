@@ -93,8 +93,12 @@ dependencies {
     implementation("androidx.hilt:hilt-work:1.0.0")
     kapt("androidx.hilt:hilt-compiler:1.0.0")
 
-    testImplementation(tests.hilt.android.testing)
+    androidTestImplementation(tests.hilt.android.testing)
     kaptTest(tests.hilt.compiler)
     testImplementation(tests.junit)
     testImplementation(tests.truth)
-}
+    androidTestImplementation(tests.junit)
+    androidTestImplementation(tests.truth)
+    androidTestImplementation(tests.ext.junit)
+    androidTestImplementation(tests.ui.test.junit4)
+ }

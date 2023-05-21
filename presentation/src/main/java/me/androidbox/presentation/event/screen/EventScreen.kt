@@ -119,7 +119,7 @@ fun EventScreen(
                             agendaHeaderItem = AgendaHeaderItem.EVENT,
                             subTitle = eventScreenState.eventTitle,
                             description = eventScreenState.eventDescription,
-                            isEditMode = true,
+                            isEditMode = eventScreenState.isEditMode,
                             onEditTitleClicked = { newTitle ->
                                 onEditTitleClicked(newTitle)
                             },
@@ -148,7 +148,7 @@ fun EventScreen(
                     item {
                       Spacer(modifier = modifier.height(26.dp))
                         AgendaDuration(
-                            isEditMode = true,
+                            isEditMode = eventScreenState.isEditMode,
                             startTime = eventScreenState.startTime.formatDateTime(TIME_PATTERN),
                             endTime = eventScreenState.endTime.formatDateTime(TIME_PATTERN),
                             startDate = eventScreenState.startDate.formatDateTime(DATE_PATTERN),
@@ -198,6 +198,7 @@ fun EventScreen(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(horizontal = 16.dp),
+                            isEditMode = eventScreenState.isEditMode,
                             selectedVisitorType = eventScreenState.selectedVisitorFilterType,
                             onSelectedTypeClicked = { visitorFilterType ->
                                 eventScreenEvent(
@@ -222,20 +223,20 @@ fun EventScreen(
 
                     if(eventScreenState.selectedVisitorFilterType == VisitorFilterType.ALL || eventScreenState.selectedVisitorFilterType == VisitorFilterType.GOING) {
                         /** Going section */
-                        item {
-                            Text(
-                                modifier = Modifier.padding(start = 16.dp),
-                                text = stringResource(id = R.string.going),
-                                fontWeight = FontWeight.Medium,
-                                fontSize = 16.sp,
-                                color = MaterialTheme.colorScheme.visitorTextFontColor
-                            )
-                            Spacer(modifier = Modifier.height(16.dp))
-
+                        if(eventScreenState.filteredVisitorsNotGoing.isNotEmpty()) {
+                            item {
+                                Text(
+                                    modifier = Modifier.padding(start = 16.dp),
+                                    text = stringResource(id = R.string.going),
+                                    fontWeight = FontWeight.Medium,
+                                    fontSize = 16.sp,
+                                    color = MaterialTheme.colorScheme.visitorTextFontColor
+                                )
+                                Spacer(modifier = Modifier.height(16.dp))
+                            }
                         }
 
-                        items(eventScreenState.filteredVisitorsGoing,
-                            ) { attendee ->
+                        items(eventScreenState.filteredVisitorsGoing) { attendee ->
                             VisitorItem(
                                 modifier = Modifier.padding(horizontal = 16.dp),
                                 initials = toInitials(attendee.fullName),
@@ -251,15 +252,17 @@ fun EventScreen(
 
                     /** Not going section */
                     if(eventScreenState.selectedVisitorFilterType == VisitorFilterType.ALL || eventScreenState.selectedVisitorFilterType == VisitorFilterType.NOT_GOING) {
-                        item {
-                            Text(
-                                modifier = Modifier.padding(start = 16.dp),
-                                text = stringResource(id = R.string.not_going),
-                                fontWeight = FontWeight.Medium,
-                                fontSize = 16.sp,
-                                color = MaterialTheme.colorScheme.visitorTextFontColor
-                            )
-                            Spacer(modifier = Modifier.height(16.dp))
+                        if(eventScreenState.filteredVisitorsNotGoing.isNotEmpty()) {
+                            item {
+                                Text(
+                                    modifier = Modifier.padding(start = 16.dp),
+                                    text = stringResource(id = R.string.not_going),
+                                    fontWeight = FontWeight.Medium,
+                                    fontSize = 16.sp,
+                                    color = MaterialTheme.colorScheme.visitorTextFontColor
+                                )
+                                Spacer(modifier = Modifier.height(16.dp))
+                            }
                         }
 
                         items(eventScreenState.filteredVisitorsNotGoing) { attendee ->
@@ -286,7 +289,7 @@ fun EventScreen(
                                  * isGoing = false ==> JOIN_EVENT
                                  * */
 
-                                /* Find the attendee and check their status - TODO Consider a helper method for this */
+                                /* Find the attendee and check their status - TODO Consider a helper method for this and do this in the viewModel to save re-composing */
                                 val isAttendeeGoing = eventScreenState.attendees.firstOrNull { attendee ->
                                     attendee.userId == eventScreenState.currentLoggedInUserId
                                 }?.isGoing ?: false
