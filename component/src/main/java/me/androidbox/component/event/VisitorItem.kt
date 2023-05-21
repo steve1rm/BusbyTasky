@@ -59,6 +59,7 @@ fun VisitorItem(
 
         Text(
             modifier = Modifier
+                .fillMaxWidth()
                 .weight(1F)
                 .padding(start = 16.dp),
             text = fullName,
@@ -68,7 +69,7 @@ fun VisitorItem(
 
         if (isCreator) {
             Text(
-                modifier = modifier.padding(end = 16.dp),
+                modifier = modifier.padding(end = 4.dp),
                 text = stringResource(R.string.creator),
                 fontSize = 14.sp,
                 color = MaterialTheme.colorScheme.creatorTextFontColor,
@@ -95,7 +96,7 @@ fun PreviewVisitorIsCreator() {
     BusbyTaskyTheme {
         VisitorItem(
             initials = "SM",
-            fullName = "Steve Mason",
+            fullName = "Bee",
             userId = UUID.randomUUID().toString(),
             isCreator = true,
             onDeleteClicked = {}
