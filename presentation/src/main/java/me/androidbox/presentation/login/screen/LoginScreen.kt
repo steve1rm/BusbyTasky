@@ -51,7 +51,7 @@ fun LoginScreen(
     LaunchedEffect(key1 = authenticationScreenState.responseState) {
         when(val status = authenticationScreenState.responseState) {
             is ResponseState.Loading -> {
-                /* TODO Showing loading spinner */
+                println("Is Loading")
             }
             is ResponseState.Success -> {
                 onLoginSuccess(status.data)
@@ -100,7 +100,7 @@ fun LoginScreen(
                             color = MaterialTheme.colorScheme.backgroundInputEntry
                         ),
                     inputValue = authenticationScreenState.email,
-                    isInputValid = false,
+                    isInputValid = authenticationScreenState.isValidEmail,
                     placeholderText = stringResource(R.string.email_address),
                     onInputChange = { newEmail ->
                         loginScreenEvent(AuthenticationScreenEvent.OnEmailChanged(newEmail))
