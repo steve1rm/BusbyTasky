@@ -16,6 +16,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import androidx.navigation.navDeepLink
+import androidx.navigation.navigation
 import me.androidbox.domain.agenda.model.Event
 import me.androidbox.domain.agenda.model.Reminder
 import me.androidbox.domain.agenda.model.Task
@@ -59,51 +60,56 @@ fun NavigationGraph(
     ) {
 
         /* LoginScreen */
-        composable(
-            route = Screen.LoginScreen.route
+        navigation(
+            startDestination = Screen.LoginScreen.route,
+            route = "authentication"
         ) {
-            val loginViewModel: LoginViewModel = hiltViewModel()
-            val loginScreenState
-                    by loginViewModel.loginScreenState.collectAsStateWithLifecycle()
+            composable(
+                route = Screen.LoginScreen.route
+            ) {
+                val loginViewModel: LoginViewModel = hiltViewModel()
+                val loginScreenState
+                        by loginViewModel.loginScreenState.collectAsStateWithLifecycle()
 
-            LoginScreen(
-                loginScreenEvent = { loginEvent ->
-                    loginViewModel.onLoginEvent(loginEvent)
-                },
-                authenticationScreenState = loginScreenState,
-                onSignUpClicked = {
-                    /* Signup clicked, navigate to register screen */
-                    navHostController.navigate(route = Screen.RegisterScreen.route)
-                },
-                onLoginSuccess = { authenticatedUser ->
-                    /* TODO Pass the authenticatedUser as an argument */
-                    navHostController.navigate(route = Screen.AgendaScreen.route)
-                },
-            )
-        }
+                LoginScreen(
+                    loginScreenEvent = { loginEvent ->
+                        loginViewModel.onLoginEvent(loginEvent)
+                    },
+                    authenticationScreenState = loginScreenState,
+                    onSignUpClicked = {
+                        /* Signup clicked, navigate to register screen */
+                        navHostController.navigate(route = Screen.RegisterScreen.route)
+                    },
+                    onLoginSuccess = { authenticatedUser ->
+                        /* TODO Pass the authenticatedUser as an argument */
+                        navHostController.navigate(route = Screen.AgendaScreen.route)
+                    },
+                )
+            }
 
-        /* Register Screen */
-        composable(
-            route = Screen.RegisterScreen.route
-        ) {
-            val registerViewModel: RegisterViewModel = hiltViewModel()
-            val registerScreenState
-                    by registerViewModel.registerScreenState.collectAsStateWithLifecycle()
+            /* Register Screen */
+            composable(
+                route = Screen.RegisterScreen.route
+            ) {
+                val registerViewModel: RegisterViewModel = hiltViewModel()
+                val registerScreenState
+                        by registerViewModel.registerScreenState.collectAsStateWithLifecycle()
 
-            RegisterScreen(
-                loginScreenEvent = { loginScreenEvent ->
-                    registerViewModel.onRegistrationEvent(loginScreenEvent)
-                },
-                registerScreenState = registerScreenState,
-                onBackArrowClicked = {
-                    /* Back arrow clicked, pop RegisterScreen of the backstack to get back to login screen */
-                    navHostController.popBackStack()
-                },
-                onRegistrationSuccess = {
-                    /* Registration Success */
-                    navHostController.popBackStack()
-                },
-            )
+                RegisterScreen(
+                    loginScreenEvent = { loginScreenEvent ->
+                        registerViewModel.onRegistrationEvent(loginScreenEvent)
+                    },
+                    registerScreenState = registerScreenState,
+                    onBackArrowClicked = {
+                        /* Back arrow clicked, pop RegisterScreen of the backstack to get back to login screen */
+                        navHostController.popBackStack()
+                    },
+                    onRegistrationSuccess = {
+                        /* Registration Success */
+                        navHostController.popBackStack()
+                    },
+                )
+            }
         }
 
         /* Agenda Screen */

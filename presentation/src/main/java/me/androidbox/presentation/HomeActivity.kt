@@ -36,7 +36,7 @@ class HomeActivity : ComponentActivity() {
                     Screen.AgendaScreen.route
                 }
                 else -> {
-                    Screen.LoginScreen.route
+                    "authentication"
                 }
             }
 
