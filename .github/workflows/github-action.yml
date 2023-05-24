@@ -1,8 +1,17 @@
 name: Run github actions
-on: [pull_request_target]
+
+on:
+push:
+  branches: [master, develop]
+  pull_request:
+    branches:
+      - '**' # All branches
+
 jobs:
-  upload-app-to-appsweep:
+  build:
+
     runs-on: ubuntu-latest
+
     steps:
       - name: Check out repository code
         uses: actions/checkout@v2
