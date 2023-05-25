@@ -16,6 +16,11 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v2
 
+      - name: Access BUSBY_TASKY_API_KEY
+        env:
+           BUSBY_TASKY_API_KEY: ${{ secrets.BUSBY_TASKY_API_KEY }}
+        run: echo BUSBY_TASKY_API_KEY="$BUSBY_TASKY_API_KEY" > ./local.properties
+
       - name: Upload app to AppSweep with Gradle
         env:
           APPSWEEP_API_KEY: ${{ secrets.APPSWEEP_API_KEY }}
