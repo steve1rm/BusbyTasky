@@ -11,6 +11,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import me.androidbox.domain.authentication.ResponseState
 import me.androidbox.presentation.login.viewmodel.HomeViewModel
 import me.androidbox.presentation.navigation.NavigationGraph
+import me.androidbox.presentation.navigation.Screen
 import me.androidbox.presentation.ui.theme.BusbyTaskyTheme
 
 @AndroidEntryPoint
@@ -31,10 +32,10 @@ class HomeActivity : ComponentActivity() {
 
             val destination = when(authenticatedState.value) {
                 is ResponseState.Success -> {
-                    "agenda"
+                    Screen.Agenda.route
                 }
                 else -> {
-                    "authentication"
+                    Screen.Authentication.route
                 }
             }
 
