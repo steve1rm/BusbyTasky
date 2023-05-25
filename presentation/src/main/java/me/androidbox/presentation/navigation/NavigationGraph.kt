@@ -59,11 +59,13 @@ fun NavigationGraph(
         startDestination = startDestination
     ) {
 
-        /* LoginScreen */
+        /**
+         *  Authentication Graph */
         navigation(
             startDestination = Screen.LoginScreen.route,
             route = "authentication"
         ) {
+            /** LoginScreen */
             composable(
                 route = Screen.LoginScreen.route
             ) {
@@ -112,150 +114,84 @@ fun NavigationGraph(
             }
         }
 
-        /* Agenda Screen */
-        composable(
-            route = Screen.AgendaScreen.route
+        /**
+         *  Agenda Graph */
+        navigation(
+            startDestination = Screen.AgendaScreen.route,
+            route = "agenda"
         ) {
-            val agendaViewModel: AgendaViewModel = hiltViewModel()
-            val agendaScreenState by agendaViewModel.agendaScreenState.collectAsStateWithLifecycle()
+            composable(
+                route = Screen.AgendaScreen.route
+            ) {
+                val agendaViewModel: AgendaViewModel = hiltViewModel()
+                val agendaScreenState by agendaViewModel.agendaScreenState.collectAsStateWithLifecycle()
 
-            /** FIXME There is an issue as insertion, deletion should automatically trigger collectLatest flow */
-            LaunchedEffect(key1 = agendaScreenState.selectedDay) {
-                agendaViewModel.fetchAgendaItems(agendaScreenState.selectedDay)
-            }
-
-            AgendaScreen(
-                agendaScreenState = agendaScreenState,
-                agendaScreenEvent = { agendaScreenEvent ->
-                    agendaViewModel.onAgendaScreenEvent(agendaScreenEvent)
-                },
-            onSelectedAgendaItem = { agendaItem ->
-                when(agendaItem) {
-                    AgendaType.EVENT.ordinal -> {
-                        navHostController.navigate(Screen.EventScreen.route)
-                    }
-                    AgendaType.TASK.ordinal -> {
-                        navHostController.navigate(Screen.TaskDetailScreen.route)
-                    }
-                    AgendaType.REMINDER.ordinal -> {
-                        TODO("Not Implemented yet")
-                    }
-                }
-            },
-            onSelectedEditAgendaItemClicked = { agendaItem, agendaMenuActionType ->
-                val routeDestination = when(agendaItem) {
-                    is Event -> {
-                        Screen.EventScreen.EVENT_DETAIL_SCREEN
-                    }
-                    is Task -> {
-                        TASK_DETAIL_SCREEN
-                    }
-                    is Reminder -> TODO("Not Implemented yet")
+                /** FIXME There is an issue as insertion, deletion should automatically trigger collectLatest flow */
+                LaunchedEffect(key1 = agendaScreenState.selectedDay) {
+                    agendaViewModel.fetchAgendaItems(agendaScreenState.selectedDay)
                 }
 
-                if(agendaMenuActionType == AgendaMenuActionType.DELETE) {
-                    when(agendaItem) {
-                        is Event -> {
-                            agendaViewModel.deleteEventById(eventId = agendaItem.id)
+                AgendaScreen(
+                    agendaScreenState = agendaScreenState,
+                    agendaScreenEvent = { agendaScreenEvent ->
+                        agendaViewModel.onAgendaScreenEvent(agendaScreenEvent)
+                    },
+                    onSelectedAgendaItem = { agendaItem ->
+                        when (agendaItem) {
+                            AgendaType.EVENT.ordinal -> {
+                                navHostController.navigate(Screen.EventScreen.route)
+                            }
+
+                            AgendaType.TASK.ordinal -> {
+                                navHostController.navigate(Screen.TaskDetailScreen.route)
+                            }
+
+                            AgendaType.REMINDER.ordinal -> {
+                                TODO("Not Implemented yet")
+                            }
                         }
-                        is Task -> {
-                            agendaViewModel.deleteTaskById(taskId = agendaItem.id)
+                    },
+                    onSelectedEditAgendaItemClicked = { agendaItem, agendaMenuActionType ->
+                        val routeDestination = when (agendaItem) {
+                            is Event -> {
+                                Screen.EventScreen.EVENT_DETAIL_SCREEN
+                            }
+
+                            is Task -> {
+                                TASK_DETAIL_SCREEN
+                            }
+
+                            is Reminder -> TODO("Not Implemented yet")
                         }
-                        is Reminder -> {
-                            // Not implemented yet agendaViewModel.deleteReminderById(taskId = agendaItem.id)
+
+                        if (agendaMenuActionType == AgendaMenuActionType.DELETE) {
+                            when (agendaItem) {
+                                is Event -> {
+                                    agendaViewModel.deleteEventById(eventId = agendaItem.id)
+                                }
+
+                                is Task -> {
+                                    agendaViewModel.deleteTaskById(taskId = agendaItem.id)
+                                }
+
+                                is Reminder -> {
+                                    // Not implemented yet agendaViewModel.deleteReminderById(taskId = agendaItem.id)
+                                }
+                            }
+                        } else {
+                            navHostController.navigate(route = "${routeDestination}/${agendaItem.id}/${agendaMenuActionType.name}")
                         }
-                    }
-                }
-                else {
-                    navHostController.navigate(route = "${routeDestination}/${agendaItem.id}/${agendaMenuActionType.name}")
-                }
-            },
-                onLogout = {
-                    navHostController.popBackStack()
-                    navHostController.navigate(Screen.LoginScreen.route)
-                })
-        }
-
-        /* Event Detail Screen */
-        composable(
-            route = Screen.EventScreen.route,
-            arguments = listOf(navArgument(ID) {
-                type = NavType.StringType
-                nullable = true
-                defaultValue = null
-            }, navArgument(MENU_ACTION_TYPE) {
-                type = NavType.StringType
-                defaultValue = AgendaMenuActionType.OPEN.name
-                }),
-            deepLinks = listOf(navDeepLink {
-                this.uriPattern = AgendaDeepLinks.EVENT_DEEPLINK
-            })
-        ) {
-        val eventViewModel: EventViewModel = hiltViewModel()
-            val eventScreenState by eventViewModel.eventScreenState.collectAsStateWithLifecycle()
-            val title = it.savedStateHandle.get<String>(ContentType.TITLE.name) ?: "New Event"
-            val description = it.savedStateHandle.get<String>(ContentType.DESCRIPTION.name) ?: "New Description"
-            val selectedPhoto = it.savedStateHandle.get<String>(PHOTO_IMAGE_PATH)
-
-            LaunchedEffect(key1 = title, key2 = description) {
-                eventViewModel.onEventScreenEvent(
-                    EventScreenEvent.OnSaveTitleOrDescription(
-                        title,
-                        description
-                    )
-                )
+                    },
+                    onLogout = {
+                        navHostController.popBackStack()
+                        navHostController.navigate(Screen.LoginScreen.route)
+                    })
             }
 
-            LaunchedEffect(key1 = selectedPhoto) {
-                if(selectedPhoto != null) {
-                    eventViewModel.onEventScreenEvent(
-                        EventScreenEvent.OnPhotoDeletion(
-                            photo = selectedPhoto
-                        )
-                    )
-                }
-            }
-
-            /** Once the insertion has completed the state will change to true then
-             *  we will know that the insertion has completed and we can popbackstack
-             *  to go back to the agenda screen */
-            LaunchedEffect(key1 = eventScreenState.isSaved) {
-                if(eventScreenState.isSaved) {
-                    navHostController.popBackStack()
-                }
-            }
-
-            EventScreen(
-                eventScreenState = eventScreenState,
-                eventScreenEvent = { eventScreenEvent ->
-                    eventViewModel.onEventScreenEvent(eventScreenEvent)
-                },
-                onEditTitleClicked = { title ->
-                    /** Navigate to the edit screen with the title of the agenda item */
-                    navHostController.navigate(route = "${Screen.EditScreen.EDIT_SCREEN}/$title/${ContentType.TITLE}")
-                },
-                onEditDescriptionClicked = { description ->
-                    /** Navigate to the edit screen with the title of the agenda item */
-                    navHostController.navigate("${Screen.EditScreen.EDIT_SCREEN}/$description/${ContentType.DESCRIPTION}")
-                },
-                onCloseClicked = {
-                    navHostController.popBackStack()
-                },
-                onPhotoClicked = { photoImage ->
-                    val encodedImagePath = Uri.encode(photoImage)
-                    navHostController.navigate(route = "${Screen.PhotoScreen.PHOTO_SCREEN}/${encodedImagePath}")
-                },
-                toInitials = { fullName ->
-                    fullName.toInitials()
-                }
-            )
-        }
-
-        /* Task Detail Screen */
-        composable(
-            route = Screen.TaskDetailScreen.route,
-            arguments = listOf(
-                navArgument(ID) {
+            /* Event Detail Screen */
+            composable(
+                route = Screen.EventScreen.route,
+                arguments = listOf(navArgument(ID) {
                     type = NavType.StringType
                     nullable = true
                     defaultValue = null
@@ -263,119 +199,212 @@ fun NavigationGraph(
                     type = NavType.StringType
                     defaultValue = AgendaMenuActionType.OPEN.name
                 }),
-            deepLinks = listOf(navDeepLink {
-                uriPattern = AgendaDeepLinks.TASK_DEEPLINK
-            })
-        ) {
-            val taskDetailViewModel: TaskDetailViewModel = hiltViewModel()
-            val taskDetailScreenState by taskDetailViewModel.taskDetailScreenState.collectAsStateWithLifecycle()
-            val title = it.savedStateHandle.get<String>(ContentType.TITLE.name) ?: "New Task"
-            val description = it.savedStateHandle.get<String>(ContentType.DESCRIPTION.name) ?: "Description"
+                deepLinks = listOf(navDeepLink {
+                    this.uriPattern = AgendaDeepLinks.EVENT_DEEPLINK
+                })
+            ) {
+                val eventViewModel: EventViewModel = hiltViewModel()
+                val eventScreenState by eventViewModel.eventScreenState.collectAsStateWithLifecycle()
+                val title = it.savedStateHandle.get<String>(ContentType.TITLE.name) ?: "New Event"
+                val description = it.savedStateHandle.get<String>(ContentType.DESCRIPTION.name)
+                    ?: "New Description"
+                val selectedPhoto = it.savedStateHandle.get<String>(PHOTO_IMAGE_PATH)
 
-            LaunchedEffect(key1 = title, key2 = description) {
-                taskDetailViewModel.onTaskDetailScreenEvent(TaskDetailScreenEvent.OnSaveTitleOrDescription(
-                    title = title,
-                    description = description
-                ))
+                LaunchedEffect(key1 = title, key2 = description) {
+                    eventViewModel.onEventScreenEvent(
+                        EventScreenEvent.OnSaveTitleOrDescription(
+                            title,
+                            description
+                        )
+                    )
+                }
+
+                LaunchedEffect(key1 = selectedPhoto) {
+                    if (selectedPhoto != null) {
+                        eventViewModel.onEventScreenEvent(
+                            EventScreenEvent.OnPhotoDeletion(
+                                photo = selectedPhoto
+                            )
+                        )
+                    }
+                }
+
+                /** Once the insertion has completed the state will change to true then
+                 *  we will know that the insertion has completed and we can popbackstack
+                 *  to go back to the agenda screen */
+                LaunchedEffect(key1 = eventScreenState.isSaved) {
+                    if (eventScreenState.isSaved) {
+                        navHostController.popBackStack()
+                    }
+                }
+
+                EventScreen(
+                    eventScreenState = eventScreenState,
+                    eventScreenEvent = { eventScreenEvent ->
+                        eventViewModel.onEventScreenEvent(eventScreenEvent)
+                    },
+                    onEditTitleClicked = { title ->
+                        /** Navigate to the edit screen with the title of the agenda item */
+                        navHostController.navigate(route = "${Screen.EditScreen.EDIT_SCREEN}/$title/${ContentType.TITLE}")
+                    },
+                    onEditDescriptionClicked = { description ->
+                        /** Navigate to the edit screen with the title of the agenda item */
+                        navHostController.navigate("${Screen.EditScreen.EDIT_SCREEN}/$description/${ContentType.DESCRIPTION}")
+                    },
+                    onCloseClicked = {
+                        navHostController.popBackStack()
+                    },
+                    onPhotoClicked = { photoImage ->
+                        val encodedImagePath = Uri.encode(photoImage)
+                        navHostController.navigate(route = "${Screen.PhotoScreen.PHOTO_SCREEN}/${encodedImagePath}")
+                    },
+                    toInitials = { fullName ->
+                        fullName.toInitials()
+                    }
+                )
             }
 
-            /** Once the insertion has completed the state will change to true then
-             *  we will know that the insertion has completed and we can popbackstack
-             *  to go back to the agenda screen */
-            LaunchedEffect(key1 = taskDetailScreenState.isSaved) {
-                if(taskDetailScreenState.isSaved) {
-                    navHostController.popBackStack()
+            /* Task Detail Screen */
+            composable(
+                route = Screen.TaskDetailScreen.route,
+                arguments = listOf(
+                    navArgument(ID) {
+                        type = NavType.StringType
+                        nullable = true
+                        defaultValue = null
+                    }, navArgument(MENU_ACTION_TYPE) {
+                        type = NavType.StringType
+                        defaultValue = AgendaMenuActionType.OPEN.name
+                    }),
+                deepLinks = listOf(navDeepLink {
+                    uriPattern = AgendaDeepLinks.TASK_DEEPLINK
+                })
+            ) {
+                val taskDetailViewModel: TaskDetailViewModel = hiltViewModel()
+                val taskDetailScreenState by taskDetailViewModel.taskDetailScreenState.collectAsStateWithLifecycle()
+                val title = it.savedStateHandle.get<String>(ContentType.TITLE.name) ?: "New Task"
+                val description =
+                    it.savedStateHandle.get<String>(ContentType.DESCRIPTION.name) ?: "Description"
+
+                LaunchedEffect(key1 = title, key2 = description) {
+                    taskDetailViewModel.onTaskDetailScreenEvent(
+                        TaskDetailScreenEvent.OnSaveTitleOrDescription(
+                            title = title,
+                            description = description
+                        )
+                    )
                 }
+
+                /** Once the insertion has completed the state will change to true then
+                 *  we will know that the insertion has completed and we can popbackstack
+                 *  to go back to the agenda screen */
+                LaunchedEffect(key1 = taskDetailScreenState.isSaved) {
+                    if (taskDetailScreenState.isSaved) {
+                        navHostController.popBackStack()
+                    }
+                }
+
+                TaskDetailScreen(
+                    taskDetailScreenState = taskDetailScreenState,
+                    taskDetailScreenEvent = { taskDetailScreenEvent ->
+                        taskDetailViewModel.onTaskDetailScreenEvent(taskDetailScreenEvent)
+                    },
+                    onEditTitleClicked = { title ->
+                        navHostController.navigate(route = "${Screen.EditScreen.EDIT_SCREEN}/$title/${ContentType.TITLE}")
+                    },
+                    onEditDescriptionClicked = { description ->
+                        navHostController.navigate(route = "${Screen.EditScreen.EDIT_SCREEN}/$description/${ContentType.DESCRIPTION}")
+                    },
+                    onCloseClicked = {
+                        navHostController.popBackStack()
+                    },
+                    modifier = Modifier.fillMaxSize()
+                )
             }
 
-            TaskDetailScreen(
-                taskDetailScreenState = taskDetailScreenState,
-                taskDetailScreenEvent = { taskDetailScreenEvent ->
-                    taskDetailViewModel.onTaskDetailScreenEvent(taskDetailScreenEvent)
-                },
-                onEditTitleClicked = { title ->
-                    navHostController.navigate(route = "${Screen.EditScreen.EDIT_SCREEN}/$title/${ContentType.TITLE}")
-                },
-                onEditDescriptionClicked = { description ->
-                    navHostController.navigate(route = "${Screen.EditScreen.EDIT_SCREEN}/$description/${ContentType.DESCRIPTION}")
-                },
-                onCloseClicked = {
-                    navHostController.popBackStack()
-                },
-                modifier = Modifier.fillMaxSize())
-        }
+            /* Edit Screen */
+            composable(
+                route = Screen.EditScreen.route,
+                arguments = listOf(navArgument(CONTENT) {
+                    type = NavType.StringType
+                }, navArgument(CONTENT_TYPE) {
+                    type = NavType.StringType
+                })
+            ) {
+                val editScreenViewModel: EditScreenViewModel = hiltViewModel()
+                val editScreenState by editScreenViewModel.editScreenState.collectAsStateWithLifecycle()
+                val content = it.arguments?.getString(CONTENT) ?: ""
 
-        /* Edit Screen */
-        composable(
-            route = Screen.EditScreen.route,
-            arguments = listOf(navArgument(CONTENT) {
-                type = NavType.StringType
-            }, navArgument(CONTENT_TYPE) {
-                type = NavType.StringType
-            })
-        ) {
-            val editScreenViewModel: EditScreenViewModel = hiltViewModel()
-            val editScreenState by editScreenViewModel.editScreenState.collectAsStateWithLifecycle()
-            val content = it.arguments?.getString(CONTENT) ?: ""
+                /** Get the contentType that has been edited which could be either the Title or the Description
+                 *  If null then return the default title instead */
+                val contentType = it.arguments?.getString(CONTENT_TYPE)?.let { contentType ->
+                    when (contentType) {
+                        ContentType.TITLE.name -> ContentType.TITLE
+                        ContentType.DESCRIPTION.name -> ContentType.DESCRIPTION
+                        else -> {
+                            ContentType.TITLE
+                        }
+                    }
+                } ?: ContentType.TITLE
 
-            /** Get the contentType that has been edited which could be either the Title or the Description
-             *  If null then return the default title instead */
-            val contentType = it.arguments?.getString(CONTENT_TYPE)?.let { contentType ->
-                when(contentType) {
-                    ContentType.TITLE.name -> ContentType.TITLE
-                    ContentType.DESCRIPTION.name -> ContentType.DESCRIPTION
-                    else -> { ContentType.TITLE}
+                LaunchedEffect(key1 = content) {
+                    editScreenViewModel.onEditScreenEvent(
+                        editScreenEvent = EditScreenEvent.OnContentChanged(content)
+                    )
                 }
-            } ?: ContentType.TITLE
 
-            LaunchedEffect(key1 = content) {
-                editScreenViewModel.onEditScreenEvent(
-                    editScreenEvent = EditScreenEvent.OnContentChanged(content))
+                EditScreen(
+                    contentType = contentType,
+                    editScreenState = editScreenState,
+                    editScreenEvent = { editScreenEvent ->
+                        editScreenViewModel.onEditScreenEvent(editScreenEvent)
+                    },
+                    onBackClicked = {
+                        navHostController.popBackStack()
+                    },
+                    onSaveClicked = { content, contentType ->
+                        navHostController.previousBackStackEntry?.savedStateHandle?.set(
+                            contentType.name,
+                            content
+                        )
+                        navHostController.popBackStack()
+                    }
+                )
             }
 
-            EditScreen(
-                contentType = contentType,
-                editScreenState = editScreenState,
-                editScreenEvent = { editScreenEvent ->
-                    editScreenViewModel.onEditScreenEvent(editScreenEvent)
-                },
-                onBackClicked = {
-                    navHostController.popBackStack()
-                },
-                onSaveClicked = { content, contentType ->
-                    navHostController.previousBackStackEntry?.savedStateHandle?.set(contentType.name, content)
-                    navHostController.popBackStack()
-                }
-            )
-        }
+            /** Photo Screen */
+            composable(
+                route = Screen.PhotoScreen.route,
+                arguments = listOf(navArgument(PHOTO_IMAGE_PATH) {
+                    this.type = NavType.StringType
+                    this.defaultValue = null
+                    this.nullable = true
+                })
+            ) {
+                val photoScreenViewModel: PhotoScreenViewModel = hiltViewModel()
+                val photoScreenState by photoScreenViewModel.photoScreenState.collectAsStateWithLifecycle()
 
-        /** Photo Screen */
-        composable(
-            route = Screen.PhotoScreen.route,
-            arguments = listOf(navArgument(PHOTO_IMAGE_PATH) {
-                this.type = NavType.StringType
-                this.defaultValue = null
-                this.nullable = true
-            })
-        ) {
-            val photoScreenViewModel: PhotoScreenViewModel = hiltViewModel()
-            val photoScreenState by photoScreenViewModel.photoScreenState.collectAsStateWithLifecycle()
-
-            PhotoScreen(
-                modifier = Modifier.background(color = MaterialTheme.colorScheme.background),
-                photoScreenState = photoScreenState,
-                photoScreenEvent = { photoScreenEvent ->
-                    photoScreenViewModel.onPhotoScreenEvent(photoScreenEvent)
-                },
-                onCloseClicked = {
-                    navHostController.previousBackStackEntry?.savedStateHandle?.clearSavedStateProvider(PHOTO_IMAGE_PATH)
-                    navHostController.popBackStack()
-                },
-                onSelectedPhotoForDeletion = { selectedPhoto ->
-                    navHostController.previousBackStackEntry?.savedStateHandle?.set(PHOTO_IMAGE_PATH, selectedPhoto)
-                    navHostController.popBackStack()
-                }
-            )
+                PhotoScreen(
+                    modifier = Modifier.background(color = MaterialTheme.colorScheme.background),
+                    photoScreenState = photoScreenState,
+                    photoScreenEvent = { photoScreenEvent ->
+                        photoScreenViewModel.onPhotoScreenEvent(photoScreenEvent)
+                    },
+                    onCloseClicked = {
+                        navHostController.previousBackStackEntry?.savedStateHandle?.clearSavedStateProvider(
+                            PHOTO_IMAGE_PATH
+                        )
+                        navHostController.popBackStack()
+                    },
+                    onSelectedPhotoForDeletion = { selectedPhoto ->
+                        navHostController.previousBackStackEntry?.savedStateHandle?.set(
+                            PHOTO_IMAGE_PATH,
+                            selectedPhoto
+                        )
+                        navHostController.popBackStack()
+                    }
+                )
+            }
         }
     }
 }
