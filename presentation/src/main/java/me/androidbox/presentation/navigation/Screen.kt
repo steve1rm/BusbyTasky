@@ -31,4 +31,8 @@ sealed class Screen(val route: String) {
         const val PHOTO_SCREEN = "photo_screen"
         const val PHOTO_IMAGE_PATH = "imagePath"
     }
+
+    /** Nested Navigation routes */
+    object Authentication : Screen(route = "authentication")
+    object Agenda : Screen(route = "agenda")
 }
