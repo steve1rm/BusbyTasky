@@ -1,11 +1,25 @@
 name: Run github actions
-on: [pull_request_target]
+
+on:
+push:
+  branches: [master, develop]
+  pull_request:
+    branches:
+      - '**' # All branches
+
 jobs:
-  upload-app-to-appsweep:
+  build:
+
     runs-on: ubuntu-latest
+
     steps:
       - name: Check out repository code
         uses: actions/checkout@v2
+
+      - name: Access BUSBY_TASKY_API_KEY
+        env:
+           BUSBY_TASKY_API_KEY: ${{ secrets.BUSBY_TASKY_API_KEY }}
+        run: echo BUSBY_TASKY_API_KEY="$BUSBY_TASKY_API_KEY" > ./local.properties
 
       - name: Upload app to AppSweep with Gradle
         env:
