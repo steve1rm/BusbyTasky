@@ -8,6 +8,10 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
 import me.androidbox.domain.authentication.usecase.*
 import me.androidbox.domain.authentication.usecase.imp.*
+import me.androidbox.domain.login.usecase.ValidateEmailUseCase
+import me.androidbox.domain.login.usecase.ValidatePasswordUseCase
+import me.androidbox.domain.login.usecase.imp.ValidateEmailUseCaseImp
+import me.androidbox.domain.login.usecase.imp.ValidatePasswordUseCaseImp
 
 @InstallIn(ViewModelComponent::class)
 @Module
@@ -40,4 +44,12 @@ interface UseCaseModule {
     @Reusable
     @Binds
     fun bindsLogoutUseCaseImp(logoutUseCaseImp: LogoutUseCaseImp): LogoutUseCase
+
+    @Reusable
+    @Binds
+    fun bindsValidateEmailUseCaseImp(validateEmailUseCaseImp: ValidateEmailUseCaseImp): ValidateEmailUseCase
+
+    @Reusable
+    @Binds
+    fun bindsValidatePasswordUseCaseImp(validatePasswordUseCaseImp: ValidatePasswordUseCaseImp): ValidatePasswordUseCase
 }
