@@ -1,8 +1,7 @@
 name: Run github actions
 
 on:
-push:
-  branches: [master, develop]
+  push:
   pull_request:
     branches:
       - '**' # All branches
