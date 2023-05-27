@@ -33,10 +33,10 @@ class HomeActivity : ComponentActivity() {
 
             when(authenticatedState.value) {
                 is ResponseState.Success -> {
-                    startDestination(destination = Screen.AgendaScreen.route)
+                    startDestination(destination = Screen.Agenda.route)
                 }
                 is ResponseState.Failure -> {
-                    startDestination(destination = Screen.LoginScreen.route)
+                    startDestination(destination = Screen.Authentication.route)
                 }
                 is ResponseState.Loading -> {
                     /* no-op just wait for the splash screen to finish */
