@@ -95,7 +95,6 @@ dependencies {
 
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.0")
     implementation("androidx.compose.runtime:runtime-livedata:1.3.3")
-    implementation("io.coil-kt:coil-compose:1.4.0")
     implementation("androidx.work:work-runtime-ktx:2.8.0")
     implementation("androidx.hilt:hilt-work:1.0.0")
     implementation("com.google.accompanist:accompanist-swiperefresh:0.27.0")
