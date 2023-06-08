@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import me.androidbox.domain.authentication.ResponseState
 import me.androidbox.domain.authentication.model.AuthenticatedUser
@@ -60,8 +61,21 @@ class LoginViewModel @Inject constructor(
                     )
             }
             AuthenticationScreenEvent.OnAuthenticationUser -> {
+                loginScreenMutableState.update { _ ->
+                    loginScreenState.value.copy(
+                        responseState = ResponseState.Loading
+                    )
+                }
                 loginUser(loginScreenState.value.email, loginScreenState.value.password)
             }
+            is AuthenticationScreenEvent.OnLoading -> {
+                loginScreenMutableState.update { _ ->
+                    loginScreenState.value.copy(
+                        isLoading = authenticationScreenEvent.isLoading
+                    )
+                }
+            }
+
             AuthenticationScreenEvent.OnRegisterUser -> Unit
             is AuthenticationScreenEvent.OnUsernameChanged -> Unit
         }
@@ -75,7 +89,8 @@ class LoginViewModel @Inject constructor(
             }
 
             loginScreenMutableState.value  = loginScreenState.value.copy(
-                responseState = loginResponseState)
+                responseState = loginResponseState,
+                isLoading = false)
         }
     }
 

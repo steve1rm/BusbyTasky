@@ -7,4 +7,5 @@ sealed interface AuthenticationScreenEvent {
     data class OnUsernameChanged(val username: String): AuthenticationScreenEvent
     object OnAuthenticationUser: AuthenticationScreenEvent
     object OnRegisterUser: AuthenticationScreenEvent
+    data class OnLoading(val isLoading: Boolean): AuthenticationScreenEvent
 }

@@ -51,13 +51,16 @@ fun LoginScreen(
     LaunchedEffect(key1 = authenticationScreenState.responseState) {
         when(val status = authenticationScreenState.responseState) {
             is ResponseState.Loading -> {
-                println("Is Loading")
+                loginScreenEvent(AuthenticationScreenEvent.OnLoading(isLoading = true))
             }
             is ResponseState.Success -> {
+                loginScreenEvent(AuthenticationScreenEvent.OnLoading(isLoading = false))
                 onLoginSuccess(status.data)
             }
             is ResponseState.Failure -> {
                 /* Failure */
+                loginScreenEvent(AuthenticationScreenEvent.OnLoading(isLoading = false))
+                /** TODO Display snack bar to show failure */
                 Log.d("LOGIN","${status.error}")
             }
             else -> Unit
@@ -135,7 +138,8 @@ fun LoginScreen(
                     buttonText = stringResource(R.string.login).uppercase(),
                     onButtonClick = {
                         loginScreenEvent(AuthenticationScreenEvent.OnAuthenticationUser)
-                    }
+                    },
+                    isLoading = authenticationScreenState.isLoading
                 )
             }
             

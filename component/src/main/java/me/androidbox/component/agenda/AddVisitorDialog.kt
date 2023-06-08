@@ -176,7 +176,8 @@ fun PreviewAddVisitorDialogErrorMessage() {
             isValidInput = true,
             onEmailChanged = {},
             onDialogClose = {},
-            onAddButtonClicked = {}
+            onAddButtonClicked = {},
+            isLoading = true
         )
     }
 }
