@@ -9,5 +9,6 @@ data class AuthenticationScreenState<T>(
     val username: String = "",
     val responseState: ResponseState<T>? = null,
     val isValidEmail: Boolean = false,
-    val isValidPassword: Boolean = false
+    val isValidPassword: Boolean = false,
+    val isLoading: Boolean = false
 )
