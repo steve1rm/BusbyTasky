@@ -50,15 +50,26 @@ fun MutableVersionCatalogContainer.createLibs() {
         version("version.androidx.navigation", "_")
         version("version.androidx.security-crypto", "1.0.0")
         version("version.androidx.core-splashscreen", "_")
+        version("version.coil-kt", "_")
+        version("version.androidx.security-crypto", "_")
+        version("version.androidx.work", "_")
+        version("version.androidx.hilt", "_")
+        version("version.google.accompanist", "_")
+        version("version.androidx.lifecycle-viewmodel-compose", "_")
 
         /* UI */
         library("core-ktx", "androidx.core", "core-ktx").versionRef("version.androidx.core")
         library("lifecycle-runtime-ktx","androidx.lifecycle", "lifecycle-runtime-ktx").version("version.androidx.lifecycle")
         library("activity-compose", "androidx.activity", "activity-compose").version("version.androidx.activity")
+        library("runtime-livedata", "androidx.compose.runtime", "runtime-livedata").versionRef("version.androidx.compose.ui")
+        library("lifecycle-viewmodel-compose", "androidx.lifecycle", "lifecycle-viewmodel-compose").versionRef("version.androidx.lifecycle-viewmodel-compose")
+        library("lifecycle-runtime-compose", "androidx.lifecycle", "lifecycle-runtime-compose").versionRef("version.androidx.lifecycle-viewmodel-compose")
         library("material", "androidx.compose.material3", "material3").versionRef("version.androidx.compose.material3")
         library("ui","androidx.compose.ui", "ui").version("version.androidx.compose.ui")
         library("ui-tooling-preview","androidx.compose.ui", "ui-tooling-preview").version("version.androidx.compose.ui")
         library("appcompat","androidx.appcompat", "appcompat").versionRef("version.androidx.appcompat")
+        library("coil-compose", "io.coil-kt", "coil-compose").versionRef("version.coil-kt")
+        library("accompanist-swiperefresh", "com.google.accompanist", "accompanist-swiperefresh").versionRef("version.google.accompanist")
 
         /* Coroutines */
         library("coroutines", "org.jetbrains.kotlinx", "kotlinx-coroutines-core").versionRef("version.kotlinx.coroutines")
@@ -82,10 +93,14 @@ fun MutableVersionCatalogContainer.createLibs() {
         library("logging-interceptor","com.squareup.okhttp3", "logging-interceptor").versionRef("version.okhttp3")
 
         /* Encrypted shared preferences */
-        library("security-crypto-ktx", "androidx.security", "security-crypto-ktx").versionRef("version.androidx.security-crypto")
+        library("security-crypto", "androidx.security", "security-crypto").versionRef("version.androidx.security-crypto")
 
         /* splash screen */
         library("core-splashscreen", "androidx.core", "core-splashscreen").versionRef("version.androidx.core-splashscreen")
+
+        /* Work Manager */
+        library("work-runtime-ktx", "androidx.work", "work-runtime-ktx").versionRef("version.androidx.work")
+        library("hilt-work", "androidx.hilt", "hilt-work").versionRef("version.androidx.hilt")
 
         bundle("retrofit", listOf("moshi-kotlin", "retrofit", "converter-moshi", "logging-interceptor"))
         bundle("compose", listOf("activity-compose", "material", "ui", "ui-tooling-preview"))

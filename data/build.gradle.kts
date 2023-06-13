@@ -84,14 +84,12 @@ dependencies {
     implementation(libs.bundles.retrofit)
 
     // Encrypted shared preferences
-    // implementation(libs.security.crypto.ktx)
-  //  implementation("androidx.security:security-crypto-ktx:1.1.0-alpha05")
-    implementation("androidx.security:security-crypto:1.0.0")
-    implementation("androidx.work:work-runtime-ktx:2.8.0")
-    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:1.1.5")
-    implementation("androidx.work:work-runtime-ktx:2.8.0")
-    implementation("androidx.hilt:hilt-work:1.0.0")
-    kapt("androidx.hilt:hilt-compiler:1.0.0")
+    implementation(libs.security.crypto)
+    implementation(libs.work.runtime.ktx)
+    coreLibraryDesugaring(Android.tools.desugarJdkLibs)
+    implementation(libs.hilt.work)
+    kapt(libs.hilt.compiler)
+
 
     androidTestImplementation(tests.hilt.android.testing)
     kaptTest(tests.hilt.compiler)
