@@ -2,6 +2,7 @@ buildscript {
 
     dependencies {
         classpath(Google.dagger.hilt.android.gradlePlugin)
+        classpath("app.cash.paparazzi:paparazzi-gradle-plugin:1.3.0")
     }
 }
 
@@ -12,4 +13,5 @@ plugins {
     id("org.jetbrains.kotlin.android") apply false
     id("org.jetbrains.kotlin.jvm") apply false
     id("com.google.dagger.hilt.android") apply false
+  //  id("app.cash.paparazzi") apply false
 }
