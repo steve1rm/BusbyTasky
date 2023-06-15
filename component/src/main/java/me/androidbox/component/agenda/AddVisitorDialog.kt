@@ -115,7 +115,30 @@ fun AddVisitorDialog(
 
 @Composable
 @Preview(showBackground = true)
-fun PreviewAddVisitorDialog() {
+fun PreviewAddVisitorDialogEmailNotExist() {
+    BusbyTaskyTheme {
+        AddVisitorDialog(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(
+                    color = MaterialTheme.colorScheme.backgroundWhiteColor,
+                    shape = RoundedCornerShape(16.dp)
+                )
+                .padding(20.dp),
+            email = "joeblogs@gmail.com",
+            isEmailVerified = false,
+            isValidInput = true,
+            isAlreadyAdded = false,
+            onEmailChanged = {},
+            onDialogClose = {},
+            onAddButtonClicked = {}
+        )
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+fun PreviewAddVisitorDialogEmailExists() {
     BusbyTaskyTheme {
         AddVisitorDialog(
             modifier = Modifier
@@ -135,6 +158,7 @@ fun PreviewAddVisitorDialog() {
         )
     }
 }
+
 @Composable
 @Preview(showBackground = true)
 fun PreviewAddVisitorDialogDuplicateVisitor() {
@@ -160,7 +184,7 @@ fun PreviewAddVisitorDialogDuplicateVisitor() {
 
 @Composable
 @Preview(showBackground = true)
-fun PreviewAddVisitorDialogErrorMessage() {
+fun PreviewAddVisitorDialogInvalidEmail() {
     BusbyTaskyTheme {
         AddVisitorDialog(
             modifier = Modifier
@@ -170,14 +194,14 @@ fun PreviewAddVisitorDialogErrorMessage() {
                     shape = RoundedCornerShape(16.dp)
                 )
                 .padding(20.dp),
-            email = "joeblogs@gmail.com",
+            email = "joeblogs@mail.c",
             isEmailVerified = false,
             isAlreadyAdded = false,
-            isValidInput = true,
+            isValidInput = false,
             onEmailChanged = {},
             onDialogClose = {},
             onAddButtonClicked = {},
-            isLoading = true
+            isLoading = false
         )
     }
 }
