@@ -31,14 +31,13 @@ jobs:
            BUSBY_TASKY_API_KEY: ${{ secrets.BUSBY_TASKY_API_KEY }}
         run: echo BUSBY_TASKY_API_KEY="$BUSBY_TASKY_API_KEY" > ./local.properties
 
-      - name: Upload app to AppSweep with Gradle
-        env:
-          APPSWEEP_API_KEY: ${{ secrets.APPSWEEP_API_KEY }}
-        run: ./gradlew uploadToAppSweepRelease
-
       - name: Build Project
         run: ./gradlew assembleDebug
 
       - name: Run snapshot tests
         run: ./gradlew verifyPaparazziDebug
 
+      - name: Upload app to AppSweep with Gradle
+        env:
+          APPSWEEP_API_KEY: ${{ secrets.APPSWEEP_API_KEY }}
+        run: ./gradlew uploadToAppSweepDebug
