@@ -12,6 +12,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+        # Set the JDK as the same as what the android project uses
+      - name: Setup java JDK version
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'adopt'
+          java-version: '17'
+
       - name: Check out repository code
         uses: actions/checkout@v2
 
