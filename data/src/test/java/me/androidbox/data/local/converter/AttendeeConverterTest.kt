@@ -1,9 +1,9 @@
 package me.androidbox.data.local.converter
 
 import com.google.common.truth.Truth.assertThat
-import me.androidbox.domain.authentication.model.Attendee
+import me.androidbox.domain.agenda.model.Attendee
 import org.junit.Test
-import java.util.*
+import java.util.UUID
 import kotlin.math.absoluteValue
 import kotlin.random.Random
 
@@ -34,7 +34,7 @@ class AttendeeConverterTest {
         // Assert
         assertThat(actual).hasSize(1)
         val attendee = actual.first()
-        assertThat(attendee.id).isEqualTo(-1233288472)
+     //   assertThat(attendee.id).isEqualTo(-1233288472)
         assertThat(attendee.email).isEqualTo("c138aaa0-1457-43bd-9e5b-4839030cfbb4")
     }
 
@@ -96,7 +96,6 @@ private fun generateAttendeeList(count: Int = 1): List<Attendee> {
 
 private fun generateAttendee(): Attendee {
     return Attendee(
-        id = Random.nextInt().absoluteValue,
         email = UUID.randomUUID().toString(),
         fullName = UUID.randomUUID().toString(),
         userId = UUID.randomUUID().toString(),
