@@ -90,6 +90,7 @@ dependencies {
     implementation("com.maxkeppeler.sheets-compose-dialogs:core:_")
     implementation("com.maxkeppeler.sheets-compose-dialogs:calendar:_")
     implementation("com.maxkeppeler.sheets-compose-dialogs:date-time:_")
+    implementation("com.maxkeppeler.sheets-compose-dialogs:clock:_")
 
     coreLibraryDesugaring(Android.tools.desugarJdkLibs)
 
