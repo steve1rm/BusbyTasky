@@ -167,23 +167,37 @@ fun EventScreen(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(horizontal = 16.dp),
-                            onStartDurationClicked = {
+                            onStartTimeDurationClicked = {
                                 eventScreenEvent(
                                     EventScreenEvent.OnStartDateTimeChanged(
                                         isStartDateTime = true
                                     )
                                 )
-                               // calendarStateTimeDate.show()
-                                // calendarState.show()
                                 clockState.show()
                             },
-                            onEndDurationClicked = {
+                            onEndTimeDurationClicked = {
                                 eventScreenEvent(
                                     EventScreenEvent.OnStartDateTimeChanged(
                                         isStartDateTime = false
                                     )
                                 )
-                                calendarStateTimeDate.show()
+                                clockState.show()
+                            },
+                            onStartDateDurationClicked = {
+                                eventScreenEvent(
+                                    EventScreenEvent.OnStartDateTimeChanged(
+                                        isStartDateTime = true
+                                    )
+                                )
+                                calendarState.show()
+                            },
+                            onEndDateDurationClicked = {
+                                eventScreenEvent(
+                                    EventScreenEvent.OnStartDateTimeChanged(
+                                        isStartDateTime = false
+                                    )
+                                )
+                                calendarState.show()
                             }
                         )
                     }
@@ -438,6 +452,7 @@ fun EventScreen(
             val zoneId = ZoneId.systemDefault()
             val localTime = LocalTime.of(hours, minutes)
             val zonedDateTime = ZonedDateTime.of(LocalDate.now(), localTime, zoneId)
+
             if(eventScreenState.isStartDateTime) {
                 eventScreenEvent(EventScreenEvent.OnStartTimeDuration(zonedDateTime))
             }
