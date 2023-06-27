@@ -439,6 +439,9 @@ fun EventScreen(
             if(eventScreenState.isStartDateTime) {
                 eventScreenEvent(EventScreenEvent.OnStartDateDuration(zonedDateTime))
             }
+            else {
+                eventScreenEvent(EventScreenEvent.OnEndDateDuration(zonedDateTime))
+            }
         }
     )
 
@@ -455,6 +458,9 @@ fun EventScreen(
 
             if(eventScreenState.isStartDateTime) {
                 eventScreenEvent(EventScreenEvent.OnStartTimeDuration(zonedDateTime))
+            }
+            else {
+                eventScreenEvent(EventScreenEvent.OnEndTimeDuration(zonedDateTime))
             }
         }
     )
