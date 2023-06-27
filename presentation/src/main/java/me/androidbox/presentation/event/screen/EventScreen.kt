@@ -26,6 +26,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.maxkeppeker.sheets.core.models.base.rememberUseCaseState
+import com.maxkeppeler.sheets.calendar.CalendarDialog
+import com.maxkeppeler.sheets.calendar.models.CalendarConfig
+import com.maxkeppeler.sheets.calendar.models.CalendarSelection
+import com.maxkeppeler.sheets.calendar.models.CalendarStyle
+import com.maxkeppeler.sheets.clock.ClockDialog
+import com.maxkeppeler.sheets.clock.models.ClockConfig
+import com.maxkeppeler.sheets.clock.models.ClockSelection
 import com.maxkeppeler.sheets.date_time.DateTimeDialog
 import com.maxkeppeler.sheets.date_time.models.DateTimeSelection
 import kotlinx.coroutines.launch
@@ -56,6 +63,8 @@ import me.androidbox.domain.DateTimeFormatterProvider.DATE_PATTERN
 import me.androidbox.domain.DateTimeFormatterProvider.LONG_DATE_PATTERN
 import me.androidbox.domain.DateTimeFormatterProvider.TIME_PATTERN
 import me.androidbox.domain.DateTimeFormatterProvider.formatDateTime
+import java.time.LocalDate
+import java.time.LocalTime
 import java.time.ZoneId
 import java.time.ZonedDateTime
 
@@ -74,6 +83,8 @@ fun EventScreen(
     val calendarStateTimeDate = rememberUseCaseState()
     val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val bottomSheetScope = rememberCoroutineScope()
+    val calendarState = rememberUseCaseState()
+    val clockState = rememberUseCaseState()
 
     LaunchedEffect(key1 = eventScreenState.attendees) {
         eventScreenEvent(EventScreenEvent.LoadVisitors)
@@ -156,21 +167,37 @@ fun EventScreen(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(horizontal = 16.dp),
-                            onStartDurationClicked = {
+                            onStartTimeDurationClicked = {
                                 eventScreenEvent(
                                     EventScreenEvent.OnStartDateTimeChanged(
                                         isStartDateTime = true
                                     )
                                 )
-                                calendarStateTimeDate.show()
+                                clockState.show()
                             },
-                            onEndDurationClicked = {
+                            onEndTimeDurationClicked = {
                                 eventScreenEvent(
                                     EventScreenEvent.OnStartDateTimeChanged(
                                         isStartDateTime = false
                                     )
                                 )
-                                calendarStateTimeDate.show()
+                                clockState.show()
+                            },
+                            onStartDateDurationClicked = {
+                                eventScreenEvent(
+                                    EventScreenEvent.OnStartDateTimeChanged(
+                                        isStartDateTime = true
+                                    )
+                                )
+                                calendarState.show()
+                            },
+                            onEndDateDurationClicked = {
+                                eventScreenEvent(
+                                    EventScreenEvent.OnStartDateTimeChanged(
+                                        isStartDateTime = false
+                                    )
+                                )
+                                calendarState.show()
                             }
                         )
                     }
@@ -393,6 +420,50 @@ fun EventScreen(
             isLoading = eventScreenState.isVerifyingVisitorEmail
         )
     }
+
+    CalendarDialog(
+        state = calendarState,
+        config = CalendarConfig(
+            style = CalendarStyle.MONTH,
+            yearSelection = true,
+            monthSelection = true
+        ),
+        selection = CalendarSelection.Date { localDate ->
+            val zoneId = ZoneId.systemDefault()
+            val zonedDateTime = ZonedDateTime.of(
+                localDate,
+                localDate.atStartOfDay().toLocalTime(),
+                zoneId
+            )
+
+            if(eventScreenState.isStartDateTime) {
+                eventScreenEvent(EventScreenEvent.OnStartDateDuration(zonedDateTime))
+            }
+            else {
+                eventScreenEvent(EventScreenEvent.OnEndDateDuration(zonedDateTime))
+            }
+        }
+    )
+
+    ClockDialog(
+        state = clockState,
+        config = ClockConfig(
+            is24HourFormat = true,
+            defaultTime = ZonedDateTime.now().toLocalTime()
+        ),
+        selection = ClockSelection.HoursMinutes { hours, minutes ->
+            val zoneId = ZoneId.systemDefault()
+            val localTime = LocalTime.of(hours, minutes)
+            val zonedDateTime = ZonedDateTime.of(LocalDate.now(), localTime, zoneId)
+
+            if(eventScreenState.isStartDateTime) {
+                eventScreenEvent(EventScreenEvent.OnStartTimeDuration(zonedDateTime))
+            }
+            else {
+                eventScreenEvent(EventScreenEvent.OnEndTimeDuration(zonedDateTime))
+            }
+        }
+    )
 
     DateTimeDialog(
         state = calendarStateTimeDate,
