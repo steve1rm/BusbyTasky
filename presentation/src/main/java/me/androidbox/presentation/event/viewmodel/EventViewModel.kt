@@ -364,6 +364,8 @@ class EventViewModel @Inject constructor(
                     eventDescription = event.description,
                     startDate = event.startDateTime.toZoneDateTime(),
                     endDate = event.endDateTime.toZoneDateTime(),
+                    startTime = event.startDateTime.toZoneDateTime(),
+                    endTime = event.endDateTime.toZoneDateTime(),
                     isUserEventCreator = event.isUserEventCreator,
                     eventCreatorId = event.eventCreatorId,
                     host = event.host,
