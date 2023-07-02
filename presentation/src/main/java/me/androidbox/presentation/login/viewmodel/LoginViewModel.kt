@@ -5,7 +5,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import me.androidbox.domain.authentication.ResponseState
@@ -25,52 +28,50 @@ class LoginViewModel @Inject constructor(
     private val validateEmailUseCase: ValidateEmailUseCase
 ) : ViewModel() {
 
-    private val loginScreenMutableState = MutableStateFlow(AuthenticationScreenState<AuthenticatedUser>())
-    val loginScreenState = loginScreenMutableState.asStateFlow()
+    companion object {
+        private const val EMAIL = "email"
+        private const val PASSWORD = "password"
+    }
 
-/*
-    val email = savedStateHandle.getStateFlow<String>("email", "")
-    val password = savedStateHandle.getStateFlow<String>("password", "")
+    private val _authenticateUserState = MutableStateFlow(AuthenticationScreenState<AuthenticatedUser>())
+    val authenticateUserState = _authenticateUserState.asStateFlow()
 
-    val state = combine(email, password) { email, password ->
-        loginScreenMutableState.value = loginScreenState.value.copy(
+    private val email = savedStateHandle.getStateFlow(EMAIL, "")
+    private val password = savedStateHandle.getStateFlow(PASSWORD, "")
+
+    val validateCredentialsState = combine(email, password) { email, password ->
+        AuthenticationScreenState<AuthenticatedUser>(
             email = email,
             password = password,
             isValidEmail = validateEmailUseCase.execute(email),
             isValidPassword = validateEmailUseCase.execute(password)
         )
-    }
-*/
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), AuthenticationScreenState<AuthenticatedUser>())
 
     fun onLoginEvent(authenticationScreenEvent: AuthenticationScreenEvent) {
         when(authenticationScreenEvent) {
             is AuthenticationScreenEvent.OnEmailChanged -> {
-                loginScreenMutableState.value = loginScreenState.value.copy(
-                    email = authenticationScreenEvent.email,
-                    isValidEmail = validateEmailUseCase.execute(authenticationScreenEvent.email)
-                )
+                savedStateHandle[EMAIL] = authenticationScreenEvent.email
             }
             is AuthenticationScreenEvent.OnPasswordChanged -> {
-                loginScreenMutableState.value = loginScreenState.value.copy(
-                    password = authenticationScreenEvent.password
-                )
+                savedStateHandle[PASSWORD] = authenticationScreenEvent.password
             }
             is AuthenticationScreenEvent.OnPasswordVisibilityChanged -> {
-                loginScreenMutableState.value = loginScreenState.value.copy(
-                        isPasswordVisible = !loginScreenState.value.isPasswordVisible
+                _authenticateUserState.value = authenticateUserState.value.copy(
+                        isPasswordVisible = !authenticateUserState.value.isPasswordVisible
                     )
             }
             AuthenticationScreenEvent.OnAuthenticationUser -> {
-                loginScreenMutableState.update { _ ->
-                    loginScreenState.value.copy(
+                _authenticateUserState.update { _ ->
+                    authenticateUserState.value.copy(
                         responseState = ResponseState.Loading
                     )
                 }
-                loginUser(loginScreenState.value.email, loginScreenState.value.password)
+                loginUser(authenticateUserState.value.email, authenticateUserState.value.password)
             }
             is AuthenticationScreenEvent.OnLoading -> {
-                loginScreenMutableState.update { _ ->
-                    loginScreenState.value.copy(
+                _authenticateUserState.update { _ ->
+                    authenticateUserState.value.copy(
                         isLoading = authenticationScreenEvent.isLoading
                     )
                 }
@@ -88,7 +89,7 @@ class LoginViewModel @Inject constructor(
                 saveCurrentUserDetails(loginResponseState.data)
             }
 
-            loginScreenMutableState.value  = loginScreenState.value.copy(
+            _authenticateUserState.value  = _authenticateUserState.value.copy(
                 responseState = loginResponseState,
                 isLoading = false)
         }
