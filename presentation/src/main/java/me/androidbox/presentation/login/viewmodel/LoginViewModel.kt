@@ -67,7 +67,7 @@ class LoginViewModel @Inject constructor(
                         responseState = ResponseState.Loading
                     )
                 }
-                loginUser(authenticateUserState.value.email, authenticateUserState.value.password)
+                loginUser(email.value, password.value)
             }
             is AuthenticationScreenEvent.OnLoading -> {
                 _authenticateUserState.update { _ ->
