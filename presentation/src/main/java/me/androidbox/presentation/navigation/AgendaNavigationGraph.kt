@@ -68,7 +68,7 @@ fun NavGraphBuilder.agendaNavigationGraph(navHostController: NavHostController) 
                 onSelectedAgendaItem = { agendaItem ->
                     when (agendaItem) {
                         AgendaType.EVENT.ordinal -> {
-                            navHostController.navigate(Screen.EventScreen.route)
+                            navHostController.navigate(Screen.EventScreen.route + "?=menuActionType=${AgendaMenuActionType.OPEN.name}")
                         }
 
                         AgendaType.TASK.ordinal -> {
@@ -107,8 +107,8 @@ fun NavGraphBuilder.agendaNavigationGraph(navHostController: NavHostController) 
                                 // Not implemented yet agendaViewModel.deleteReminderById(taskId = agendaItem.id)
                             }
                         }
-                    } else {
-                        navHostController.navigate(route = "${routeDestination}/${agendaItem.id}/${agendaMenuActionType.name}")
+                    } else { // event_screen?menuActionType=
+                        navHostController.navigate(route = "${routeDestination}?id=${agendaItem.id}&menuActionType=${agendaMenuActionType.name}")
                     }
                 },
                 onLogout = {
