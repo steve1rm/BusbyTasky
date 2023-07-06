@@ -108,7 +108,7 @@ fun NavGraphBuilder.agendaNavigationGraph(navHostController: NavHostController) 
                                 // Not implemented yet agendaViewModel.deleteReminderById(taskId = agendaItem.id)
                             }
                         }
-                    } else { // event_screen?menuActionType=
+                    } else {
                         navHostController.navigate(route = "${routeDestination}?id=${agendaItem.id}&menuActionType=${agendaMenuActionType.name}")
                     }
                 },
