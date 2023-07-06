@@ -121,18 +121,17 @@ fun NavGraphBuilder.agendaNavigationGraph(navHostController: NavHostController) 
         /* Event Detail Screen */
         composable(
             route = "event_screen?id={id}&menuActionType={menuActionType}",
-            arguments = listOf(navArgument("id") {
+            arguments = listOf(navArgument(ID) {
                 type = NavType.StringType
                 nullable = true
                 defaultValue = null
-            }, navArgument("menuActionType") {
+            }, navArgument(MENU_ACTION_TYPE) {
                 type = NavType.StringType
                 defaultValue = AgendaMenuActionType.OPEN.name
             }),
             deepLinks = listOf(navDeepLink {
-                this.uriPattern = "busbyapp://androidbox.me/event_screen/{id}"
+                this.uriPattern = AgendaDeepLinks.EVENT_DEEPLINK
                 action = Intent.ACTION_VIEW
-                //                 https://androidbox.me/event_screen/597ef216-2ec6-435b-9a48-cfcf0e3caa46
             })
         ) {
             val eventViewModel: EventViewModel = hiltViewModel()

@@ -37,15 +37,10 @@ class AlarmReceiver : BroadcastReceiver() {
     private fun createAndShowNotification(context: Context, agendaId: String, title: String, description: String, channelId: String) {
         val notificationManager = getNotificationManager(context)
 
-
-        val route = EVENT_DEEPLINK.replace("{id}", agendaId).toUri()
-
-        // EVENT_DEEPLINK.replace("{id}", agendaId).toUri())
-
         /** TODO Only Events for the moment, tasks and reminders coming soon... */
         val agendaIntent = Intent(
             Intent.ACTION_VIEW,
-            Uri.parse("busbyapp://androidbox.me/event_screen/09db6048-2fa3-459a-8d0d-fcbb7f40ca86"))
+            EVENT_DEEPLINK.replace("{id}", agendaId).toUri())
 
         val pendingIntent = TaskStackBuilder.create(context).run {
             this.addNextIntentWithParentStack(agendaIntent)
@@ -61,15 +56,9 @@ class AlarmReceiver : BroadcastReceiver() {
             .build()
 
         notificationManager.notify(agendaId.hashCode(), notification)
-
-        println("Alarm triggered: $agendaId $title $description $channelId")
     }
 
     private fun getNotificationManager(context: Context): NotificationManager {
         return context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
     }
 }
-
-// https://androidbox.me/event?id=23334853-7f78-4f5a-8286-0329e5478ff6
-
-// busbyTasky://event?id=e29fab54-d42e-429f-8f92-8ec97fd8007a
