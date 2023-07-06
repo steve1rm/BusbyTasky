@@ -5,6 +5,7 @@ import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import androidx.core.app.NotificationCompat
 import androidx.core.app.TaskStackBuilder
 import androidx.core.net.toUri
@@ -39,7 +40,7 @@ class AlarmReceiver : BroadcastReceiver() {
         /** TODO Only Events for the moment, tasks and reminders coming soon... */
         val agendaIntent = Intent(
             Intent.ACTION_VIEW,
-            "$EVENT_DEEPLINK".replace("{id}", agendaId).toUri())
+            EVENT_DEEPLINK.replace("{id}", agendaId).toUri())
 
         val pendingIntent = TaskStackBuilder.create(context).run {
             this.addNextIntentWithParentStack(agendaIntent)
@@ -55,8 +56,6 @@ class AlarmReceiver : BroadcastReceiver() {
             .build()
 
         notificationManager.notify(agendaId.hashCode(), notification)
-
-        println("Alarm triggered: $agendaId $title $description $channelId")
     }
 
     private fun getNotificationManager(context: Context): NotificationManager {
