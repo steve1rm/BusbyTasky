@@ -356,7 +356,7 @@ class EventViewModel @Inject constructor(
     private fun fetchEventById(eventId: String) {
         viewModelScope.launch {
             val event = eventRepository.getEventById(eventId)
-
+            println(event.id)
             _eventScreenState.update { eventScreenState ->
                 eventScreenState.copy(
                     eventId = event.id,

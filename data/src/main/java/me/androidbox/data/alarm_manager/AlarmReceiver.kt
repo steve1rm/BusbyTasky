@@ -5,6 +5,7 @@ import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import androidx.core.app.NotificationCompat
 import androidx.core.app.TaskStackBuilder
 import androidx.core.net.toUri
@@ -39,10 +40,12 @@ class AlarmReceiver : BroadcastReceiver() {
 
         val route = EVENT_DEEPLINK.replace("{id}", agendaId).toUri()
 
+        // EVENT_DEEPLINK.replace("{id}", agendaId).toUri())
+
         /** TODO Only Events for the moment, tasks and reminders coming soon... */
         val agendaIntent = Intent(
             Intent.ACTION_VIEW,
-            EVENT_DEEPLINK.replace("{id}", agendaId).toUri())
+            Uri.parse("busbyapp://androidbox.me/event_screen/09db6048-2fa3-459a-8d0d-fcbb7f40ca86"))
 
         val pendingIntent = TaskStackBuilder.create(context).run {
             this.addNextIntentWithParentStack(agendaIntent)
