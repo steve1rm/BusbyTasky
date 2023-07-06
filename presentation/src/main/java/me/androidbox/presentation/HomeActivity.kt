@@ -14,8 +14,6 @@ import me.androidbox.presentation.login.viewmodel.HomeViewModel
 import me.androidbox.presentation.navigation.NavigationGraph
 import me.androidbox.presentation.navigation.Screen
 import me.androidbox.presentation.ui.theme.BusbyTaskyTheme
-import android.content.Intent
-import android.net.Uri
 
 @AndroidEntryPoint
 class HomeActivity : ComponentActivity() {
