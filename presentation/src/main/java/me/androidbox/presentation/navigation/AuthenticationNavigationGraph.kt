@@ -24,14 +24,16 @@ fun NavGraphBuilder.authenticationGraph(
             route = Screen.LoginScreen.route
         ) {
             val loginViewModel: LoginViewModel = hiltViewModel()
-            val loginScreenState
-                    by loginViewModel.loginScreenState.collectAsStateWithLifecycle()
+            val authenticationUserState
+                    by loginViewModel.authenticateUserState.collectAsStateWithLifecycle()
+            val validateCredentialsState by loginViewModel.validateCredentialsState.collectAsStateWithLifecycle()
 
             LoginScreen(
                 loginScreenEvent = { loginEvent ->
                     loginViewModel.onLoginEvent(loginEvent)
                 },
-                authenticationScreenState = loginScreenState,
+                authenticationUserState = authenticationUserState,
+                validateCredentialsState = validateCredentialsState,
                 onSignUpClicked = {
                     /* Signup clicked, navigate to register screen */
                     navHostController.navigate(route = Screen.RegisterScreen.route)
@@ -67,5 +69,4 @@ fun NavGraphBuilder.authenticationGraph(
             )
         }
     }
-
 }

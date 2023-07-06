@@ -19,7 +19,7 @@ sealed class Screen(val route: String) {
         const val CONTENT_TYPE = "contentType"
     }
 
-    object EventScreen : Screen(route = "event_screen/{id}/{menuActionType}") {
+    object EventScreen : Screen(route = "event_screen?id={id}&menuActionType={menuActionType}") {
         const val EVENT_DETAIL_SCREEN = "event_screen"
     }
 
