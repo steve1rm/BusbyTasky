@@ -26,7 +26,8 @@ fun NavGraphBuilder.authenticationGraph(
             val loginViewModel: LoginViewModel = hiltViewModel()
             val authenticationUserState
                     by loginViewModel.authenticateUserState.collectAsStateWithLifecycle()
-            val validateCredentialsState by loginViewModel.validateCredentialsState.collectAsStateWithLifecycle()
+            val validateCredentialsState
+                    by loginViewModel.validateCredentialsState.collectAsStateWithLifecycle()
 
             LoginScreen(
                 loginScreenEvent = { loginEvent ->
@@ -52,12 +53,14 @@ fun NavGraphBuilder.authenticationGraph(
             val registerViewModel: RegisterViewModel = hiltViewModel()
             val registerScreenState
                     by registerViewModel.registerScreenState.collectAsStateWithLifecycle()
+            val validateCredentialState by registerViewModel.validateCredentials.collectAsStateWithLifecycle()
 
             RegisterScreen(
                 loginScreenEvent = { loginScreenEvent ->
                     registerViewModel.onRegistrationEvent(loginScreenEvent)
                 },
                 registerScreenState = registerScreenState,
+                validateCredentialsState = validateCredentialState,
                 onBackArrowClicked = {
                     /* Back arrow clicked, pop RegisterScreen of the backstack to get back to login screen */
                     navHostController.popBackStack()
