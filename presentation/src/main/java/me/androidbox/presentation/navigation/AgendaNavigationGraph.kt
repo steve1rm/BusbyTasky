@@ -131,7 +131,6 @@ fun NavGraphBuilder.agendaNavigationGraph(navHostController: NavHostController) 
             }),
             deepLinks = listOf(navDeepLink {
                 this.uriPattern = AgendaDeepLinks.EVENT_DEEPLINK
-                action = Intent.ACTION_VIEW
             })
         ) {
             val eventViewModel: EventViewModel = hiltViewModel()
