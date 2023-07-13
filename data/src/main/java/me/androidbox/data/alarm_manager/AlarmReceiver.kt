@@ -3,14 +3,8 @@ package me.androidbox.data.alarm_manager
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.BroadcastReceiver
-import android.content.ContentResolver
 import android.content.Context
 import android.content.Intent
-import android.media.MediaCodec
-import android.media.MediaParser
-import android.net.Uri
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.app.TaskStackBuilder
 import androidx.core.net.toUri
@@ -21,7 +15,6 @@ import me.androidbox.data.alarm_manager.AlarmSchedulerImp.Companion.EXTRA_ID
 import me.androidbox.data.alarm_manager.AlarmSchedulerImp.Companion.EXTRA_TITLE
 import me.androidbox.domain.alarm_manager.AgendaType
 import me.androidbox.domain.constant.AgendaDeepLinks.EVENT_DEEPLINK
-import java.io.File
 
 class AlarmReceiver : BroadcastReceiver() {
 
@@ -59,18 +52,9 @@ class AlarmReceiver : BroadcastReceiver() {
             .setSmallIcon(R.drawable.bell)
             .setAutoCancel(true)
             .setContentIntent(pendingIntent)
-            .setSound(getUriSoundFile(context))
             .build()
 
         notificationManager.notify(agendaId.hashCode(), notification)
-    }
-
-    private fun getUriSoundFile(context: Context): Uri {
-        val uri = Uri.parse("android.resource://" + "me.androidbox.data" + "/raw/" + "event_sound.mp3")
-
-        val host = uri.toString()
-
-        return uri
     }
 
     private fun getNotificationManager(context: Context): NotificationManager {
