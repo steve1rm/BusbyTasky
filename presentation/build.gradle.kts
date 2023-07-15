@@ -81,6 +81,15 @@ ktlint {
         "max-line-length"
     ))
 
+    this.filter {
+        exclude {
+            element -> element.file.path.contains("test")
+        }
+        exclude {
+            element -> element.file.path.contains("androidTest")
+        }
+    }
+
     reporters {
         this.reporter(ReporterType.CHECKSTYLE)
         this.reporter(ReporterType.HTML)
