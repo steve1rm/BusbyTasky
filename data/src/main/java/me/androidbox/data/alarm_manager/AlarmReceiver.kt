@@ -49,7 +49,7 @@ class AlarmReceiver : BroadcastReceiver() {
         val notification = NotificationCompat.Builder(context, channelId)
             .setContentTitle(title)
             .setContentText(description)
-            .setSmallIcon(R.drawable.bell)
+            .setSmallIcon(R.drawable.ic_tasky_logo)
             .setAutoCancel(true)
             .setContentIntent(pendingIntent)
             .build()
