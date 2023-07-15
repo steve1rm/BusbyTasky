@@ -1,8 +1,8 @@
 package me.androidbox.presentation.login
 
 import android.util.Patterns
-import me.androidbox.domain.login.CredentialValidator
 import javax.inject.Inject
+import me.androidbox.domain.login.CredentialValidator
 
 class CredentialValidatorImp @Inject constructor() : CredentialValidator {
 

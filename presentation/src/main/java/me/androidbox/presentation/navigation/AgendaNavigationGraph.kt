@@ -108,7 +108,7 @@ fun NavGraphBuilder.agendaNavigationGraph(navHostController: NavHostController) 
                             }
                         }
                     } else {
-                        navHostController.navigate(route = "${routeDestination}/${agendaItem.id}/${agendaMenuActionType.name}")
+                        navHostController.navigate(route = "$routeDestination/${agendaItem.id}/${agendaMenuActionType.name}")
                     }
                 },
                 onLogout = {
@@ -125,9 +125,9 @@ fun NavGraphBuilder.agendaNavigationGraph(navHostController: NavHostController) 
                 nullable = true
                 defaultValue = null
             }, navArgument(MENU_ACTION_TYPE) {
-                type = NavType.StringType
-                defaultValue = AgendaMenuActionType.OPEN.name
-            }),
+                    type = NavType.StringType
+                    defaultValue = AgendaMenuActionType.OPEN.name
+                }),
             deepLinks = listOf(navDeepLink {
                 this.uriPattern = AgendaDeepLinks.EVENT_DEEPLINK
             })
@@ -185,7 +185,7 @@ fun NavGraphBuilder.agendaNavigationGraph(navHostController: NavHostController) 
                 },
                 onPhotoClicked = { photoImage ->
                     val encodedImagePath = Uri.encode(photoImage)
-                    navHostController.navigate(route = "${Screen.PhotoScreen.PHOTO_SCREEN}/${encodedImagePath}")
+                    navHostController.navigate(route = "${Screen.PhotoScreen.PHOTO_SCREEN}/$encodedImagePath")
                 },
                 toInitials = { fullName ->
                     fullName.toInitials()
@@ -257,8 +257,8 @@ fun NavGraphBuilder.agendaNavigationGraph(navHostController: NavHostController) 
             arguments = listOf(navArgument(CONTENT) {
                 type = NavType.StringType
             }, navArgument(CONTENT_TYPE) {
-                type = NavType.StringType
-            })
+                    type = NavType.StringType
+                })
         ) {
             val editScreenViewModel: EditScreenViewModel = hiltViewModel()
             val editScreenState by editScreenViewModel.editScreenState.collectAsStateWithLifecycle()

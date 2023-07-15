@@ -78,15 +78,20 @@ ktlint {
         "final-newline",
         "parameter-list-wrapping",
         "no-empty-first-line-in-method-block",
-        "max-line-length"
+        "max-line-length",
+        "wrapping",
+        "argument-list-wrapping",
+        "curly-spacing",
+        "no-wildcard-imports",
+        "package-name"
     ))
 
     this.filter {
         exclude {
-            element -> element.file.path.contains("test")
+                element -> element.file.path.contains("test")
         }
         exclude {
-            element -> element.file.path.contains("androidTest")
+                element -> element.file.path.contains("androidTest")
         }
     }
 

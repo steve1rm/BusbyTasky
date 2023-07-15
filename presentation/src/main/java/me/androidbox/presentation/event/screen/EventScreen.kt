@@ -35,6 +35,10 @@ import com.maxkeppeler.sheets.clock.models.ClockConfig
 import com.maxkeppeler.sheets.clock.models.ClockSelection
 import com.maxkeppeler.sheets.date_time.DateTimeDialog
 import com.maxkeppeler.sheets.date_time.models.DateTimeSelection
+import java.time.LocalDate
+import java.time.LocalTime
+import java.time.ZoneId
+import java.time.ZonedDateTime
 import kotlinx.coroutines.launch
 import me.androidbox.component.R
 import me.androidbox.component.agenda.AddVisitorDialog
@@ -63,10 +67,6 @@ import me.androidbox.domain.DateTimeFormatterProvider.DATE_PATTERN
 import me.androidbox.domain.DateTimeFormatterProvider.LONG_DATE_PATTERN
 import me.androidbox.domain.DateTimeFormatterProvider.TIME_PATTERN
 import me.androidbox.domain.DateTimeFormatterProvider.formatDateTime
-import java.time.LocalDate
-import java.time.LocalTime
-import java.time.ZoneId
-import java.time.ZonedDateTime
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -98,7 +98,7 @@ fun EventScreen(
                     .fillMaxWidth()
                     .background(color = MaterialTheme.colorScheme.backgroundBackColor)
                     .padding(horizontal = 16.dp),
-                editModeType = if(eventScreenState.isEditMode) { EditModeType.SaveMode() } else { EditModeType.EditMode() },
+                editModeType = if (eventScreenState.isEditMode) { EditModeType.SaveMode() } else { EditModeType.EditMode() },
                 displayDate = eventScreenState.startDate.formatDateTime(LONG_DATE_PATTERN),
                 onCloseClicked = onCloseClicked,
                 onEditClicked = {
@@ -107,7 +107,6 @@ fun EventScreen(
                 onSaveClicked = {
                     eventScreenEvent(EventScreenEvent.OnSaveEventDetails)
                 })
-
         },
         content = { paddingValues ->
             Column(modifier = Modifier
@@ -115,7 +114,7 @@ fun EventScreen(
                 .fillMaxWidth()
                 .background(Color.Black)) {
 
-                LazyColumn (modifier = modifier
+                LazyColumn(modifier = modifier
                     .fillMaxWidth()
                     .background(
                         color = Color.White,
@@ -157,7 +156,7 @@ fun EventScreen(
                     }
 
                     item {
-                      Spacer(modifier = modifier.height(26.dp))
+                        Spacer(modifier = modifier.height(26.dp))
                         AgendaDuration(
                             isEditMode = eventScreenState.isEditMode,
                             startTime = eventScreenState.startTime.formatDateTime(TIME_PATTERN),
@@ -248,9 +247,9 @@ fun EventScreen(
                         Spacer(modifier = Modifier.height(20.dp))
                     }
 
-                    if(eventScreenState.selectedVisitorFilterType == VisitorFilterType.ALL || eventScreenState.selectedVisitorFilterType == VisitorFilterType.GOING) {
+                    if (eventScreenState.selectedVisitorFilterType == VisitorFilterType.ALL || eventScreenState.selectedVisitorFilterType == VisitorFilterType.GOING) {
                         /** Going section */
-                        if(eventScreenState.filteredVisitorsNotGoing.isNotEmpty()) {
+                        if (eventScreenState.filteredVisitorsNotGoing.isNotEmpty()) {
                             item {
                                 Text(
                                     modifier = Modifier.padding(start = 16.dp),
@@ -278,8 +277,8 @@ fun EventScreen(
                     }
 
                     /** Not going section */
-                    if(eventScreenState.selectedVisitorFilterType == VisitorFilterType.ALL || eventScreenState.selectedVisitorFilterType == VisitorFilterType.NOT_GOING) {
-                        if(eventScreenState.filteredVisitorsNotGoing.isNotEmpty()) {
+                    if (eventScreenState.selectedVisitorFilterType == VisitorFilterType.ALL || eventScreenState.selectedVisitorFilterType == VisitorFilterType.NOT_GOING) {
+                        if (eventScreenState.filteredVisitorsNotGoing.isNotEmpty()) {
                             item {
                                 Text(
                                     modifier = Modifier.padding(start = 16.dp),
@@ -321,7 +320,7 @@ fun EventScreen(
                                     attendee.userId == eventScreenState.currentLoggedInUserId
                                 }?.isGoing ?: false
 
-                                if(isAttendeeGoing) AgendaActionType.LEAVE_EVENT else AgendaActionType.JOIN_EVENT
+                                if (isAttendeeGoing) AgendaActionType.LEAVE_EVENT else AgendaActionType.JOIN_EVENT
                             },
                             onActionClicked = { agendaActionType ->
                                 when (agendaActionType) {
@@ -382,7 +381,7 @@ fun EventScreen(
                 })
         })
 
-    if(eventScreenState.shouldShowVisitorDialog) {
+    if (eventScreenState.shouldShowVisitorDialog) {
         AddVisitorDialog(
             modifier = Modifier
                 .fillMaxWidth()
@@ -405,13 +404,12 @@ fun EventScreen(
                 val attendee = eventScreenState.attendees.firstOrNull { attendee ->
                     attendee.email == visitorEmail
                 }
-                if(attendee == null) {
+                if (attendee == null) {
                     /** Avoid adding duplicate attendees - check if they have already been added */
                     eventScreenEvent(EventScreenEvent.CheckVisitorAlreadyAdded(false))
                     /** Check if the visitors email does exist */
                     eventScreenEvent(EventScreenEvent.CheckVisitorExists(visitorEmail))
-                }
-                else {
+                } else {
                     eventScreenEvent(EventScreenEvent.CheckVisitorAlreadyAdded(true))
                 }
             },
@@ -436,10 +434,9 @@ fun EventScreen(
                 zoneId
             )
 
-            if(eventScreenState.isStartDateTime) {
+            if (eventScreenState.isStartDateTime) {
                 eventScreenEvent(EventScreenEvent.OnStartDateDuration(zonedDateTime))
-            }
-            else {
+            } else {
                 eventScreenEvent(EventScreenEvent.OnEndDateDuration(zonedDateTime))
             }
         }
@@ -456,10 +453,9 @@ fun EventScreen(
             val localTime = LocalTime.of(hours, minutes)
             val zonedDateTime = ZonedDateTime.of(LocalDate.now(), localTime, zoneId)
 
-            if(eventScreenState.isStartDateTime) {
+            if (eventScreenState.isStartDateTime) {
                 eventScreenEvent(EventScreenEvent.OnStartTimeDuration(zonedDateTime))
-            }
-            else {
+            } else {
                 eventScreenEvent(EventScreenEvent.OnEndTimeDuration(zonedDateTime))
             }
         }
@@ -469,23 +465,22 @@ fun EventScreen(
         state = calendarStateTimeDate,
         selection = DateTimeSelection.DateTime(
             selectedDate = ZonedDateTime.now().toLocalDate(),
-            selectedTime = ZonedDateTime.now().toLocalTime(),
+            selectedTime = ZonedDateTime.now().toLocalTime()
         ) { localDateTime ->
             val zoneId = ZoneId.systemDefault()
             val zonedDateTime = ZonedDateTime.of(localDateTime, zoneId)
 
-            if(eventScreenState.isStartDateTime) {
+            if (eventScreenState.isStartDateTime) {
                 eventScreenEvent(EventScreenEvent.OnStartTimeDuration(zonedDateTime))
                 eventScreenEvent(EventScreenEvent.OnStartDateDuration(zonedDateTime))
-            }
-            else {
+            } else {
                 eventScreenEvent(EventScreenEvent.OnEndTimeDuration(zonedDateTime))
                 eventScreenEvent(EventScreenEvent.OnEndDateDuration(zonedDateTime))
             }
         }
     )
 
-    if(eventScreenState.shouldShowDeleteAlertDialog) {
+    if (eventScreenState.shouldShowDeleteAlertDialog) {
         DeleteEventAlertDialog(
             title = stringResource(id = R.string.delete_event),
             text = stringResource(id = R.string.confirm_delete_event),

@@ -10,7 +10,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.State
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -39,7 +38,7 @@ fun RegisterScreen(
 {
 
     LaunchedEffect(key1 = registerScreenState) {
-        when(val status = registerScreenState.responseState) {
+        when (val status = registerScreenState.responseState) {
             ResponseState.Loading -> {
                 /* TODO Show a loading progress spinner */
             }
@@ -180,8 +179,6 @@ fun RegisterScreen(
         }
     }
 }
-
-
 
 @Composable
 @Preview(showBackground = true)

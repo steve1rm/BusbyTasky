@@ -31,7 +31,7 @@ class HomeActivity : ComponentActivity() {
         setContent {
             val authenticatedState = homeViewModel.authenticationState.collectAsStateWithLifecycle()
 
-            when(authenticatedState.value) {
+            when (authenticatedState.value) {
                 is ResponseState.Success -> {
                     startDestination(destination = Screen.Agenda.route)
                 }

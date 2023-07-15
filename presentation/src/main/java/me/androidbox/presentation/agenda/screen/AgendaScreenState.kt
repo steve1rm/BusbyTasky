@@ -1,8 +1,8 @@
 package me.androidbox.presentation.agenda.screen
 
-import me.androidbox.domain.agenda.model.AgendaItem
 import java.time.ZoneId
 import java.time.ZonedDateTime
+import me.androidbox.domain.agenda.model.AgendaItem
 
 data class AgendaScreenState(
     /* Calendar sets the first day to the agenda day selector */

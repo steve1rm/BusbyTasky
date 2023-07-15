@@ -3,6 +3,7 @@ package me.androidbox.presentation.login.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -10,18 +11,17 @@ import me.androidbox.domain.authentication.ResponseState
 import me.androidbox.domain.authentication.usecase.RegisterUseCase
 import me.androidbox.presentation.login.screen.AuthenticationScreenEvent
 import me.androidbox.presentation.login.screen.AuthenticationScreenState
-import javax.inject.Inject
 
 @HiltViewModel
 class RegisterViewModel @Inject constructor(
     private val registerUseCase: RegisterUseCase
-): ViewModel() {
+) : ViewModel() {
 
     private val registerScreenMutableState = MutableStateFlow(AuthenticationScreenState<Unit>())
     val registerScreenState = registerScreenMutableState.asStateFlow()
 
     fun onRegistrationEvent(authenticationScreenEvent: AuthenticationScreenEvent) {
-        when(authenticationScreenEvent) {
+        when (authenticationScreenEvent) {
             is AuthenticationScreenEvent.OnEmailChanged -> {
                 registerScreenMutableState.value = registerScreenState.value.copy(
                     email = authenticationScreenEvent.email

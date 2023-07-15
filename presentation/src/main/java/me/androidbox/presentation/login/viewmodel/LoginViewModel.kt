@@ -4,6 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -15,7 +16,6 @@ import me.androidbox.domain.authentication.usecase.SaveCurrentUserUseCase
 import me.androidbox.domain.login.usecase.ValidateEmailUseCase
 import me.androidbox.presentation.login.screen.AuthenticationScreenEvent
 import me.androidbox.presentation.login.screen.AuthenticationScreenState
-import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
@@ -43,7 +43,7 @@ class LoginViewModel @Inject constructor(
 */
 
     fun onLoginEvent(authenticationScreenEvent: AuthenticationScreenEvent) {
-        when(authenticationScreenEvent) {
+        when (authenticationScreenEvent) {
             is AuthenticationScreenEvent.OnEmailChanged -> {
                 loginScreenMutableState.value = loginScreenState.value.copy(
                     email = authenticationScreenEvent.email,
@@ -57,8 +57,8 @@ class LoginViewModel @Inject constructor(
             }
             is AuthenticationScreenEvent.OnPasswordVisibilityChanged -> {
                 loginScreenMutableState.value = loginScreenState.value.copy(
-                        isPasswordVisible = !loginScreenState.value.isPasswordVisible
-                    )
+                    isPasswordVisible = !loginScreenState.value.isPasswordVisible
+                )
             }
             AuthenticationScreenEvent.OnAuthenticationUser -> {
                 loginScreenMutableState.update { _ ->
@@ -88,7 +88,7 @@ class LoginViewModel @Inject constructor(
                 saveCurrentUserDetails(loginResponseState.data)
             }
 
-            loginScreenMutableState.value  = loginScreenState.value.copy(
+            loginScreenMutableState.value = loginScreenState.value.copy(
                 responseState = loginResponseState,
                 isLoading = false)
         }

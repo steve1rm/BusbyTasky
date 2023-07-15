@@ -7,9 +7,9 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
-import me.androidbox.presentation.login.viewmodel.LoginViewModel
 import me.androidbox.presentation.login.screen.LoginScreen
 import me.androidbox.presentation.login.screen.RegisterScreen
+import me.androidbox.presentation.login.viewmodel.LoginViewModel
 import me.androidbox.presentation.login.viewmodel.RegisterViewModel
 
 fun NavGraphBuilder.authenticationGraph(
@@ -25,7 +25,7 @@ fun NavGraphBuilder.authenticationGraph(
         ) {
             val loginViewModel: LoginViewModel = hiltViewModel()
             val loginScreenState
-                    by loginViewModel.loginScreenState.collectAsStateWithLifecycle()
+                by loginViewModel.loginScreenState.collectAsStateWithLifecycle()
 
             LoginScreen(
                 loginScreenEvent = { loginEvent ->
@@ -39,7 +39,7 @@ fun NavGraphBuilder.authenticationGraph(
                 onLoginSuccess = { authenticatedUser ->
                     /* TODO Pass the authenticatedUser as an argument */
                     navHostController.navigate(route = Screen.AgendaScreen.route)
-                },
+                }
             )
         }
 
@@ -49,7 +49,7 @@ fun NavGraphBuilder.authenticationGraph(
         ) {
             val registerViewModel: RegisterViewModel = hiltViewModel()
             val registerScreenState
-                    by registerViewModel.registerScreenState.collectAsStateWithLifecycle()
+                by registerViewModel.registerScreenState.collectAsStateWithLifecycle()
 
             RegisterScreen(
                 loginScreenEvent = { loginScreenEvent ->
@@ -63,9 +63,8 @@ fun NavGraphBuilder.authenticationGraph(
                 onRegistrationSuccess = {
                     /* Registration Success */
                     navHostController.popBackStack()
-                },
+                }
             )
         }
     }
-
 }
