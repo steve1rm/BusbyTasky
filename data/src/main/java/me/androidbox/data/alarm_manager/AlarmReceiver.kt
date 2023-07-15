@@ -5,8 +5,12 @@ import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.app.NotificationCompat
 import androidx.core.app.TaskStackBuilder
+import androidx.core.graphics.drawable.toBitmap
+import androidx.core.graphics.drawable.toBitmapOrNull
 import androidx.core.net.toUri
 import me.androidbox.data.R
 import me.androidbox.data.alarm_manager.AlarmSchedulerImp.Companion.EXTRA_AGENDA_TYPE
@@ -50,11 +54,16 @@ class AlarmReceiver : BroadcastReceiver() {
             .setContentTitle(title)
             .setContentText(description)
             .setSmallIcon(R.drawable.ic_tasky_logo)
+            .setLargeIcon(createBitmap(context))
             .setAutoCancel(true)
             .setContentIntent(pendingIntent)
             .build()
 
         notificationManager.notify(agendaId.hashCode(), notification)
+    }
+
+    private fun createBitmap(context: Context): Bitmap? {
+        return AppCompatResources.getDrawable(context, R.drawable.tasky_logo)?.toBitmapOrNull()
     }
 
     private fun getNotificationManager(context: Context): NotificationManager {
