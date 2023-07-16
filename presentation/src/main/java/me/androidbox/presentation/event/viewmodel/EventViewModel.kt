@@ -5,9 +5,10 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import java.util.UUID
+import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import me.androidbox.domain.DateTimeFormatterProvider.toZoneDateTime
@@ -30,8 +31,6 @@ import me.androidbox.presentation.event.screen.EventScreenEvent
 import me.androidbox.presentation.event.screen.EventScreenState
 import me.androidbox.presentation.navigation.Screen.Companion.ID
 import me.androidbox.presentation.navigation.Screen.Companion.MENU_ACTION_TYPE
-import java.util.UUID
-import javax.inject.Inject
 
 @HiltViewModel
 class EventViewModel @Inject constructor(
@@ -86,7 +85,7 @@ class EventViewModel @Inject constructor(
         }
 
         preferenceRepository.retrieveCurrentUserOrNull()?.let { authenticatedUser ->
-        _eventScreenState.update { eventScreenState ->
+            _eventScreenState.update { eventScreenState ->
                 eventScreenState.copy(
                     currentLoggedInUserId = authenticatedUser.userId)
             }
@@ -94,7 +93,7 @@ class EventViewModel @Inject constructor(
     }
 
     fun onEventScreenEvent(eventScreenEvent: EventScreenEvent) {
-        when(eventScreenEvent) {
+        when (eventScreenEvent) {
             is EventScreenEvent.OnPhotoUriAdded -> {
                 _eventScreenState.update { eventScreenState ->
                     eventScreenState.copy(
@@ -124,7 +123,7 @@ class EventViewModel @Inject constructor(
                     attendee.userId == eventScreenEvent.userId
                 }
 
-                if(attendee != null) {
+                if (attendee != null) {
                     _eventScreenState.update { eventScreenState ->
                         eventScreenState.copy(
                             attendees = eventScreenState.attendees - attendee,
@@ -147,28 +146,28 @@ class EventViewModel @Inject constructor(
             is EventScreenEvent.OnStartTimeDuration -> {
                 _eventScreenState.update { eventScreenState ->
                     eventScreenState.copy(
-                        startTime = eventScreenEvent.startTime,
+                        startTime = eventScreenEvent.startTime
                     )
                 }
             }
             is EventScreenEvent.OnStartDateDuration -> {
                 _eventScreenState.update { eventScreenState ->
                     eventScreenState.copy(
-                        startDate = eventScreenEvent.startDate,
+                        startDate = eventScreenEvent.startDate
                     )
                 }
             }
             is EventScreenEvent.OnEndTimeDuration -> {
                 _eventScreenState.update { eventScreenState ->
                     eventScreenState.copy(
-                        endTime = eventScreenEvent.endTime,
+                        endTime = eventScreenEvent.endTime
                     )
                 }
             }
             is EventScreenEvent.OnEndDateDuration -> {
                 _eventScreenState.update { eventScreenState ->
                     eventScreenState.copy(
-                        endDate = eventScreenEvent.endDate,
+                        endDate = eventScreenEvent.endDate
                     )
                 }
             }
@@ -207,7 +206,7 @@ class EventViewModel @Inject constructor(
                     attendee.userId == eventScreenState.value.currentLoggedInUserId
                 }
 
-                if(index != -1) {
+                if (index != -1) {
                     _eventScreenState.update { eventScreenState ->
                         /** Update the attendee in the list with the updated attendee i.e status of going or not going */
                         val updatedAttendee = eventScreenState.attendees.toMutableList()
@@ -266,7 +265,7 @@ class EventViewModel @Inject constructor(
                 deleteEvent(eventScreenEvent.eventId)
             }
             is EventScreenEvent.OnVisitorFilterTypeChanged -> {
-                _eventScreenState.update {  eventScreenState ->
+                _eventScreenState.update { eventScreenState ->
                     eventScreenState.copy(
                         selectedVisitorFilterType = eventScreenEvent.visitorFilterType)
                 }
@@ -292,7 +291,7 @@ class EventViewModel @Inject constructor(
     }
 
     private fun listOfAttendeeGoing(listOfAttendee: List<Attendee>): List<Attendee> {
-       return listOfAttendee
+        return listOfAttendee
             .filter { it.isGoing }
             .map { attendee ->
                 attendee.fullName.toInitials()
@@ -314,7 +313,7 @@ class EventViewModel @Inject constructor(
             onEventScreenEvent(EventScreenEvent.OnVerifyingVisitorEmail(true))
             val responseState = verifyVisitorEmailUseCase.execute(visitorEmail)
 
-            when(responseState) {
+            when (responseState) {
                 is ResponseState.Loading -> {
                     /* TODO Show loading */
                 }
@@ -332,7 +331,6 @@ class EventViewModel @Inject constructor(
                         onEventScreenEvent(EventScreenEvent.OnAttendeeAdded(attendee))
                         onEventScreenEvent(EventScreenEvent.OnVerifyingVisitorEmail(false))
                         onEventScreenEvent(EventScreenEvent.OnShowVisitorDialog(false))
-
                     } ?: run {
                         _eventScreenState.update { eventScreenState ->
                             eventScreenState.copy(
@@ -425,7 +423,7 @@ class EventViewModel @Inject constructor(
         viewModelScope.launch {
             eventRepository.deleteEventById(eventId)
 
-            when(deleteEventWithIdRemoteUseCase.execute(eventId)) {
+            when (deleteEventWithIdRemoteUseCase.execute(eventId)) {
                 ResponseState.Loading -> Unit /* TODO Show loading */
                 is ResponseState.Success -> Unit /* Nothing to do here as the event from API was success */
                 is ResponseState.Failure -> {

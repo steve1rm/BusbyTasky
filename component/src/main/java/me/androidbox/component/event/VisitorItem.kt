@@ -20,6 +20,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import java.util.UUID
 import me.androidbox.component.R
 import me.androidbox.component.ui.theme.Black
 import me.androidbox.component.ui.theme.BusbyTaskyTheme
@@ -27,7 +28,6 @@ import me.androidbox.component.ui.theme.creatorTextFontColor
 import me.androidbox.component.ui.theme.visitorBackgroundColor
 import me.androidbox.component.ui.theme.visitorInitialsFontColor
 import me.androidbox.component.ui.theme.visitorTextFontColor
-import java.util.UUID
 
 @Composable
 fun VisitorItem(
@@ -74,9 +74,7 @@ fun VisitorItem(
                 fontSize = 14.sp,
                 color = MaterialTheme.colorScheme.creatorTextFontColor,
                 fontWeight = FontWeight.Normal)
-
-        }
-        else {
+        } else {
             IconButton(onClick = {
                 onDeleteClicked(userId)
             }) {

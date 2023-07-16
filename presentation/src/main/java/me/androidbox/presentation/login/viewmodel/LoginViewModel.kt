@@ -4,6 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
@@ -18,7 +19,6 @@ import me.androidbox.domain.authentication.usecase.SaveCurrentUserUseCase
 import me.androidbox.domain.login.usecase.ValidateEmailUseCase
 import me.androidbox.presentation.login.screen.AuthenticationScreenEvent
 import me.androidbox.presentation.login.screen.AuthenticationScreenState
-import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
@@ -49,7 +49,7 @@ class LoginViewModel @Inject constructor(
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), AuthenticationScreenState<AuthenticatedUser>())
 
     fun onLoginEvent(authenticationScreenEvent: AuthenticationScreenEvent) {
-        when(authenticationScreenEvent) {
+        when (authenticationScreenEvent) {
             is AuthenticationScreenEvent.OnEmailChanged -> {
                 savedStateHandle[EMAIL] = authenticationScreenEvent.email
             }
@@ -58,8 +58,8 @@ class LoginViewModel @Inject constructor(
             }
             is AuthenticationScreenEvent.OnPasswordVisibilityChanged -> {
                 _authenticateUserState.value = authenticateUserState.value.copy(
-                        isPasswordVisible = !authenticateUserState.value.isPasswordVisible
-                    )
+                    isPasswordVisible = !authenticateUserState.value.isPasswordVisible
+                )
             }
             AuthenticationScreenEvent.OnAuthenticationUser -> {
                 _authenticateUserState.update { _ ->
@@ -89,7 +89,7 @@ class LoginViewModel @Inject constructor(
                 saveCurrentUserDetails(loginResponseState.data)
             }
 
-            _authenticateUserState.value  = _authenticateUserState.value.copy(
+            _authenticateUserState.value = _authenticateUserState.value.copy(
                 responseState = loginResponseState,
                 isLoading = false)
         }

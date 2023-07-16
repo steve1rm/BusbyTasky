@@ -16,10 +16,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import java.util.*
 import me.androidbox.component.R
 import me.androidbox.component.general.TaskButton
 import me.androidbox.component.ui.theme.*
-import java.util.*
 
 @Composable
 fun VisitorFilter(
@@ -31,7 +31,7 @@ fun VisitorFilter(
 
     Column(modifier = modifier) {
         Row(modifier = Modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically) {
+            verticalAlignment = Alignment.CenterVertically) {
             Text(
                 text = stringResource(R.string.visitors),
                 fontWeight = FontWeight.Bold,
@@ -40,7 +40,7 @@ fun VisitorFilter(
 
             Spacer(modifier = Modifier.width(18.dp))
 
-            if(isEditMode) {
+            if (isEditMode) {
                 IconButton(onClick = {
                     onAddVisitorClicked()
                 }) {
@@ -55,7 +55,7 @@ fun VisitorFilter(
         Spacer(modifier = Modifier.height(36.dp))
 
         Row(modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween) {
+            horizontalArrangement = Arrangement.SpaceBetween) {
             VisitorFilterType.values().forEach { visitorType ->
                 val backgroundColor = getBackgroundColor(selectedVisitorType, visitorType)
                 val textColor = getTextColor(selectedVisitorType, visitorType)
@@ -83,7 +83,7 @@ fun VisitorFilter(
 private fun getTextColor(
     selectedVisitorType: VisitorFilterType,
     visitorType: VisitorFilterType
-) : Color {
+): Color {
     return if (selectedVisitorType == visitorType) {
         MaterialTheme.colorScheme.fontWhiteColor
     } else {
@@ -124,7 +124,7 @@ fun PreviewVisitorFilterIsNotEditMode() {
             selectedVisitorType = rememberVisitorType,
             onAddVisitorClicked = {},
             onSelectedTypeClicked = { visitorType ->
-               rememberVisitorType = visitorType
+                rememberVisitorType = visitorType
             }
         )
     }

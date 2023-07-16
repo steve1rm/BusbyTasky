@@ -1,14 +1,14 @@
 package me.androidbox.presentation.alarm_manager
 
-import me.androidbox.component.agenda.AlarmReminderItem
 import java.time.ZoneId
 import java.time.ZonedDateTime
+import me.androidbox.component.agenda.AlarmReminderItem
 
 object AlarmReminderProvider {
 
     fun getRemindAt(
         alarmReminderItem: AlarmReminderItem,
-        startDateTime: ZonedDateTime,
+        startDateTime: ZonedDateTime
     ): ZonedDateTime {
         /** Based on what alarm reminder the user has selected minus the time/date accordingly */
         return when (alarmReminderItem) {
@@ -38,5 +38,3 @@ object AlarmReminderProvider {
         return ZonedDateTime.of(date.toLocalDate(), date.toLocalTime(), ZoneId.systemDefault())
     }
 }
-
-

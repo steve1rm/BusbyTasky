@@ -50,7 +50,7 @@ fun LoginScreen(
 ) {
 
     LaunchedEffect(key1 = authenticationUserState.responseState) {
-        when(val status = authenticationUserState.responseState) {
+        when (val status = authenticationUserState.responseState) {
             is ResponseState.Loading -> {
                 loginScreenEvent(AuthenticationScreenEvent.OnLoading(isLoading = true))
             }
@@ -62,7 +62,7 @@ fun LoginScreen(
                 /* Failure */
                 loginScreenEvent(AuthenticationScreenEvent.OnLoading(isLoading = false))
                 /** TODO Display snack bar to show failure */
-                Log.d("LOGIN","${status.error}")
+                Log.d("LOGIN", "${status.error}")
             }
             else -> Unit
         }
@@ -143,7 +143,7 @@ fun LoginScreen(
                     isLoading = authenticationUserState.isLoading
                 )
             }
-            
+
             Column(modifier = Modifier
                 .fillMaxWidth()
                 .align(Alignment.BottomCenter)) {
@@ -169,7 +169,7 @@ private fun buildLoginAnnotatedString(): AnnotatedString {
         ) {
             append("Don't have a an account?")
         }
-        
+
         append(" ")
 
         withStyle(
@@ -187,7 +187,7 @@ fun PreviewLoginScreen() {
         LoginScreen(
             onSignUpClicked = {},
             onLoginSuccess = {},
-            loginScreenEvent= {},
+            loginScreenEvent = {},
             authenticationUserState = AuthenticationScreenState(),
             validateCredentialsState = AuthenticationScreenState()
         )

@@ -4,6 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
@@ -17,7 +18,6 @@ import me.androidbox.domain.login.usecase.ValidateEmailUseCase
 import me.androidbox.domain.login.usecase.ValidatePasswordUseCase
 import me.androidbox.presentation.login.screen.AuthenticationScreenEvent
 import me.androidbox.presentation.login.screen.AuthenticationScreenState
-import javax.inject.Inject
 
 @HiltViewModel
 class RegisterViewModel @Inject constructor(
@@ -25,7 +25,7 @@ class RegisterViewModel @Inject constructor(
     private val validatePasswordUseCase: ValidatePasswordUseCase,
     private val validateEmailUseCase: ValidateEmailUseCase,
     private val savedStateHandle: SavedStateHandle
-): ViewModel() {
+) : ViewModel() {
 
     private val registerScreenMutableState = MutableStateFlow(AuthenticationScreenState<Unit>())
     val registerScreenState = registerScreenMutableState.asStateFlow()
@@ -43,7 +43,7 @@ class RegisterViewModel @Inject constructor(
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), AuthenticationScreenState())
 
     fun onRegistrationEvent(authenticationScreenEvent: AuthenticationScreenEvent) {
-        when(authenticationScreenEvent) {
+        when (authenticationScreenEvent) {
             is AuthenticationScreenEvent.OnEmailChanged -> {
                 savedStateHandle["email"] = authenticationScreenEvent.email
             }

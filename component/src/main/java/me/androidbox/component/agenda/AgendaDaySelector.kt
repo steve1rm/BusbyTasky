@@ -19,17 +19,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import java.time.ZonedDateTime
 import me.androidbox.component.R
 import me.androidbox.component.general.CalendarDayButton
 import me.androidbox.component.ui.theme.BusbyTaskyTheme
-import java.time.ZonedDateTime
 
 @Composable
 fun AgendaDaySelector(
     date: ZonedDateTime = ZonedDateTime.now(),
     isSelectedDay: ZonedDateTime = ZonedDateTime.now(),
     modifier: Modifier = Modifier,
-    onSelected: (ZonedDateTime) -> Unit,
+    onSelected: (ZonedDateTime) -> Unit
 ) {
 
     Column(modifier = modifier) {
@@ -52,7 +52,7 @@ fun AgendaDaySelector(
         }
 
         Spacer(Modifier.height(34.dp))
-        val selectedDate = if(isSelectedDay.dayOfWeek == ZonedDateTime.now().dayOfWeek) stringResource(R.string.today) else "${isSelectedDay.dayOfMonth} ${isSelectedDay.month} ${isSelectedDay.year}"
+        val selectedDate = if (isSelectedDay.dayOfWeek == ZonedDateTime.now().dayOfWeek) stringResource(R.string.today) else "${isSelectedDay.dayOfMonth} ${isSelectedDay.month} ${isSelectedDay.year}"
         Text(text = selectedDate, fontWeight = FontWeight.Bold, fontSize = 20.sp)
     }
 }
@@ -75,4 +75,3 @@ fun PreviewAgendaDaySelector() {
         )
     }
 }
-

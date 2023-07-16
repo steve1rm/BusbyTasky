@@ -4,13 +4,15 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import java.time.ZoneId
+import java.time.ZonedDateTime
+import javax.inject.Inject
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import me.androidbox.domain.toInitials
 import me.androidbox.domain.authentication.ResponseState
 import me.androidbox.domain.authentication.preference.PreferenceRepository
 import me.androidbox.domain.authentication.remote.AgendaLocalRepository
@@ -19,13 +21,11 @@ import me.androidbox.domain.authentication.usecase.LogoutUseCase
 import me.androidbox.domain.constant.SyncAgendaType
 import me.androidbox.domain.event.usecase.DeleteEventWithIdRemoteUseCase
 import me.androidbox.domain.task.repository.TaskRepository
+import me.androidbox.domain.toInitials
 import me.androidbox.domain.work_manager.AgendaSynchronizer
 import me.androidbox.domain.work_manager.FullAgendaSynchronizer
 import me.androidbox.presentation.agenda.screen.AgendaScreenEvent
 import me.androidbox.presentation.agenda.screen.AgendaScreenState
-import java.time.ZoneId
-import java.time.ZonedDateTime
-import javax.inject.Inject
 
 @HiltViewModel
 class AgendaViewModel @Inject constructor(
@@ -68,9 +68,9 @@ class AgendaViewModel @Inject constructor(
         agendaJob = viewModelScope.launch {
             agendaLocalRepository.fetchAgenda(getStartOffCurrentDay(agendaDate).toEpochSecond(), getEndOfCurrentDay(agendaDate).toEpochSecond())
                 .collectLatest { responseState ->
-                    when(responseState) {
+                    when (responseState) {
                         ResponseState.Loading -> {
-                            if(isSwipeToRefresh) {
+                            if (isSwipeToRefresh) {
                                 _agendaScreenState.update { agendaScreenState ->
                                     agendaScreenState.copy(
                                         isRefreshingAgenda = true
@@ -110,7 +110,7 @@ class AgendaViewModel @Inject constructor(
         viewModelScope.launch {
             eventRepository.deleteEventById(eventId)
 
-            when(deleteEventWithIdRemoteUseCase.execute(eventId)) {
+            when (deleteEventWithIdRemoteUseCase.execute(eventId)) {
                 ResponseState.Loading -> Unit /* TODO Show loading */
                 is ResponseState.Success -> Unit /* Nothing to do here as the event from API was success */
                 is ResponseState.Failure -> {
@@ -129,7 +129,7 @@ class AgendaViewModel @Inject constructor(
     }
 
     fun onAgendaScreenEvent(agendaScreenEvent: AgendaScreenEvent) {
-        when(agendaScreenEvent) {
+        when (agendaScreenEvent) {
             is AgendaScreenEvent.OnDateChanged -> {
                 _agendaScreenState.update { agendaScreenState ->
                     agendaScreenState.copy(
@@ -189,7 +189,7 @@ class AgendaViewModel @Inject constructor(
 
     private fun logoutCurrentUser() {
         viewModelScope.launch {
-            when(logoutUseCase.execute()) {
+            when (logoutUseCase.execute()) {
                 ResponseState.Loading -> Unit /* TODO Show loading */
 
                 is ResponseState.Success -> {

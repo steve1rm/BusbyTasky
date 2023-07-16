@@ -57,7 +57,7 @@ class SyncAgendaItemsWorker @AssistedInject constructor(
             agendaService.syncAgenda(syncAgendaDto)
         }
 
-        if(runAttemptCount > RETRY_COUNT) {
+        if (runAttemptCount > RETRY_COUNT) {
             Result.failure()
         }
 

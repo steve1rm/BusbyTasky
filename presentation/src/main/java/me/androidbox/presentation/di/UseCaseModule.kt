@@ -1,6 +1,5 @@
 package me.androidbox.presentation.di
 
-
 import dagger.Binds
 import dagger.Module
 import dagger.Reusable

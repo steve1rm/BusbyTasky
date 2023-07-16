@@ -14,15 +14,8 @@ import kotlinx.coroutines.supervisorScope
 import me.androidbox.data.local.dao.EventDao
 import me.androidbox.data.local.dao.ReminderDao
 import me.androidbox.data.local.dao.TaskDao
-import me.androidbox.data.local.entity.EventEntity
-import me.androidbox.data.local.entity.ReminderEntity
-import me.androidbox.data.local.entity.TaskEntity
-import me.androidbox.data.mapper.toAttendee
-import me.androidbox.data.mapper.toEvent
 import me.androidbox.data.mapper.toEventEntity
-import me.androidbox.data.mapper.toReminder
 import me.androidbox.data.mapper.toReminderEntity
-import me.androidbox.data.mapper.toTask
 import me.androidbox.data.mapper.toTaskEntity
 import me.androidbox.data.remote.model.response.FullAgendaDto
 import me.androidbox.data.remote.network.agenda.AgendaService
@@ -36,7 +29,7 @@ class SyncFullAgendaItemsWorker @AssistedInject constructor(
     private val agendaService: AgendaService,
     private val eventDao: EventDao,
     private val taskDao: TaskDao,
-    private val reminderDao: ReminderDao,
+    private val reminderDao: ReminderDao
 ) : CoroutineWorker(context, workerParameters) {
 
     override suspend fun doWork(): Result {
@@ -45,7 +38,7 @@ class SyncFullAgendaItemsWorker @AssistedInject constructor(
             agendaService.fullAgenda()
         }
 
-        if(runAttemptCount > RETRY_COUNT) {
+        if (runAttemptCount > RETRY_COUNT) {
             Result.failure()
         }
 

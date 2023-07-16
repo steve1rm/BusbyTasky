@@ -1,7 +1,6 @@
 package me.androidbox.component.agenda
 
 import androidx.annotation.StringRes
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -17,24 +16,24 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import java.util.*
 import me.androidbox.component.R
 import me.androidbox.component.ui.theme.BusbyTaskyTheme
 import me.androidbox.component.ui.theme.divider
 import me.androidbox.component.ui.theme.dividerBlack
 import me.androidbox.component.ui.theme.visitorTextFontColor
-import java.util.*
 
 @Composable
 fun AgendaAction(
     agendaActionType: AgendaActionType,
     modifier: Modifier = Modifier,
-    onActionClicked: (AgendaActionType) -> Unit,
+    onActionClicked: (AgendaActionType) -> Unit
 ) {
     Column(modifier = modifier,
-    horizontalAlignment = Alignment.CenterHorizontally) {
+        horizontalAlignment = Alignment.CenterHorizontally) {
 
         /* Reminders and Tasks have a top divider */
-        if(agendaActionType.showDivider) {
+        if (agendaActionType.showDivider) {
             Divider(
                 modifier
                     .fillMaxWidth()

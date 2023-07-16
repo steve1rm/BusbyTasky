@@ -1,8 +1,8 @@
 package me.androidbox.domain.authentication.remote
 
 import kotlinx.coroutines.flow.Flow
-import me.androidbox.domain.authentication.ResponseState
 import me.androidbox.domain.agenda.model.Event
+import me.androidbox.domain.authentication.ResponseState
 import me.androidbox.domain.constant.SyncAgendaType
 
 interface EventRepository {

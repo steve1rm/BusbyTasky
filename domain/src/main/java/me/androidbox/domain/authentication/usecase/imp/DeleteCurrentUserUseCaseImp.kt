@@ -1,8 +1,8 @@
 package me.androidbox.domain.authentication.usecase.imp
 
+import javax.inject.Inject
 import me.androidbox.domain.authentication.preference.PreferenceRepository
 import me.androidbox.domain.authentication.usecase.DeleteCurrentUserUseCase
-import javax.inject.Inject
 
 class DeleteCurrentUserUseCaseImp @Inject constructor(
     private val preferenceRepository: PreferenceRepository

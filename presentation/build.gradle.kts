@@ -1,8 +1,11 @@
+
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("com.google.dagger.hilt.android")
-    id("com.guardsquare.appsweep") version "latest.release"
+    id("com.guardsquare.appsweep") version "1.4.1"
+    //  id("org.jlleitschuh.gradle.ktlint") version "11.4.2"
     kotlin("kapt")
 }
 

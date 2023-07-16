@@ -20,7 +20,7 @@ fun AgendaSnackbar(
     snackbarHostState: SnackbarHostState,
     onAction: () -> Unit,
     onDismiss: () -> Unit,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     SnackbarHost(
         hostState = snackbarHostState,
@@ -33,7 +33,7 @@ fun AgendaSnackbar(
                 TextButton(
                     onClick = {
                         onAction()
-                    },
+                    }
                 ) {
                     Text(
                         text = data.visuals.actionLabel ?: "",

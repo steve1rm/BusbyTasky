@@ -3,13 +3,13 @@ package me.androidbox.presentation.photo.viewmodel
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import me.androidbox.presentation.navigation.Screen.PhotoScreen.PHOTO_IMAGE_PATH
 import me.androidbox.presentation.photo.screen.PhotoScreenEvent
 import me.androidbox.presentation.photo.screen.PhotoScreenState
-import javax.inject.Inject
 
 @HiltViewModel
 class PhotoScreenViewModel @Inject constructor(
@@ -30,7 +30,7 @@ class PhotoScreenViewModel @Inject constructor(
     }
 
     fun onPhotoScreenEvent(photoScreenEvent: PhotoScreenEvent) {
-        when(photoScreenEvent) {
+        when (photoScreenEvent) {
             is PhotoScreenEvent.OnPhotoSelected -> {
                 _photoScreenState.update { photoScreenState ->
                     photoScreenState.copy(

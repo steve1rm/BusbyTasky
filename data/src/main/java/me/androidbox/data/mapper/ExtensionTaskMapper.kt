@@ -4,7 +4,6 @@ import me.androidbox.data.local.entity.TaskEntity
 import me.androidbox.data.remote.model.response.TaskDto
 import me.androidbox.domain.agenda.model.Task
 
-
 fun TaskDto.toTask(): Task {
     return Task(
         id = this.id,

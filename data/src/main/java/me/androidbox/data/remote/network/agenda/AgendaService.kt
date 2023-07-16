@@ -1,5 +1,6 @@
 package me.androidbox.data.remote.network.agenda
 
+import java.time.ZoneId
 import me.androidbox.data.remote.model.request.SyncAgendaDto
 import me.androidbox.data.remote.model.response.AgendaDto
 import me.androidbox.data.remote.model.response.FullAgendaDto
@@ -7,7 +8,6 @@ import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Query
-import java.time.ZoneId
 
 interface AgendaService {
 

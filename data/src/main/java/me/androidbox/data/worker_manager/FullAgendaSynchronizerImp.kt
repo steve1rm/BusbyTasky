@@ -7,10 +7,10 @@ import androidx.work.NetworkType
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.WorkRequest
-import me.androidbox.domain.work_manager.FullAgendaSynchronizer
 import java.util.UUID
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
+import me.androidbox.domain.work_manager.FullAgendaSynchronizer
 
 class FullAgendaSynchronizerImp @Inject constructor(
     private val workManager: WorkManager) : FullAgendaSynchronizer {

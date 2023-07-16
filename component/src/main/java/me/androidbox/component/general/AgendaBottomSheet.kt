@@ -29,7 +29,7 @@ fun AgendaBottomSheet(
     content: @Composable () -> Unit,
     modifier: Modifier = Modifier) {
 
-    if(shouldOpenBottomSheet) {
+    if (shouldOpenBottomSheet) {
         ModalBottomSheet(
             containerColor = MaterialTheme.colorScheme.backgroundWhiteColor,
             sheetState = bottomSheetState,
@@ -39,7 +39,7 @@ fun AgendaBottomSheet(
                     bottomSheetState.hide()
                     onCloseDropdown()
                 }
-            },
+            }
         ) {
             content()
         }

@@ -22,7 +22,7 @@ fun AgendaDropDownMenu(
     listOfMenuItemId: List<Int>,
     onSelectedOption: (item: Int) -> Unit,
     onCloseDropdown: () -> Unit,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
 
     DropdownMenu(
@@ -32,7 +32,7 @@ fun AgendaDropDownMenu(
             onCloseDropdown()
         }
     ) {
-        listOfMenuItemId.forEachIndexed { index, itemId, ->
+        listOfMenuItemId.forEachIndexed { index, itemId ->
             DropdownMenuItem(
                 text = {
                     Text(

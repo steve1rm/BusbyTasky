@@ -42,10 +42,9 @@ fun TaskButton(
             onButtonClick()
         }) {
 
-        if(isLoading) {
+        if (isLoading) {
             CircularProgressIndicator(color = loadingColor)
-        }
-        else {
+        } else {
             Text(
                 text = buttonText,
                 color = buttonTextColor,

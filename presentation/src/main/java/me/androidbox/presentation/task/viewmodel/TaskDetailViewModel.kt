@@ -5,6 +5,8 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import java.util.UUID
+import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
@@ -21,8 +23,6 @@ import me.androidbox.presentation.navigation.Screen.Companion.ID
 import me.androidbox.presentation.navigation.Screen.Companion.MENU_ACTION_TYPE
 import me.androidbox.presentation.task.screen.TaskDetailScreenEvent
 import me.androidbox.presentation.task.screen.TaskDetailScreenState
-import java.util.UUID
-import javax.inject.Inject
 
 @HiltViewModel
 class TaskDetailViewModel @Inject constructor(
@@ -40,7 +40,7 @@ class TaskDetailViewModel @Inject constructor(
 
         menuActionType?.let { actionType ->
             /** Actions for opening and editing */
-            when(actionType) {
+            when (actionType) {
                 AgendaMenuActionType.OPEN.name -> {
                     _taskDetailScreenState.update { taskDetailScreenState ->
                         taskDetailScreenState.copy(
@@ -75,7 +75,7 @@ class TaskDetailViewModel @Inject constructor(
     }
 
     fun onTaskDetailScreenEvent(taskDetailScreenEvent: TaskDetailScreenEvent) {
-        when(taskDetailScreenEvent) {
+        when (taskDetailScreenEvent) {
             is TaskDetailScreenEvent.OnAlarmReminderChanged -> {
                 _taskDetailScreenState.update { taskDetailScreenState ->
                     taskDetailScreenState.copy(
@@ -152,7 +152,7 @@ class TaskDetailViewModel @Inject constructor(
             isDone = taskDetailScreenState.value.isDone)
 
         viewModelScope.launch {
-            val responseState = when(taskDetailScreenState.value.updateModeType) {
+            val responseState = when (taskDetailScreenState.value.updateModeType) {
                 UpdateModeType.UPDATE -> {
                     taskRepository.updateTask(task)
                 }
@@ -160,7 +160,7 @@ class TaskDetailViewModel @Inject constructor(
                     taskRepository.insertTask(task)
                 }
             }
-            when(responseState) {
+            when (responseState) {
                 ResponseState.Loading -> {
                     println("Show Loading spinner...")
                 }
@@ -185,7 +185,7 @@ class TaskDetailViewModel @Inject constructor(
     private fun fetchTaskById(taskId: String) {
         viewModelScope.launch {
             taskRepository.getTaskById(taskId).collectLatest { responseState ->
-                when(responseState) {
+                when (responseState) {
                     ResponseState.Loading -> Unit
                     is ResponseState.Success -> {
                         val task = responseState.data

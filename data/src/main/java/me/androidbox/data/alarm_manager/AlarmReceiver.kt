@@ -9,7 +9,6 @@ import android.graphics.Bitmap
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.app.NotificationCompat
 import androidx.core.app.TaskStackBuilder
-import androidx.core.graphics.drawable.toBitmap
 import androidx.core.graphics.drawable.toBitmapOrNull
 import androidx.core.net.toUri
 import me.androidbox.data.R
@@ -23,7 +22,7 @@ import me.androidbox.domain.constant.AgendaDeepLinks.EVENT_DEEPLINK
 class AlarmReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context?, intent: Intent?) {
-        if(intent != null && context != null) {
+        if (intent != null && context != null) {
             intent.extras?.let { bundle ->
                 val agendaId = bundle.getString(EXTRA_ID) ?: ""
                 val title = bundle.getString(EXTRA_TITLE) ?: "Title"

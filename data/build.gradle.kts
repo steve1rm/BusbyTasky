@@ -94,7 +94,6 @@ dependencies {
     implementation(libs.hilt.work)
     kapt(libs.hilt.compiler)
 
-
     androidTestImplementation(tests.hilt.android.testing)
     kaptTest(tests.hilt.compiler)
     testImplementation(tests.junit)
@@ -103,4 +102,4 @@ dependencies {
     androidTestImplementation(tests.truth)
     androidTestImplementation(tests.ext.junit)
     androidTestImplementation(tests.ui.test.junit4)
- }
+}

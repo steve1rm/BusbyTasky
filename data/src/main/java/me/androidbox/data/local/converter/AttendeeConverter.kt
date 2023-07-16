@@ -17,6 +17,7 @@ class AttendeeConverter {
     fun fromJson(json: String): List<Attendee> {
         return jsonAdapter.fromJson(json) ?: emptyList()
     }
+
     @TypeConverter
     fun toJson(listOfAttendee: List<Attendee>): String {
         return jsonAdapter.toJson(listOfAttendee)

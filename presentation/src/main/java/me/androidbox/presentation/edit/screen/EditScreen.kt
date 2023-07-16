@@ -28,7 +28,7 @@ fun EditScreen(
     editScreenEvent: (EditScreenEvent) -> Unit,
     modifier: Modifier = Modifier,
     onBackClicked: () -> Unit,
-    onSaveClicked: (content: String, contentType: ContentType) -> Unit,
+    onSaveClicked: (content: String, contentType: ContentType) -> Unit
 ) {
     Scaffold(modifier = modifier,
         topBar = {
@@ -73,8 +73,8 @@ fun EditScreen(
 }
 
 enum class ContentType(@StringRes val contentTypeRes: Int, val fontSize: TextUnit) {
-    TITLE(contentTypeRes = R.string.edit_title, fontSize =  26.sp),
-    DESCRIPTION(contentTypeRes = R.string.edit_description, fontSize =  16.sp)
+    TITLE(contentTypeRes = R.string.edit_title, fontSize = 26.sp),
+    DESCRIPTION(contentTypeRes = R.string.edit_description, fontSize = 16.sp)
 }
 
 @Composable
@@ -87,7 +87,7 @@ fun PreviewEditScreenTitle() {
             editScreenEvent = {},
             contentType = ContentType.TITLE,
             onBackClicked = {},
-            onSaveClicked = { _, _, -> }
+            onSaveClicked = { _, _ -> }
         )
     }
 }
@@ -102,7 +102,7 @@ fun PreviewEditScreenDescription() {
             editScreenEvent = {},
             contentType = ContentType.DESCRIPTION,
             onBackClicked = {},
-            onSaveClicked = { _, _-> }
+            onSaveClicked = { _, _ -> }
         )
     }
 }

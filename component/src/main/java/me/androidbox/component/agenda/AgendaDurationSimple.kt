@@ -44,7 +44,7 @@ fun AgendaDurationSimple(
                 fontSize = 16.sp,
                 color = MaterialTheme.colorScheme.agendaBodyTextColor)
 
-            if(isEditMode) {
+            if (isEditMode) {
                 IconButton(onClick = {
                     onStartDurationClicked()
                 }) {
@@ -81,4 +81,3 @@ fun PreviewAgendaDurationSimple() {
         )
     }
 }
-

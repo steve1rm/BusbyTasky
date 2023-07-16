@@ -53,7 +53,7 @@ fun AgendaBottomSheetToolbar(
             Icon(
                 painterResource(id = R.drawable.close),
                 contentDescription = "Close the bottom sheet",
-                tint = Black,
+                tint = Black
             )
         }
     }
