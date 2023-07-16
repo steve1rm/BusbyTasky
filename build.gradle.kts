@@ -1,11 +1,6 @@
 import org.jlleitschuh.gradle.ktlint.reporter.ReporterType
 
 buildscript {
-
-    repositories {
-        mavenCentral()
-    }
-
     dependencies {
         classpath("com.google.dagger:hilt-android-gradle-plugin:2.45")
         classpath("app.cash.paparazzi:paparazzi-gradle-plugin:1.3.0")
