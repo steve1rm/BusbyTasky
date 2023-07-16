@@ -58,8 +58,8 @@ class LoginViewModel @Inject constructor(
             }
             is AuthenticationScreenEvent.OnPasswordVisibilityChanged -> {
                 _authenticateUserState.value = authenticateUserState.value.copy(
-                        isPasswordVisible = !authenticateUserState.value.isPasswordVisible
-                    )
+                    isPasswordVisible = !authenticateUserState.value.isPasswordVisible
+                )
             }
             AuthenticationScreenEvent.OnAuthenticationUser -> {
                 _authenticateUserState.update { _ ->
@@ -89,7 +89,7 @@ class LoginViewModel @Inject constructor(
                 saveCurrentUserDetails(loginResponseState.data)
             }
 
-            _authenticateUserState.value  = _authenticateUserState.value.copy(
+            _authenticateUserState.value = _authenticateUserState.value.copy(
                 responseState = loginResponseState,
                 isLoading = false)
         }

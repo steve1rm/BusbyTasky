@@ -61,7 +61,7 @@ fun PasswordTextField(
             focusedTextColor = MaterialTheme.colorScheme.inputTextColor,
             unfocusedTextColor = MaterialTheme.colorScheme.inputTextColor,
             focusedBorderColor = MaterialTheme.colorScheme.focusedInputEntryBorder,
-            unfocusedBorderColor = Color.Transparent,
+            unfocusedBorderColor = Color.Transparent
         ),
         visualTransformation = if (isPasswordVisible) {
             VisualTransformation.None

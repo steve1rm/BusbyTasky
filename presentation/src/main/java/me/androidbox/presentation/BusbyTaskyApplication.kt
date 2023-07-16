@@ -11,8 +11,8 @@ import android.os.Build
 import androidx.hilt.work.HiltWorkerFactory
 import androidx.work.Configuration
 import dagger.hilt.android.HiltAndroidApp
-import me.androidbox.domain.alarm_manager.AgendaType
 import javax.inject.Inject
+import me.androidbox.domain.alarm_manager.AgendaType
 
 @HiltAndroidApp
 class BusbyTaskyApplication : Application(), Configuration.Provider {

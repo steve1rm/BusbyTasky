@@ -41,16 +41,14 @@ fun UserInputTextField(
             }
         },
         colors = OutlinedTextFieldDefaults.colors(
-            focusedBorderColor = if(isInputValid) {
+            focusedBorderColor = if (isInputValid) {
                 MaterialTheme.colorScheme.focusedInputEntryBorder
-            }
-            else {
+            } else {
                 MaterialTheme.colorScheme.errorEmailEntry
             },
             unfocusedBorderColor = if (!isInputValid && inputValue.isNotBlank()) {
                 MaterialTheme.colorScheme.errorEmailEntry
-            }
-            else {
+            } else {
                 Color.Transparent
             },
             unfocusedTextColor = MaterialTheme.colorScheme.inputTextColor,

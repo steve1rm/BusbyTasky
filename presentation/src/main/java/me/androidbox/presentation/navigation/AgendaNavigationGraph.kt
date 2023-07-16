@@ -1,6 +1,5 @@
 package me.androidbox.presentation.navigation
 
-import android.content.Intent
 import android.net.Uri
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
@@ -109,7 +108,7 @@ fun NavGraphBuilder.agendaNavigationGraph(navHostController: NavHostController) 
                             }
                         }
                     } else {
-                        navHostController.navigate(route = "${routeDestination}?id=${agendaItem.id}&menuActionType=${agendaMenuActionType.name}")
+                        navHostController.navigate(route = "$routeDestination?id=${agendaItem.id}&menuActionType=${agendaMenuActionType.name}")
                     }
                 },
                 onLogout = {
@@ -126,9 +125,9 @@ fun NavGraphBuilder.agendaNavigationGraph(navHostController: NavHostController) 
                 nullable = true
                 defaultValue = null
             }, navArgument(MENU_ACTION_TYPE) {
-                type = NavType.StringType
-                defaultValue = AgendaMenuActionType.OPEN.name
-            }),
+                    type = NavType.StringType
+                    defaultValue = AgendaMenuActionType.OPEN.name
+                }),
             deepLinks = listOf(navDeepLink {
                 this.uriPattern = AgendaDeepLinks.EVENT_DEEPLINK
             })
@@ -186,7 +185,7 @@ fun NavGraphBuilder.agendaNavigationGraph(navHostController: NavHostController) 
                 },
                 onPhotoClicked = { photoImage ->
                     val encodedImagePath = Uri.encode(photoImage)
-                    navHostController.navigate(route = "${Screen.PhotoScreen.PHOTO_SCREEN}/${encodedImagePath}")
+                    navHostController.navigate(route = "${Screen.PhotoScreen.PHOTO_SCREEN}/$encodedImagePath")
                 },
                 toInitials = { fullName ->
                     fullName.toInitials()

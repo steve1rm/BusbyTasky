@@ -50,7 +50,7 @@ fun LoginScreen(
 ) {
 
     LaunchedEffect(key1 = authenticationUserState.responseState) {
-        when(val status = authenticationUserState.responseState) {
+        when (val status = authenticationUserState.responseState) {
             is ResponseState.Loading -> {
                 loginScreenEvent(AuthenticationScreenEvent.OnLoading(isLoading = true))
             }
@@ -187,7 +187,7 @@ fun PreviewLoginScreen() {
         LoginScreen(
             onSignUpClicked = {},
             onLoginSuccess = {},
-            loginScreenEvent= {},
+            loginScreenEvent = {},
             authenticationUserState = AuthenticationScreenState(),
             validateCredentialsState = AuthenticationScreenState()
         )

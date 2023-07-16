@@ -9,7 +9,6 @@ import android.graphics.Bitmap
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.app.NotificationCompat
 import androidx.core.app.TaskStackBuilder
-import androidx.core.graphics.drawable.toBitmap
 import androidx.core.graphics.drawable.toBitmapOrNull
 import androidx.core.net.toUri
 import me.androidbox.data.R
