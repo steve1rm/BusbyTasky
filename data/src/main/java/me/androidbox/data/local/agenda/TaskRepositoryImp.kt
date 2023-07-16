@@ -1,5 +1,6 @@
 package me.androidbox.data.local.agenda
 
+import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import me.androidbox.data.local.dao.TaskDao
@@ -15,12 +16,11 @@ import me.androidbox.domain.alarm_manager.toAlarmItem
 import me.androidbox.domain.authentication.ResponseState
 import me.androidbox.domain.constant.SyncAgendaType
 import me.androidbox.domain.task.repository.TaskRepository
-import javax.inject.Inject
 
 class TaskRepositoryImp @Inject constructor(
     private val taskDao: TaskDao,
     private val taskService: TaskService,
-    private val alarmScheduler: AlarmScheduler,
+    private val alarmScheduler: AlarmScheduler
 ) : TaskRepository {
     override suspend fun insertTask(task: Task): ResponseState<Unit> {
         taskDao.insertTask(task.toTaskEntity())
@@ -63,7 +63,6 @@ class TaskRepositoryImp @Inject constructor(
             }
         )
     }
-
 
     override suspend fun deleteTaskById(taskId: String): ResponseState<Unit> {
         taskDao.deleteTaskById(taskId)
@@ -108,7 +107,6 @@ class TaskRepositoryImp @Inject constructor(
         return result.fold(
             onSuccess = {
                 ResponseState.Success(Unit)
-
             },
             onFailure = { throwable ->
                 ResponseState.Failure(throwable)
@@ -124,7 +122,6 @@ class TaskRepositoryImp @Inject constructor(
         return result.fold(
             onSuccess = {
                 ResponseState.Success(Unit)
-
             },
             onFailure = { throwable ->
                 ResponseState.Failure(throwable)

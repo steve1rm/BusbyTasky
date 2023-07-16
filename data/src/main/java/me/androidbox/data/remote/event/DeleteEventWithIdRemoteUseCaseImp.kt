@@ -1,10 +1,10 @@
 package me.androidbox.data.remote.event
 
+import javax.inject.Inject
 import me.androidbox.data.remote.network.event.EventService
 import me.androidbox.data.remote.util.CheckResult.checkResult
 import me.androidbox.domain.authentication.ResponseState
 import me.androidbox.domain.event.usecase.DeleteEventWithIdRemoteUseCase
-import javax.inject.Inject
 
 class DeleteEventWithIdRemoteUseCaseImp @Inject constructor(
     private val eventService: EventService

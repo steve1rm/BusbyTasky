@@ -1,9 +1,9 @@
 package me.androidbox.domain.authentication.usecase.imp
 
+import javax.inject.Inject
 import me.androidbox.domain.authentication.model.AuthenticatedUser
 import me.androidbox.domain.authentication.preference.PreferenceRepository
 import me.androidbox.domain.authentication.usecase.RetrieveCurrentLoginUserUseCase
-import javax.inject.Inject
 
 class RetrieveCurrentLoginUserUseCaseImp @Inject constructor(
     private val preferenceRepository: PreferenceRepository) : RetrieveCurrentLoginUserUseCase {

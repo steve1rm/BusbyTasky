@@ -60,7 +60,7 @@ fun AgendaCard(
                         fontWeight = FontWeight.Bold,
                         fontSize = 20.sp,
                         color = agendaCardType.titleTextColor,
-                        textDecoration = if(isAgendaCompleted) TextDecoration.LineThrough else TextDecoration.None
+                        textDecoration = if (isAgendaCompleted) TextDecoration.LineThrough else TextDecoration.None
                     )
                 }
                 Box(
@@ -102,7 +102,7 @@ enum class AgendaCardType(
     val titleTextColor: Color,
     val subTitleTextColor: Color,
     val dotColor: Color,
-    val backgroundColor: @Composable () -> Color,
+    val backgroundColor: @Composable () -> Color
 ) {
     TASK(
         titleTextColor = Color.White,
@@ -119,7 +119,7 @@ enum class AgendaCardType(
         dotColor = Color.Black,
         backgroundColor = {
             MaterialTheme.colorScheme.EventCardBackgroundColor
-        },
+        }
     ),
 
     REMINDER(

@@ -8,7 +8,7 @@ data class Reminder(
     override val description: String,
     override val startDateTime: Long,
     override val remindAt: Long,
-    override val agendaType: AgendaType = AgendaType.REMINDER,
+    override val agendaType: AgendaType = AgendaType.REMINDER
 ) : AgendaItem(
     id = id,
     title = title,

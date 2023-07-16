@@ -64,7 +64,7 @@ fun AgendaTopBar(
                     maxLines = 1,
                     text = initials,
                     fontSize = 13.sp,
-                    fontWeight = FontWeight.SemiBold,
+                    fontWeight = FontWeight.SemiBold
                 )
             }
 

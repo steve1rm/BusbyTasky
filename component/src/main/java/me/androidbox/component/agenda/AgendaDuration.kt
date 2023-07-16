@@ -32,14 +32,14 @@ fun AgendaDuration(
     modifier: Modifier = Modifier) {
     Column(modifier = modifier) {
         Row(modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween,
+            horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically) {
             Text(
                 modifier = Modifier.padding(start = 10.dp).weight(0.5F),
                 text = stringResource(R.string.from_duration).format(startTime),
-                    fontWeight = FontWeight.Normal,
-                    fontSize = 16.sp,
-                    color = MaterialTheme.colorScheme.agendaBodyTextColor)
+                fontWeight = FontWeight.Normal,
+                fontSize = 16.sp,
+                color = MaterialTheme.colorScheme.agendaBodyTextColor)
 
             if (isEditMode) {
                 IconButton(onClick = {
@@ -115,7 +115,7 @@ fun AgendaDuration(
                 color = MaterialTheme.colorScheme.agendaBodyTextColor,
                 textAlign = TextAlign.Center)
 
-            if(isEditMode) {
+            if (isEditMode) {
                 IconButton(onClick = {
                     onEndDateDurationClicked()
                 }) {
@@ -150,4 +150,3 @@ fun PreviewAgendaDuration() {
         )
     }
 }
-

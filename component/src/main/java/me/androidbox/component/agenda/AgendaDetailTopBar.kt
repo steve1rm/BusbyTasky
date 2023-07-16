@@ -30,11 +30,11 @@ fun AgendaDetailTopBar(
     onCloseClicked: () -> Unit,
     onEditClicked: () -> Unit,
     onSaveClicked: () -> Unit,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     Row(modifier = modifier,
         verticalAlignment = Alignment.CenterVertically,
-    horizontalArrangement = Arrangement.SpaceBetween) {
+        horizontalArrangement = Arrangement.SpaceBetween) {
         IconButton(onClick = {
             onCloseClicked()
         }) {
@@ -49,7 +49,7 @@ fun AgendaDetailTopBar(
             fontSize = 16.sp,
             color = MaterialTheme.colorScheme.fontWhiteColor)
 
-        when(editModeType) {
+        when (editModeType) {
             is EditModeType.EditMode -> {
                 IconButton(onClick = {
                     onEditClicked()
@@ -76,8 +76,8 @@ fun AgendaDetailTopBar(
 }
 
 sealed interface EditModeType {
-    data class EditMode(@DrawableRes val editIcon: Int = R.drawable.pencil): EditModeType
-    data class SaveMode(@StringRes val saveRes: Int = R.string.save): EditModeType
+    data class EditMode(@DrawableRes val editIcon: Int = R.drawable.pencil) : EditModeType
+    data class SaveMode(@StringRes val saveRes: Int = R.string.save) : EditModeType
 }
 
 @Preview(showBackground = true)

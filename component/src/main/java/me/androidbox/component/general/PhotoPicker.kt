@@ -62,12 +62,11 @@ fun PhotoPicker(
         })
 
     /* We have no images attached */
-    if(listOfPhotoUri.isEmpty()) {
+    if (listOfPhotoUri.isEmpty()) {
         AddFirstPhoto(modifier = modifier) {
             photoPickerLauncher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
         }
-    }
-    else {
+    } else {
         AddSequentialPhoto(modifier = modifier, selectedImageUri = listOfPhotoUri, onOpenPhoto = onOpenPhoto, onAddPhotosClicked = {
             photoPickerLauncher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
         })
@@ -131,16 +130,16 @@ fun AddSequentialPhoto(modifier: Modifier, selectedImageUri: List<String>, onAdd
                             color = MaterialTheme.colorScheme.photoPickerBorderColor,
                             shape = RoundedCornerShape(5.dp)
                         )
-                        .clip(shape = RoundedCornerShape(5.dp)).
-                    clickable {
-                        onOpenPhoto(uri)
-                    },
+                        .clip(shape = RoundedCornerShape(5.dp))
+                        .clickable {
+                            onOpenPhoto(uri)
+                        },
                     contentScale = ContentScale.Crop
                 )
             }
 
             /** Only allows a maximum of 10 image to be added, the add button will be hidden to avoid adding more */
-            if(selectedImageUri.count() < 10) {
+            if (selectedImageUri.count() < 10) {
                 item {
                     AsyncImage(
                         model = R.drawable.add_photo,

@@ -24,7 +24,7 @@ jobs:
 
         # Copy the API key from github secrets and copy it to local.properties
         # As this file is local github will have to create it and copy the API key
-        # so it can be read in from the build.gradle
+        # so it can be read in from the build.gradle.kts
         # This way the API is not exposed in the public repository
       - name: Access BUSBY_TASKY_API_KEY
         env:

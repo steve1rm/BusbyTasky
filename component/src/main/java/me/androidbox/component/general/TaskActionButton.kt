@@ -19,7 +19,7 @@ import me.androidbox.component.ui.theme.BusbyTaskyTheme
 fun TaskActionButton(
     @DrawableRes iconResource: Int,
     onActionClicked: () -> Unit,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     IconButton(
         modifier = modifier,
@@ -39,7 +39,7 @@ fun TaskActionButton(
 fun PreviewActionButton() {
     BusbyTaskyTheme {
         TaskActionButton(
-            modifier =  Modifier
+            modifier = Modifier
                 .size(56.dp)
                 .background(
                     color = Color.Black,

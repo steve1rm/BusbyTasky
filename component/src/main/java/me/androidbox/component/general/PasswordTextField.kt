@@ -38,7 +38,7 @@ fun PasswordTextField(
             Text(text = placeholderText, color = MaterialTheme.colorScheme.placeholderEntry)
         },
         trailingIcon = {
-            val visibilityIconId = if(isPasswordVisible) {
+            val visibilityIconId = if (isPasswordVisible) {
                 R.drawable.visible
             } else {
                 R.drawable.hidden
@@ -63,8 +63,7 @@ fun PasswordTextField(
             focusedTextColor = MaterialTheme.colorScheme.inputTextColor),
         visualTransformation = if (isPasswordVisible) {
             VisualTransformation.None
-        }
-        else {
+        } else {
             PasswordVisualTransformation()
         }
     )

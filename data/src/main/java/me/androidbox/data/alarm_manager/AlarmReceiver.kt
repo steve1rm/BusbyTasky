@@ -19,7 +19,7 @@ import me.androidbox.domain.constant.AgendaDeepLinks.EVENT_DEEPLINK
 class AlarmReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context?, intent: Intent?) {
-        if(intent != null && context != null) {
+        if (intent != null && context != null) {
             intent.extras?.let { bundle ->
                 val agendaId = bundle.getString(EXTRA_ID) ?: ""
                 val title = bundle.getString(EXTRA_TITLE) ?: "Title"

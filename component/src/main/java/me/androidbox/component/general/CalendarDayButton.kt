@@ -17,12 +17,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import java.time.ZonedDateTime
 import me.androidbox.component.ui.theme.BusbyTaskyTheme
 import me.androidbox.component.ui.theme.DarkGray
 import me.androidbox.component.ui.theme.Gray
 import me.androidbox.component.ui.theme.Orange
 import me.androidbox.component.ui.theme.White
-import java.time.ZonedDateTime
 
 @Composable
 fun CalendarDayButton(
@@ -31,8 +31,8 @@ fun CalendarDayButton(
     modifier: Modifier = Modifier,
     onSelected: (date: ZonedDateTime) -> Unit) {
 
-    val backgroundColor = if(isSelected) Orange else White
-    val fontDayColor = if(isSelected) DarkGray else Gray
+    val backgroundColor = if (isSelected) Orange else White
+    val fontDayColor = if (isSelected) DarkGray else Gray
 
     Column(modifier = modifier
         .clip(shape = RoundedCornerShape(100.dp))
@@ -45,7 +45,7 @@ fun CalendarDayButton(
 
         Text(text = date.dayOfWeek.name.first().toString(), fontSize = 12.sp, color = fontDayColor)
         Spacer(modifier = Modifier.height(8.dp))
-        Text(text = date.dayOfMonth.toString(), fontSize = 16.sp, color = DarkGray,  fontWeight = FontWeight.Bold)
+        Text(text = date.dayOfMonth.toString(), fontSize = 16.sp, color = DarkGray, fontWeight = FontWeight.Bold)
     }
 }
 
@@ -80,5 +80,3 @@ fun PreviewDayDateButtonUnselected() {
         )
     }
 }
-
-

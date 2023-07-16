@@ -1,5 +1,6 @@
 package me.androidbox.data.remote.authentication
 
+import javax.inject.Inject
 import me.androidbox.data.remote.model.request.LoginRequestDto
 import me.androidbox.data.remote.model.request.RegistrationRequestDto
 import me.androidbox.data.remote.model.response.LoginDto
@@ -8,10 +9,9 @@ import me.androidbox.data.remote.util.CheckResult.checkResult
 import me.androidbox.domain.authentication.ResponseState
 import me.androidbox.domain.authentication.model.AuthenticatedUser
 import me.androidbox.domain.authentication.remote.AuthenticationRepository
-import javax.inject.Inject
 
 class AuthenticationRepositoryImp @Inject constructor(
-    private val authenticationService: AuthenticationService,
+    private val authenticationService: AuthenticationService
 ) : AuthenticationRepository {
 
     override suspend fun registerUser(fullName: String, email: String, password: String): ResponseState<Unit> {
@@ -27,7 +27,7 @@ class AuthenticationRepositoryImp @Inject constructor(
 
         /* TODO Is this the best way to extract the value from the Result<T> */
         val unit = result.getOrNull()
-        return if(unit!= null) {
+        return if (unit != null) {
             ResponseState.Success(unit)
         } else {
             ResponseState.Failure((result.exceptionOrNull() ?: Exception()))
@@ -46,7 +46,7 @@ class AuthenticationRepositoryImp @Inject constructor(
 
         /* TODO Is this the best way to extract the value from the Result<T> */
         val loginDto = result.getOrNull()
-        return if(loginDto != null) {
+        return if (loginDto != null) {
             val login = AuthenticatedUser(
                 token = loginDto.token,
                 userId = loginDto.userId,
@@ -63,10 +63,9 @@ class AuthenticationRepositoryImp @Inject constructor(
             authenticationService.authenticate()
         }
 
-        return if(result.isSuccess) {
+        return if (result.isSuccess) {
             ResponseState.Success(Unit)
-        }
-        else {
+        } else {
             ResponseState.Failure(result.exceptionOrNull() as? Exception ?: Exception())
         }
     }
@@ -76,10 +75,9 @@ class AuthenticationRepositoryImp @Inject constructor(
             authenticationService.logout()
         }
 
-        return if(result.isSuccess) {
+        return if (result.isSuccess) {
             ResponseState.Success(Unit)
-        }
-        else {
+        } else {
             ResponseState.Failure(result.exceptionOrNull() as? Exception ?: Exception())
         }
     }

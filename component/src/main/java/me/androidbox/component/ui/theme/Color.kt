@@ -1,6 +1,5 @@
 package me.androidbox.component.ui.theme
 
-
 import androidx.compose.material3.ColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
@@ -147,7 +146,6 @@ val ColorScheme.backgroundWhiteColor: Color
         return Background
     }
 
-
 val ColorScheme.backgroundBackColor: Color
     @Composable
     get() {
@@ -208,7 +206,6 @@ val ColorScheme.creatorTextFontColor: Color
         return LightBlue
     }
 
-
 val ColorScheme.topbarText: Color
     @Composable
     get() {
@@ -233,7 +230,6 @@ val ColorScheme.dropDownMenuBackgroundColor: Color
         return ExtraLightWhite
     }
 
-
 val ColorScheme.photoTextColor: Color
     @Composable
     get() {
@@ -251,6 +247,3 @@ val ColorScheme.photoPickerBorderColor: Color
     get() {
         return LightBlue
     }
-
-
-

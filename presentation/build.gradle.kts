@@ -1,11 +1,11 @@
-import org.jlleitschuh.gradle.ktlint.reporter.ReporterType
+
 
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("com.google.dagger.hilt.android")
     id("com.guardsquare.appsweep") version "1.4.1"
-    id("org.jlleitschuh.gradle.ktlint") version "11.4.2"
+    //  id("org.jlleitschuh.gradle.ktlint") version "11.4.2"
     kotlin("kapt")
 }
 
@@ -69,38 +69,6 @@ kapt {
  * This reduces incremental compilation times by reducing how often an incremental change causes a rebuild of the Dagger components. */
 hilt {
     enableAggregatingTask = true
-}
-
-ktlint {
-    this.android.value(true)
-    this.ignoreFailures.value(false)
-    this.disabledRules.set(listOf(
-        "final-newline",
-        "parameter-list-wrapping",
-        "no-empty-first-line-in-method-block",
-        "max-line-length",
-        "wrapping",
-        "argument-list-wrapping",
-        "curly-spacing",
-        "no-wildcard-imports",
-        "package-name"
-    ))
-
-    this.filter {
-        exclude {
-                element -> element.file.path.contains("test")
-        }
-        exclude {
-                element -> element.file.path.contains("androidTest")
-        }
-    }
-
-    reporters {
-        this.reporter(ReporterType.CHECKSTYLE)
-        this.reporter(ReporterType.HTML)
-        this.reporter(ReporterType.PLAIN)
-        this.reporter(ReporterType.JSON)
-    }
 }
 
 dependencies {

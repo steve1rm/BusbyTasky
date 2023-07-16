@@ -16,7 +16,7 @@ interface AuthenticationService {
     @POST(EndPointConstant.LOGIN)
     suspend fun login(
         @Body loginRequestDto: LoginRequestDto
-    ) : LoginDto
+    ): LoginDto
 
     @GET(EndPointConstant.LOGOUT)
     suspend fun logout()

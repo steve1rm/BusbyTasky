@@ -14,7 +14,7 @@ data class Event(
     val isUserEventCreator: Boolean,
     val host: String,
     val attendees: List<Attendee>,
-    val photos: List<String>,
+    val photos: List<String>
 ) : AgendaItem(
     id = id,
     title = title,

@@ -1,5 +1,6 @@
 package me.androidbox.data.mapper
 
+import java.util.UUID
 import me.androidbox.data.local.entity.EventEntity
 import me.androidbox.data.remote.model.request.EventCreateRequestDto
 import me.androidbox.data.remote.model.request.EventUpdateRequestDto
@@ -9,7 +10,6 @@ import me.androidbox.data.remote.model.response.EventDto
 import me.androidbox.domain.agenda.model.Attendee
 import me.androidbox.domain.agenda.model.Event
 import me.androidbox.domain.agenda.model.SyncAgenda
-import java.util.UUID
 
 fun EventEntity.toEvent(): Event {
     return Event(
@@ -107,7 +107,7 @@ fun AttendeeDto.toAttendee(): Attendee {
         fullName = this.fullName,
         userId = this.userId,
         eventId = this.eventId,
-        isGoing = this.isGoing ,
+        isGoing = this.isGoing,
         remindAt = this.remindAt)
 }
 

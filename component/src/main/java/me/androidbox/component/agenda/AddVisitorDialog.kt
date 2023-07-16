@@ -1,6 +1,5 @@
 package me.androidbox.component.agenda
 
-import android.provider.CalendarContract.Attendees
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape

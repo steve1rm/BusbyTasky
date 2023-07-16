@@ -42,10 +42,9 @@ fun UserInputTextField(
             }
         },
         colors = TextFieldDefaults.outlinedTextFieldColors(
-            focusedBorderColor = if(isInputValid) {
+            focusedBorderColor = if (isInputValid) {
                 MaterialTheme.colorScheme.focusedInputEntryBorder
-            }
-            else {
+            } else {
                 MaterialTheme.colorScheme.errorEmailEntry
             },
             unfocusedBorderColor = Color.Transparent,

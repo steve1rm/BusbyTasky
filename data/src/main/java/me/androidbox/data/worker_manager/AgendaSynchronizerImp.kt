@@ -1,13 +1,13 @@
 package me.androidbox.data.worker_manager
 
 import androidx.work.*
-import me.androidbox.domain.work_manager.AgendaSynchronizer
 import java.util.UUID
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
+import me.androidbox.domain.work_manager.AgendaSynchronizer
 
 class AgendaSynchronizerImp @Inject constructor(
-    private val workManager: WorkManager,
+    private val workManager: WorkManager
 ) : AgendaSynchronizer {
 
     companion object {
@@ -30,7 +30,7 @@ class AgendaSynchronizerImp @Inject constructor(
         workManager.enqueueUniquePeriodicWork(
             SYNC_DELETED_AGENDA_IDS,
             ExistingPeriodicWorkPolicy.CANCEL_AND_REENQUEUE,
-            syncWorkerRequest,
+            syncWorkerRequest
         )
 
         return syncWorkerRequest.id

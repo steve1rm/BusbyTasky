@@ -1,9 +1,9 @@
 package me.androidbox.domain.authentication.usecase.imp
 
+import javax.inject.Inject
 import me.androidbox.domain.authentication.ResponseState
 import me.androidbox.domain.authentication.remote.AuthenticationRepository
 import me.androidbox.domain.authentication.usecase.RegisterUseCase
-import javax.inject.Inject
 
 class RegisterUseCaseImp @Inject constructor(
     private val authenticationRepository: AuthenticationRepository
