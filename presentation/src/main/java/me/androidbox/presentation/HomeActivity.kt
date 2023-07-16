@@ -3,41 +3,53 @@ package me.androidbox.presentation
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.activity.viewModels
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.compose.rememberNavController
+import dagger.hilt.android.AndroidEntryPoint
+import me.androidbox.domain.authentication.ResponseState
+import me.androidbox.presentation.login.viewmodel.HomeViewModel
+import me.androidbox.presentation.navigation.NavigationGraph
+import me.androidbox.presentation.navigation.Screen
 import me.androidbox.presentation.ui.theme.BusbyTaskyTheme
 
+@AndroidEntryPoint
 class HomeActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val homeViewModel by viewModels<HomeViewModel>()
+
+        installSplashScreen().apply {
+            this.setKeepOnScreenCondition {
+                homeViewModel.authenticationState.value == ResponseState.Loading
+            }
+        }
+
         setContent {
-            BusbyTaskyTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colors.background
-                ) {
-                    Greeting("Android")
+            val authenticatedState = homeViewModel.authenticationState.collectAsStateWithLifecycle()
+
+            when (authenticatedState.value) {
+                is ResponseState.Success -> {
+                    startDestination(destination = Screen.Agenda.route)
+                }
+                is ResponseState.Failure -> {
+                    startDestination(destination = Screen.Authentication.route)
+                }
+                is ResponseState.Loading -> {
+                    /* no-op just wait for the splash screen to finish */
                 }
             }
         }
     }
-}
 
-@Composable
-fun Greeting(name: String) {
-    Text(text = "Hello $name! BusbyTasky")
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    BusbyTaskyTheme {
-        Greeting("Android")
+    @Composable
+    private fun startDestination(destination: String) {
+        BusbyTaskyTheme {
+            val navHostController = rememberNavController()
+            NavigationGraph(navHostController = navHostController, startDestination = destination)
+        }
     }
 }

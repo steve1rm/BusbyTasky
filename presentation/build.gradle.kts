@@ -1,6 +1,12 @@
+
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("com.google.dagger.hilt.android")
+    id("com.guardsquare.appsweep") version "1.4.1"
+    //  id("org.jlleitschuh.gradle.ktlint") version "11.4.2"
+    kotlin("kapt")
 }
 
 android {
@@ -9,7 +15,7 @@ android {
 
     defaultConfig {
         applicationId = "me.androidbox.presentation"
-        minSdk = 21
+        minSdk = 24
         targetSdk = 33
         versionCode = 1
         versionName = "1.0"
@@ -28,12 +34,14 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        isCoreLibraryDesugaringEnabled = true
+
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "17"
     }
 
     buildFeatures {
@@ -41,7 +49,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.2"
+        kotlinCompilerExtensionVersion = "1.4.7"
     }
 
     packagingOptions {
@@ -51,19 +59,60 @@ android {
     }
 }
 
+/* configure kapt to correct error types */
+kapt {
+    correctErrorTypes = true
+}
+
+/*
+ * This allows the Hilt annotation processors to be isolating so they are only invoked when necessary.
+ * This reduces incremental compilation times by reducing how often an incremental change causes a rebuild of the Dagger components. */
+hilt {
+    enableAggregatingTask = true
+}
+
 dependencies {
+    implementation(project(":component"))
+    implementation(project(":domain"))
+    implementation(project(":data"))
 
-    implementation("androidx.core:core-ktx:1.9.0")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.1")
-    implementation("androidx.activity:activity-compose:1.6.1")
-    implementation("androidx.compose.ui:ui:1.3.3")
-    implementation("androidx.compose.ui:ui-tooling-preview:1.3.3")
-    implementation("androidx.compose.material:material:1.3.1")
+    implementation(libs.core.ktx)
+    implementation(libs.lifecycle.runtime.ktx)
+    implementation(libs.bundles.compose)
+    implementation(libs.ui)
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.compiler)
+    implementation(libs.retrofit)
+    implementation(libs.hilt.navigation.compose)
+    implementation(libs.navigation.compose)
+    implementation(libs.bundles.retrofit)
+    implementation(libs.core.splashscreen)
+    implementation(libs.coil.compose)
 
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.3.3")
-    debugImplementation("androidx.compose.ui:ui-tooling:1.3.3")
-    debugImplementation("androidx.compose.ui:ui-test-manifest:1.3.3")
+    /* TODO Adds these to settings */
+    implementation("com.maxkeppeler.sheets-compose-dialogs:core:_")
+    implementation("com.maxkeppeler.sheets-compose-dialogs:calendar:_")
+    implementation("com.maxkeppeler.sheets-compose-dialogs:date-time:_")
+    implementation("com.maxkeppeler.sheets-compose-dialogs:clock:_")
+
+    coreLibraryDesugaring(Android.tools.desugarJdkLibs)
+
+    implementation(libs.lifecycle.runtime.compose)
+    implementation(libs.lifecycle.viewmodel.compose)
+    implementation(libs.runtime.livedata)
+    implementation(libs.work.runtime.ktx)
+    implementation(libs.hilt.work)
+    implementation(libs.accompanist.swiperefresh)
+    debugImplementation(tests.ui.tooling)
+    debugImplementation(tests.ui.test.manifest)
+
+    testImplementation(tests.junit)
+    testImplementation(tests.hilt.android.testing)
+    kaptTest(tests.hilt.compiler)
+
+    androidTestImplementation(tests.ext.junit)
+    androidTestImplementation(tests.espresso.core)
+    androidTestImplementation(tests.ui.test.junit4)
+    androidTestImplementation(tests.hilt.android.testing)
+    kaptAndroidTest(tests.hilt.compiler)
 }
