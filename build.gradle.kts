@@ -23,7 +23,7 @@ subprojects {
 
     configure<org.jlleitschuh.gradle.ktlint.KtlintExtension> {
         this.android.value(true)
-        this.ignoreFailures.value(true)
+        this.ignoreFailures.value(false)
         this.disabledRules.set(listOf(
             "final-newline",
             "parameter-list-wrapping",

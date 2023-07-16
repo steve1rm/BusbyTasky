@@ -31,6 +31,9 @@ jobs:
            BUSBY_TASKY_API_KEY: ${{ secrets.BUSBY_TASKY_API_KEY }}
         run: echo BUSBY_TASKY_API_KEY="$BUSBY_TASKY_API_KEY" > ./local.properties
 
+      - name: Check formatting correctness
+        run: ./gradlew ktlintCheck
+
       - name: Build Project
         run: ./gradlew assembleDebug
 
