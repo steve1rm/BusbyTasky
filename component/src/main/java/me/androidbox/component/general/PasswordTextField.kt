@@ -57,10 +57,12 @@ fun PasswordTextField(
         },
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
         shape = RoundedCornerShape(10.dp),
-        colors = TextFieldDefaults.outlinedTextFieldColors(
+        colors = OutlinedTextFieldDefaults.colors(
+            focusedTextColor = MaterialTheme.colorScheme.inputTextColor,
+            unfocusedTextColor = MaterialTheme.colorScheme.inputTextColor,
             focusedBorderColor = MaterialTheme.colorScheme.focusedInputEntryBorder,
             unfocusedBorderColor = Color.Transparent,
-            focusedTextColor = MaterialTheme.colorScheme.inputTextColor),
+        ),
         visualTransformation = if (isPasswordVisible) {
             VisualTransformation.None
         } else {

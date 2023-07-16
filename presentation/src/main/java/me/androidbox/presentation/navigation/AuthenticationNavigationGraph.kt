@@ -24,14 +24,17 @@ fun NavGraphBuilder.authenticationGraph(
             route = Screen.LoginScreen.route
         ) {
             val loginViewModel: LoginViewModel = hiltViewModel()
-            val loginScreenState
-                by loginViewModel.loginScreenState.collectAsStateWithLifecycle()
+            val authenticationUserState
+                    by loginViewModel.authenticateUserState.collectAsStateWithLifecycle()
+            val validateCredentialsState
+                    by loginViewModel.validateCredentialsState.collectAsStateWithLifecycle()
 
             LoginScreen(
                 loginScreenEvent = { loginEvent ->
                     loginViewModel.onLoginEvent(loginEvent)
                 },
-                authenticationScreenState = loginScreenState,
+                authenticationUserState = authenticationUserState,
+                validateCredentialsState = validateCredentialsState,
                 onSignUpClicked = {
                     /* Signup clicked, navigate to register screen */
                     navHostController.navigate(route = Screen.RegisterScreen.route)
@@ -49,13 +52,15 @@ fun NavGraphBuilder.authenticationGraph(
         ) {
             val registerViewModel: RegisterViewModel = hiltViewModel()
             val registerScreenState
-                by registerViewModel.registerScreenState.collectAsStateWithLifecycle()
+                    by registerViewModel.registerScreenState.collectAsStateWithLifecycle()
+            val validateCredentialState by registerViewModel.validateCredentials.collectAsStateWithLifecycle()
 
             RegisterScreen(
                 loginScreenEvent = { loginScreenEvent ->
                     registerViewModel.onRegistrationEvent(loginScreenEvent)
                 },
                 registerScreenState = registerScreenState,
+                validateCredentialsState = validateCredentialState,
                 onBackArrowClicked = {
                     /* Back arrow clicked, pop RegisterScreen of the backstack to get back to login screen */
                     navHostController.popBackStack()

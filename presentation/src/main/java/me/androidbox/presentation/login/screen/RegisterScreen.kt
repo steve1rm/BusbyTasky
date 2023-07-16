@@ -27,11 +27,13 @@ import me.androidbox.component.general.UserInputTextField
 import me.androidbox.component.ui.theme.BusbyTaskyTheme
 import me.androidbox.component.ui.theme.backgroundInputEntry
 import me.androidbox.domain.authentication.ResponseState
+import me.androidbox.domain.authentication.model.AuthenticatedUser
 
 @Composable
 fun RegisterScreen(
     modifier: Modifier = Modifier,
     registerScreenState: AuthenticationScreenState<Unit>,
+    validateCredentialsState: AuthenticationScreenState<AuthenticatedUser>,
     loginScreenEvent: (AuthenticationScreenEvent) -> Unit,
     onBackArrowClicked: () -> Unit,
     onRegistrationSuccess: () -> Unit)
@@ -111,8 +113,8 @@ fun RegisterScreen(
                             shape = RoundedCornerShape(10.dp),
                             color = MaterialTheme.colorScheme.backgroundInputEntry
                         ),
-                    inputValue = registerScreenState.email,
-                    isInputValid = false,
+                    inputValue = validateCredentialsState.email,
+                    isInputValid = validateCredentialsState.isValidEmail,
                     placeholderText = stringResource(R.string.email_address),
                     onInputChange = { newEmail ->
                         loginScreenEvent(AuthenticationScreenEvent.OnEmailChanged(newEmail))
@@ -128,7 +130,7 @@ fun RegisterScreen(
                             shape = RoundedCornerShape(10.dp),
                             color = MaterialTheme.colorScheme.backgroundInputEntry
                         ),
-                    passwordValue = registerScreenState.password,
+                    passwordValue = validateCredentialsState.password,
                     placeholderText = stringResource(R.string.password),
                     isPasswordVisible = registerScreenState.isPasswordVisible,
                     onPasswordChange = { newPassword ->
@@ -188,7 +190,8 @@ fun PreviewRegisterScreen() {
             onBackArrowClicked = {},
             onRegistrationSuccess = {},
             loginScreenEvent = {},
-            registerScreenState = AuthenticationScreenState()
+            registerScreenState = AuthenticationScreenState(),
+            validateCredentialsState = AuthenticationScreenState()
         )
     }
 }

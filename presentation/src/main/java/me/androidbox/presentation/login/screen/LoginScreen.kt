@@ -45,11 +45,12 @@ fun LoginScreen(
     loginScreenEvent: (AuthenticationScreenEvent) -> Unit,
     onLoginSuccess: (login: AuthenticatedUser) -> Unit,
     onSignUpClicked: () -> Unit,
-    authenticationScreenState: AuthenticationScreenState<AuthenticatedUser>
+    authenticationUserState: AuthenticationScreenState<AuthenticatedUser>,
+    validateCredentialsState: AuthenticationScreenState<AuthenticatedUser>
 ) {
 
-    LaunchedEffect(key1 = authenticationScreenState.responseState) {
-        when (val status = authenticationScreenState.responseState) {
+    LaunchedEffect(key1 = authenticationUserState.responseState) {
+        when(val status = authenticationUserState.responseState) {
             is ResponseState.Loading -> {
                 loginScreenEvent(AuthenticationScreenEvent.OnLoading(isLoading = true))
             }
@@ -102,8 +103,8 @@ fun LoginScreen(
                             shape = RoundedCornerShape(10.dp),
                             color = MaterialTheme.colorScheme.backgroundInputEntry
                         ),
-                    inputValue = authenticationScreenState.email,
-                    isInputValid = authenticationScreenState.isValidEmail,
+                    inputValue = validateCredentialsState.email,
+                    isInputValid = validateCredentialsState.isValidEmail,
                     placeholderText = stringResource(R.string.email_address),
                     onInputChange = { newEmail ->
                         loginScreenEvent(AuthenticationScreenEvent.OnEmailChanged(newEmail))
@@ -118,7 +119,7 @@ fun LoginScreen(
                             shape = RoundedCornerShape(10.dp),
                             color = MaterialTheme.colorScheme.backgroundInputEntry
                         ),
-                    passwordValue = authenticationScreenState.password,
+                    passwordValue = validateCredentialsState.password,
                     placeholderText = stringResource(R.string.password),
                     onPasswordChange = { newPassword ->
                         loginScreenEvent(AuthenticationScreenEvent.OnPasswordChanged(newPassword))
@@ -126,7 +127,7 @@ fun LoginScreen(
                     onPasswordVisibilityClicked = {
                         loginScreenEvent(AuthenticationScreenEvent.OnPasswordVisibilityChanged)
                     },
-                    isPasswordVisible = authenticationScreenState.isPasswordVisible
+                    isPasswordVisible = authenticationUserState.isPasswordVisible
                 )
 
                 Spacer(modifier = Modifier.height(26.dp))
@@ -139,7 +140,7 @@ fun LoginScreen(
                     onButtonClick = {
                         loginScreenEvent(AuthenticationScreenEvent.OnAuthenticationUser)
                     },
-                    isLoading = authenticationScreenState.isLoading
+                    isLoading = authenticationUserState.isLoading
                 )
             }
 
@@ -186,8 +187,9 @@ fun PreviewLoginScreen() {
         LoginScreen(
             onSignUpClicked = {},
             onLoginSuccess = {},
-            loginScreenEvent = {},
-            authenticationScreenState = AuthenticationScreenState()
+            loginScreenEvent= {},
+            authenticationUserState = AuthenticationScreenState(),
+            validateCredentialsState = AuthenticationScreenState()
         )
     }
 }
