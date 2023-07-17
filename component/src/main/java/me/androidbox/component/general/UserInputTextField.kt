@@ -13,7 +13,6 @@ import androidx.compose.ui.unit.dp
 import me.androidbox.component.R
 import me.androidbox.component.ui.theme.*
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun UserInputTextField(
     modifier: Modifier = Modifier,
@@ -41,15 +40,20 @@ fun UserInputTextField(
                 )
             }
         },
-        colors = TextFieldDefaults.outlinedTextFieldColors(
-            focusedBorderColor = if(isInputValid) {
+        colors = OutlinedTextFieldDefaults.colors(
+            focusedBorderColor = if (isInputValid) {
                 MaterialTheme.colorScheme.focusedInputEntryBorder
-            }
-            else {
+            } else {
                 MaterialTheme.colorScheme.errorEmailEntry
             },
-            unfocusedBorderColor = Color.Transparent,
-            focusedTextColor = MaterialTheme.colorScheme.inputTextColor),
+            unfocusedBorderColor = if (!isInputValid && inputValue.isNotBlank()) {
+                MaterialTheme.colorScheme.errorEmailEntry
+            } else {
+                Color.Transparent
+            },
+            unfocusedTextColor = MaterialTheme.colorScheme.inputTextColor,
+            focusedTextColor = MaterialTheme.colorScheme.inputTextColor
+        ),
         shape = RoundedCornerShape(10.dp)
     )
 }

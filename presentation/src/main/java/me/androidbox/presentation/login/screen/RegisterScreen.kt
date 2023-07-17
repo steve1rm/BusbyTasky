@@ -10,7 +10,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.State
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -28,18 +27,20 @@ import me.androidbox.component.general.UserInputTextField
 import me.androidbox.component.ui.theme.BusbyTaskyTheme
 import me.androidbox.component.ui.theme.backgroundInputEntry
 import me.androidbox.domain.authentication.ResponseState
+import me.androidbox.domain.authentication.model.AuthenticatedUser
 
 @Composable
 fun RegisterScreen(
     modifier: Modifier = Modifier,
     registerScreenState: AuthenticationScreenState<Unit>,
+    validateCredentialsState: AuthenticationScreenState<AuthenticatedUser>,
     loginScreenEvent: (AuthenticationScreenEvent) -> Unit,
     onBackArrowClicked: () -> Unit,
     onRegistrationSuccess: () -> Unit)
 {
 
     LaunchedEffect(key1 = registerScreenState) {
-        when(val status = registerScreenState.responseState) {
+        when (val status = registerScreenState.responseState) {
             ResponseState.Loading -> {
                 /* TODO Show a loading progress spinner */
             }
@@ -112,8 +113,8 @@ fun RegisterScreen(
                             shape = RoundedCornerShape(10.dp),
                             color = MaterialTheme.colorScheme.backgroundInputEntry
                         ),
-                    inputValue = registerScreenState.email,
-                    isInputValid = false,
+                    inputValue = validateCredentialsState.email,
+                    isInputValid = validateCredentialsState.isValidEmail,
                     placeholderText = stringResource(R.string.email_address),
                     onInputChange = { newEmail ->
                         loginScreenEvent(AuthenticationScreenEvent.OnEmailChanged(newEmail))
@@ -129,7 +130,7 @@ fun RegisterScreen(
                             shape = RoundedCornerShape(10.dp),
                             color = MaterialTheme.colorScheme.backgroundInputEntry
                         ),
-                    passwordValue = registerScreenState.password,
+                    passwordValue = validateCredentialsState.password,
                     placeholderText = stringResource(R.string.password),
                     isPasswordVisible = registerScreenState.isPasswordVisible,
                     onPasswordChange = { newPassword ->
@@ -181,8 +182,6 @@ fun RegisterScreen(
     }
 }
 
-
-
 @Composable
 @Preview(showBackground = true)
 fun PreviewRegisterScreen() {
@@ -191,7 +190,8 @@ fun PreviewRegisterScreen() {
             onBackArrowClicked = {},
             onRegistrationSuccess = {},
             loginScreenEvent = {},
-            registerScreenState = AuthenticationScreenState()
+            registerScreenState = AuthenticationScreenState(),
+            validateCredentialsState = AuthenticationScreenState()
         )
     }
 }

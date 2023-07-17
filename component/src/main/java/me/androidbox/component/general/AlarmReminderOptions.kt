@@ -42,7 +42,7 @@ fun AlarmReminderOptions(
             )
         }
 
-        itemsIndexed(listOfMenuItemId) { index,  itemId ->
+        itemsIndexed(listOfMenuItemId) { index, itemId ->
             Text(
                 modifier = modifier
                     .clickable {
@@ -53,7 +53,7 @@ fun AlarmReminderOptions(
                 fontSize = 16.sp,
                 color = MaterialTheme.colorScheme.agendaBodyTextColor)
 
-            if(index < listOfMenuItemId.lastIndex) {
+            if (index < listOfMenuItemId.lastIndex) {
                 Divider(color = Gray)
             }
         }
@@ -76,9 +76,7 @@ fun PreviewAlarmReminderOptions() {
                 R.string.six_hours_before,
                 R.string.one_day_before
             ),
-            onSelectedOption = {},
+            onSelectedOption = {}
         )
     }
 }
-
-

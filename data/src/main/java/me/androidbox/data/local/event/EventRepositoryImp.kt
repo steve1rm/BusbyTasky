@@ -1,21 +1,18 @@
 package me.androidbox.data.local.event
 
-import androidx.room.Database
+import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onEach
 import me.androidbox.data.local.dao.EventDao
-import me.androidbox.data.local.entity.EventEntity
 import me.androidbox.data.local.entity.EventSyncEntity
 import me.androidbox.data.mapper.toEvent
 import me.androidbox.data.mapper.toEventEntity
 import me.androidbox.data.remote.util.CheckResult.checkResult
-import me.androidbox.domain.authentication.ResponseState
 import me.androidbox.domain.agenda.model.Event
+import me.androidbox.domain.authentication.ResponseState
 import me.androidbox.domain.authentication.remote.EventRepository
 import me.androidbox.domain.constant.SyncAgendaType
-import javax.inject.Inject
 
 class EventRepositoryImp @Inject constructor(
     private val eventDao: EventDao
@@ -39,8 +36,8 @@ class EventRepositoryImp @Inject constructor(
             }
     }
 
-    override suspend fun getEventById(id: String): ResponseState<Event> {
-        return ResponseState.Success(eventDao.getEventById(id).toEvent())
+    override suspend fun getEventById(id: String): Event {
+        return eventDao.getEventById(id).toEvent()
     }
 
     override suspend fun insertEvent(event: Event): ResponseState<Unit> {

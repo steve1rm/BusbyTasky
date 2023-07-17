@@ -20,22 +20,22 @@ fun DeleteEventAlertDialog(
         onDismissRequest = {
             onDismissClicked()
         },
-    title = {
-        Text(text = title)
-    },
-    text = {
-        Text(text = text)
-    },
-    confirmButton = {
-        Button(onClick = { onConfirmationClicked() }) {
-            Text(text = stringResource(R.string.confirm))
-        }
-    },
-    dismissButton = {
-        Button(onClick = { onDismissClicked() }) {
-            Text(text = stringResource(R.string.dismiss))
-        }
-    })
+        title = {
+            Text(text = title)
+        },
+        text = {
+            Text(text = text)
+        },
+        confirmButton = {
+            Button(onClick = { onConfirmationClicked() }) {
+                Text(text = stringResource(R.string.confirm))
+            }
+        },
+        dismissButton = {
+            Button(onClick = { onDismissClicked() }) {
+                Text(text = stringResource(R.string.dismiss))
+            }
+        })
 }
 
 @Composable

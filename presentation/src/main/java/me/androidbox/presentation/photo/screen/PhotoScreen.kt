@@ -30,13 +30,13 @@ fun PhotoScreen(
     photoScreenEvent: (PhotoScreenEvent) -> Unit,
     onCloseClicked: () -> Unit,
     onSelectedPhotoForDeletion: (photo: String) -> Unit,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
 
     Column(modifier = modifier) {
         Row(modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically) {
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically) {
             IconButton(onClick = {
                 onCloseClicked()
             }) {
@@ -53,7 +53,7 @@ fun PhotoScreen(
                 fontWeight = FontWeight.SemiBold)
 
             IconButton(onClick = {
-              //  photoScreenEvent(PhotoScreenEvent.OnPhotoDelete(photoScreenState.photoSelected))
+                //  photoScreenEvent(PhotoScreenEvent.OnPhotoDelete(photoScreenState.photoSelected))
                 onSelectedPhotoForDeletion(photoScreenState.photoSelected)
             }) {
                 Icon(

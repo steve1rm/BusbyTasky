@@ -1,10 +1,9 @@
 package me.androidbox.data.remote.preference
 
-
 import android.content.SharedPreferences
+import javax.inject.Inject
 import me.androidbox.domain.authentication.model.AuthenticatedUser
 import me.androidbox.domain.authentication.preference.PreferenceRepository
-import javax.inject.Inject
 
 class PreferenceRepositoryImp @Inject constructor(
     private val sharedPreferences: SharedPreferences
@@ -30,14 +29,13 @@ class PreferenceRepositoryImp @Inject constructor(
         val userId = sharedPreferences.getString(USER_ID_KEY, "")
         val fullName = sharedPreferences.getString(FULL_NAME_KEY, "")
 
-        return if(!token.isNullOrEmpty() && !userId.isNullOrEmpty() && !fullName.isNullOrEmpty()) {
+        return if (!token.isNullOrEmpty() && !userId.isNullOrEmpty() && !fullName.isNullOrEmpty()) {
             AuthenticatedUser(
                 token = token,
                 userId = userId,
                 fullName = fullName
             )
-        }
-        else {
+        } else {
             null
         }
     }

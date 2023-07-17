@@ -1,15 +1,15 @@
 package me.androidbox.domain
 
-import me.androidbox.domain.agenda.model.AgendaItem
-import me.androidbox.domain.agenda.model.Event
-import me.androidbox.domain.agenda.model.Reminder
-import me.androidbox.domain.agenda.model.Task
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
+import me.androidbox.domain.agenda.model.AgendaItem
+import me.androidbox.domain.agenda.model.Event
+import me.androidbox.domain.agenda.model.Reminder
+import me.androidbox.domain.agenda.model.Task
 
 object DateTimeFormatterProvider {
 
@@ -32,7 +32,7 @@ object DateTimeFormatterProvider {
     }
 
     fun AgendaItem.toDisplayDateTime(): String {
-        return when(this) {
+        return when (this) {
             is Event -> {
                 "${this.startDateTime.toZoneDateTime().formatDateTime(DATE_PATTERN)} - ${this.endDateTime.toZoneDateTime().formatDateTime(DATE_PATTERN)}"
             }

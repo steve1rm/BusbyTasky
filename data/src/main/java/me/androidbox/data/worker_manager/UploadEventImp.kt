@@ -2,6 +2,8 @@ package me.androidbox.data.worker_manager
 
 import androidx.work.*
 import com.squareup.moshi.Moshi
+import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 import me.androidbox.data.mapper.toCreateEventDto
 import me.androidbox.data.mapper.toUpdateEventDto
 import me.androidbox.data.remote.model.request.EventCreateRequestDto
@@ -9,8 +11,6 @@ import me.androidbox.data.remote.model.request.EventUpdateRequestDto
 import me.androidbox.domain.agenda.model.Event
 import me.androidbox.domain.constant.UpdateModeType
 import me.androidbox.domain.work_manager.UploadEvent
-import java.util.concurrent.TimeUnit
-import javax.inject.Inject
 
 class UploadEventImp @Inject constructor(
     private val workManager: WorkManager,
@@ -26,7 +26,7 @@ class UploadEventImp @Inject constructor(
 
     override fun upload(event: Event, updateModeType: UpdateModeType) {
         /** Serialize the event to json */
-        val eventRequestJson: String = when(updateModeType) {
+        val eventRequestJson: String = when (updateModeType) {
             UpdateModeType.CREATE -> {
                 /** request for Create eventRequestDto */
                 val jsonAdapter = moshi.adapter(EventCreateRequestDto::class.java)
@@ -46,7 +46,7 @@ class UploadEventImp @Inject constructor(
             EVENT to eventRequestJson,
             EVENT_PHOTOS to event.photos.toTypedArray())
 
-        val uploadWorkerRequest  = OneTimeWorkRequestBuilder<UploadEventWorker>()
+        val uploadWorkerRequest = OneTimeWorkRequestBuilder<UploadEventWorker>()
             .setConstraints(Constraints(Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build()))
             .setBackoffCriteria(
                 BackoffPolicy.EXPONENTIAL,

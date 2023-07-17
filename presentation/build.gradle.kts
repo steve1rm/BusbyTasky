@@ -1,7 +1,11 @@
+
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("com.google.dagger.hilt.android")
+    id("com.guardsquare.appsweep") version "1.4.1"
+    //  id("org.jlleitschuh.gradle.ktlint") version "11.4.2"
     kotlin("kapt")
 }
 
@@ -32,12 +36,12 @@ android {
     compileOptions {
         isCoreLibraryDesugaringEnabled = true
 
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "17"
     }
 
     buildFeatures {
@@ -45,7 +49,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.2"
+        kotlinCompilerExtensionVersion = "1.4.7"
     }
 
     packagingOptions {
@@ -83,21 +87,22 @@ dependencies {
     implementation(libs.navigation.compose)
     implementation(libs.bundles.retrofit)
     implementation(libs.core.splashscreen)
-    implementation("io.coil-kt:coil-compose:2.1.0")
+    implementation(libs.coil.compose)
 
     /* TODO Adds these to settings */
-    implementation("com.maxkeppeler.sheets-compose-dialogs:core:1.1.1")
-    implementation("com.maxkeppeler.sheets-compose-dialogs:calendar:1.1.1")
-    implementation("com.maxkeppeler.sheets-compose-dialogs:date-time:1.1.1")
-    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.6.0")
-    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:1.1.5")
+    implementation("com.maxkeppeler.sheets-compose-dialogs:core:_")
+    implementation("com.maxkeppeler.sheets-compose-dialogs:calendar:_")
+    implementation("com.maxkeppeler.sheets-compose-dialogs:date-time:_")
+    implementation("com.maxkeppeler.sheets-compose-dialogs:clock:_")
 
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.0")
-    implementation("androidx.compose.runtime:runtime-livedata:1.3.3")
-    implementation("io.coil-kt:coil-compose:1.4.0")
-    implementation("androidx.work:work-runtime-ktx:2.8.0")
-    implementation("androidx.hilt:hilt-work:1.0.0")
-    implementation("com.google.accompanist:accompanist-swiperefresh:0.27.0")
+    coreLibraryDesugaring(Android.tools.desugarJdkLibs)
+
+    implementation(libs.lifecycle.runtime.compose)
+    implementation(libs.lifecycle.viewmodel.compose)
+    implementation(libs.runtime.livedata)
+    implementation(libs.work.runtime.ktx)
+    implementation(libs.hilt.work)
+    implementation(libs.accompanist.swiperefresh)
     debugImplementation(tests.ui.tooling)
     debugImplementation(tests.ui.test.manifest)
 

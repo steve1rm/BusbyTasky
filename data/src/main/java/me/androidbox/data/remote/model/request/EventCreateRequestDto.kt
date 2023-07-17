@@ -2,7 +2,6 @@ package me.androidbox.data.remote.model.request
 
 import com.squareup.moshi.JsonClass
 
-
 /**
  * /event
  * POST/Multipart

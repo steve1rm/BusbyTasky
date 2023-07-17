@@ -28,7 +28,7 @@ class UploadEventWorker @AssistedInject constructor(
     private val eventService: EventService,
     private val createPhotoMultipart: CreatePhotoMultipart,
     private val moshi: Moshi
-) : CoroutineWorker(context, workerParameters)  {
+) : CoroutineWorker(context, workerParameters) {
 
     override suspend fun doWork(): Result {
         val listOfPhoto = inputData.getStringArray(EVENT_PHOTOS)
@@ -37,26 +37,24 @@ class UploadEventWorker @AssistedInject constructor(
 
         val formData = getFormData(isEditMode)
 
-        if(!eventRequestJson.isNullOrEmpty()) {
+        if (!eventRequestJson.isNullOrEmpty()) {
             val listOfPhotoMultiPart = listOfPhoto?.let {
                 /* Create the multipart for the list of photos */
                 createPhotoMultipart.createMultipartPhotos(listOfPhoto.toList())
             } ?: listOf()
 
-            if(runAttemptCount > RETRY_COUNT) {
+            if (runAttemptCount > RETRY_COUNT) {
                 Result.failure()
-            }
-            else {
+            } else {
                 Result.retry()
             }
 
             val responseResult = checkResult {
-                if(isEditMode) {
+                if (isEditMode) {
                     eventService.updateEvent(
                         listOfPhoto = listOfPhotoMultiPart,
                         eventBody = MultipartBody.Part.createFormData(formData, eventRequestJson))
-                }
-                else {
+                } else {
                     eventService.createEvent(
                         listOfPhoto = listOfPhotoMultiPart,
                         eventBody = MultipartBody.Part.createFormData(formData, eventRequestJson))
@@ -65,12 +63,11 @@ class UploadEventWorker @AssistedInject constructor(
 
             val result = responseResult.fold(
                 onSuccess = { eventDto ->
-                    if(eventDto.photos.isNotEmpty()) {
+                    if (eventDto.photos.isNotEmpty()) {
                         val outputData = photoToJson(eventDto)
 
                         Result.success(outputData)
-                    }
-                    else {
+                    } else {
                         Result.success()
                     }
                 },
@@ -80,8 +77,7 @@ class UploadEventWorker @AssistedInject constructor(
             )
 
             return result
-        }
-        else {
+        } else {
             val errorDate = workDataOf(ERROR to context.getString(R.string.request_json_error))
             return Result.failure(errorDate)
         }
@@ -103,8 +99,7 @@ class UploadEventWorker @AssistedInject constructor(
     private fun getFormData(isEditMode: Boolean): String {
         val formData = if (isEditMode) {
             context.getString(R.string.update_event_request)
-        }
-        else {
+        } else {
             context.getString(R.string.create_event_request)
         }
 

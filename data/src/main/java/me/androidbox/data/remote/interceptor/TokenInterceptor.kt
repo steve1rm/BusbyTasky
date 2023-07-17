@@ -9,10 +9,9 @@ class TokenInterceptor(private val preferenceRepository: PreferenceRepository) :
     override fun intercept(chain: Interceptor.Chain): Response {
         val loginUser = preferenceRepository.retrieveCurrentUserOrNull()
 
-        return if(loginUser == null) {
+        return if (loginUser == null) {
             chain.proceed(chain.request())
-        }
-        else {
+        } else {
             val request = chain.request()
                 .newBuilder()
                 .addHeader("Authorization", "Bearer ${loginUser.token}")

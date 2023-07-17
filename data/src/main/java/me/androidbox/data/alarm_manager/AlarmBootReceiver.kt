@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -12,7 +13,6 @@ import kotlinx.coroutines.supervisorScope
 import me.androidbox.domain.alarm_manager.AlarmItem
 import me.androidbox.domain.alarm_manager.AlarmScheduler
 import me.androidbox.domain.authentication.remote.AgendaLocalRepository
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class AlarmBootReceiver : BroadcastReceiver() {
@@ -24,7 +24,7 @@ class AlarmBootReceiver : BroadcastReceiver() {
     lateinit var agendaLocalRepository: AgendaLocalRepository
 
     override fun onReceive(context: Context?, intent: Intent?) {
-        if(intent?.action == Intent.ACTION_BOOT_COMPLETED) {
+        if (intent?.action == Intent.ACTION_BOOT_COMPLETED) {
             CoroutineScope(Dispatchers.IO).launch {
                 supervisorScope {
                     val eventsRemindAts = async {

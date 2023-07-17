@@ -1,8 +1,8 @@
 package me.androidbox.domain.authentication.remote
 
 import kotlinx.coroutines.flow.Flow
-import me.androidbox.domain.authentication.ResponseState
 import me.androidbox.domain.agenda.model.Event
+import me.androidbox.domain.authentication.ResponseState
 import me.androidbox.domain.constant.SyncAgendaType
 
 interface EventRepository {
@@ -12,7 +12,7 @@ interface EventRepository {
 
     suspend fun deleteEventById(id: String): ResponseState<Unit>
 
-    suspend fun getEventById(id: String): ResponseState<Event>
+    suspend fun getEventById(id: String): Event
 
     suspend fun insertSyncEvent(eventId: String, syncAgendaType: SyncAgendaType): ResponseState<Unit>
 }

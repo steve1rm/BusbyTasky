@@ -4,14 +4,13 @@ import me.androidbox.data.local.entity.ReminderEntity
 import me.androidbox.data.remote.model.response.ReminderDto
 import me.androidbox.domain.agenda.model.Reminder
 
-
 fun ReminderDto.toReminder(): Reminder {
     return Reminder(
         id = this.id,
         title = this.title,
         description = this.description,
         startDateTime = this.time,
-        remindAt = this.remindAt,
+        remindAt = this.remindAt
     )
 }
 
@@ -21,7 +20,7 @@ fun ReminderDto.toReminderEntity(): ReminderEntity {
         title = this.title,
         description = this.description,
         time = this.time,
-        remindAt = this.remindAt,
+        remindAt = this.remindAt
     )
 }
 

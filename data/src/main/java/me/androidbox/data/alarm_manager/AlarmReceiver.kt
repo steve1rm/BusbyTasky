@@ -5,8 +5,11 @@ import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.app.NotificationCompat
 import androidx.core.app.TaskStackBuilder
+import androidx.core.graphics.drawable.toBitmapOrNull
 import androidx.core.net.toUri
 import me.androidbox.data.R
 import me.androidbox.data.alarm_manager.AlarmSchedulerImp.Companion.EXTRA_AGENDA_TYPE
@@ -19,7 +22,7 @@ import me.androidbox.domain.constant.AgendaDeepLinks.EVENT_DEEPLINK
 class AlarmReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context?, intent: Intent?) {
-        if(intent != null && context != null) {
+        if (intent != null && context != null) {
             intent.extras?.let { bundle ->
                 val agendaId = bundle.getString(EXTRA_ID) ?: ""
                 val title = bundle.getString(EXTRA_TITLE) ?: "Title"
@@ -39,7 +42,7 @@ class AlarmReceiver : BroadcastReceiver() {
         /** TODO Only Events for the moment, tasks and reminders coming soon... */
         val agendaIntent = Intent(
             Intent.ACTION_VIEW,
-            "$EVENT_DEEPLINK".replace("{id}", agendaId).toUri())
+            EVENT_DEEPLINK.replace("{id}", agendaId).toUri())
 
         val pendingIntent = TaskStackBuilder.create(context).run {
             this.addNextIntentWithParentStack(agendaIntent)
@@ -49,14 +52,17 @@ class AlarmReceiver : BroadcastReceiver() {
         val notification = NotificationCompat.Builder(context, channelId)
             .setContentTitle(title)
             .setContentText(description)
-            .setSmallIcon(R.drawable.bell)
+            .setSmallIcon(R.drawable.ic_tasky_logo)
+            .setLargeIcon(createBitmap(context))
             .setAutoCancel(true)
             .setContentIntent(pendingIntent)
             .build()
 
         notificationManager.notify(agendaId.hashCode(), notification)
+    }
 
-        println("Alarm triggered: $agendaId $title $description $channelId")
+    private fun createBitmap(context: Context): Bitmap? {
+        return AppCompatResources.getDrawable(context, R.drawable.tasky_logo)?.toBitmapOrNull()
     }
 
     private fun getNotificationManager(context: Context): NotificationManager {

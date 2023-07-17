@@ -38,7 +38,7 @@ fun PasswordTextField(
             Text(text = placeholderText, color = MaterialTheme.colorScheme.placeholderEntry)
         },
         trailingIcon = {
-            val visibilityIconId = if(isPasswordVisible) {
+            val visibilityIconId = if (isPasswordVisible) {
                 R.drawable.visible
             } else {
                 R.drawable.hidden
@@ -57,14 +57,15 @@ fun PasswordTextField(
         },
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
         shape = RoundedCornerShape(10.dp),
-        colors = TextFieldDefaults.outlinedTextFieldColors(
+        colors = OutlinedTextFieldDefaults.colors(
+            focusedTextColor = MaterialTheme.colorScheme.inputTextColor,
+            unfocusedTextColor = MaterialTheme.colorScheme.inputTextColor,
             focusedBorderColor = MaterialTheme.colorScheme.focusedInputEntryBorder,
-            unfocusedBorderColor = Color.Transparent,
-            focusedTextColor = MaterialTheme.colorScheme.inputTextColor),
+            unfocusedBorderColor = Color.Transparent
+        ),
         visualTransformation = if (isPasswordVisible) {
             VisualTransformation.None
-        }
-        else {
+        } else {
             PasswordVisualTransformation()
         }
     )

@@ -45,20 +45,24 @@ fun LoginScreen(
     loginScreenEvent: (AuthenticationScreenEvent) -> Unit,
     onLoginSuccess: (login: AuthenticatedUser) -> Unit,
     onSignUpClicked: () -> Unit,
-    authenticationScreenState: AuthenticationScreenState<AuthenticatedUser>
+    authenticationUserState: AuthenticationScreenState<AuthenticatedUser>,
+    validateCredentialsState: AuthenticationScreenState<AuthenticatedUser>
 ) {
 
-    LaunchedEffect(key1 = authenticationScreenState.responseState) {
-        when(val status = authenticationScreenState.responseState) {
+    LaunchedEffect(key1 = authenticationUserState.responseState) {
+        when (val status = authenticationUserState.responseState) {
             is ResponseState.Loading -> {
-                /* TODO Showing loading spinner */
+                loginScreenEvent(AuthenticationScreenEvent.OnLoading(isLoading = true))
             }
             is ResponseState.Success -> {
+                loginScreenEvent(AuthenticationScreenEvent.OnLoading(isLoading = false))
                 onLoginSuccess(status.data)
             }
             is ResponseState.Failure -> {
                 /* Failure */
-                Log.d("LOGIN","${status.error}")
+                loginScreenEvent(AuthenticationScreenEvent.OnLoading(isLoading = false))
+                /** TODO Display snack bar to show failure */
+                Log.d("LOGIN", "${status.error}")
             }
             else -> Unit
         }
@@ -99,8 +103,8 @@ fun LoginScreen(
                             shape = RoundedCornerShape(10.dp),
                             color = MaterialTheme.colorScheme.backgroundInputEntry
                         ),
-                    inputValue = authenticationScreenState.email,
-                    isInputValid = false,
+                    inputValue = validateCredentialsState.email,
+                    isInputValid = validateCredentialsState.isValidEmail,
                     placeholderText = stringResource(R.string.email_address),
                     onInputChange = { newEmail ->
                         loginScreenEvent(AuthenticationScreenEvent.OnEmailChanged(newEmail))
@@ -115,7 +119,7 @@ fun LoginScreen(
                             shape = RoundedCornerShape(10.dp),
                             color = MaterialTheme.colorScheme.backgroundInputEntry
                         ),
-                    passwordValue = authenticationScreenState.password,
+                    passwordValue = validateCredentialsState.password,
                     placeholderText = stringResource(R.string.password),
                     onPasswordChange = { newPassword ->
                         loginScreenEvent(AuthenticationScreenEvent.OnPasswordChanged(newPassword))
@@ -123,7 +127,7 @@ fun LoginScreen(
                     onPasswordVisibilityClicked = {
                         loginScreenEvent(AuthenticationScreenEvent.OnPasswordVisibilityChanged)
                     },
-                    isPasswordVisible = authenticationScreenState.isPasswordVisible
+                    isPasswordVisible = authenticationUserState.isPasswordVisible
                 )
 
                 Spacer(modifier = Modifier.height(26.dp))
@@ -135,10 +139,11 @@ fun LoginScreen(
                     buttonText = stringResource(R.string.login).uppercase(),
                     onButtonClick = {
                         loginScreenEvent(AuthenticationScreenEvent.OnAuthenticationUser)
-                    }
+                    },
+                    isLoading = authenticationUserState.isLoading
                 )
             }
-            
+
             Column(modifier = Modifier
                 .fillMaxWidth()
                 .align(Alignment.BottomCenter)) {
@@ -164,7 +169,7 @@ private fun buildLoginAnnotatedString(): AnnotatedString {
         ) {
             append("Don't have a an account?")
         }
-        
+
         append(" ")
 
         withStyle(
@@ -182,8 +187,9 @@ fun PreviewLoginScreen() {
         LoginScreen(
             onSignUpClicked = {},
             onLoginSuccess = {},
-            loginScreenEvent= {},
-            authenticationScreenState = AuthenticationScreenState()
+            loginScreenEvent = {},
+            authenticationUserState = AuthenticationScreenState(),
+            validateCredentialsState = AuthenticationScreenState()
         )
     }
 }

@@ -4,8 +4,9 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.Composable
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
 import me.androidbox.domain.authentication.ResponseState
@@ -23,25 +24,32 @@ class HomeActivity : ComponentActivity() {
 
         installSplashScreen().apply {
             this.setKeepOnScreenCondition {
-                homeViewModel.authenticationState.value == null
+                homeViewModel.authenticationState.value == ResponseState.Loading
             }
         }
 
         setContent {
-            val authenticatedState = homeViewModel.authenticationState.collectAsState()
-            val destination = when(authenticatedState.value) {
-                is ResponseState.Success -> {
-                    Screen.AgendaScreen.route
-                }
-                else -> {
-                    Screen.LoginScreen.route
-                }
-            }
+            val authenticatedState = homeViewModel.authenticationState.collectAsStateWithLifecycle()
 
-            BusbyTaskyTheme {
-                val navHostController = rememberNavController()
-                NavigationGraph(navHostController = navHostController, startDestination = destination)
+            when (authenticatedState.value) {
+                is ResponseState.Success -> {
+                    startDestination(destination = Screen.Agenda.route)
+                }
+                is ResponseState.Failure -> {
+                    startDestination(destination = Screen.Authentication.route)
+                }
+                is ResponseState.Loading -> {
+                    /* no-op just wait for the splash screen to finish */
+                }
             }
+        }
+    }
+
+    @Composable
+    private fun startDestination(destination: String) {
+        BusbyTaskyTheme {
+            val navHostController = rememberNavController()
+            NavigationGraph(navHostController = navHostController, startDestination = destination)
         }
     }
 }

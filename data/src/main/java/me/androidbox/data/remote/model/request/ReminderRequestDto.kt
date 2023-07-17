@@ -1,6 +1,5 @@
 package me.androidbox.data.remote.model.request
 
-
 /**
  * /Reminder
  * POST

@@ -32,8 +32,10 @@ fun AddVisitorDialog(
     onEmailChanged: (email: String) -> Unit,
     onDialogClose: () -> Unit,
     isValidInput: Boolean,
+    isAlreadyAdded: Boolean,
     onAddButtonClicked: (email: String) -> Unit,
-    modifier: Modifier = Modifier) {
+    modifier: Modifier = Modifier,
+    isLoading: Boolean = false) {
 
     Dialog(onDismissRequest = { onDialogClose() }) {
         Column(
@@ -73,22 +75,35 @@ fun AddVisitorDialog(
                 }
             )
 
-            if(!isEmailVerified) {
-                Text(
-                    modifier = Modifier.fillMaxWidth(),
-                    textAlign = TextAlign.Center,
-                    text = stringResource(R.string.email_verify_failed),
-                    fontWeight = FontWeight.Normal,
-                    fontSize = 16.sp,
-                    color = MaterialTheme.colorScheme.error
-                )
+            /** TODO https://github.com/steve1rm/BusbyTasky/pull/52#discussion_r1190085164 */
+            val errorMessage = when {
+                isAlreadyAdded -> {
+                    stringResource(R.string.visitor_already_added)
+                }
+                !isEmailVerified -> {
+                    stringResource(id = R.string.email_verify_failed)
+                }
+                else -> {
+                    null
+                }
             }
+
+            Spacer(modifier = Modifier.height(16.dp))
+            Text(
+                modifier = Modifier.fillMaxWidth(),
+                textAlign = TextAlign.Center,
+                text = errorMessage ?: "",
+                fontWeight = FontWeight.Normal,
+                fontSize = 16.sp,
+                color = MaterialTheme.colorScheme.error
+            )
 
             Spacer(modifier = Modifier.height(30.dp))
 
             TaskButton(
                 modifier = Modifier.fillMaxWidth(),
                 buttonText = stringResource(R.string.add),
+                isLoading = isLoading,
                 onButtonClick = {
                     onAddButtonClicked(email)
                 }
@@ -99,29 +114,7 @@ fun AddVisitorDialog(
 
 @Composable
 @Preview(showBackground = true)
-fun PreviewAddVisitorDialog() {
-    BusbyTaskyTheme {
-        AddVisitorDialog(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(
-                    color = MaterialTheme.colorScheme.backgroundWhiteColor,
-                    shape = RoundedCornerShape(16.dp)
-                )
-                .padding(20.dp),
-            email = "joeblogs@gmail.com",
-            isEmailVerified = true,
-            isValidInput = true,
-            onEmailChanged = {},
-            onDialogClose = {},
-            onAddButtonClicked = {}
-        )
-    }
-}
-
-@Composable
-@Preview(showBackground = true)
-fun PreviewAddVisitorDialogErrorMessage() {
+fun PreviewAddVisitorDialogEmailNotExist() {
     BusbyTaskyTheme {
         AddVisitorDialog(
             modifier = Modifier
@@ -134,9 +127,80 @@ fun PreviewAddVisitorDialogErrorMessage() {
             email = "joeblogs@gmail.com",
             isEmailVerified = false,
             isValidInput = true,
+            isAlreadyAdded = false,
             onEmailChanged = {},
             onDialogClose = {},
             onAddButtonClicked = {}
+        )
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+fun PreviewAddVisitorDialogEmailExists() {
+    BusbyTaskyTheme {
+        AddVisitorDialog(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(
+                    color = MaterialTheme.colorScheme.backgroundWhiteColor,
+                    shape = RoundedCornerShape(16.dp)
+                )
+                .padding(20.dp),
+            email = "joeblogs@gmail.com",
+            isEmailVerified = true,
+            isValidInput = true,
+            isAlreadyAdded = false,
+            onEmailChanged = {},
+            onDialogClose = {},
+            onAddButtonClicked = {}
+        )
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+fun PreviewAddVisitorDialogDuplicateVisitor() {
+    BusbyTaskyTheme {
+        AddVisitorDialog(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(
+                    color = MaterialTheme.colorScheme.backgroundWhiteColor,
+                    shape = RoundedCornerShape(16.dp)
+                )
+                .padding(20.dp),
+            email = "joeblogs@gmail.com",
+            isEmailVerified = true,
+            isValidInput = true,
+            isAlreadyAdded = true,
+            onEmailChanged = {},
+            onDialogClose = {},
+            onAddButtonClicked = {}
+        )
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+fun PreviewAddVisitorDialogInvalidEmail() {
+    BusbyTaskyTheme {
+        AddVisitorDialog(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(
+                    color = MaterialTheme.colorScheme.backgroundWhiteColor,
+                    shape = RoundedCornerShape(16.dp)
+                )
+                .padding(20.dp),
+            email = "joeblogs@mail.c",
+            isEmailVerified = false,
+            isAlreadyAdded = false,
+            isValidInput = false,
+            onEmailChanged = {},
+            onDialogClose = {},
+            onAddButtonClicked = {},
+            isLoading = false
         )
     }
 }

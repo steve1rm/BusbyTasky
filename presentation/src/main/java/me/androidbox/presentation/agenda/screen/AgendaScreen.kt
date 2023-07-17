@@ -53,7 +53,7 @@ fun AgendaScreen(
     val rememberSwipeRefreshState = rememberSwipeRefreshState(isRefreshing = agendaScreenState.isRefreshingAgenda)
 
     LaunchedEffect(key1 = agendaScreenState.deletedCacheCompleted) {
-        if(agendaScreenState.deletedCacheCompleted) {
+        if (agendaScreenState.deletedCacheCompleted) {
             onLogout()
         }
     }
@@ -94,7 +94,7 @@ fun AgendaScreen(
                         )
                     }
                 )
-           }
+            }
         },
         floatingActionButton = {
             Box {
@@ -126,7 +126,7 @@ fun AgendaScreen(
                     }
                 )
             }
-        },
+        }
     )
     { paddingValues ->
         Box(modifier = Modifier
@@ -140,26 +140,26 @@ fun AgendaScreen(
                 }
             ) {
 
-            LazyColumn(
-                Modifier
-                    .fillMaxWidth(),
-                contentPadding = PaddingValues(horizontal = 8.dp),
-                verticalArrangement = Arrangement.spacedBy(16.dp)) {
+                LazyColumn(
+                    Modifier
+                        .fillMaxWidth(),
+                    contentPadding = PaddingValues(horizontal = 8.dp),
+                    verticalArrangement = Arrangement.spacedBy(16.dp)) {
 
-                item {
-                    Spacer(modifier = Modifier.height(12.dp))
-                }
+                    item {
+                        Spacer(modifier = Modifier.height(12.dp))
+                    }
 
-                item {
-                    AgendaDaySelector(
-                        date = agendaScreenState.selectedDate,
-                        isSelectedDay = agendaScreenState.selectedDay,
-                        onSelected = { day ->
-                            agendaScreenEvent(AgendaScreenEvent.OnSelectedDayChanged(day))
-                        })
-                }
+                    item {
+                        AgendaDaySelector(
+                            date = agendaScreenState.selectedDate,
+                            isSelectedDay = agendaScreenState.selectedDay,
+                            onSelected = { day ->
+                                agendaScreenEvent(AgendaScreenEvent.OnSelectedDayChanged(day))
+                            })
+                    }
 
-                items(agendaScreenState.agendaItems) { agendaItem ->
+                    items(agendaScreenState.agendaItems) { agendaItem ->
                         AgendaCard(
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -218,9 +218,9 @@ fun AgendaScreen(
                                 )
                             }
                         )
+                    }
                 }
             }
-        }
         }
     }
 

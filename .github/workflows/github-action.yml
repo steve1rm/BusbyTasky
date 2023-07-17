@@ -1,0 +1,46 @@
+name: Run github actions
+
+on:
+  push:
+  pull_request:
+    branches:
+      - '**' # All branches
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+        # Set the JDK version as the same as what the android project uses
+      - name: Setup java JDK version
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'adopt'
+          java-version: '17'
+
+      - name: Check out repository code
+        uses: actions/checkout@v2
+
+        # Copy the API key from github secrets and copy it to local.properties
+        # As this file is local github will have to create it and copy the API key
+        # so it can be read in from the build.gradle.kts
+        # This way the API is not exposed in the public repository
+      - name: Access BUSBY_TASKY_API_KEY
+        env:
+           BUSBY_TASKY_API_KEY: ${{ secrets.BUSBY_TASKY_API_KEY }}
+        run: echo BUSBY_TASKY_API_KEY="$BUSBY_TASKY_API_KEY" > ./local.properties
+
+      - name: Check formatting correctness
+        run: ./gradlew ktlintCheck
+
+      - name: Build Project
+        run: ./gradlew assembleDebug
+
+      - name: Run snapshot tests
+        run: ./gradlew verifyPaparazziDebug
+
+      - name: Upload app to AppSweep with Gradle
+        env:
+          APPSWEEP_API_KEY: ${{ secrets.APPSWEEP_API_KEY }}
+        run: ./gradlew uploadToAppSweepDebug

@@ -2,11 +2,12 @@ package me.androidbox.component.agenda
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -23,6 +24,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import me.androidbox.component.R
+import me.androidbox.component.ui.theme.Black
 import me.androidbox.component.ui.theme.BusbyTaskyTheme
 import me.androidbox.component.ui.theme.agendaBodyTextColor
 import me.androidbox.component.ui.theme.backgroundWhiteColor
@@ -34,13 +36,16 @@ fun AlarmReminder(
     isEditMode: Boolean,
     modifier: Modifier = Modifier) {
 
-    Row(modifier = modifier.clickable {
-        onReminderClicked()
-    },
+    Row(
+        modifier = modifier,
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween) {
         Row {
-            Icon(painter = painterResource(id = R.drawable.bell), contentDescription = "bell")
+            Icon(
+                painter = painterResource(id = R.drawable.bell),
+                contentDescription = "bell",
+                tint = Black
+            )
 
             Spacer(modifier = Modifier.width(20.dp))
 
@@ -51,17 +56,17 @@ fun AlarmReminder(
                 color = MaterialTheme.colorScheme.agendaBodyTextColor)
         }
 
-        if(isEditMode) {
-            Row {
-                IconButton(onClick = {
+        if (isEditMode) {
+            IconButton(
+                modifier = Modifier.size(16.dp),
+                onClick = {
                     onReminderClicked()
                 }) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.forward_arrow),
-                        contentDescription = stringResource(R.string.forward_arrow),
-                        tint = Color.Black
-                    )
-                }
+                Icon(
+                    painter = painterResource(id = R.drawable.forward_arrow),
+                    contentDescription = stringResource(R.string.forward_arrow),
+                    tint = Color.Black
+                )
             }
         }
     }
@@ -77,16 +82,32 @@ enum class AlarmReminderItem(@StringRes val stringResId: Int) {
 
 @Composable
 @Preview(showBackground = true, name = "Alarm reminder")
-fun PreviewAlarmReminder() {
+fun PreviewAlarmReminderNonEditMode() {
+    BusbyTaskyTheme {
+        AlarmReminder(
+            reminderText = "30 minutes before",
+            isEditMode = false,
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(color = MaterialTheme.colorScheme.backgroundWhiteColor)
+                .padding(horizontal = 32.dp, vertical = 16.dp),
+            onReminderClicked = {}
+        )
+    }
+}
+
+@Composable
+@Preview(showBackground = true, name = "Alarm reminder")
+fun PreviewAlarmReminderEditMode() {
     BusbyTaskyTheme {
         AlarmReminder(
             reminderText = "30 minutes before",
             isEditMode = true,
             modifier = Modifier
                 .fillMaxWidth()
-                .background(color = MaterialTheme.colorScheme.backgroundWhiteColor),
+                .background(color = MaterialTheme.colorScheme.backgroundWhiteColor)
+                .padding(horizontal = 32.dp, vertical = 16.dp),
             onReminderClicked = {}
         )
     }
 }
-

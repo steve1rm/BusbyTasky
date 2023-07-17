@@ -3,6 +3,7 @@ package me.androidbox.component.general
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -28,6 +29,8 @@ fun TaskButton(
     backgroundColor: Color = MaterialTheme.colorScheme.buttonColor,
     onButtonClick: () -> Unit,
     borderRadius: Dp = 38.dp,
+    isLoading: Boolean = false,
+    loadingColor: Color = Color.White
 ) {
     Button(
         modifier = modifier,
@@ -38,12 +41,17 @@ fun TaskButton(
         onClick = {
             onButtonClick()
         }) {
-        Text(
-            text = buttonText,
-            color = buttonTextColor,
-            fontSize = textSize,
-            fontWeight = fontWeight
-        )
+
+        if (isLoading) {
+            CircularProgressIndicator(color = loadingColor)
+        } else {
+            Text(
+                text = buttonText,
+                color = buttonTextColor,
+                fontSize = textSize,
+                fontWeight = fontWeight
+            )
+        }
     }
 }
 
@@ -55,6 +63,19 @@ fun PreviewTaskButton() {
             modifier = Modifier,
             buttonText = "Login",
             onButtonClick = {}
+        )
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+fun PreviewTaskButtonIsLoading() {
+    BusbyTaskyTheme {
+        TaskButton(
+            modifier = Modifier,
+            buttonText = "Login",
+            onButtonClick = {},
+            isLoading = true
         )
     }
 }

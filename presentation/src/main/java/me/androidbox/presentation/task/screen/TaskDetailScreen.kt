@@ -23,7 +23,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.maxkeppeker.sheets.core.models.base.rememberUseCaseState
-import kotlinx.coroutines.Job
+import java.time.ZoneId
+import java.time.ZonedDateTime
 import kotlinx.coroutines.launch
 import me.androidbox.component.agenda.AgendaDetailTopBar
 import me.androidbox.component.agenda.AgendaDurationSimple
@@ -44,8 +45,6 @@ import me.androidbox.domain.DateTimeFormatterProvider.LONG_DATE_PATTERN
 import me.androidbox.domain.DateTimeFormatterProvider.TIME_PATTERN
 import me.androidbox.domain.DateTimeFormatterProvider.formatDateTime
 import me.androidbox.presentation.ui.theme.BusbyTaskyTheme
-import java.time.ZoneId
-import java.time.ZonedDateTime
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -64,7 +63,7 @@ fun TaskDetailScreen(
     val coroutineScope = rememberCoroutineScope()
 
     LaunchedEffect(key1 = taskDetailScreenState.showSnackBar) {
-        if(taskDetailScreenState.showSnackBar) {
+        if (taskDetailScreenState.showSnackBar) {
             coroutineScope.launch {
                 snackbarHostState.showSnackbar(
                     message = taskDetailScreenState.snackbarDisplayMessage,
@@ -83,7 +82,7 @@ fun TaskDetailScreen(
                     .fillMaxWidth()
                     .background(color = MaterialTheme.colorScheme.backgroundBackColor)
                     .padding(horizontal = 16.dp),
-                editModeType = if(taskDetailScreenState.isEditMode) { EditModeType.SaveMode() } else { EditModeType.EditMode() },
+                editModeType = if (taskDetailScreenState.isEditMode) { EditModeType.SaveMode() } else { EditModeType.EditMode() },
                 displayDate = taskDetailScreenState.from.formatDateTime(LONG_DATE_PATTERN),
                 onCloseClicked = {
                     onCloseClicked()
@@ -103,16 +102,16 @@ fun TaskDetailScreen(
                 },
                 onDismiss = {
                     taskDetailScreenEvent(TaskDetailScreenEvent.OnShowSnackBar(showSnackBar = false))
-            })
+                })
         }
-        ) { paddingValues ->
+    ) { paddingValues ->
 
         Column(modifier = Modifier
             .padding(paddingValues)
             .fillMaxWidth()
             .background(Black)) {
 
-            Column (modifier = modifier
+            Column(modifier = modifier
                 .fillMaxWidth()
                 .verticalScroll(rememberScrollState())
                 .background(
@@ -197,7 +196,6 @@ fun PreviewTaskDetailScreenEditMode() {
         )
     }
 }
-
 
 @Composable
 @Preview(showBackground = true)

@@ -9,7 +9,14 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -30,9 +37,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.net.toUri
 import coil.compose.AsyncImage
 import me.androidbox.component.R
+import me.androidbox.component.ui.theme.Black
 import me.androidbox.component.ui.theme.BusbyTaskyTheme
 import me.androidbox.component.ui.theme.photoBackgroundColor
 import me.androidbox.component.ui.theme.photoPickerBorderColor
@@ -55,12 +62,11 @@ fun PhotoPicker(
         })
 
     /* We have no images attached */
-    if(listOfPhotoUri.isEmpty()) {
+    if (listOfPhotoUri.isEmpty()) {
         AddFirstPhoto(modifier = modifier) {
             photoPickerLauncher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
         }
-    }
-    else {
+    } else {
         AddSequentialPhoto(modifier = modifier, selectedImageUri = listOfPhotoUri, onOpenPhoto = onOpenPhoto, onAddPhotosClicked = {
             photoPickerLauncher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
         })
@@ -104,7 +110,8 @@ fun AddSequentialPhoto(modifier: Modifier, selectedImageUri: List<String>, onAdd
         Text(
             text = stringResource(R.string.photos),
             fontSize = 20.sp,
-            fontWeight = FontWeight.SemiBold
+            fontWeight = FontWeight.SemiBold,
+            color = Black
         )
 
         Spacer(modifier = Modifier.height(20.dp))
@@ -123,31 +130,30 @@ fun AddSequentialPhoto(modifier: Modifier, selectedImageUri: List<String>, onAdd
                             color = MaterialTheme.colorScheme.photoPickerBorderColor,
                             shape = RoundedCornerShape(5.dp)
                         )
-                        .clip(shape = RoundedCornerShape(5.dp)).
-                    clickable {
-                        onOpenPhoto(uri)
-                    },
+                        .clip(shape = RoundedCornerShape(5.dp))
+                        .clickable {
+                            onOpenPhoto(uri)
+                        },
                     contentScale = ContentScale.Crop
                 )
             }
 
-            item {
-                IconButton(
-                    modifier = Modifier.size(60.dp),
-                    onClick = {
-                    onAddPhotosClicked()
-                }) {
-                    Image(
+            /** Only allows a maximum of 10 image to be added, the add button will be hidden to avoid adding more */
+            if (selectedImageUri.count() < 10) {
+                item {
+                    AsyncImage(
+                        model = R.drawable.add_photo,
+                        contentDescription = stringResource(R.string.selected_image),
                         modifier = Modifier
-                            .size(160.dp)
+                            .size(60.dp)
                             .border(
-                                2.dp,
+                                width = 2.dp,
                                 color = MaterialTheme.colorScheme.photoPickerBorderColor,
                                 shape = RoundedCornerShape(5.dp)
-                            ),
-                        painter = painterResource(id = R.drawable.add_photo),
-                        contentDescription = stringResource(id = R.string.add_photos)
-                    )
+                            )
+                            .clip(shape = RoundedCornerShape(5.dp)).clickable {
+                                onAddPhotosClicked()
+                            })
                 }
             }
         }

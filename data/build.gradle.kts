@@ -19,7 +19,7 @@ android {
         val properties = org.jetbrains.kotlin.konan.properties.Properties()
         properties.load(project.rootProject.file("local.properties").inputStream())
 
-        buildConfigField("String", "API_KEY", "\"${properties.getProperty("API_KEY")}\"")
+        buildConfigField("String", "BUSBY_TASKY_API_KEY", "\"${properties.getProperty("BUSBY_TASKY_API_KEY")}\"")
         buildConfigField("String", "BUSBY_TASKY_API", "\"https://tasky.pl-coding.com\"")
     }
 
@@ -42,11 +42,15 @@ android {
     compileOptions {
         isCoreLibraryDesugaringEnabled = true
 
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "17"
+    }
+
+    buildFeatures {
+        buildConfig = true
     }
 }
 
@@ -84,17 +88,18 @@ dependencies {
     implementation(libs.bundles.retrofit)
 
     // Encrypted shared preferences
-    // implementation(libs.security.crypto.ktx)
-  //  implementation("androidx.security:security-crypto-ktx:1.1.0-alpha05")
-    implementation("androidx.security:security-crypto:1.0.0")
-    implementation("androidx.work:work-runtime-ktx:2.8.0")
-    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:1.1.5")
-    implementation("androidx.work:work-runtime-ktx:2.8.0")
-    implementation("androidx.hilt:hilt-work:1.0.0")
-    kapt("androidx.hilt:hilt-compiler:1.0.0")
+    implementation(libs.security.crypto)
+    implementation(libs.work.runtime.ktx)
+    coreLibraryDesugaring(Android.tools.desugarJdkLibs)
+    implementation(libs.hilt.work)
+    kapt(libs.hilt.compiler)
 
-    testImplementation(tests.hilt.android.testing)
+    androidTestImplementation(tests.hilt.android.testing)
     kaptTest(tests.hilt.compiler)
     testImplementation(tests.junit)
     testImplementation(tests.truth)
+    androidTestImplementation(tests.junit)
+    androidTestImplementation(tests.truth)
+    androidTestImplementation(tests.ext.junit)
+    androidTestImplementation(tests.ui.test.junit4)
 }

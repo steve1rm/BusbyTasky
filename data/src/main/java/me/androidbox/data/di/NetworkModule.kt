@@ -6,6 +6,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
 import me.androidbox.data.BuildConfig
 import me.androidbox.data.remote.interceptor.ApiKeyInterceptor
 import me.androidbox.data.remote.interceptor.TokenInterceptor
@@ -20,7 +21,6 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.create
-import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)

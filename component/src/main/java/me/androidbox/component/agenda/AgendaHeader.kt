@@ -31,7 +31,7 @@ fun AgendaHeader(
 
     Column(modifier = modifier) {
         Row(modifier = Modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically) {
+            verticalAlignment = Alignment.CenterVertically) {
             Image(
                 painter = painterResource(id = agendaHeaderItem.drawableRes),
                 contentDescription = stringResource(R.string.agenda_image))
@@ -49,7 +49,7 @@ fun AgendaHeader(
         Spacer(modifier = Modifier.height(30.dp))
 
         Row(modifier = Modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically) {
+            verticalAlignment = Alignment.CenterVertically) {
             Row(modifier = Modifier.weight(4F),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Start) {
@@ -65,11 +65,11 @@ fun AgendaHeader(
                     color = MaterialTheme.colorScheme.agendaSubTitleHeaderColor
                 )
             }
-            
+
             Row(modifier = Modifier.weight(1F),
                 horizontalArrangement = Arrangement.End
             ) {
-                if(isEditMode) {
+                if (isEditMode) {
                     IconButton(onClick = {
                         onEditTitleClicked(subTitle)
                     }) {
@@ -93,8 +93,8 @@ fun AgendaHeader(
         Spacer(modifier = Modifier.height(16.dp))
 
         Row(modifier = Modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween) {
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween) {
             Text(
                 text = description,
                 fontWeight = FontWeight.Normal,
@@ -104,7 +104,7 @@ fun AgendaHeader(
 
             Spacer(modifier = Modifier.width(14.dp))
 
-            if(isEditMode) {
+            if (isEditMode) {
                 IconButton(onClick = {
                     onEditDescriptionClicked(description)
                 }) {

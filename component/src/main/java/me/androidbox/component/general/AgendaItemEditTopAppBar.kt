@@ -52,8 +52,8 @@ fun AgendaItemEditTopAppBar(
                             text = stringResource(R.string.save),
                             fontSize = 16.sp,
                             fontWeight = FontWeight.SemiBold,
-                            color = MaterialTheme.colorScheme.topbarText,
-                            )
+                            color = MaterialTheme.colorScheme.topbarText
+                        )
                     }
                 )
             }

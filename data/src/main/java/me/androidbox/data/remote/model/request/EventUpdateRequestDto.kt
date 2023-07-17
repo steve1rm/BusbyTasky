@@ -1,6 +1,5 @@
 package me.androidbox.data.remote.model.request
 
-
 /**
  * /event
  * PUT/Multipart
@@ -22,4 +21,3 @@ data class EventUpdateRequestDto(
     val deletedPhotoKeys: List<String>,
     val isGoing: Boolean
 )
-

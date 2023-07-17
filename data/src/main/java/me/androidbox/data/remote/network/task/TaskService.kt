@@ -29,4 +29,3 @@ interface TaskService {
         @Query("taskId") taskId: String
     )
 }
-
