@@ -310,42 +310,41 @@ class EventViewModel @Inject constructor(
 
     private fun verifyVisitorEmail(visitorEmail: String) {
         viewModelScope.launch {
-            onEventScreenEvent(EventScreenEvent.OnVerifyingVisitorEmail(true))
-            val responseState = verifyVisitorEmailUseCase.execute(visitorEmail)
+            verifyVisitorEmailUseCase.execute(visitorEmail).collect { responseState ->
+                when (responseState) {
+                    is ResponseState.Loading -> {
+                        onEventScreenEvent(EventScreenEvent.OnVerifyingVisitorEmail(true))
+                    }
+                    is ResponseState.Success -> {
+                        responseState.data?.let { _attendee: Attendee ->
+                            val attendee = _attendee.copy(
+                                email = _attendee.email,
+                                fullName = _attendee.fullName,
+                                userId = _attendee.userId,
+                                remindAt = _attendee.remindAt,
+                                eventId = eventScreenState.value.eventId,
+                                isGoing = _attendee.isGoing
+                            )
 
-            when (responseState) {
-                is ResponseState.Loading -> {
-                    /* TODO Show loading */
-                }
-                is ResponseState.Success -> {
-                    responseState.data?.let { _attendee: Attendee ->
-                        val attendee = _attendee.copy(
-                            email = _attendee.email,
-                            fullName = _attendee.fullName,
-                            userId = _attendee.userId,
-                            remindAt = _attendee.remindAt,
-                            eventId = eventScreenState.value.eventId,
-                            isGoing = _attendee.isGoing
-                        )
-
-                        onEventScreenEvent(EventScreenEvent.OnAttendeeAdded(attendee))
-                        onEventScreenEvent(EventScreenEvent.OnVerifyingVisitorEmail(false))
-                        onEventScreenEvent(EventScreenEvent.OnShowVisitorDialog(false))
-                    } ?: run {
+                            onEventScreenEvent(EventScreenEvent.OnAttendeeAdded(attendee))
+                            onEventScreenEvent(EventScreenEvent.OnVerifyingVisitorEmail(false))
+                            onEventScreenEvent(EventScreenEvent.OnShowVisitorDialog(false))
+                        } ?: run {
+                            _eventScreenState.update { eventScreenState ->
+                                eventScreenState.copy(
+                                    isEmailVerified = false
+                                )
+                            }
+                        }
+                    }
+                    is ResponseState.Failure -> {
                         _eventScreenState.update { eventScreenState ->
                             eventScreenState.copy(
                                 isEmailVerified = false
                             )
                         }
+                        onEventScreenEvent(EventScreenEvent.OnVerifyingVisitorEmail(false))
                     }
-                }
-                is ResponseState.Failure -> {
-                    _eventScreenState.update { eventScreenState ->
-                        eventScreenState.copy(
-                            isEmailVerified = false
-                        )
-                    }
-                    onEventScreenEvent(EventScreenEvent.OnVerifyingVisitorEmail(false))
                 }
             }
         }

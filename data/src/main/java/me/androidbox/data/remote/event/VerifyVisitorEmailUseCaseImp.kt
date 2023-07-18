@@ -1,5 +1,7 @@
 package me.androidbox.data.remote.event
 
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 import me.androidbox.data.mapper.toAttendee
 import me.androidbox.data.remote.model.response.AttendeeEmailVerifyResponseDto
@@ -12,24 +14,27 @@ import me.androidbox.domain.event.usecase.VerifyVisitorEmailUseCase
 class VerifyVisitorEmailUseCaseImp @Inject constructor(
     private val eventService: EventService
 ) : VerifyVisitorEmailUseCase {
-    override suspend fun execute(email: String): ResponseState<Attendee?> {
+    override fun execute(email: String): Flow<ResponseState<Attendee?>> {
+        return flow {
+            emit(ResponseState.Loading)
 
-        val result = checkResult<AttendeeEmailVerifyResponseDto> {
-            eventService.verifyAttendee(email)
-        }
-
-        return result.fold(
-            onSuccess = { value: AttendeeEmailVerifyResponseDto ->
-                if (value.doesUserExist) {
-                    val attendee = value.attendee.toAttendee()
-                    ResponseState.Success(attendee)
-                } else {
-                    ResponseState.Success(null)
-                }
-            },
-            onFailure = { throwable ->
-                ResponseState.Failure(throwable)
+            val result = checkResult<AttendeeEmailVerifyResponseDto> {
+                eventService.verifyAttendee(email)
             }
-        )
+
+            result.fold(
+                onSuccess = { value: AttendeeEmailVerifyResponseDto ->
+                    if (value.doesUserExist) {
+                        val attendee = value.attendee.toAttendee()
+                        emit(ResponseState.Success(attendee))
+                    } else {
+                        emit(ResponseState.Success(null))
+                    }
+                },
+                onFailure = { throwable ->
+                    emit(ResponseState.Failure(throwable))
+                }
+            )
+        }
     }
 }
