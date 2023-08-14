@@ -26,7 +26,7 @@ class AuthenticationRepositoryImp @Inject constructor(
         val result = checkResult<Unit> {
             authenticationService.register(registrationRequestDto)
         }
-        
+
         return result.fold(
             onSuccess = {
                 ResponseState.Success(Unit)

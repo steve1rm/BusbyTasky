@@ -4,7 +4,6 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
@@ -19,7 +18,7 @@ import me.androidbox.domain.authentication.usecase.SaveCurrentUserUseCase
 import me.androidbox.domain.login.usecase.ValidateEmailUseCase
 import me.androidbox.presentation.login.screen.AuthenticationScreenEvent
 import me.androidbox.presentation.login.screen.AuthenticationScreenState
-import retrofit2.HttpException
+import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
@@ -90,14 +89,10 @@ class LoginViewModel @Inject constructor(
             if (loginResponseState is ResponseState.Success) {
                 saveCurrentUserDetails(loginResponseState.data)
             }
-            if(loginResponseState is ResponseState.Failure) {
-         //       val error = loginResponseState.error as HttpException
-         //       error.response()?.errorBody()
-       //         error.response()?.errorBody().toString()
-
+            else if(loginResponseState is ResponseState.Failure) {
+                _authenticateUserState.value = _authenticateUserState.value.copy(
+                    responseState = loginResponseState)
             }
-            _authenticateUserState.value = _authenticateUserState.value.copy(
-                responseState = loginResponseState)
         }
     }
 
