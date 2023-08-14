@@ -66,7 +66,7 @@ class RegisterViewModel @Inject constructor(
             AuthenticationScreenEvent.OnAuthenticationUser -> Unit
 
             /** TODO Show loading */
-            is AuthenticationScreenEvent.OnLoading -> Unit
+            is AuthenticationScreenEvent.OnIsLoading -> Unit
         }
     }
 

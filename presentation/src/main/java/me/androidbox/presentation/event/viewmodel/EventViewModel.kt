@@ -411,7 +411,7 @@ class EventViewModel @Inject constructor(
                 }
 
                 is ResponseState.Failure -> {
-                    Log.e("EVENT_INSERT", "${responseState.error.message}")
+                    Log.e("EVENT_INSERT", "${responseState.error}")
                     /* TODO Show some kink of snack bar or toast message */
                 }
             }

@@ -19,6 +19,7 @@ import me.androidbox.domain.authentication.usecase.SaveCurrentUserUseCase
 import me.androidbox.domain.login.usecase.ValidateEmailUseCase
 import me.androidbox.presentation.login.screen.AuthenticationScreenEvent
 import me.androidbox.presentation.login.screen.AuthenticationScreenState
+import retrofit2.HttpException
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
@@ -69,7 +70,7 @@ class LoginViewModel @Inject constructor(
                 }
                 loginUser(email.value, password.value)
             }
-            is AuthenticationScreenEvent.OnLoading -> {
+            is AuthenticationScreenEvent.OnIsLoading -> {
                 _authenticateUserState.update { _ ->
                     authenticateUserState.value.copy(
                         isLoading = authenticationScreenEvent.isLoading
@@ -85,13 +86,18 @@ class LoginViewModel @Inject constructor(
         viewModelScope.launch {
             val loginResponseState = loginUseCase.execute(email, password)
 
+            /* Save details of the current user that has logged in */
             if (loginResponseState is ResponseState.Success) {
                 saveCurrentUserDetails(loginResponseState.data)
             }
+            if(loginResponseState is ResponseState.Failure) {
+         //       val error = loginResponseState.error as HttpException
+         //       error.response()?.errorBody()
+       //         error.response()?.errorBody().toString()
 
+            }
             _authenticateUserState.value = _authenticateUserState.value.copy(
-                responseState = loginResponseState,
-                isLoading = false)
+                responseState = loginResponseState)
         }
     }
 

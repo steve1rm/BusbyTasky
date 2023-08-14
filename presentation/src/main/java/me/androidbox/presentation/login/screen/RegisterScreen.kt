@@ -34,7 +34,7 @@ fun RegisterScreen(
     modifier: Modifier = Modifier,
     registerScreenState: AuthenticationScreenState<Unit>,
     validateCredentialsState: AuthenticationScreenState<AuthenticatedUser>,
-    loginScreenEvent: (AuthenticationScreenEvent) -> Unit,
+    registerScreenEvent: (AuthenticationScreenEvent) -> Unit,
     onBackArrowClicked: () -> Unit,
     onRegistrationSuccess: () -> Unit)
 {
@@ -43,14 +43,17 @@ fun RegisterScreen(
         when (val status = registerScreenState.responseState) {
             ResponseState.Loading -> {
                 /* TODO Show a loading progress spinner */
+                registerScreenEvent(AuthenticationScreenEvent.OnIsLoading(isLoading = true))
             }
 
             is ResponseState.Success -> {
                 /* Navigate back to login screen */
+                registerScreenEvent(AuthenticationScreenEvent.OnIsLoading(isLoading = false))
                 onRegistrationSuccess()
             }
 
             is ResponseState.Failure -> {
+                registerScreenEvent(AuthenticationScreenEvent.OnIsLoading(isLoading = false))
                 Log.d("REGISTRATION", "Failed to register ${status.error}")
             }
             else -> Unit
@@ -100,7 +103,7 @@ fun RegisterScreen(
                     isInputValid = false,
                     placeholderText = stringResource(R.string.name),
                     onInputChange = { newUsername ->
-                        loginScreenEvent(AuthenticationScreenEvent.OnUsernameChanged(newUsername))
+                        registerScreenEvent(AuthenticationScreenEvent.OnUsernameChanged(newUsername))
                     }
                 )
                 Spacer(modifier = Modifier.height(16.dp))
@@ -117,7 +120,7 @@ fun RegisterScreen(
                     isInputValid = validateCredentialsState.isValidEmail,
                     placeholderText = stringResource(R.string.email_address),
                     onInputChange = { newEmail ->
-                        loginScreenEvent(AuthenticationScreenEvent.OnEmailChanged(newEmail))
+                        registerScreenEvent(AuthenticationScreenEvent.OnEmailChanged(newEmail))
                     }
                 )
                 Spacer(modifier = Modifier.height(16.dp))
@@ -134,10 +137,10 @@ fun RegisterScreen(
                     placeholderText = stringResource(R.string.password),
                     isPasswordVisible = registerScreenState.isPasswordVisible,
                     onPasswordChange = { newPassword ->
-                        loginScreenEvent(AuthenticationScreenEvent.OnPasswordChanged(newPassword))
+                        registerScreenEvent(AuthenticationScreenEvent.OnPasswordChanged(newPassword))
                     },
                     onPasswordVisibilityClicked = {
-                        loginScreenEvent(AuthenticationScreenEvent.OnPasswordVisibilityChanged)
+                        registerScreenEvent(AuthenticationScreenEvent.OnPasswordVisibilityChanged)
                     }
                 )
 
@@ -148,8 +151,9 @@ fun RegisterScreen(
                         .height(50.dp)
                         .fillMaxWidth(),
                     buttonText = stringResource(R.string.get_started).uppercase(),
+                    isLoading = registerScreenState.isLoading,
                     onButtonClick = {
-                        loginScreenEvent(AuthenticationScreenEvent.OnRegisterUser)
+                        registerScreenEvent(AuthenticationScreenEvent.OnRegisterUser)
                     }
                 )
             }
@@ -189,7 +193,7 @@ fun PreviewRegisterScreen() {
         RegisterScreen(
             onBackArrowClicked = {},
             onRegistrationSuccess = {},
-            loginScreenEvent = {},
+            registerScreenEvent = {},
             registerScreenState = AuthenticationScreenState(),
             validateCredentialsState = AuthenticationScreenState()
         )

@@ -20,7 +20,7 @@ class DeleteEventWithIdRemoteUseCaseImp @Inject constructor(
                 ResponseState.Success(Unit)
             },
             onFailure = { throwable ->
-                ResponseState.Failure(throwable)
+                ResponseState.Failure(throwable.message.orEmpty())
             }
         )
     }

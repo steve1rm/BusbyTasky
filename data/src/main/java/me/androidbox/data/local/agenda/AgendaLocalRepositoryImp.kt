@@ -66,7 +66,7 @@ class AgendaLocalRepositoryImp @Inject constructor(
             )))
         }
             .catch { throwable ->
-                emit(ResponseState.Failure(throwable))
+                emit(ResponseState.Failure(throwable.message.orEmpty()))
             }
     }
 

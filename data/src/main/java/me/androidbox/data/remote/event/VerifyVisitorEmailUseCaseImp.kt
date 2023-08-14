@@ -32,7 +32,7 @@ class VerifyVisitorEmailUseCaseImp @Inject constructor(
                     }
                 },
                 onFailure = { throwable ->
-                    emit(ResponseState.Failure(throwable))
+                    emit(ResponseState.Failure(throwable.message.orEmpty()))
                 }
             )
         }
