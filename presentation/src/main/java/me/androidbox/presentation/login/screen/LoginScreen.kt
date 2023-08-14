@@ -80,6 +80,7 @@ fun LoginScreen(
             }
             is ResponseState.Failure -> {
                 loginScreenEvent(AuthenticationScreenEvent.OnIsLoading(isLoading = false))
+                /* Cancel the job so that the current snackbar will hide and a new one will be shown */
                 rememberSnackBarJob?.cancel()
                 rememberSnackBarJob = coroutineScope.launch {
                     snackbarHostState.showSnackbar(
