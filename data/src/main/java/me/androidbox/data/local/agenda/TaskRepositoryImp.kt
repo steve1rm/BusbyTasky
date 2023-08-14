@@ -38,7 +38,7 @@ class TaskRepositoryImp @Inject constructor(
             },
             onFailure = { throwable ->
                 insertSyncTask(task.id, SyncAgendaType.CREATE)
-                ResponseState.Failure(throwable)
+                ResponseState.Failure(throwable.message)
             }
         )
     }
@@ -59,7 +59,7 @@ class TaskRepositoryImp @Inject constructor(
             },
             onFailure = { throwable ->
                 insertSyncTask(task.id, SyncAgendaType.UPDATE)
-                ResponseState.Failure(throwable)
+                ResponseState.Failure(throwable.message)
             }
         )
     }
@@ -77,7 +77,7 @@ class TaskRepositoryImp @Inject constructor(
             },
             onFailure = { throwable ->
                 insertSyncTask(taskId, SyncAgendaType.DELETE)
-                ResponseState.Failure(throwable)
+                ResponseState.Failure(throwable.message)
             }
         )
     }
@@ -85,6 +85,7 @@ class TaskRepositoryImp @Inject constructor(
     override fun getTaskById(taskId: String): Flow<ResponseState<Task>> {
         return flow<ResponseState<Task>> {
             val result = checkResult {
+                emit(ResponseState.Loading)
                 taskDao.getTaskById(taskId)
             }
 
@@ -93,7 +94,7 @@ class TaskRepositoryImp @Inject constructor(
                     emit(ResponseState.Success(taskEntity.toTask()))
                 },
                 onFailure = { throwable ->
-                    emit(ResponseState.Failure(throwable))
+                   emit(ResponseState.Failure(throwable.message.orEmpty()))
                 }
             )
         }
@@ -109,7 +110,7 @@ class TaskRepositoryImp @Inject constructor(
                 ResponseState.Success(Unit)
             },
             onFailure = { throwable ->
-                ResponseState.Failure(throwable)
+                ResponseState.Failure(throwable.message.orEmpty())
             }
         )
     }
@@ -124,7 +125,7 @@ class TaskRepositoryImp @Inject constructor(
                 ResponseState.Success(Unit)
             },
             onFailure = { throwable ->
-                ResponseState.Failure(throwable)
+                ResponseState.Failure(throwable.message.orEmpty())
             }
         )
     }

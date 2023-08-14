@@ -18,8 +18,8 @@ import me.androidbox.component.ui.theme.LightGreen
 @Composable
 fun AgendaSnackbar(
     snackbarHostState: SnackbarHostState,
-    onAction: () -> Unit,
-    onDismiss: () -> Unit,
+    onAction: () -> Unit = {},
+    onDismiss: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     SnackbarHost(

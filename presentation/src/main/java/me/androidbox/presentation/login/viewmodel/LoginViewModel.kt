@@ -4,7 +4,6 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
@@ -19,6 +18,7 @@ import me.androidbox.domain.authentication.usecase.SaveCurrentUserUseCase
 import me.androidbox.domain.login.usecase.ValidateEmailUseCase
 import me.androidbox.presentation.login.screen.AuthenticationScreenEvent
 import me.androidbox.presentation.login.screen.AuthenticationScreenState
+import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
@@ -69,7 +69,7 @@ class LoginViewModel @Inject constructor(
                 }
                 loginUser(email.value, password.value)
             }
-            is AuthenticationScreenEvent.OnLoading -> {
+            is AuthenticationScreenEvent.OnIsLoading -> {
                 _authenticateUserState.update { _ ->
                     authenticateUserState.value.copy(
                         isLoading = authenticationScreenEvent.isLoading
@@ -85,13 +85,14 @@ class LoginViewModel @Inject constructor(
         viewModelScope.launch {
             val loginResponseState = loginUseCase.execute(email, password)
 
+            /* Save details of the current user that has logged in */
             if (loginResponseState is ResponseState.Success) {
                 saveCurrentUserDetails(loginResponseState.data)
             }
-
-            _authenticateUserState.value = _authenticateUserState.value.copy(
-                responseState = loginResponseState,
-                isLoading = false)
+            else if(loginResponseState is ResponseState.Failure) {
+                _authenticateUserState.value = _authenticateUserState.value.copy(
+                    responseState = loginResponseState)
+            }
         }
     }
 

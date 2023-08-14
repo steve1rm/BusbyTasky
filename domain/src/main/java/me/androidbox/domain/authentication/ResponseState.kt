@@ -5,5 +5,5 @@ sealed interface ResponseState<out T> {
 
     data class Success<T>(val data: T) : ResponseState<T>
 
-    data class Failure(val error: Throwable) : ResponseState<Nothing>
+    data class Failure(val error: String?, val code: Int? = null) : ResponseState<Nothing>
 }

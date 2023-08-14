@@ -82,12 +82,19 @@ dependencies {
     implementation(libs.ui)
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
-    implementation(libs.retrofit)
+//    implementation(libs.retrofit)
     implementation(libs.hilt.navigation.compose)
     implementation(libs.navigation.compose)
-    implementation(libs.bundles.retrofit)
+  //  implementation(libs.bundles.retrofit)
     implementation(libs.core.splashscreen)
     implementation(libs.coil.compose)
+
+    implementation("com.squareup.okhttp3:okhttp:4.11.0")
+    implementation("com.squareup.moshi:moshi-kotlin:1.15.0")
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-moshi:2.9.0")
+    implementation("com.squareup.okhttp3:logging-interceptor:4.11.0")
+
 
     /* TODO Adds these to settings */
     implementation("com.maxkeppeler.sheets-compose-dialogs:core:_")

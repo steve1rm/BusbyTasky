@@ -56,7 +56,7 @@ fun NavGraphBuilder.authenticationGraph(
             val validateCredentialState by registerViewModel.validateCredentials.collectAsStateWithLifecycle()
 
             RegisterScreen(
-                loginScreenEvent = { loginScreenEvent ->
+                registerScreenEvent = { loginScreenEvent ->
                     registerViewModel.onRegistrationEvent(loginScreenEvent)
                 },
                 registerScreenState = registerScreenState,

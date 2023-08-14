@@ -174,7 +174,7 @@ class TaskDetailViewModel @Inject constructor(
                 is ResponseState.Failure -> {
                     onTaskDetailScreenEvent(TaskDetailScreenEvent.OnShowSnackBar(
                         showSnackBar = true,
-                        snackbarDisplayMessage = responseState.error.message ?: "Oops, something went wrong",
+                        snackbarDisplayMessage = responseState.error?: "Oops, something went wrong",
                         snackbarActionMessage = "Try Again"
                     ))
                 }
@@ -201,7 +201,7 @@ class TaskDetailViewModel @Inject constructor(
                         }
                     }
                     is ResponseState.Failure -> {
-                        Log.d("TASK_DETAIL", "${responseState.error.message}")
+                        Log.d("TASK_DETAIL", "${responseState.error}")
                     }
                 }
             }

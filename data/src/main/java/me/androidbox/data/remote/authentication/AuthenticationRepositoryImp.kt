@@ -1,14 +1,16 @@
 package me.androidbox.data.remote.authentication
 
-import javax.inject.Inject
 import me.androidbox.data.remote.model.request.LoginRequestDto
 import me.androidbox.data.remote.model.request.RegistrationRequestDto
 import me.androidbox.data.remote.model.response.LoginDto
 import me.androidbox.data.remote.network.authentication.AuthenticationService
 import me.androidbox.data.remote.util.CheckResult.checkResult
+import me.androidbox.data.remote.util.NetworkHttpException
 import me.androidbox.domain.authentication.ResponseState
 import me.androidbox.domain.authentication.model.AuthenticatedUser
 import me.androidbox.domain.authentication.remote.AuthenticationRepository
+import retrofit2.HttpException
+import javax.inject.Inject
 
 class AuthenticationRepositoryImp @Inject constructor(
     private val authenticationService: AuthenticationService
@@ -25,13 +27,19 @@ class AuthenticationRepositoryImp @Inject constructor(
             authenticationService.register(registrationRequestDto)
         }
 
-        /* TODO Is this the best way to extract the value from the Result<T> */
-        val unit = result.getOrNull()
-        return if (unit != null) {
-            ResponseState.Success(unit)
-        } else {
-            ResponseState.Failure((result.exceptionOrNull() ?: Exception()))
-        }
+        return result.fold(
+            onSuccess = {
+                ResponseState.Success(Unit)
+            },
+            onFailure = { throwable ->
+                if(throwable is NetworkHttpException) {
+                    ResponseState.Failure(throwable.errorMessage, throwable.errorCode)
+                }
+                else {
+                    ResponseState.Failure(throwable.message)
+                }
+            }
+        )
     }
 
     override suspend fun loginUser(email: String, password: String): ResponseState<AuthenticatedUser> {
@@ -44,18 +52,24 @@ class AuthenticationRepositoryImp @Inject constructor(
             authenticationService.login(loginRequestDto)
         }
 
-        /* TODO Is this the best way to extract the value from the Result<T> */
-        val loginDto = result.getOrNull()
-        return if (loginDto != null) {
-            val login = AuthenticatedUser(
-                token = loginDto.token,
-                userId = loginDto.userId,
-                fullName = loginDto.fullName
-            )
-            ResponseState.Success(login)
-        } else {
-            ResponseState.Failure((result.exceptionOrNull() ?: Exception()) as Exception)
-        }
+        return result.fold(
+            onSuccess = { loginDto ->
+                val login = AuthenticatedUser(
+                    token = loginDto.token,
+                    userId = loginDto.userId,
+                    fullName = loginDto.fullName)
+
+                ResponseState.Success(login)
+            },
+            onFailure = { throwable: Throwable ->
+                if(throwable is NetworkHttpException) {
+                    ResponseState.Failure(throwable.errorMessage, throwable.errorCode)
+                }
+                else {
+                    ResponseState.Failure(throwable.message)
+                }
+            }
+        )
     }
 
     override suspend fun authenticateUser(): ResponseState<Unit> {
@@ -66,7 +80,7 @@ class AuthenticationRepositoryImp @Inject constructor(
         return if (result.isSuccess) {
             ResponseState.Success(Unit)
         } else {
-            ResponseState.Failure(result.exceptionOrNull() as? Exception ?: Exception())
+            ResponseState.Failure(result.toString())
         }
     }
 
@@ -78,7 +92,7 @@ class AuthenticationRepositoryImp @Inject constructor(
         return if (result.isSuccess) {
             ResponseState.Success(Unit)
         } else {
-            ResponseState.Failure(result.exceptionOrNull() as? Exception ?: Exception())
+            ResponseState.Failure(result.toString())
         }
     }
 }
