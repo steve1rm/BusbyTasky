@@ -38,7 +38,7 @@ class TaskRepositoryImp @Inject constructor(
             },
             onFailure = { throwable ->
                 insertSyncTask(task.id, SyncAgendaType.CREATE)
-           //     ResponseState.Failure(throwable)
+                ResponseState.Failure(throwable.message)
             }
         )
     }
@@ -59,16 +59,14 @@ class TaskRepositoryImp @Inject constructor(
             },
             onFailure = { throwable ->
                 insertSyncTask(task.id, SyncAgendaType.UPDATE)
-           //     ResponseState.Failure(throwable)
+                ResponseState.Failure(throwable.message)
             }
         )
     }
 
     override suspend fun deleteTaskById(taskId: String): ResponseState<Unit> {
         taskDao.deleteTaskById(taskId)
-        return ResponseState.Success(Unit)
 
-/*
         val result = checkResult {
             taskService.deleteTask(taskId)
         }
@@ -79,10 +77,9 @@ class TaskRepositoryImp @Inject constructor(
             },
             onFailure = { throwable ->
                 insertSyncTask(taskId, SyncAgendaType.DELETE)
-                ResponseState.Failure(throwable)
+                ResponseState.Failure(throwable.message)
             }
         )
-*/
     }
 
     override fun getTaskById(taskId: String): Flow<ResponseState<Task>> {
