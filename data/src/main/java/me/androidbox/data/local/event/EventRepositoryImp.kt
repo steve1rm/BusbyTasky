@@ -32,7 +32,7 @@ class EventRepositoryImp @Inject constructor(
                 ResponseState.Success(listOfEvent)
             }
             .catch { throwable ->
-      //          ResponseState.Failure(throwable)
+                ResponseState.Failure(throwable.message)
             }
     }
 
@@ -53,7 +53,7 @@ class EventRepositoryImp @Inject constructor(
                 ResponseState.Success(Unit)
             },
             onFailure = { throwable ->
-                ResponseState.Failure(throwable.message.orEmpty())
+                ResponseState.Failure(throwable.message)
             }
         )
 
@@ -70,7 +70,7 @@ class EventRepositoryImp @Inject constructor(
                 ResponseState.Success(Unit)
             },
             onFailure = { throwable ->
-                ResponseState.Failure(throwable.message.orEmpty())
+                ResponseState.Failure(throwable.message)
             }
         )
 
@@ -87,7 +87,7 @@ class EventRepositoryImp @Inject constructor(
                 ResponseState.Success(Unit)
             },
             onFailure = { throwable ->
-                ResponseState.Failure(throwable.message.orEmpty())
+                ResponseState.Failure(throwable.message)
             }
         )
 

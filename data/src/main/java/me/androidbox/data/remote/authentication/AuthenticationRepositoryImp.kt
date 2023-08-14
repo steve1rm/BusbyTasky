@@ -9,23 +9,14 @@ import me.androidbox.data.remote.util.NetworkHttpException
 import me.androidbox.domain.authentication.ResponseState
 import me.androidbox.domain.authentication.model.AuthenticatedUser
 import me.androidbox.domain.authentication.remote.AuthenticationRepository
+import retrofit2.HttpException
 import javax.inject.Inject
 
 class AuthenticationRepositoryImp @Inject constructor(
     private val authenticationService: AuthenticationService
 ) : AuthenticationRepository {
 
-    fun postComment() = kotlin.runCatching {
-
-    }
-
     override suspend fun registerUser(fullName: String, email: String, password: String): ResponseState<Unit> {
-
-        postComment()
-            .onFailure {
-
-            }
-
         val registrationRequestDto = RegistrationRequestDto(
             fullName = fullName,
             email = email,
@@ -35,15 +26,20 @@ class AuthenticationRepositoryImp @Inject constructor(
         val result = checkResult<Unit> {
             authenticationService.register(registrationRequestDto)
         }
-
-        /* TODO Is this the best way to extract the value from the Result<T> */
-        val unit = result.getOrNull()
-     //   val source = result.response()?.errorBody()?.source()?.buffer
-        return if (unit != null) {
-            ResponseState.Success(unit)
-        } else {
-            ResponseState.Failure(result.toString())
-        }
+        
+        return result.fold(
+            onSuccess = {
+                ResponseState.Success(Unit)
+            },
+            onFailure = { throwable ->
+                if(throwable is NetworkHttpException) {
+                    ResponseState.Failure(throwable.errorMessage, throwable.errorCode)
+                }
+                else {
+                    ResponseState.Failure(throwable.message)
+                }
+            }
+        )
     }
 
     override suspend fun loginUser(email: String, password: String): ResponseState<AuthenticatedUser> {
@@ -53,7 +49,6 @@ class AuthenticationRepositoryImp @Inject constructor(
         )
 
         val result = checkResult<LoginDto> {
-            println(Thread.currentThread().name)
             authenticationService.login(loginRequestDto)
         }
 
